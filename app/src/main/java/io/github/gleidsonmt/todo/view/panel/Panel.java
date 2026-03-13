@@ -135,9 +135,9 @@ public class Panel extends Container {
             // body.setLeft(null);
             bar.getChildren().add(hamb);
             bar.getChildren().forEach(el -> {
-                GridPane.setColumnIndex(el, GridPane.getColumnIndex(el) + 1);
+                GridPane.setRowIndex(el, 1);
             });
-            bar.addColumn(0, hamb);
+            bar.addRow(0, hamb);
             // GridPane.setColumnIndex(hamb, 0);
         }, "<MD");
 
@@ -145,7 +145,7 @@ public class Panel extends Container {
             // body.setLeft(sideNav);
             bar.getChildren().remove(hamb);
             bar.getChildren().forEach(el -> {
-                GridPane.setColumnIndex(el, GridPane.getColumnIndex(el) - 1);
+                GridPane.setRowIndex(el, 0);
             });
         }, ">MD");
 
