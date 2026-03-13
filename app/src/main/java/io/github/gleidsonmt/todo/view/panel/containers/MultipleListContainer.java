@@ -101,6 +101,11 @@ public class MultipleListContainer extends ListContainer {
         // _switch(list.getType().equals(ListType.COMPLETED), section, item1,
         // task1);
         // });
+        item.setOnCompletedChange(viewModel -> {
+            AnimatedSection section = (AnimatedSection) item.getParent();
+            section.getItems().remove(section.get(task));
+            viewModel.update();
+        });
         return item;
     }
 
@@ -152,7 +157,6 @@ public class MultipleListContainer extends ListContainer {
         return (ListChangeListener<ToDoTask>) c -> {
             if (c.next()) {
                 if (c.wasAdded()) {
-
                 }
                 if (c.wasRemoved()) {
                     c.getRemoved().forEach(task -> section.getItems().remove(section.get(task)));

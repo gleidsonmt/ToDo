@@ -59,12 +59,9 @@ public class SideNav extends Drawer {
                     drawerItem.numberOfNotificationsProperty()
                             .bind(Bindings.size(data.filtered(ToDoTask::isCompleted)));
                 }
-                case TASKS -> {
+                default -> {
                     drawerItem.numberOfNotificationsProperty()
                             .bind(Bindings.size(view.getList().getItems().filtered(e -> !e.isCompleted())));
-                }
-                default -> {
-                    drawerItem.numberOfNotificationsProperty().bind(Bindings.size(view.getList().getItems()));
                 }
                 }
                 return drawerItem;
@@ -108,8 +105,10 @@ public class SideNav extends Drawer {
             List all = new List(I18n.get("drawer.list.all"), ListType.ALL, Icon.DONE_ALL, true);
 
             // set items for fixed lists
-            // daily.setItems(data.filtered(el -> el.isMyDay() && el.getDueDate() == null
-            //         || (el.getDueDate() != null && el.getDueDate().equals(LocalDate.now()))));
+            // daily.setItems(data.filtered(el -> el.isMyDay() &&
+            // el.getDueDate() == null
+            // || (el.getDueDate() != null &&
+            // el.getDueDate().equals(LocalDate.now()))));
 
             daily.setItems(data.filtered(ToDoTask::isMyDay));
 
@@ -129,7 +128,8 @@ public class SideNav extends Drawer {
                 listCompleted.setItems(data.filtered(task -> task.getListId() == list.getId() && task.isCompleted()));
 
                 List listIncompleted = new List(list.getName());
-                listIncompleted.setItems(data.filtered(task -> task.getListId() == list.getId() && !task.isCompleted()));
+                listIncompleted
+                        .setItems(data.filtered(task -> task.getListId() == list.getId() && !task.isCompleted()));
 
                 list.setItems(data.filtered(task -> task.getListId() == list.getId()));
                 // pass to all and completed lists
