@@ -54,6 +54,15 @@ public class MainView extends Container implements Layout {
             body.setLeft(sideNav);
             body.setCenter(panel);
             panel.setContent(listRoot);
+
+            this.addBreakpoint((event) -> {
+                body.setLeft(null);
+            }, "<MD");
+
+            this.addBreakpoint((event) -> {
+                body.setLeft(sideNav);
+            }, ">MD");
+
         });
 
         repository.setOnFailed(e -> {
