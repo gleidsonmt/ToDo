@@ -1,0 +1,79 @@
+package io.github.gleidsonmt.todo;
+
+import java.util.Optional;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.scenicview.ScenicView;
+
+import fr.brouillard.oss.cssfx.CSSFX;
+import io.github.gleidsonmt.glad.base.Root;
+import io.github.gleidsonmt.glad.theme.Css;
+import io.github.gleidsonmt.glad.theme.Font;
+import io.github.gleidsonmt.glad.theme.ThemeProvider;
+import io.github.gleidsonmt.todo.bd.DatabaseConnection;
+import io.github.gleidsonmt.todo.bd.dao.DaoUser;
+import io.github.gleidsonmt.todo.logger.LogFormatter;
+import io.github.gleidsonmt.todo.model.User;
+import io.github.gleidsonmt.todo.utils.Assets;
+import io.github.gleidsonmt.todo.view.MainView;
+import io.github.gleidsonmt.todo.view.login.HomeLayout;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+/**
+ * Description:
+ *
+ * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
+ *         Created On: Feb 22, 2026
+ * 
+ *         Version History: Initial version
+ */
+public class App extends Application {
+
+    private final LogFormatter formatter = new LogFormatter();
+    private DatabaseConnection connection;
+
+    @Override
+    public void init() throws Exception {
+        ConsoleHandler handler = new ConsoleHandler();
+
+        handler.setFormatter(formatter);
+
+        Logger.getGlobal().addHandler(handler);
+        Logger.getGlobal().setUseParentHandlers(false);
+        Logger.getGlobal().setLevel(Level.OFF);
+    }
+
+    @Override
+    public void stop() throws Exception {
+        Logger.getGlobal().info("Application is stopping...");
+        connection.close();
+    }
+
+    @Override
+    public void start(Stage stage) throws Exception {
+        this.connection = new DatabaseConnection();
+        Logger.getGlobal().info(() -> "Established connection... [" + (connection.connect() ? "OK" : "FAILED") + "]");
+
+        DaoUser dao = new DaoUser();
+        Optional<User> user = dao.getWhere("logged = 1;");
+
+        Root root = new Root(user.isPresent() ? new MainView(user.get()) : new HomeLayout());
+        Scene scene = new Scene(root, 1200, 728);
+        ThemeProvider.install(scene, Css.ALL, Font.INSTAGRAM);
+        scene.getStylesheets().add(Assets.getCss("app.css"));
+
+        stage.setMinWidth(400);
+        stage.setMinHeight(600);
+        stage.setScene(scene);
+        stage.show();
+
+        ScenicView.show(stage.getScene());
+        CSSFX.start(stage.getScene());
+
+    }
+
+}
