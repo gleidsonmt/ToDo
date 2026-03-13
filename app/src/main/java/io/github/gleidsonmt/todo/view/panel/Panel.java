@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import io.github.gleidsonmt.glad.base.responsive.Container;
+import io.github.gleidsonmt.glad.controls.button.Button;
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import io.github.gleidsonmt.todo.model.List;
@@ -86,7 +87,9 @@ public class Panel extends Container {
     public void setContent(ListRoot listRoot) {
         // remove and set all children for this list root
         this.container.getChildren().setAll(listRoot);
-        // This ensure that if the list selected is not a fixed list you only add the task a custom list not the tasks, tasks is a fixed list with no id. 
+        // This ensure that if the list selected is not a fixed list you only
+        // add the task a custom list not the tasks, tasks is a fixed list with
+        // no id.
         listRoot.actualListProperty().addListener((_, _, newValue) -> inputContainer.addTasksItem(newValue.isFixed()));
     }
 
@@ -125,6 +128,26 @@ public class Panel extends Container {
         Pane regionLimitBottom = createRegionLimit(VPos.BOTTOM, borderLimitBottom);
 
         this.getChildren().setAll(scroll, regionLimitTop, regionLimitBottom, bar, inputContainer);
+
+        Button hamb = new Hamburger();
+
+        this.addBreakpoint((event) -> {
+            // body.setLeft(null);
+            bar.getChildren().add(hamb);
+            bar.getChildren().forEach(el -> {
+                GridPane.setColumnIndex(el, GridPane.getColumnIndex(el) + 1);
+            });
+            bar.addColumn(0, hamb);
+            // GridPane.setColumnIndex(hamb, 0);
+        }, "<MD");
+
+        this.addBreakpoint((event) -> {
+            // body.setLeft(sideNav);
+            bar.getChildren().remove(hamb);
+            bar.getChildren().forEach(el -> {
+                GridPane.setColumnIndex(el, GridPane.getColumnIndex(el) - 1);
+            });
+        }, ">MD");
 
     }
 

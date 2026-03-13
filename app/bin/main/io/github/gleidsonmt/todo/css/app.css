@@ -254,3 +254,8 @@ Panel {
 .strike .text {
   -fx-strikethrough: true;
 }
+
+.hamb {
+  -fx-background-color: -fx-background;
+  -fx-border-color: -light-gray-2;
+}

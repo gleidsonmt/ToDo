@@ -1,7 +1,5 @@
 package io.github.gleidsonmt.todo.view.nav;
 
-import java.time.LocalDate;
-
 import io.github.gleidsonmt.glad.base.Module;
 import io.github.gleidsonmt.glad.base.ModuleView;
 import io.github.gleidsonmt.glad.base.drawer.Drawer;
@@ -110,8 +108,10 @@ public class SideNav extends Drawer {
             List all = new List(I18n.get("drawer.list.all"), ListType.ALL, Icon.DONE_ALL, true);
 
             // set items for fixed lists
-            daily.setItems(data.filtered(el -> el.isMyDay() && el.getDueDate() == null
-                    || (el.getDueDate() != null && el.getDueDate().equals(LocalDate.now()))));
+            // daily.setItems(data.filtered(el -> el.isMyDay() && el.getDueDate() == null
+            //         || (el.getDueDate() != null && el.getDueDate().equals(LocalDate.now()))));
+
+            daily.setItems(data.filtered(ToDoTask::isMyDay));
 
             tasks.setItems(data.filtered(el -> el.getListId() == 0));
 

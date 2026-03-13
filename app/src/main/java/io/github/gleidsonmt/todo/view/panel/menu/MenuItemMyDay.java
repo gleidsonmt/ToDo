@@ -36,7 +36,7 @@ public class MenuItemMyDay extends TaskMenuItemBase {
     protected EventHandler<ActionEvent> createEvent(TaskItemViewModel item) {
         return _ -> {
             // update the model
-            item.setMyDay(true);
+            item.setMyDay(!item.isMyDay());
             item.update();
         };
     }

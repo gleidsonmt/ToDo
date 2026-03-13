@@ -8,6 +8,7 @@ import io.github.gleidsonmt.todo.view.nav.SideNav;
 import io.github.gleidsonmt.todo.view.panel.ListRoot;
 import io.github.gleidsonmt.todo.view.panel.Panel;
 import javafx.beans.binding.Bindings;
+import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
 
 /**
@@ -98,6 +99,11 @@ public class MainView extends Container implements Layout {
         panel.titleProperty().bind(Bindings.select(sideNav.itemSelectedProperty(), "list", "name"));
         // the panee icon title with the list icon selected in the side nav.
         panel.titleIconProperty().bind(Bindings.select(sideNav.itemSelectedProperty(), "list", "icon"));
+    }
+
+    @Override
+    public Node getLeft() {
+        return this.sideNav;
     }
 
 }
