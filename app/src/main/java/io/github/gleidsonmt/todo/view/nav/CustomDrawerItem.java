@@ -14,13 +14,13 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
-import javafx.scene.text.Text;
 
 /**
  * Description:
@@ -36,7 +36,7 @@ public class CustomDrawerItem extends ToggleButton {
     // Components
     private final Pane iconSelector = new Pane();
     private final SVGIcon svgIcon = new SVGIcon();
-    private final Text text = new Text();
+    private final TextField text = new TextField();
     private final Label number = new Label();
 
     // bindable items
@@ -46,6 +46,8 @@ public class CustomDrawerItem extends ToggleButton {
     private final GridPane container = new GridPane();
 
     private final IntegerProperty numberOfNotifications = new SimpleIntegerProperty(0);
+
+    private final BooleanProperty editable = new SimpleBooleanProperty(false);
 
     public CustomDrawerItem(ViewList viewList) {
         this(viewList, false);
@@ -83,6 +85,8 @@ public class CustomDrawerItem extends ToggleButton {
                 number.setMaxWidth(number.getText().length() * 25);
             }
         });
+
+        text.disableProperty().bind(this.editable.not());
     }
 
     private void init() {
@@ -145,5 +149,9 @@ public class CustomDrawerItem extends ToggleButton {
 
     public IntegerProperty numberOfNotificationsProperty() {
         return this.numberOfNotifications;
+    }
+
+    public void setEditable(boolean val) {
+        this.editable.set(val);
     }
 }

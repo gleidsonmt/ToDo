@@ -1,6 +1,8 @@
 package io.github.gleidsonmt.todo.global;
 
+import io.github.gleidsonmt.todo.bd.dao.DaoList;
 import io.github.gleidsonmt.todo.bd.dao.DaoTask;
+import io.github.gleidsonmt.todo.model.List;
 import io.github.gleidsonmt.todo.model.ToDoTask;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -20,6 +22,7 @@ public class TaskRepository extends Service<ObservableList<ToDoTask>> {
 
     private final ObservableList<ToDoTask> data;
     private final DaoTask dao;
+    private final DaoList daoList;
 
     public TaskRepository() {
         this(FXCollections.observableArrayList());
@@ -27,6 +30,7 @@ public class TaskRepository extends Service<ObservableList<ToDoTask>> {
 
     public TaskRepository(ObservableList<ToDoTask> data) {
         this.dao = new DaoTask();
+        this.daoList = new DaoList();
         this.data = data;
     }
 
@@ -70,6 +74,10 @@ public class TaskRepository extends Service<ObservableList<ToDoTask>> {
 
     private void store(ToDoTask task) {
         dao.store(task);
+    }
+
+    public void store(List list) {
+        daoList.store(list);
     }
 
     private void apply() {

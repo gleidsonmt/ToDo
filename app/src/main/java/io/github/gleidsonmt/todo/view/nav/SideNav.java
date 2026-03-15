@@ -54,6 +54,7 @@ public class SideNav extends Drawer {
                 case ALL -> {
                     drawerItem.numberOfNotificationsProperty()
                             .bind(Bindings.size(data.filtered(task -> !task.isCompleted())));
+
                 }
                 case COMPLETED -> {
                     drawerItem.numberOfNotificationsProperty()
@@ -64,6 +65,10 @@ public class SideNav extends Drawer {
                             .bind(Bindings.size(view.getList().getItems().filtered(e -> !e.isCompleted())));
                 }
                 }
+                if (!view.getList().isFixed()) {
+                    drawerItem.setEditable(true);
+                }
+
                 return drawerItem;
             }
             case ModuleSeparator separator -> {
@@ -190,6 +195,7 @@ public class SideNav extends Drawer {
             // System.out.println("first +" + getItems());
             // });
             this.setHeader(header);
+            this.setFooter(new Footer(customLists));
         });
 
     }

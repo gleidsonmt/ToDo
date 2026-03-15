@@ -19,4 +19,18 @@ class AppTest {
         assertTrue(classUnderTest.connect(), "app should have a database connection");
 
     }
+
+    @Test
+    void subText() {
+        String test01 = "Untitled 121";
+
+        // String val = test01.substring(test01.indexOf(" ")+1);
+        String val = test01.substring(0, test01.indexOf(" "));
+        test01.matches("Untitled [0-9]+");
+        System.out.println(val);
+
+        assertTrue(test01.matches("Untitled [0-9]+"));
+        // assertEquals("Untitled", val, "As strings devem ser iguais");
+        // assertEquals(test01, val);
+    }
 }
