@@ -247,6 +247,14 @@ Panel {
   -fx-border-color: derive(gray, -10%);
 }
 
+.custom-drawer-item:selected .menu-item .icon {
+  -fx-fill: -fx-accent;
+}
+
+.menu-item-delete .graphic-container .icont-container .icon {
+  -fx-fill: -red-800;
+}
+
 .menu-item-delete .icon {
   -fx-fill: -red-800;
 }

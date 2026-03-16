@@ -9,6 +9,7 @@ import io.github.gleidsonmt.glad.drawer.DrawerItem;
 import io.github.gleidsonmt.glad.drawer.DrawerMenu;
 import io.github.gleidsonmt.todo.bd.dao.DaoList;
 import io.github.gleidsonmt.todo.bd.dao.DaoPreferences;
+import io.github.gleidsonmt.todo.global.Repository;
 import io.github.gleidsonmt.todo.model.List;
 import io.github.gleidsonmt.todo.model.ListType;
 import io.github.gleidsonmt.todo.model.Preferences;
@@ -22,6 +23,7 @@ import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.scene.control.Separator;
@@ -74,8 +76,6 @@ public class SideNav extends Drawer {
                         drawerItem.setEditable(true);
                         getScene().addPostLayoutPulseListener(() -> container.setVvalue(1));
                     });
-                    // select(param);
-                    // drawerItem.requestFocus();
                 }
                 return drawerItem;
             }
@@ -92,12 +92,112 @@ public class SideNav extends Drawer {
             }
             }
         });
-        createItems(tasks, user);
-
+        // createItems(tasks, user);
+        createFixedLists(tasks);
+        createCustomLists();
     }
 
     private ObservableList<List> customLists;
 
+    private void createFixedLists(ObservableList<ToDoTask> data) {
+        // Default lists
+        List daily = new List(I18n.get("drawer.list.myDay"), ListType.DAILY, Icon.SUN, true);
+        List tasks = new List(I18n.get("drawer.list.task"), ListType.TASKS, Icon.HOME, true);
+        List important = new List(I18n.get("drawer.list.important"), ListType.IMPORTANT, Icon.STAR, true);
+        List completed = new List(I18n.get("drawer.list.completed"), ListType.COMPLETED, Icon.DONE_CIRCLE, true);
+        List all = new List(I18n.get("drawer.list.all"), ListType.ALL, Icon.DONE_ALL, true);
+
+        daily.setItems(data.filtered(ToDoTask::isMyDay));
+
+        tasks.setItems(data.filtered(el -> el.getListId() == 0));
+
+        important.setItems(data.filtered(task -> task.isImportant() && !task.isCompleted()));
+
+        List tasksCompleted = new List(I18n.get("drawer.list.task"), ListType.TASKS, Icon.HOME);
+        List tasksIncompleted = new List(I18n.get("drawer.list.task"), ListType.TASKS, Icon.HOME);
+        tasksIncompleted.setItems(data.filtered(task -> task.getListId() == 0 && !task.isCompleted()));
+        tasksCompleted.setItems(data.filtered(task -> task.isCompleted() && task.getListId() == 0));
+
+        all.getLists().add(tasksIncompleted);
+        completed.getLists().add(tasksCompleted);
+
+        // adding fixed views
+        getItems().addAll(new ViewList(daily), new ViewList(tasks), new ViewList(important), new ViewList(completed),
+                new ViewList(all));
+
+        // adding a separator
+        getItems().add(new ModuleSeparator(new Separator(), "Separator"));
+
+        this.setHeader(header);
+
+    }
+
+    private void createCustomLists() {
+
+        List all = getItems().stream().filter(list -> (list instanceof ViewList)).map(list -> (ViewList) list)
+                .filter(viewList -> viewList.getList().getType().equals(ListType.ALL)).findFirst().get().getList();
+
+        List completed = getItems().stream().filter(list -> (list instanceof ViewList)).map(list -> (ViewList) list)
+                .filter(viewList -> viewList.getList().getType().equals(ListType.COMPLETED)).findFirst().get()
+                .getList();
+
+        Repository repo = (Repository) System.getProperties().get("repository");
+        Service<ObservableList<List>> load = repo.loadLists();
+
+        load.setOnSucceeded(e -> {
+            System.out.println(load.getValue());
+
+            load.getValue().forEach(list -> {
+                List listCompleted = new List(list.getName());
+                listCompleted.setItems(data.filtered(task -> task.getListId() == list.getId() && task.isCompleted()));
+
+                List listIncompleted = new List(list.getName());
+                listIncompleted
+                        .setItems(data.filtered(task -> task.getListId() == list.getId() && !task.isCompleted()));
+
+                list.setItems(data.filtered(task -> task.getListId() == list.getId()));
+                // pass to all and completed lists
+                all.getLists().add(listIncompleted);
+                completed.getLists().add(listCompleted);
+                // crate and add custom list to the items
+                getItems().addAll(new ViewList(list));
+            });
+
+            // load.getValue().addListener((ListChangeListener<List>) c -> {
+            // if (c.next()) {
+            // if (c.wasAdded()) {
+            // c.getAddedSubList().forEach(list -> {
+            // all.getLists().add(list);
+            // completed.getLists().add(list);
+
+            // var viewList = new ViewList(list, true);
+
+            // getItems().add(viewList);
+
+            // // drawerItem.setEditMode(true);
+            // // new DaoList().store(list);
+            // getScene().addPostLayoutPulseListener(() ->
+            // container.setVvalue(1));
+
+            // });
+            // }
+            // }
+            // });
+            //
+
+            // Platform.runLater(() -> {
+            currentModuleProperty().set(getItems().get(1));
+            // select(getItems().getFirst());
+            select(getItems().get(1));
+            // System.out.println("first +" + getItems());
+            // });
+            this.setFooter(new Footer(customLists));
+        });
+
+        load.start();
+    }
+
+    @Deprecated
     private void createItems(ObservableList<ToDoTask> data, User user) {
 
         customLists = FXCollections.observableArrayList();
@@ -202,7 +302,6 @@ public class SideNav extends Drawer {
             select(getItems().get(1));
             // System.out.println("first +" + getItems());
             // });
-            this.setHeader(header);
             this.setFooter(new Footer(customLists));
         });
 

@@ -3,6 +3,7 @@ package io.github.gleidsonmt.todo.view.nav;
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import io.github.gleidsonmt.todo.view.ViewList;
+import io.github.gleidsonmt.todo.view.panel.menu.ListContextMenu;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
@@ -13,6 +14,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.Side;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -68,30 +70,7 @@ public class CustomDrawerItem extends ToggleButton {
         bind();
         configLayout();
         registerListeners();
-    }
-
-    private void bind() {
-        number.textProperty().bind(Bindings.convert(this.numberOfNotifications));
-        number.visibleProperty().bind(this.numberOfNotifications.greaterThan(0));
-        text.disableProperty().bind(this.editable.not());
-    }
-
-    private void registerListeners() {
-        this.number.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                number.setMaxWidth(number.getText().length() * 25);
-            }
-        });
-
-        this.editable.addListener((_, _, newVal) -> {
-            if (newVal) {
-                Platform.runLater(() -> {
-                    text.requestFocus();
-                    text.requestLayout();
-                    text.selectAll();
-                });
-            }
-        });
+        setActions();
     }
 
     private void init() {
@@ -108,6 +87,37 @@ public class CustomDrawerItem extends ToggleButton {
         iconSelector.getStyleClass().add("icon-selector");
 
         container.getChildren().setAll(iconSelector, svgIcon, text, number);
+    }
+
+    private void bind() {
+        number.textProperty().bind(Bindings.convert(this.numberOfNotifications));
+        number.visibleProperty().bind(this.numberOfNotifications.greaterThan(0));
+        text.disableProperty().bind(this.editable.not());
+    }
+
+    private void registerListeners() {
+        this.number.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                number.setMaxWidth(number.getText().length() * 25);
+            }
+        });
+
+        this.editable.addListener((_, _, newVal) -> {
+            System.out.println("newVal = " + newVal);
+            if (newVal) {
+                Platform.runLater(() -> {
+                    text.requestFocus();
+                    text.requestLayout();
+                    text.selectAll();
+                });
+            }
+        });
+
+        this.focusWithinProperty().addListener((_, _, newVal) -> {
+            if (!newVal) {
+                this.setEditable(newVal);
+            }
+        });
     }
 
     private void configLayout() {
@@ -140,6 +150,22 @@ public class CustomDrawerItem extends ToggleButton {
         container.getRowConstraints().addAll(rowOne);
 
         GridPane.setHgrow(text, Priority.ALWAYS);
+    }
+
+    private void setActions() {
+        var context = new ListContextMenu(this);
+        this.setOnContextMenuRequested(e -> {
+
+            var current = (SideNav) getScene().lookup("#drawer");
+            current.select((ViewList) this.getUserData());
+
+            context.show(this, Side.TOP, 10, 0);
+
+        });
+    }
+
+    public ViewList getViewList() {
+        return (ViewList) getUserData();
     }
 
     public Icon getIcon() {

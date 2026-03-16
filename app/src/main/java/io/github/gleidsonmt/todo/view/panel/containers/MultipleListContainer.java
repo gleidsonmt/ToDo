@@ -142,7 +142,8 @@ public class MultipleListContainer extends ListContainer {
         });
         Platform.runLater(() -> {
             if (!list.getItems().isEmpty()) {
-                getChildren().add(section);
+                if (!getChildren().contains(section))
+                    getChildren().add(section);
             }
         });
     }
@@ -185,7 +186,8 @@ public class MultipleListContainer extends ListContainer {
             // } else {
             // sectionIncomplete.getChildren().add(0, taskItem);
             // }
-            getChildren().add(0, section);
+            if (!getChildren().contains(section))
+                getChildren().add(0, section);
         });
     }
 }

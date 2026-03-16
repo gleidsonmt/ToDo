@@ -4,6 +4,7 @@ import io.github.gleidsonmt.todo.bd.dao.DaoList;
 import io.github.gleidsonmt.todo.bd.dao.DaoTask;
 import io.github.gleidsonmt.todo.model.List;
 import io.github.gleidsonmt.todo.model.ToDoTask;
+import io.github.gleidsonmt.todo.view.nav.SideNav;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -21,6 +22,7 @@ import javafx.concurrent.Task;
 public class Repository {
 
     private final ObservableList<ToDoTask> data;
+    private final ObservableList<List> lists;
 
     private final DaoTask dao;
     private final DaoList daoList;
@@ -29,6 +31,7 @@ public class Repository {
         this.dao = new DaoTask();
         this.daoList = new DaoList();
         this.data = FXCollections.observableArrayList();
+        this.lists = FXCollections.observableArrayList();
     }
 
     public Service<ObservableList<ToDoTask>> loadData() {
@@ -37,6 +40,17 @@ public class Repository {
             protected Task<ObservableList<ToDoTask>> createTask() {
                 var task = dao.fetch(data);
                 task.setOnSucceeded(e -> data.addListener(createListener()));
+                return task;
+            }
+        };
+    }
+
+    public Service<ObservableList<List>> loadLists() {
+        return new Service<ObservableList<List>>() {
+            @Override
+            protected Task<ObservableList<List>> createTask() {
+                var task = daoList.fetch(lists);
+                // task.setOnSucceeded(e -> data.addListener(createListener()));
                 return task;
             }
         };
@@ -66,6 +80,10 @@ public class Repository {
         return this.data;
     }
 
+    public ObservableList<List> getLists() {
+        return this.lists;
+    }
+
     private void delete(ToDoTask task) {
         dao.delete(task);
     }
@@ -80,6 +98,10 @@ public class Repository {
 
     public void store(List list) {
         daoList.store(list);
+    }
+
+    public void delete(List list) {
+        daoList.delete(list);
     }
 
     private void apply() {
