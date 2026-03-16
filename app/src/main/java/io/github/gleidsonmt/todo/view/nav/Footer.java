@@ -24,8 +24,15 @@ import javafx.scene.layout.Priority;
  */
 public class Footer extends GridPane {
 
+    private final Label label;
+
     public Footer(ObservableList<List> lists) {
-        Label label = new Label(I18n.get("drawer.newTask"));
+        label = new Label(I18n.get("drawer.newTask"));
+        configLayout();
+        setOnMouseClicked(e -> createNewList(lists));
+    }
+
+    private void configLayout() {
         label.setAlignment(Pos.CENTER);
         label.setPrefWidth(300);
         label.getStyleClass().addAll("hover-item", "h5", "bold");
@@ -38,8 +45,6 @@ public class Footer extends GridPane {
         GridPane.setColumnIndex(label, 0);
 
         GridPane.setHgrow(label, Priority.ALWAYS);
-
-        setOnMouseClicked(e -> createNewList(lists));
     }
 
     /**
