@@ -16,6 +16,7 @@ import io.github.gleidsonmt.todo.model.ToDoTask;
 import io.github.gleidsonmt.todo.model.User;
 import io.github.gleidsonmt.todo.utils.I18n;
 import io.github.gleidsonmt.todo.view.ViewList;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.collections.FXCollections;
@@ -64,11 +65,16 @@ public class SideNav extends Drawer {
                     drawerItem.numberOfNotificationsProperty()
                             .bind(Bindings.size(view.getList().getItems().filtered(e -> !e.isCompleted())));
                 }
-                }
-                if (!view.getList().isFixed()) {
-                    drawerItem.setEditable(true);
-                }
 
+                }
+                if (view.isEditable()) {
+                    Platform.runLater(() -> {
+                        select(param);
+                        drawerItem.setEditable(true);
+                    });
+                    // select(param);
+                    // drawerItem.requestFocus();
+                }
                 return drawerItem;
             }
             case ModuleSeparator separator -> {
@@ -173,7 +179,7 @@ public class SideNav extends Drawer {
                             all.getLists().add(list);
                             completed.getLists().add(list);
 
-                            var viewList = new ViewList(list);
+                            var viewList = new ViewList(list, true);
 
                             getItems().add(viewList);
 

@@ -50,7 +50,8 @@ public class App extends Application {
     @Override
     public void stop() throws Exception {
         Logger.getGlobal().info("Application is stopping...");
-        connection.close();
+        if (connection.hasConnection())
+            connection.close();
     }
 
     @Override

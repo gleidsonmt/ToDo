@@ -3,6 +3,7 @@ package io.github.gleidsonmt.todo.view.nav;
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import io.github.gleidsonmt.todo.view.ViewList;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
@@ -31,7 +32,6 @@ import javafx.scene.layout.RowConstraints;
  *         Version History: Initial version
  */
 public class CustomDrawerItem extends ToggleButton {
-    // Reformating
 
     // Components
     private final Pane iconSelector = new Pane();
@@ -56,15 +56,12 @@ public class CustomDrawerItem extends ToggleButton {
     public CustomDrawerItem(ViewList viewList, boolean fixed) {
         this.setUserData(viewList);
         this.fixed.set(fixed);
-        // this.list = new SimpleObjectProperty<>(list);
-        // this.text.textProperty().bindBidirectional(viewList.getList().nameProperty());
         this.text.setText(viewList.getList().getName());
         this.setGraphic(container);
         this.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-        this.setText(null);
 
         svgIcon.iconProperty().bind(this.icon);
-        // this.icon.set(viewList.getList().getIcon());
+        svgIcon.setFocusTraversable(false);
         this.icon.bind(viewList.getList().iconProperty());
 
         init();
@@ -76,17 +73,33 @@ public class CustomDrawerItem extends ToggleButton {
     private void bind() {
         number.textProperty().bind(Bindings.convert(this.numberOfNotifications));
         number.visibleProperty().bind(this.numberOfNotifications.greaterThan(0));
+        text.disableProperty().bind(this.editable.not());
+
         // bindNumberOfNotifications(((ViewList) this.getUserData()).getList());
     }
 
     private void registerListeners() {
+
+        // this.setFocused(false);
+        // container.setFocusTraversable(false);
+        // this.setFocusTraversable(false);
+        // this.getGraphic().setFocusTraversable(false);
+
         this.number.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 number.setMaxWidth(number.getText().length() * 25);
             }
         });
 
-        text.disableProperty().bind(this.editable.not());
+        this.editable.addListener((_, _, newVal) -> {
+            if (newVal) {
+                Platform.runLater(() -> {
+                    text.requestFocus();
+                    text.requestLayout();
+                    text.selectAll();
+                });
+            }
+        });
     }
 
     private void init() {
