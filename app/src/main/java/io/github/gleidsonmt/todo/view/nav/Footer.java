@@ -39,27 +39,31 @@ public class Footer extends GridPane {
         GridPane.setHgrow(label, Priority.ALWAYS);
 
         setOnMouseClicked(e -> {
-            var actualIncrementValue = lists.stream()
-                    // filter with the patter name (Untitled [some number])
-                    .filter(list -> list.getName().matches("Untitled [0-9]+"))
-                    // transform this number in an integer
-                    .map(list -> Integer.valueOf(list.getName().substring(list.getName().indexOf(" ") + 1)))
-                    // get the maximun value
-                    .reduce(0, (a, b) -> Integer.max(a, b));
 
-            List list;
-
-            if (actualIncrementValue == 0) {
-                list = new List("Untitled 1");
-            } else {
-                list = new List("Untitled " + (actualIncrementValue + 1));
-            }
-
-            lists.add(list);
-
-            TaskRepository repo = (TaskRepository) System.getProperties().get("repository");
-            repo.store(list);
         });
+    }
+
+    private void createNewList() {
+        var actualIncrementValue = lists.stream()
+                // filter with the patter name (Untitled [some number])
+                .filter(list -> list.getName().matches("Untitled [0-9]+"))
+                // transform this number in an integer
+                .map(list -> Integer.valueOf(list.getName().substring(list.getName().indexOf(" ") + 1)))
+                // get the maximun value
+                .reduce(0, (a, b) -> Integer.max(a, b));
+
+        List list;
+
+        if (actualIncrementValue == 0) {
+            list = new List("Untitled 1");
+        } else {
+            list = new List("Untitled " + (actualIncrementValue + 1));
+        }
+
+        lists.add(list);
+
+        TaskRepository repo = (TaskRepository) System.getProperties().get("repository");
+        repo.store(list);
     }
 
 }

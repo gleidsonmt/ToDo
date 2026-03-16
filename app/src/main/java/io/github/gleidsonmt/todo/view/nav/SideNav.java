@@ -72,7 +72,6 @@ public class SideNav extends Drawer {
                         currentModuleProperty().set(param);
                         select(param);
                         drawerItem.setEditable(true);
-
                         getScene().addPostLayoutPulseListener(() -> container.setVvalue(1));
                     });
                     // select(param);

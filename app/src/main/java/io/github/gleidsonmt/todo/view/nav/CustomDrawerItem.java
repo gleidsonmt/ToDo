@@ -74,12 +74,9 @@ public class CustomDrawerItem extends ToggleButton {
         number.textProperty().bind(Bindings.convert(this.numberOfNotifications));
         number.visibleProperty().bind(this.numberOfNotifications.greaterThan(0));
         text.disableProperty().bind(this.editable.not());
-
-        // bindNumberOfNotifications(((ViewList) this.getUserData()).getList());
     }
 
     private void registerListeners() {
-
         this.number.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 number.setMaxWidth(number.getText().length() * 25);
@@ -95,11 +92,9 @@ public class CustomDrawerItem extends ToggleButton {
                 });
             }
         });
-
     }
 
     private void init() {
-        //
         this.setPrefWidth(300);
         this.number.setMaxWidth(this.number.getText().length() * 25);
         this.container.setPadding(new Insets(0, 5, 0, 0));
@@ -113,7 +108,6 @@ public class CustomDrawerItem extends ToggleButton {
         iconSelector.getStyleClass().add("icon-selector");
 
         container.getChildren().setAll(iconSelector, svgIcon, text, number);
-
     }
 
     private void configLayout() {
