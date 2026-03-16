@@ -14,7 +14,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
 /**
- * Description:
+ * Description: The Drawer Footer.
  *
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
  *         Created On: Mar 14, 2026
@@ -38,12 +38,24 @@ public class Footer extends GridPane {
 
         GridPane.setHgrow(label, Priority.ALWAYS);
 
-        setOnMouseClicked(e -> {
-
-        });
+        setOnMouseClicked(e -> createNewList(lists));
     }
 
-    private void createNewList() {
+    /**
+     * When this component is clicked, this method is triggered to add a new
+     * list.
+     * This list will be titled as Untitled 1.
+     * The name will depends if the list are in the lists or not.
+     * If there's no list untitled, add.
+     * If there's on or more untitled lists, increment
+     * ex. if a lists has a list called Untitled 1, the next list to add has to
+     * be Untitled 2.
+     * 
+     * @param lists
+     */
+    private void createNewList(ObservableList<List> lists) {
+        // first step, get the last new list with the pattern [untitled [0-9]]
+        // and get his number
         var actualIncrementValue = lists.stream()
                 // filter with the patter name (Untitled [some number])
                 .filter(list -> list.getName().matches("Untitled [0-9]+"))
@@ -54,16 +66,23 @@ public class Footer extends GridPane {
 
         List list;
 
-        if (actualIncrementValue == 0) {
+        if (actualIncrementValue == 0) { // if there's no patttern added to
+                                         // lists create
             list = new List("Untitled 1");
         } else {
-            list = new List("Untitled " + (actualIncrementValue + 1));
+            list = new List("Untitled " + (actualIncrementValue + 1)); // if
+                                                                       // there's
+                                                                       // a list
+                                                                       // update
+                                                                       // the
+                                                                       // increment
         }
 
+        // add to
         lists.add(list);
 
         TaskRepository repo = (TaskRepository) System.getProperties().get("repository");
+        // add to dabases
         repo.store(list);
     }
-
 }
