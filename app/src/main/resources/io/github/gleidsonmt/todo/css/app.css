@@ -69,7 +69,7 @@ Panel {
 .custom-drawer-item {
   -fx-padding: 0px;
   -fx-background-color: -fx-background;
-  -fx-min-height: 30px;
+  -fx-min-height: 40px;
 }
 
 .custom-drawer-item:selected .icon,

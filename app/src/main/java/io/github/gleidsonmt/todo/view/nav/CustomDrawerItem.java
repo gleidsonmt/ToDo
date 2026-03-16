@@ -80,11 +80,6 @@ public class CustomDrawerItem extends ToggleButton {
 
     private void registerListeners() {
 
-        // this.setFocused(false);
-        // container.setFocusTraversable(false);
-        // this.setFocusTraversable(false);
-        // this.getGraphic().setFocusTraversable(false);
-
         this.number.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 number.setMaxWidth(number.getText().length() * 25);
@@ -100,6 +95,7 @@ public class CustomDrawerItem extends ToggleButton {
                 });
             }
         });
+
     }
 
     private void init() {

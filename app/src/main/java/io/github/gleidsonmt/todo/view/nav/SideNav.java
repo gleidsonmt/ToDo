@@ -69,8 +69,11 @@ public class SideNav extends Drawer {
                 }
                 if (view.isEditable()) {
                     Platform.runLater(() -> {
+                        currentModuleProperty().set(param);
                         select(param);
                         drawerItem.setEditable(true);
+
+                        getScene().addPostLayoutPulseListener(() -> container.setVvalue(1));
                     });
                     // select(param);
                     // drawerItem.requestFocus();
