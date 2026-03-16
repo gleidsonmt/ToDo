@@ -5,6 +5,7 @@ import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import io.github.gleidsonmt.todo.global.TaskRepository;
 import io.github.gleidsonmt.todo.model.List;
 import io.github.gleidsonmt.todo.utils.I18n;
+import io.github.gleidsonmt.todo.utils.StringUtils;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -60,22 +61,18 @@ public class Footer extends GridPane {
                 // filter with the patter name (Untitled [some number])
                 .filter(list -> list.getName().matches("Untitled [0-9]+"))
                 // transform this number in an integer
-                .map(list -> Integer.valueOf(list.getName().substring(list.getName().indexOf(" ") + 1)))
+                .map(list -> StringUtils.getLastNumber(list.getName()))
                 // get the maximun value
                 .reduce(0, (a, b) -> Integer.max(a, b));
 
         List list;
 
-        if (actualIncrementValue == 0) { // if there's no patttern added to
-                                         // lists create
+        if (actualIncrementValue == 0) {
+            // if there's no patttern added to lists create
             list = new List("Untitled 1");
         } else {
-            list = new List("Untitled " + (actualIncrementValue + 1)); // if
-                                                                       // there's
-                                                                       // a list
-                                                                       // update
-                                                                       // the
-                                                                       // increment
+            // if there's a list update the increment
+            list = new List("Untitled " + (actualIncrementValue + 1));
         }
 
         // add to
