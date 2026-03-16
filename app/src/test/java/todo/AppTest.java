@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 import io.github.gleidsonmt.todo.bd.DatabaseConnection;
+import io.github.gleidsonmt.todo.global.Repository;
 
 class AppTest {
 
@@ -22,15 +23,10 @@ class AppTest {
 
     @Test
     void subText() {
-        String test01 = "Untitled 121";
+        Repository repo = new Repository();
 
-        // String val = test01.substring(test01.indexOf(" ")+1);
-        String val = test01.substring(0, test01.indexOf(" "));
-        test01.matches("Untitled [0-9]+");
-        System.out.println(val);
+        repo.loadData();
 
-        assertTrue(test01.matches("Untitled [0-9]+"));
-        // assertEquals("Untitled", val, "As strings devem ser iguais");
-        // assertEquals(test01, val);
+        assertTrue(!repo.getData().isEmpty());
     }
 }

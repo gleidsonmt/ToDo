@@ -18,42 +18,44 @@ import javafx.concurrent.Task;
  * 
  *         Version History: Initial version
  */
-public class TaskRepository extends Service<ObservableList<ToDoTask>> {
+public class Repository {
 
     private final ObservableList<ToDoTask> data;
+
     private final DaoTask dao;
     private final DaoList daoList;
 
-    public TaskRepository() {
-        this(FXCollections.observableArrayList());
-    }
-
-    public TaskRepository(ObservableList<ToDoTask> data) {
+    public Repository() {
         this.dao = new DaoTask();
         this.daoList = new DaoList();
-        this.data = data;
+        this.data = FXCollections.observableArrayList();
     }
 
-    @Override
-    protected Task<ObservableList<ToDoTask>> createTask() {
-        return dao.fetch(data);
+    public Service<ObservableList<ToDoTask>> loadData() {
+        return new Service<ObservableList<ToDoTask>>() {
+            @Override
+            protected Task<ObservableList<ToDoTask>> createTask() {
+                var task = dao.fetch(data);
+                task.setOnSucceeded(e -> data.addListener(createListener()));
+                return task;
+            }
+        };
     }
 
     /**
      * For every action after loading the tasks, they will be reflection in
      * database (dao) actions.
      */
-    @Override
-    protected void succeeded() {
-        data.addListener((ListChangeListener<ToDoTask>) c -> {
+    private ListChangeListener<ToDoTask> createListener() {
+        return ((ListChangeListener<ToDoTask>) c -> {
             if (c.next()) {
                 if (c.wasReplaced()) {
-                    c.getAddedSubList().forEach(this::update); // upadte in db
+                    c.getAddedSubList().forEach(this::update);
                 } else {
                     if (c.wasAdded()) {
-                        c.getAddedSubList().forEach(this::store); // store in db
+                        c.getAddedSubList().forEach(this::store);
                     } else if (c.wasRemoved()) {
-                        c.getRemoved().forEach(this::delete); // delete in db
+                        c.getRemoved().forEach(this::delete);
                     }
                 }
             }

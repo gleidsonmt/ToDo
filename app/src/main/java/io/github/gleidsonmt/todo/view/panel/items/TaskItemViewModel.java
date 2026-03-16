@@ -3,7 +3,7 @@ package io.github.gleidsonmt.todo.view.panel.items;
 import java.time.LocalDate;
 import java.util.Optional;
 
-import io.github.gleidsonmt.todo.global.TaskRepository;
+import io.github.gleidsonmt.todo.global.Repository;
 import io.github.gleidsonmt.todo.model.ToDoTask;
 import io.github.gleidsonmt.todo.view_model.Model;
 import javafx.beans.property.BooleanProperty;
@@ -23,7 +23,7 @@ import javafx.beans.property.SimpleObjectProperty;
  */
 public class TaskItemViewModel extends Model {
 
-    private final TaskRepository repository;
+    private final Repository repository;
 
     private final TaskViewModelConverter converter = new TaskViewModelConverter();
 
@@ -38,7 +38,7 @@ public class TaskItemViewModel extends Model {
     public TaskItemViewModel(ToDoTask task, TaskItem taskItem) {
         this.taskItem = taskItem;
         this.setId(task.getId());
-        this.repository = (TaskRepository) System.getProperties().get("repository");
+        this.repository = (Repository) System.getProperties().get("repository");
         this.completed = new SimpleBooleanProperty(task.isCompleted());
         this.important = new SimpleBooleanProperty(task.isImportant());
         this.myDay = new SimpleBooleanProperty(task.isMyDay());

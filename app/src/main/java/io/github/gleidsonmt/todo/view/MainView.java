@@ -2,7 +2,7 @@ package io.github.gleidsonmt.todo.view;
 
 import io.github.gleidsonmt.glad.base.Layout;
 import io.github.gleidsonmt.glad.base.responsive.Container;
-import io.github.gleidsonmt.todo.global.TaskRepository;
+import io.github.gleidsonmt.todo.global.Repository;
 import io.github.gleidsonmt.todo.model.User;
 import io.github.gleidsonmt.todo.view.nav.SideNav;
 import io.github.gleidsonmt.todo.view.panel.ListRoot;
@@ -44,12 +44,14 @@ public class MainView extends Container implements Layout {
      * Load the tasks from repository
      */
     private void load() {
-        TaskRepository repository = new TaskRepository();
-        System.getProperties().put("repository", repository);
+        Repository repo = new Repository();
+        System.getProperties().put("repository", repo);
 
-        repository.setOnSucceeded(e -> {
-            listRoot = new ListRoot(repository.getValue());
-            sideNav = new SideNav(repository.getValue(), user);
+        var service = repo.loadData();
+
+        service.setOnSucceeded(e -> {
+            listRoot = new ListRoot(repo.getData());
+            sideNav = new SideNav(repo.getData(), user);
             bind();
 
             body.setLeft(sideNav);
@@ -66,15 +68,15 @@ public class MainView extends Container implements Layout {
 
         });
 
-        repository.setOnFailed(e -> {
+        service.setOnFailed(e -> {
             System.out.println("Failed to fetch the items from database " + e);
         });
 
-        repository.setOnCancelled(e -> {
+        service.setOnCancelled(e -> {
             System.out.println("cancel" + e);
         });
 
-        repository.start();
+        service.start();
     }
 
     private void bind() {

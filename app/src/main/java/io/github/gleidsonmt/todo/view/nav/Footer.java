@@ -2,7 +2,7 @@ package io.github.gleidsonmt.todo.view.nav;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
-import io.github.gleidsonmt.todo.global.TaskRepository;
+import io.github.gleidsonmt.todo.global.Repository;
 import io.github.gleidsonmt.todo.model.List;
 import io.github.gleidsonmt.todo.utils.I18n;
 import io.github.gleidsonmt.todo.utils.StringUtils;
@@ -83,7 +83,7 @@ public class Footer extends GridPane {
         // add to
         lists.add(list);
 
-        TaskRepository repo = (TaskRepository) System.getProperties().get("repository");
+        Repository repo = (Repository) System.getProperties().get("repository");
         // add to dabases
         repo.store(list);
     }
