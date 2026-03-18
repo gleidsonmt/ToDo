@@ -14,11 +14,11 @@ Features
 
 # 4 - #1 The options needs to have an icon, text and an arrow.
 
+# 6 - #1 The option to move needs to be open another custom menu item.
+
 ---
 
 # 5 - #4 The text needs to get from an i18n call.
-
-# 6 - #1 The option to move needs to be open another custom menu item.
 
 # 3 - The drawer item can be dragged.
 

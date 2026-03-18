@@ -42,7 +42,6 @@ public class TaskItemContextMenu extends ContextMenu {
         // moveable
         this.menuItemToday = new MenuItemToday(item);
         this.menuItemTomorrow = new MenuItemTomorrow(item);
-        // this.menuItemDueDate = new MenuItemDueDate();
 
         this.menuItemRemoveDueDate = new MenuItemRemoveDueDate(item);
         this.menuItemMoveTask = new MenuItemMoveTask();

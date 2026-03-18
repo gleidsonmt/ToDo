@@ -2,6 +2,9 @@ package io.github.gleidsonmt.todo.view.panel.menu;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
+import io.github.gleidsonmt.todo.global.Global;
+import io.github.gleidsonmt.todo.global.Presenter;
+import io.github.gleidsonmt.todo.model.List;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 
@@ -19,7 +22,19 @@ public class MenuItemMoveTask extends Menu {
         setText("Move task to");
         setGraphic(new SVGIcon(Icon.FLEX_DIRECTION));
 
-        getItems().addAll(new MenuItem("Option 01"), new MenuItem("Option 02"));
+        Presenter<List> presenter = Global.get(List.class);
+
+        presenter.getData().forEach(list -> {
+            getItems().add(new MenuList(list));
+        });
+    }
+
+}
+
+class MenuList extends MenuItem {
+
+    public MenuList(List list) {
+        setText(list.getName());
     }
 
 }
