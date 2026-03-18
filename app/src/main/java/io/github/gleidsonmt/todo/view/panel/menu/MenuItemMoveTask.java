@@ -5,6 +5,7 @@ import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import io.github.gleidsonmt.todo.global.Global;
 import io.github.gleidsonmt.todo.global.Presenter;
 import io.github.gleidsonmt.todo.model.List;
+import io.github.gleidsonmt.todo.utils.I18n;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 
@@ -19,7 +20,7 @@ import javafx.scene.control.MenuItem;
 public class MenuItemMoveTask extends Menu {
 
     public MenuItemMoveTask() {
-        setText("Move task to");
+        setText(I18n.get("menu.moveTo"));
         setGraphic(new SVGIcon(Icon.FLEX_DIRECTION));
 
         Presenter<List> presenter = Global.get(List.class);

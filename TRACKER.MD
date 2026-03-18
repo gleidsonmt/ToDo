@@ -16,9 +16,11 @@ Features
 
 # 6 - #1 The option to move needs to be open another custom menu item.
 
+# 5 - #4 The text needs to get from an i18n call.
+
 ---
 
-# 5 - #4 The text needs to get from an i18n call.
+# 7 - #1 The new context menu will be display every custom list;
 
 # 3 - The drawer item can be dragged.
 
