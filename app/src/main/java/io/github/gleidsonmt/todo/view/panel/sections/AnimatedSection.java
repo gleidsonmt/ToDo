@@ -1,5 +1,7 @@
 package io.github.gleidsonmt.todo.view.panel.sections;
 
+import java.util.Optional;
+
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import io.github.gleidsonmt.todo.model.List;
@@ -147,7 +149,8 @@ public class AnimatedSection extends SingleSection {
 
     @Override
     public TaskItem get(ToDoTask task) {
-        return getItems().stream().filter(el -> task.getId() == el.getViewModel().getId()).findAny().get();
+        Optional<TaskItem> finded = getItems().stream().filter(el -> task.getId() == el.getViewModel().getId()).findAny();
+        return finded.isPresent() ? finded.get() : null;
     }
 
     public ObservableList<TaskItem> getItems() {

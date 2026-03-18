@@ -90,7 +90,7 @@ Panel {
 }
 
 .animated-section-title {
-  -fx-padding: 10px;
+  -fx-padding: 0px 10px 0px 10px;
   -fx-border-width: 2px;
   -fx-border-radius: 3px;
   -fx-border-color: -light-gray-2;
@@ -278,4 +278,9 @@ Panel {
 
 .custom-drawer-item:selected .list-container .text-field {
   -fx-text-fill: -fx-accent;
+}
+
+.hover-item:hover {
+  -fx-background-color: -light-gray;
+  -fx-border-color: -light-gray-2;
 }

@@ -11,6 +11,7 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 
 /**
  * Description:
@@ -96,32 +97,15 @@ public class MultipleListContainer extends ListContainer {
     @Override
     protected TaskItem createTaskItem(ToDoTask task) {
         TaskItem item = new TaskItem(task);
-        // item.setOnCompletedChange((item1, task1) -> {
-        // AnimatedSection section = (AnimatedSection) item1.getParent();
-        // _switch(list.getType().equals(ListType.COMPLETED), section, item1,
-        // task1);
-        // });
         item.setOnCompletedChange(viewModel -> {
             AnimatedSection section = (AnimatedSection) item.getParent();
             section.getItems().remove(section.get(task));
             viewModel.update();
         });
+        item.setOnImportantChange(viewModel -> {
+            viewModel.update();
+        });
         return item;
-    }
-
-    private void _switch(boolean value, AnimatedSection section, TaskItem item, ToDoTask task) {
-        if (section == null)
-            return;
-        if (value && task.isCompleted()) { // is actual list a completed list
-                                           // type
-            if (!section.contains(task)) {
-                section.getItems().add(item);
-            }
-        } else { // not completed
-            section.getItems().remove(item);
-            if (section.getItems().isEmpty())
-                getChildren().remove(section);
-        }
     }
 
     public BooleanProperty hasChildProperty() {
@@ -135,15 +119,19 @@ public class MultipleListContainer extends ListContainer {
     }
 
     private void loadLists(List list) {
+
         AnimatedSection section = new AnimatedSection(list);
+
         list.getItems().forEach(el -> {
             loadTask(section, el, list.getType());
             list.getItems().addListener(changeListener(section));
+            // hasChild.bind(Bindings.size(list.getItems()).greaterThan(0));
         });
+
         Platform.runLater(() -> {
             if (!list.getItems().isEmpty()) {
                 if (!getChildren().contains(section))
-                    getChildren().add(section);
+                    getChildren().add(0, section);
             }
         });
     }
@@ -157,6 +145,9 @@ public class MultipleListContainer extends ListContainer {
     private ListChangeListener<ToDoTask> changeListener(AnimatedSection section) {
         return (ListChangeListener<ToDoTask>) c -> {
             if (c.next()) {
+                if (c.wasReplaced()) {
+                    return;
+                }
                 if (c.wasAdded()) {
                 }
                 if (c.wasRemoved()) {
@@ -168,26 +159,46 @@ public class MultipleListContainer extends ListContainer {
 
     private void loadTask(AnimatedSection section, ToDoTask task, ListType type) {
 
-        try {
-            Thread.sleep((long) (section.getSpeed() / 2));
-        } catch (InterruptedException e1) {
+        // try {
+        // Thread.sleep((long) (section.getSpeed() / 2));
+        // } catch (InterruptedException e1) {
 
-        }
+        // }
 
-        TaskItem taskItem = createTaskItem(task);
         // if (list.getType() == ListType.COMPLETED) {
 
         // }
-        Platform.runLater(() -> {
-            section.getItems().add(taskItem);
+        new Thread(new Task<Object>() {
+            @Override
+            protected Object call() {
+                TaskItem taskItem = createTaskItem(task);
+                Platform.runLater(() -> {
 
-            // if (task.isCompleted()) {
-            // sectionCompleted.getItems().add(taskItem);
-            // } else {
-            // sectionIncomplete.getChildren().add(0, taskItem);
-            // }
-            if (!getChildren().contains(section))
-                getChildren().add(0, section);
-        });
+                    section.getItems().add(taskItem);
+
+                    // if (task.isCompleted()) {
+                    // sectionCompleted.getItems().add(taskItem);
+                    // } else {
+                    // sectionIncomplete.getChildren().add(0, taskItem);
+                    // }
+                    if (!getChildren().contains(section))
+                        getChildren().add(0, section);
+                });
+
+                return taskItem;
+            }
+
+        }).start();
+        // Platform.runLater(() -> {
+        // section.getItems().add(taskItem);
+
+        // // if (task.isCompleted()) {
+        // // sectionCompleted.getItems().add(taskItem);
+        // // } else {
+        // // sectionIncomplete.getChildren().add(0, taskItem);
+        // // }
+        // if (!getChildren().contains(section))
+        // getChildren().add(0, section);
+        // });
     }
 }

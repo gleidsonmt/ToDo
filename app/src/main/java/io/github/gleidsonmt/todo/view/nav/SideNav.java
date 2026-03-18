@@ -9,7 +9,8 @@ import io.github.gleidsonmt.glad.drawer.DrawerItem;
 import io.github.gleidsonmt.glad.drawer.DrawerMenu;
 import io.github.gleidsonmt.todo.bd.dao.DaoList;
 import io.github.gleidsonmt.todo.bd.dao.DaoPreferences;
-import io.github.gleidsonmt.todo.global.Repository;
+import io.github.gleidsonmt.todo.global.Global;
+import io.github.gleidsonmt.todo.global.Presenter;
 import io.github.gleidsonmt.todo.model.List;
 import io.github.gleidsonmt.todo.model.ListType;
 import io.github.gleidsonmt.todo.model.Preferences;
@@ -23,7 +24,6 @@ import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.scene.control.Separator;
@@ -69,14 +69,6 @@ public class SideNav extends Drawer {
                 }
 
                 }
-                if (view.isEditable()) {
-                    Platform.runLater(() -> {
-                        currentModuleProperty().set(param);
-                        select(param);
-                        drawerItem.setEditable(true);
-                        getScene().addPostLayoutPulseListener(() -> container.setVvalue(1));
-                    });
-                }
                 return drawerItem;
             }
             case ModuleSeparator separator -> {
@@ -92,7 +84,6 @@ public class SideNav extends Drawer {
             }
             }
         });
-        // createItems(tasks, user);
         createFixedLists(tasks);
         createCustomLists();
     }
@@ -128,8 +119,18 @@ public class SideNav extends Drawer {
         // adding a separator
         getItems().add(new ModuleSeparator(new Separator(), "Separator"));
 
-        this.setHeader(header);
+        // this.setHeader(header);
 
+    }
+
+    public void selectList(List list) {
+        Presenter<List> presenter = Global.get(List.class);
+        presenter.getData().add(list);
+        Platform.runLater(() -> {
+            selectLast();
+            var item = (CustomDrawerItem) getSelected();
+            item.setEditable(true);
+        });
     }
 
     private void createCustomLists() {
@@ -141,60 +142,53 @@ public class SideNav extends Drawer {
                 .filter(viewList -> viewList.getList().getType().equals(ListType.COMPLETED)).findFirst().get()
                 .getList();
 
-        Repository repo = (Repository) System.getProperties().get("repository");
-        Service<ObservableList<List>> load = repo.loadLists();
+        Presenter<List> presenter = Global.get(List.class);
+        new Thread(presenter.fetch()).start();
 
-        load.setOnSucceeded(e -> {
-            System.out.println(load.getValue());
+        presenter.getData().addListener((ListChangeListener<List>) c -> {
+            if (c.next()) {
+                if (c.wasAdded()) {
 
-            load.getValue().forEach(list -> {
-                List listCompleted = new List(list.getName());
-                listCompleted.setItems(data.filtered(task -> task.getListId() == list.getId() && task.isCompleted()));
+                    c.getAddedSubList().forEach(list -> {
 
-                List listIncompleted = new List(list.getName());
-                listIncompleted
-                        .setItems(data.filtered(task -> task.getListId() == list.getId() && !task.isCompleted()));
+                        Platform.runLater(() -> {
 
-                list.setItems(data.filtered(task -> task.getListId() == list.getId()));
-                // pass to all and completed lists
-                all.getLists().add(listIncompleted);
-                completed.getLists().add(listCompleted);
-                // crate and add custom list to the items
-                getItems().addAll(new ViewList(list));
-            });
+                            list.setItems(data.filtered(task -> task.getListId() == list.getId()));
 
-            // load.getValue().addListener((ListChangeListener<List>) c -> {
-            // if (c.next()) {
-            // if (c.wasAdded()) {
-            // c.getAddedSubList().forEach(list -> {
-            // all.getLists().add(list);
-            // completed.getLists().add(list);
+                            List listCompleted = new List(list.getName());
 
-            // var viewList = new ViewList(list, true);
+                            listCompleted.setItems(
+                                    data.filtered(task -> task.getListId() == list.getId() && task.isCompleted()));
 
-            // getItems().add(viewList);
+                            List listIncompleted = new List(list.getName());
+                            listIncompleted.setItems(
+                                    data.filtered(task -> task.getListId() == list.getId() && !task.isCompleted()));
 
-            // // drawerItem.setEditMode(true);
-            // // new DaoList().store(list);
-            // getScene().addPostLayoutPulseListener(() ->
-            // container.setVvalue(1));
+                            // pass to all and completed lists
+                            all.getLists().add(listIncompleted);
+                            completed.getLists().add(listCompleted);
 
-            // });
-            // }
-            // }
-            // });
-            //
+                            var viewList = new ViewList(list, true);
 
-            // Platform.runLater(() -> {
+                            getItems().add(viewList);
+                        });
+
+                        // getScene().addPostLayoutPulseListener(() ->
+                        // container.setVvalue(1));
+
+                    });
+                }
+            }
+        });
+        this.setFooter(new Footer());
+
+        Platform.runLater(() -> {
             currentModuleProperty().set(getItems().get(1));
             // select(getItems().getFirst());
             select(getItems().get(1));
             // System.out.println("first +" + getItems());
-            // });
-            this.setFooter(new Footer(customLists));
         });
 
-        load.start();
     }
 
     @Deprecated
@@ -302,9 +296,8 @@ public class SideNav extends Drawer {
             select(getItems().get(1));
             // System.out.println("first +" + getItems());
             // });
-            this.setFooter(new Footer(customLists));
+            this.setFooter(new Footer());
         });
-
     }
 
     public ObservableList<ToDoTask> getData() {

@@ -18,12 +18,14 @@ public class EmptySection extends VBox {
         VBox.setVgrow(this, Priority.ALWAYS);
 
         this.heightProperty().addListener((observable, oldValue, newValue) -> {
+
             int size = (int) Math.floor(((newValue.doubleValue())) / 50);
             if (size == 0) {
                 this.getChildren().clear();
                 return;
             }
             int itemsSize = this.getChildren().size();
+
             if (newValue.doubleValue() > oldValue.doubleValue()) {
                 if (size > itemsSize) {
                     for (int i = 0; i < (size - itemsSize); i++) {
@@ -41,5 +43,4 @@ public class EmptySection extends VBox {
             }
         });
     }
-
 }

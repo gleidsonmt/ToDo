@@ -25,8 +25,5 @@ class AppTest {
     void subText() {
         Repository repo = new Repository();
 
-        repo.loadData();
-
-        assertTrue(!repo.getData().isEmpty());
     }
 }

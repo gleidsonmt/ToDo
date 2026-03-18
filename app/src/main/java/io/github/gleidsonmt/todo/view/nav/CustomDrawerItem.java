@@ -2,9 +2,11 @@ package io.github.gleidsonmt.todo.view.nav;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
+import io.github.gleidsonmt.todo.global.Global;
+import io.github.gleidsonmt.todo.global.ListPresenter;
+import io.github.gleidsonmt.todo.model.List;
 import io.github.gleidsonmt.todo.view.ViewList;
 import io.github.gleidsonmt.todo.view.panel.menu.ListContextMenu;
-import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
@@ -103,12 +105,9 @@ public class CustomDrawerItem extends ToggleButton {
         });
 
         this.editable.addListener((_, _, newVal) -> {
-            System.out.println("newVal = " + newVal);
             if (newVal) {
-                Platform.runLater(() -> {
+                getScene().addPreLayoutPulseListener(() -> {
                     text.requestFocus();
-                    text.requestLayout();
-                    text.selectAll();
                 });
             }
         });
@@ -116,6 +115,9 @@ public class CustomDrawerItem extends ToggleButton {
         this.focusWithinProperty().addListener((_, _, newVal) -> {
             if (!newVal) {
                 this.setEditable(newVal);
+                getViewList().getList().setName(this.text.getText());
+                ListPresenter presenter = (ListPresenter) Global.get(List.class);
+                presenter.update(getViewList().getList());
             }
         });
     }

@@ -62,7 +62,7 @@ public class SingleListContainer extends ListContainer {
 
         // Set actions
         item.setOnImportantChange((viewModel) -> {
-            sectionIncomplete.getChildren().remove(item);
+            // sectionIncomplete.getChildren().remove(item);
             viewModel.update();
         });
         // The listeners will be trigger when this properteis are change

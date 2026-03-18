@@ -76,6 +76,9 @@ public class ListRoot extends VBox {
         }
 
         container.load();
+
+        // Repo<Dao<User>>, User> repo = Repository.<User>of();
+        // repo.store(list);
     }
 
     /**

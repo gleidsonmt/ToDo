@@ -8,7 +8,6 @@ import io.github.gleidsonmt.todo.view.panel.containers.ListContainer;
 import io.github.gleidsonmt.todo.view.panel.menu.TaskItemContextMenu;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.StringProperty;
-import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.geometry.Side;
 import javafx.scene.control.CheckBox;
@@ -59,7 +58,7 @@ public class TaskItem extends ToggleButton {
         this.viewModel = new TaskItemViewModel(task, this);
 
         init();
-        configLayout();
+        setActions();
         bind();
         registerListeners();
     }
@@ -74,16 +73,10 @@ public class TaskItem extends ToggleButton {
         this.task = task;
         this.needDetails = needDetails;
 
-        this.viewModel = new TaskItemViewModel(task, this);
-
         this.circleIcon = new CheckBox();
         this.getStyleClass().add("check-circle");
         this.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         this.circleIcon.setSelected(task.isCompleted());
-
-        // // for test
-        // dueDate.set(task.getDueDate());
-        // remind.set(task.getRemind());
 
         this.favorite = new FavoriteButton(task.isImportant());
         this.text = new Title(task.getName());
@@ -92,25 +85,19 @@ public class TaskItem extends ToggleButton {
             this.text.getStyleClass().add("strike");
         }
 
+        this.viewModel = new TaskItemViewModel(task, this);
+
         init();
-        configLayout();
+        setActions();
         registerListeners();
     }
 
-    private void configLayout() {
-
-        this.setOnMousePressed(e -> {
-
-            Bounds bounds = this.localToScene(this.getLayoutBounds());
-
-        });
-
+    private void setActions() {
         this.setOnContextMenuRequested(e -> {
             var contextMenu = new TaskItemContextMenu(viewModel);
 
             contextMenu.show(this, Side.BOTTOM, e.getX(), e.getY() - 50);
         });
-
     }
 
     private void registerListeners() {
@@ -151,24 +138,6 @@ public class TaskItem extends ToggleButton {
         minLayout();
     }
 
-    // private void registerListeners() {
-    // this.favorite.selectedProperty()
-    // .addListener((ObservableValue<? extends Boolean> observable, Boolean
-    // oldValue, Boolean newValue) -> {
-    // task.setImportant(newValue);
-    // container.update(task); // update the data
-    // importantAction.handle(); // trigger an ui action
-    // });
-
-    // circleIcon.selectedProperty()
-    // .addListener((ObservableValue<? extends Boolean> observable, Boolean
-    // oldValue, Boolean newValue) -> {
-    // task.setCompleted(newValue);
-    // container.update(task);
-    // completed.handle(this, task);
-    // });
-    // }
-
     public void minLayout() {
 
         GridPane.setHgrow(text, Priority.ALWAYS);
@@ -180,8 +149,6 @@ public class TaskItem extends ToggleButton {
         GridPane.setColumnIndex(favorite, 2);
         GridPane.setRowSpan(circleIcon, GridPane.REMAINING);
         GridPane.setRowSpan(favorite, GridPane.REMAINING);
-
-        // VBox.setVgrow(this, Priority.ALWAYS);
 
     }
 

@@ -2,12 +2,16 @@ package io.github.gleidsonmt.todo.view;
 
 import io.github.gleidsonmt.glad.base.Layout;
 import io.github.gleidsonmt.glad.base.responsive.Container;
-import io.github.gleidsonmt.todo.global.Repository;
+import io.github.gleidsonmt.todo.global.Global;
+import io.github.gleidsonmt.todo.global.Presenter;
+import io.github.gleidsonmt.todo.model.ToDoTask;
 import io.github.gleidsonmt.todo.model.User;
 import io.github.gleidsonmt.todo.view.nav.SideNav;
 import io.github.gleidsonmt.todo.view.panel.ListRoot;
 import io.github.gleidsonmt.todo.view.panel.Panel;
 import javafx.beans.binding.Bindings;
+import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
 
@@ -37,46 +41,31 @@ public class MainView extends Container implements Layout {
         this.panel = new Panel();
         this.body = new BorderPane();
         getChildren().add(body);
-        load();
+        init();
     }
 
-    /**
-     * Load the tasks from repository
-     */
-    private void load() {
-        Repository repo = new Repository();
-        System.getProperties().put("repository", repo);
+    public void init() {
 
-        var service = repo.loadData();
+        Presenter<ToDoTask> pres = Global.get(ToDoTask.class);
+        Task<ObservableList<ToDoTask>> task = pres.fetch();
 
-        service.setOnSucceeded(e -> {
-            listRoot = new ListRoot(repo.getData());
-            sideNav = new SideNav(repo.getData(), user);
-            bind();
+        sideNav = new SideNav(pres.getData(), user);
+        body.setLeft(sideNav);
 
+        listRoot = new ListRoot(pres.getData());
+        body.setCenter(panel);
+        panel.setContent(listRoot);
+
+        bind();
+
+        this.addBreakpoint((event) -> {
+            body.setLeft(null);
+        }, "<MD");
+
+        this.addBreakpoint((event) -> {
             body.setLeft(sideNav);
-            body.setCenter(panel);
-            panel.setContent(listRoot);
-
-            this.addBreakpoint((event) -> {
-                body.setLeft(null);
-            }, "<MD");
-
-            this.addBreakpoint((event) -> {
-                body.setLeft(sideNav);
-            }, ">MD");
-
-        });
-
-        service.setOnFailed(e -> {
-            System.out.println("Failed to fetch the items from database " + e);
-        });
-
-        service.setOnCancelled(e -> {
-            System.out.println("cancel" + e);
-        });
-
-        service.start();
+        }, ">MD");
+        new Thread(task).start();
     }
 
     private void bind() {

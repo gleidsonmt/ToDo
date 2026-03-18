@@ -3,6 +3,7 @@ package io.github.gleidsonmt.todo.view.panel.items;
 import java.time.LocalDate;
 import java.util.Optional;
 
+import io.github.gleidsonmt.todo.global.Presenter;
 import io.github.gleidsonmt.todo.global.Repository;
 import io.github.gleidsonmt.todo.model.ToDoTask;
 import io.github.gleidsonmt.todo.view_model.Model;
@@ -24,6 +25,7 @@ import javafx.beans.property.SimpleObjectProperty;
 public class TaskItemViewModel extends Model {
 
     private final Repository repository;
+    private final Presenter<ToDoTask> presenter;
 
     private final TaskViewModelConverter converter = new TaskViewModelConverter();
 
@@ -39,6 +41,7 @@ public class TaskItemViewModel extends Model {
         this.taskItem = taskItem;
         this.setId(task.getId());
         this.repository = (Repository) System.getProperties().get("repository");
+        this.presenter = this.repository.<ToDoTask>of(ToDoTask.class);
         this.completed = new SimpleBooleanProperty(task.isCompleted());
         this.important = new SimpleBooleanProperty(task.isImportant());
         this.myDay = new SimpleBooleanProperty(task.isMyDay());
@@ -65,15 +68,15 @@ public class TaskItemViewModel extends Model {
     }
 
     public void save() {
-        repository.getData().add(converter.convert(this));
+        presenter.getData().add(converter.convert(this));
     }
 
     public void update() {
         var temp = converter.convert(this);
         var finded = find(temp);
         if (finded.isPresent()) {
-            var index = repository.getData().indexOf(finded.get());
-            repository.getData().set(index, temp);
+            var index = presenter.getData().indexOf(finded.get());
+            presenter.getData().set(index, temp);
         }
     }
 
@@ -81,7 +84,7 @@ public class TaskItemViewModel extends Model {
         var temp = converter.convert(this);
         var finded = find(temp);
         if (finded.isPresent()) {
-            repository.getData().remove(finded.get());
+            presenter.getData().remove(finded.get());
         }
     }
 
@@ -126,7 +129,7 @@ public class TaskItemViewModel extends Model {
     }
 
     private Optional<ToDoTask> find(ToDoTask task) {
-        return repository.getData().stream().filter(el -> el.getId() == task.getId()).findAny();
+        return presenter.getData().stream().filter(el -> el.getId() == task.getId()).findAny();
     }
 
     @Override
@@ -135,6 +138,7 @@ public class TaskItemViewModel extends Model {
         sb.append("id=").append(super.getId());
         sb.append(", name=").append(super.getName());
         sb.append(", myDay=").append(isMyDay());
+        sb.append(", important=").append(isImportant());
         sb.append('}');
         return sb.toString();
     }

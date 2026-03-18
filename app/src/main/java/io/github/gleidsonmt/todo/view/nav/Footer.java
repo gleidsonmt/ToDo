@@ -2,11 +2,11 @@ package io.github.gleidsonmt.todo.view.nav;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
-import io.github.gleidsonmt.todo.global.Repository;
+import io.github.gleidsonmt.todo.global.Global;
+import io.github.gleidsonmt.todo.global.Presenter;
 import io.github.gleidsonmt.todo.model.List;
 import io.github.gleidsonmt.todo.utils.I18n;
 import io.github.gleidsonmt.todo.utils.StringUtils;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -26,10 +26,10 @@ public class Footer extends GridPane {
 
     private final Label label;
 
-    public Footer(ObservableList<List> lists) {
+    public Footer() {
         label = new Label(I18n.get("drawer.newTask"));
         configLayout();
-        setOnMouseClicked(e -> createNewList(lists));
+        setOnMouseClicked(e -> createNewList());
     }
 
     private void configLayout() {
@@ -59,10 +59,12 @@ public class Footer extends GridPane {
      * 
      * @param lists
      */
-    private void createNewList(ObservableList<List> lists) {
+    private void createNewList() {
         // first step, get the last new list with the pattern [untitled [0-9]]
         // and get his number
-        var actualIncrementValue = lists.stream()
+        Presenter<List> presenter = Global.get(List.class);
+
+        var actualIncrementValue = presenter.getData().stream()
                 // filter with the patter name (Untitled [some number])
                 .filter(list -> list.getName().matches("Untitled [0-9]+"))
                 // transform this number in an integer
@@ -79,12 +81,9 @@ public class Footer extends GridPane {
             // if there's a list update the increment
             list = new List("Untitled " + (actualIncrementValue + 1));
         }
-
         // add to
-        lists.add(list);
 
-        Repository repo = (Repository) System.getProperties().get("repository");
-        // add to dabases
-        repo.store(list);
+        var nav = (SideNav) getScene().lookup("#drawer");
+        nav.selectList(list);
     }
 }
