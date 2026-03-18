@@ -67,6 +67,8 @@ public class App extends Application {
         ThemeProvider.install(scene, Css.ALL, Font.INSTAGRAM);
         scene.getStylesheets().add(Assets.getCss("app.css"));
 
+        stage.getIcons().setAll(Assets.getImage("logo_128.png"));
+
         stage.setMinWidth(400);
         stage.setMinHeight(600);
         stage.setScene(scene);
