@@ -2,6 +2,8 @@ Fix
 
 # 2 - On ContextMenu for task item, it has confusing update to moveable content.
 
+# 3 - When context menu is called on task item, it won't be selected.
+
 ---
 
 # 1 - The taskItems are multiple selected.
@@ -22,9 +24,11 @@ Features
 
 # 7 - #1 The new context menu will be display every custom list;
 
----
-
 # 14 - #1 Every new menu item will be set you graphic by the list graphic.
+
+# 15 - #1 Every menu item will set a list id for a task selected.
+
+---
 
 ---
 
@@ -39,8 +43,6 @@ Features
 # 13 - #8 Due Today option will call i18n text.
 
 # 3 - The drawer item can be dragged.
-
-# 15 - #1 Every menu item will set a list id for a task selected.
 
 Bugs
 

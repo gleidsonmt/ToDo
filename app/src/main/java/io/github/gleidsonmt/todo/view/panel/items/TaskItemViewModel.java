@@ -128,6 +128,10 @@ public class TaskItemViewModel extends Model {
         return this.listId.get();
     }
 
+    public void setListId(long id) {
+        this.listId.set(id);
+    }
+
     private Optional<ToDoTask> find(ToDoTask task) {
         return presenter.getData().stream().filter(el -> el.getId() == task.getId()).findAny();
     }

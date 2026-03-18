@@ -5,29 +5,29 @@ import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import io.github.gleidsonmt.todo.global.Global;
 import io.github.gleidsonmt.todo.global.Presenter;
 import io.github.gleidsonmt.todo.model.List;
-import io.github.gleidsonmt.todo.model.ToDoTask;
 import io.github.gleidsonmt.todo.utils.I18n;
+import io.github.gleidsonmt.todo.view.panel.items.TaskItemViewModel;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 
 /**
- * Description:
+ * Description: It's a menu in task item that moves the task from a list to
+ * another.
  *
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
  *         Created On: Mar 18, 2026
  * 
- *         Version History: Initial version
  */
 public class MenuItemMoveTask extends Menu {
 
-    public MenuItemMoveTask() {
+    public MenuItemMoveTask(TaskItemViewModel item) {
         setText(I18n.get("menu.moveTo"));
         setGraphic(new SVGIcon(Icon.FLEX_DIRECTION));
 
         Presenter<List> presenter = Global.get(List.class);
 
         presenter.getData().forEach(list -> {
-            getItems().add(new MenuList(list));
+            getItems().add(new MenuList(list, item));
         });
     }
 
@@ -35,13 +35,13 @@ public class MenuItemMoveTask extends Menu {
 
 class MenuList extends MenuItem {
 
-    public MenuList(List list) {
+    public MenuList(List list, TaskItemViewModel item) {
         setText(list.getName());
         setGraphic(new SVGIcon(list.getIcon()));
 
         setOnAction(e -> {
-            Presenter<ToDoTask> pres = Global.get(ToDoTask.class);
-            pres.getData().update();
+            item.setListId(list.getId());
+            item.update();
         });
     }
 

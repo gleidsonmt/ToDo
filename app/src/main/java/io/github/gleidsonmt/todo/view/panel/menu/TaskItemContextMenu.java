@@ -44,7 +44,7 @@ public class TaskItemContextMenu extends ContextMenu {
         this.menuItemTomorrow = new MenuItemTomorrow(item);
 
         this.menuItemRemoveDueDate = new MenuItemRemoveDueDate(item);
-        this.menuItemMoveTask = new MenuItemMoveTask();
+        this.menuItemMoveTask = new MenuItemMoveTask(item);
         this.menuItemDelete = new MenuItemDelete(item);
 
         moveable = FXCollections.observableArrayList();
