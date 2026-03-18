@@ -7,35 +7,19 @@
 
 [![License](https://img.shields.io/github/license/Gleidson28/GNDecorator.svg?style=for-the-badge)](https://github.com/gleidsonmt/GNDecorator/blob/master/LICENSE)
 
-<p align="center">
+<!-- <p align="center">
   <img src="./src/main/resources/io/github/gleidsonmt/todo/img/example.png"  />
-</p>
+</p> -->
 
-<!-- TOC -->
+# 📑 Overview
 
-- [🛠 Enhancements](#-enhancements-)
-- [📑 Overview](#-overview-)
-- [💻 Environment](#-environment-)
-- [🎯 Used to build](#-used-to-build-)
-- [🎨 Design Style](#-design-style-)
-- [🏗️ Building](#-building-)
-- [📫 Contributing to Project](#-contributing-to-project)
-- [😄 Be a contributor <br>](#-be-a-contributor-br)
-- [📝 License](#-license)
-<!-- TOC -->
-
-[//]: # "# 📰 News "
-[//]: # "... "
+This is a part of my personal studies, it focus on design system learning, using a classical to do application. After looking at these examples how to do online I decide to made my version with javafx.
 
 ## 🛠 Now
 
 1. Dashboard Style
 2. Responsive Design
 3. MySQL Database
-
-# 📑 Overview
-
-After looking at these examples how to do online I decide to made my version with javafx.
 
 # 💻 Environment
 
@@ -69,13 +53,6 @@ I use [HeidiSql](https://www.heidisql.com/download.php?download=installer) as da
 I really recommend to use jpackage to create your jar and the .exe. <br>
 !🗒️Note ** The generate you .exe you need the wix tool, you can get the url if you using intellij or from here https://wixtoolset.org 🥸\*** <br>
 In intellij or visual studio (in visual you need to prepare the ide to use javafx) it's really simple, only open the tab gradle and run the command build after jpackage.
-
-...
-
-[//]: # "# 🧬  Basic Structure - (building)"
-[//]: # "..."
-[//]: # "# 📺 On YouTube - (building)"
-[//]: # "..."
 
 # 📫 Contributing to Project
 

@@ -30,6 +30,8 @@ public class TaskItemContextMenu extends ContextMenu {
 
     private MenuItemRemoveDueDate menuItemRemoveDueDate;
 
+    private MenuItemMoveTask menuItemMoveTask;
+
     private ObservableList<MenuItem> moveable;
 
     public TaskItemContextMenu(TaskItemViewModel item) {
@@ -45,9 +47,19 @@ public class TaskItemContextMenu extends ContextMenu {
         this.menuItemRemoveDueDate = new MenuItemRemoveDueDate(item);
 
         this.menuItemDelete = new MenuItemDelete(item);
+
         moveable = FXCollections.observableArrayList();
 
         getItems().addAll(menuItemMyDay, menuItemChangeImportance, menuItemComplete, new SeparatorMenuItem());
+        getItems().addAll(moveable);
+        getItems().addAll(new SeparatorMenuItem(), menuItemDelete);
+
+        this.menuItemMyDay.setOnAction(e -> {
+            moveable.remove(1);
+            moveable.add(new MenuItem("Custom Menu Item"));
+            System.out.println("worked well");
+            clip();
+        });
 
         item.dueDateProperty().addListener((_, _, newVal) -> {
             switchContextItems(newVal);
@@ -71,37 +83,25 @@ public class TaskItemContextMenu extends ContextMenu {
     }
 
     private void nullLayout() {
-        getItems().removeAll(moveable);
-        // moveable.setAll(menuItemToday, menuItemTomorrow, menuItemDueDate, new
-        // SeparatorMenuItem(), menuItemDelete);
-
-        moveable.setAll(menuItemToday, menuItemTomorrow, new SeparatorMenuItem(), menuItemDelete);
+        moveable.setAll(menuItemToday, menuItemTomorrow);
         getItems().addAll(moveable);
     }
 
     private void layoutOne() {
         getItems().removeAll(moveable);
-        // moveable.setAll(menuItemTomorrow, menuItemDueDate,
-        // menuItemRemoveDueDate, new SeparatorMenuItem(),
-        // menuItemDelete);
-        moveable.setAll(menuItemTomorrow, menuItemRemoveDueDate, new SeparatorMenuItem(), menuItemDelete);
-        getItems().addAll(moveable);
+        moveable.addAll(menuItemTomorrow, menuItemRemoveDueDate);
+        getItems().addAll(4, moveable);
     }
 
     private void layoutTwo() {
         getItems().removeAll(moveable);
-        // moveable.setAll(menuItemToday, menuItemDueDate,
-        // menuItemRemoveDueDate, new SeparatorMenuItem(), menuItemDelete);
-        moveable.setAll(menuItemToday, menuItemRemoveDueDate, new SeparatorMenuItem(), menuItemDelete);
-        getItems().addAll(moveable);
+        moveable.setAll(menuItemToday, menuItemRemoveDueDate);
+        getItems().addAll(4, moveable);
     }
 
     private void layoutThree() {
         getItems().removeAll(moveable);
-        // moveable.setAll(menuItemToday, menuItemTomorrow, menuItemDueDate,
-        // menuItemRemoveDueDate,
-        // new SeparatorMenuItem(), menuItemDelete);
-        moveable.setAll(menuItemToday, menuItemRemoveDueDate, new SeparatorMenuItem(), menuItemDelete);
-        getItems().addAll(moveable);
+        moveable.setAll(menuItemToday, menuItemRemoveDueDate);
+        getItems().addAll(4, moveable);
     }
 }
