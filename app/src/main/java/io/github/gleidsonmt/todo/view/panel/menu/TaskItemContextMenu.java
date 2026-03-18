@@ -45,21 +45,14 @@ public class TaskItemContextMenu extends ContextMenu {
         // this.menuItemDueDate = new MenuItemDueDate();
 
         this.menuItemRemoveDueDate = new MenuItemRemoveDueDate(item);
-
+        this.menuItemMoveTask = new MenuItemMoveTask();
         this.menuItemDelete = new MenuItemDelete(item);
 
         moveable = FXCollections.observableArrayList();
 
         getItems().addAll(menuItemMyDay, menuItemChangeImportance, menuItemComplete, new SeparatorMenuItem());
         getItems().addAll(moveable);
-        getItems().addAll(new SeparatorMenuItem(), menuItemDelete);
-
-        this.menuItemMyDay.setOnAction(e -> {
-            moveable.remove(1);
-            moveable.add(new MenuItem("Custom Menu Item"));
-            System.out.println("worked well");
-            clip();
-        });
+        getItems().addAll(new SeparatorMenuItem(), menuItemMoveTask, new SeparatorMenuItem(), menuItemDelete);
 
         item.dueDateProperty().addListener((_, _, newVal) -> {
             switchContextItems(newVal);
