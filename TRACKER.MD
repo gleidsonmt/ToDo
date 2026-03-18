@@ -20,7 +20,13 @@ Features
 
 ---
 
+# 9 - #8 My day option will call i18n text.
+
+--
+
 # 7 - #1 The new context menu will be display every custom list;
+
+# 8 - Every item on task item context menu will have i18n calls to set its text.
 
 # 3 - The drawer item can be dragged.
 
