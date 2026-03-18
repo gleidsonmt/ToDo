@@ -12,9 +12,9 @@ Features
 
 # 1 - On the taskItem context menu add the option to move to another list.
 
----
-
 # 4 - #1 the options needs to have an icon, text and an arrow.
+
+---
 
 # 5 - #4 The text needs to get from an i18n call.
 

@@ -19,20 +19,20 @@ import javafx.scene.control.SeparatorMenuItem;
  */
 public class TaskItemContextMenu extends ContextMenu {
 
-    private MenuItemMyDay menuItemMyDay;
-    private MenuItemChangeImportance menuItemChangeImportance;
-    private MenuItemComplete menuItemComplete;
-    private MenuItemDelete menuItemDelete;
+    private final MenuItemMyDay menuItemMyDay;
+    private final MenuItemChangeImportance menuItemChangeImportance;
+    private final MenuItemComplete menuItemComplete;
+    private final MenuItemDelete menuItemDelete;
 
     // private MenuItemDueDate menuItemDueDate;
-    private MenuItemToday menuItemToday;
-    private MenuItemTomorrow menuItemTomorrow;
+    private final MenuItemToday menuItemToday;
+    private final MenuItemTomorrow menuItemTomorrow;
 
-    private MenuItemRemoveDueDate menuItemRemoveDueDate;
+    private final MenuItemRemoveDueDate menuItemRemoveDueDate;
 
-    private MenuItemMoveTask menuItemMoveTask;
+    private final MenuItemMoveTask menuItemMoveTask;
 
-    private ObservableList<MenuItem> moveable;
+    private final ObservableList<MenuItem> moveable;
 
     public TaskItemContextMenu(TaskItemViewModel item) {
         // fixed
@@ -77,7 +77,7 @@ public class TaskItemContextMenu extends ContextMenu {
 
     private void nullLayout() {
         moveable.setAll(menuItemToday, menuItemTomorrow);
-        getItems().addAll(moveable);
+        getItems().addAll(4, moveable);
     }
 
     private void layoutOne() {
