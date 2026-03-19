@@ -103,6 +103,7 @@ public class MultipleListContainer extends ListContainer {
             viewModel.update();
         });
         item.setOnImportantChange(viewModel -> {
+            // System.out.println("item = " + viewModel);
             viewModel.update();
         });
         return item;

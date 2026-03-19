@@ -22,7 +22,7 @@ public class MenuItemComplete extends TaskMenuItemBase {
 
     @Override
     protected void updateState(TaskItemViewModel item) {
-        update(item.isCompleted() ? "menu.completed.on" : "menu.completed.off",
+        update(!item.isCompleted() ? "menu.completed.on" : "menu.completed.off",
                 item.isCompleted() ? Icon.CIRCLE : Icon.CHECK_CIRCLE);
     }
 
@@ -34,5 +34,4 @@ public class MenuItemComplete extends TaskMenuItemBase {
             item.update();
         };
     }
-
 }

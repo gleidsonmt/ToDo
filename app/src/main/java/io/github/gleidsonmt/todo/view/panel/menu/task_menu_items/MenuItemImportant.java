@@ -1,8 +1,6 @@
 package io.github.gleidsonmt.todo.view.panel.menu.task_menu_items;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
-import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
-import io.github.gleidsonmt.todo.utils.I18n;
 import io.github.gleidsonmt.todo.view.panel.items.TaskItemViewModel;
 import io.github.gleidsonmt.todo.view.panel.menu.TaskMenuItemBase;
 import javafx.event.ActionEvent;
@@ -24,8 +22,8 @@ public class MenuItemImportant extends TaskMenuItemBase {
 
     @Override
     protected void updateState(TaskItemViewModel model) {
-        this.setGraphic(new SVGIcon(!model.isImportant() ? Icon.STAR_HALF : Icon.STAR));
-        this.setText(I18n.get(!model.isImportant() ? "menu.important.off" : "menu.important.on"));
+        update(model.isImportant() ? "menu.important.off" : "menu.important.on",
+                !model.isImportant() ? Icon.STAR_HALF : Icon.STAR);
     }
 
     @Override

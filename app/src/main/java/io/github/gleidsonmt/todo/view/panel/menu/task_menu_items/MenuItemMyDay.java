@@ -7,7 +7,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
 /**
- * Description:
+ * Description: Change the state of an task item.
+ * This in specif puts the task as an task to do in my day list.
  *
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
  *         Created On: Mar 06, 2026
@@ -33,5 +34,4 @@ public class MenuItemMyDay extends TaskMenuItemBase {
             item.update();
         };
     }
-
 }
