@@ -1,4 +1,4 @@
-package io.github.gleidsonmt.todo.view.panel.menu;
+package io.github.gleidsonmt.todo.view.panel.menu.list_menu_items;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;

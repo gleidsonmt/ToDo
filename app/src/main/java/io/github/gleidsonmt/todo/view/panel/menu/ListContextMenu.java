@@ -3,6 +3,8 @@ package io.github.gleidsonmt.todo.view.panel.menu;
 import java.util.List;
 
 import io.github.gleidsonmt.todo.view.nav.CustomDrawerItem;
+import io.github.gleidsonmt.todo.view.panel.menu.list_menu_items.MenuItemDeleteList;
+import io.github.gleidsonmt.todo.view.panel.menu.list_menu_items.MenuItemReanameList;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;

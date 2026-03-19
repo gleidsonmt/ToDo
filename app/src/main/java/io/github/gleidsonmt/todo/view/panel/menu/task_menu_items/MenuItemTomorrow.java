@@ -1,10 +1,11 @@
-package io.github.gleidsonmt.todo.view.panel.menu;
+package io.github.gleidsonmt.todo.view.panel.menu.task_menu_items;
 
 import java.time.LocalDate;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import io.github.gleidsonmt.todo.view.panel.items.TaskItemViewModel;
+import io.github.gleidsonmt.todo.view.panel.menu.TaskMenuItemBase;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 

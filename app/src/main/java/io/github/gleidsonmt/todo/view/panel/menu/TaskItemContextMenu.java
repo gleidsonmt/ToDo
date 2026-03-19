@@ -3,6 +3,14 @@ package io.github.gleidsonmt.todo.view.panel.menu;
 import java.time.LocalDate;
 
 import io.github.gleidsonmt.todo.view.panel.items.TaskItemViewModel;
+import io.github.gleidsonmt.todo.view.panel.menu.task_menu_items.MenuItemComplete;
+import io.github.gleidsonmt.todo.view.panel.menu.task_menu_items.MenuItemDelete;
+import io.github.gleidsonmt.todo.view.panel.menu.task_menu_items.MenuItemImportant;
+import io.github.gleidsonmt.todo.view.panel.menu.task_menu_items.MenuItemMoveTask;
+import io.github.gleidsonmt.todo.view.panel.menu.task_menu_items.MenuItemMyDay;
+import io.github.gleidsonmt.todo.view.panel.menu.task_menu_items.MenuItemRemoveDueDate;
+import io.github.gleidsonmt.todo.view.panel.menu.task_menu_items.MenuItemToday;
+import io.github.gleidsonmt.todo.view.panel.menu.task_menu_items.MenuItemTomorrow;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ContextMenu;
@@ -20,7 +28,7 @@ import javafx.scene.control.SeparatorMenuItem;
 public class TaskItemContextMenu extends ContextMenu {
 
     private final MenuItemMyDay menuItemMyDay;
-    private final MenuItemChangeImportance menuItemChangeImportance;
+    private final MenuItemImportant menuItemChangeImportance;
     private final MenuItemComplete menuItemComplete;
     private final MenuItemDelete menuItemDelete;
 
@@ -37,7 +45,7 @@ public class TaskItemContextMenu extends ContextMenu {
     public TaskItemContextMenu(TaskItemViewModel item) {
         // fixed in top
         this.menuItemMyDay = new MenuItemMyDay(item);
-        this.menuItemChangeImportance = new MenuItemChangeImportance(item);
+        this.menuItemChangeImportance = new MenuItemImportant(item);
         this.menuItemComplete = new MenuItemComplete(item);
         // moveable
         this.menuItemToday = new MenuItemToday(item);

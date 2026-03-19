@@ -2,11 +2,11 @@ Fix
 
 # 2 - On ContextMenu for task item, it has confusing update to moveable content.
 
+# 4 - Menu folder has to be more specific, so many menus make confusing to search.
+
 ---
 
 # 3 - When context menu is called on task item, it won't be selected.
-
-# 4 - Menu folder has to be more specific, so many menus make confusing to search.
 
 # 1 - The taskItems are multiple selected.
 
@@ -30,13 +30,13 @@ Features
 
 # 15 - #1 Every menu item will set a list id for a task selected.
 
+# 10 - #8 Important option will call i18n text.
+
 ---
 
 ---
 
 # 8 - Every item on task item context menu will have i18n calls to set its text.
-
-# 10 - #8 Important option will call i18n text.
 
 # 11 - #8 Completed option will call i18n text.
 
