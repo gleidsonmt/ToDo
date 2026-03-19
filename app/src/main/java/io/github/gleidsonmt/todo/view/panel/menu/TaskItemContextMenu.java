@@ -35,22 +35,21 @@ public class TaskItemContextMenu extends ContextMenu {
     private final ObservableList<MenuItem> moveable;
 
     public TaskItemContextMenu(TaskItemViewModel item) {
-        // fixed
+        // fixed in top
         this.menuItemMyDay = new MenuItemMyDay(item);
         this.menuItemChangeImportance = new MenuItemChangeImportance(item);
         this.menuItemComplete = new MenuItemComplete(item);
         // moveable
         this.menuItemToday = new MenuItemToday(item);
         this.menuItemTomorrow = new MenuItemTomorrow(item);
-
         this.menuItemRemoveDueDate = new MenuItemRemoveDueDate(item);
+        // fiexd in bottom
         this.menuItemMoveTask = new MenuItemMoveTask(item);
         this.menuItemDelete = new MenuItemDelete(item);
 
         moveable = FXCollections.observableArrayList();
 
         getItems().addAll(menuItemMyDay, menuItemChangeImportance, menuItemComplete, new SeparatorMenuItem());
-        getItems().addAll(moveable);
         getItems().addAll(new SeparatorMenuItem(), menuItemMoveTask, new SeparatorMenuItem(), menuItemDelete);
 
         item.dueDateProperty().addListener((_, _, newVal) -> {
@@ -58,7 +57,6 @@ public class TaskItemContextMenu extends ContextMenu {
         });
 
         switchContextItems(item.getDueDate());
-        // nullLayout();
     }
 
     private void switchContextItems(LocalDate value) {
@@ -66,34 +64,19 @@ public class TaskItemContextMenu extends ContextMenu {
 
         if (value != null) {
             if (value.equals(LocalDate.now())) {
-                layoutOne();
+                layout(menuItemTomorrow, menuItemRemoveDueDate);
             } else if (value.equals(LocalDate.now().plusDays(1))) {
-                layoutTwo();
+                layout(menuItemToday, menuItemRemoveDueDate);
             } else {
-                layoutThree();
+                layout(menuItemToday, menuItemRemoveDueDate);
             }
         } else {
-            nullLayout();
+            layout(menuItemToday, menuItemTomorrow);
         }
     }
 
-    private void nullLayout() {
-        moveable.setAll(menuItemToday, menuItemTomorrow);
-        getItems().addAll(4, moveable);
-    }
-
-    private void layoutOne() {
-        moveable.setAll(menuItemTomorrow, menuItemRemoveDueDate);
-        getItems().addAll(4, moveable);
-    }
-
-    private void layoutTwo() {
-        moveable.setAll(menuItemToday, menuItemRemoveDueDate);
-        getItems().addAll(4, moveable);
-    }
-
-    private void layoutThree() {
-        moveable.setAll(menuItemToday, menuItemRemoveDueDate);
+    private void layout(MenuItem... menuItems) {
+        moveable.setAll(menuItems);
         getItems().addAll(4, moveable);
     }
 }
