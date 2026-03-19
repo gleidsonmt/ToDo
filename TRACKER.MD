@@ -34,8 +34,6 @@ Features
 
 ---
 
-# 11 - #8 Completed option will call i18n text.
-
 # 12 - #8 Due Tomorrow option will call i18n text.
 
 # 13 - #8 Due Today option will call i18n text.

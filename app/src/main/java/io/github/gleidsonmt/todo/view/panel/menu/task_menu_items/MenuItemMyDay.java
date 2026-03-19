@@ -1,8 +1,6 @@
 package io.github.gleidsonmt.todo.view.panel.menu.task_menu_items;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
-import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
-import io.github.gleidsonmt.todo.utils.I18n;
 import io.github.gleidsonmt.todo.view.panel.items.TaskItemViewModel;
 import io.github.gleidsonmt.todo.view.panel.menu.TaskMenuItemBase;
 import javafx.event.ActionEvent;
@@ -24,8 +22,7 @@ public class MenuItemMyDay extends TaskMenuItemBase {
 
     @Override
     protected void updateState(TaskItemViewModel item) {
-        this.setText(I18n.get(!item.isMyDay() ? "menu.myDay.on" : "menu.myDay.off"));
-        this.setGraphic(new SVGIcon(item.isMyDay() ? Icon.FLARE : Icon.SUN));
+        update(!item.isMyDay() ? "menu.myDay.on" : "menu.myDay.off", item.isMyDay() ? Icon.FLARE : Icon.SUN);
     }
 
     @Override
