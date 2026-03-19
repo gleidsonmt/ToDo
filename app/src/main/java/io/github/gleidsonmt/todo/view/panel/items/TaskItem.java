@@ -9,7 +9,6 @@ import io.github.gleidsonmt.todo.view.panel.menu.TaskItemContextMenu;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.StringProperty;
 import javafx.geometry.Pos;
-import javafx.geometry.Side;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
@@ -92,12 +91,35 @@ public class TaskItem extends ToggleButton {
         registerListeners();
     }
 
-    private void setActions() {
-        this.setOnContextMenuRequested(e -> {
-            var contextMenu = new TaskItemContextMenu(viewModel);
+    // private TaskItemContextMenu contextMenu = new
+    // TaskItemContextMenu(viewModel);
 
-            contextMenu.show(this, Side.BOTTOM, e.getX(), e.getY() - 50);
-        });
+    private void setActions() {
+
+        // this.setOnContextMenuRequested(e -> {
+        // this.getContextMenu().hide();
+
+        // contextMenu.show(this, Side.BOTTOM, e.getX(), e.getY() - 50);
+        // });
+
+        // this.setContextMenu(contextMenu);
+
+        // this.setOnContextMenuRequested(e -> {
+        // System.out.println(e.getSource());
+        // System.out.println(e.getTarget());
+        // // if (contextMenu != null && contextMenu.isShowing()) {
+        // // contextMenu.hide();
+        // // }
+        // // contextMenu = new TaskItemContextMenu(viewModel);
+        // var contextMenu = new TaskItemContextMenu(viewModel);
+        // getScene().get
+        // // // System.out.println(e.getTarget());
+        // // // // this.getContextMenu().hide();
+        // // // System.out.println(contextMenu.isShowing());|
+        // contextMenu.show(this, Side.BOTTOM, e.getX(), e.getY() - 50);
+        // });
+        var contextMenu = new TaskItemContextMenu(viewModel);
+        this.setContextMenu(contextMenu);
     }
 
     private void registerListeners() {

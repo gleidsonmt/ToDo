@@ -4,6 +4,8 @@ Fix
 
 # 3 - When context menu is called on task item, it won't be selected.
 
+# 4 - Menu folder has to be more specific, so many menus make confusing to search.
+
 ---
 
 # 1 - The taskItems are multiple selected.
@@ -46,4 +48,6 @@ Features
 
 Bugs
 
-# 1 - The context menu from task item will be displayed a lot of context menu with more than one click, and its not hiddeng anymore.
+# 1 - The context menu from task item will be displayed a lot of context menu with more than one click, and its not hidding anymore.
+
+---

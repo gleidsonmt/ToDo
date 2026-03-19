@@ -58,9 +58,12 @@ public class TaskItemContextMenu extends ContextMenu {
         });
 
         switchContextItems(item.getDueDate());
+        // nullLayout();
     }
 
     private void switchContextItems(LocalDate value) {
+        getItems().removeAll(moveable);
+
         if (value != null) {
             if (value.equals(LocalDate.now())) {
                 layoutOne();
@@ -80,19 +83,16 @@ public class TaskItemContextMenu extends ContextMenu {
     }
 
     private void layoutOne() {
-        getItems().removeAll(moveable);
-        moveable.addAll(menuItemTomorrow, menuItemRemoveDueDate);
+        moveable.setAll(menuItemTomorrow, menuItemRemoveDueDate);
         getItems().addAll(4, moveable);
     }
 
     private void layoutTwo() {
-        getItems().removeAll(moveable);
         moveable.setAll(menuItemToday, menuItemRemoveDueDate);
         getItems().addAll(4, moveable);
     }
 
     private void layoutThree() {
-        getItems().removeAll(moveable);
         moveable.setAll(menuItemToday, menuItemRemoveDueDate);
         getItems().addAll(4, moveable);
     }
