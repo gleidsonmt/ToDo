@@ -32,11 +32,13 @@ Features
 
 # 10 - #8 Important option will call i18n text.
 
----
-
 # 12 - #8 Due Tomorrow option will call i18n text.
 
 # 13 - #8 Due Today option will call i18n text.
+
+# 14 - #8 Delete option task will call i18n text.
+
+---
 
 ---
 
