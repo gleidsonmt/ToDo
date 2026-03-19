@@ -1,7 +1,6 @@
 package io.github.gleidsonmt.todo.view.panel.menu.task_menu_items;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
-import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import io.github.gleidsonmt.todo.view.panel.items.TaskItemViewModel;
 import io.github.gleidsonmt.todo.view.panel.menu.TaskMenuItemBase;
 import javafx.event.ActionEvent;
@@ -23,13 +22,8 @@ public class MenuItemComplete extends TaskMenuItemBase {
 
     @Override
     protected void updateState(TaskItemViewModel item) {
-        if (item.isCompleted()) {
-            this.setGraphic(new SVGIcon(Icon.CIRCLE));
-            setText("Mark as not completed");
-        } else {
-            this.setGraphic(new SVGIcon(Icon.CHECK_CIRCLE));
-            setText("Mark as completed");
-        }
+        update(item.isCompleted() ? "menu.completed.on" : "menu.completed.off",
+                item.isCompleted() ? Icon.CIRCLE : Icon.CHECK_CIRCLE);
     }
 
     @Override

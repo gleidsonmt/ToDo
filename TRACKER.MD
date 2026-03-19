@@ -34,15 +34,15 @@ Features
 
 ---
 
----
-
-# 8 - Every item on task item context menu will have i18n calls to set its text.
-
 # 11 - #8 Completed option will call i18n text.
 
 # 12 - #8 Due Tomorrow option will call i18n text.
 
 # 13 - #8 Due Today option will call i18n text.
+
+---
+
+# 8 - Every item on task item context menu will have i18n calls to set its text.
 
 # 3 - The drawer item can be dragged.
 

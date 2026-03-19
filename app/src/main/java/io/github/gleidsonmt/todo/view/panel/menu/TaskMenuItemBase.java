@@ -1,5 +1,8 @@
 package io.github.gleidsonmt.todo.view.panel.menu;
 
+import io.github.gleidsonmt.glad.controls.icon.Icon;
+import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
+import io.github.gleidsonmt.todo.utils.I18n;
 import io.github.gleidsonmt.todo.view.panel.containers.ListContainer;
 import io.github.gleidsonmt.todo.view.panel.items.TaskItemViewModel;
 import javafx.event.ActionEvent;
@@ -22,6 +25,11 @@ public abstract class TaskMenuItemBase extends MenuItem {
             updateState(taskItem);
         });
         updateState(taskItem);
+    }
+
+    protected void update(String text, Icon icon) {
+        setText(I18n.get(text));
+        setGraphic(new SVGIcon(icon));
     }
 
     protected ListContainer getListContainer() {

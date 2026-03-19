@@ -25,7 +25,6 @@ public class MenuItemImportant extends TaskMenuItemBase {
     @Override
     protected void updateState(TaskItemViewModel model) {
         this.setGraphic(new SVGIcon(!model.isImportant() ? Icon.STAR_HALF : Icon.STAR));
-        // this.setText(I18n.get(!item.isMyDay() ? "menu.myDay.on" : "menu.myDay.off"));
         this.setText(I18n.get(!model.isImportant() ? "menu.important.off" : "menu.important.on"));
     }
 
