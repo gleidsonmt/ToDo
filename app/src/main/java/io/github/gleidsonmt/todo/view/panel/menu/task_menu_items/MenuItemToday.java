@@ -3,7 +3,6 @@ package io.github.gleidsonmt.todo.view.panel.menu.task_menu_items;
 import java.time.LocalDate;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
-import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import io.github.gleidsonmt.todo.view.panel.items.TaskItemViewModel;
 import io.github.gleidsonmt.todo.view.panel.menu.TaskMenuItemBase;
 import javafx.event.ActionEvent;
@@ -25,8 +24,7 @@ public class MenuItemToday extends TaskMenuItemBase {
 
     @Override
     protected void updateState(TaskItemViewModel item) {
-        this.setGraphic(new SVGIcon(Icon.TODAY));
-        this.setText("Due Today");
+        update("menu.due.today", Icon.TODAY);
     }
 
     @Override

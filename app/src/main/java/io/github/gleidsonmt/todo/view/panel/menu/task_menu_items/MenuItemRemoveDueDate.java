@@ -1,7 +1,6 @@
 package io.github.gleidsonmt.todo.view.panel.menu.task_menu_items;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
-import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import io.github.gleidsonmt.todo.view.panel.items.TaskItemViewModel;
 import io.github.gleidsonmt.todo.view.panel.menu.TaskMenuItemBase;
 import javafx.event.ActionEvent;
@@ -23,8 +22,7 @@ public class MenuItemRemoveDueDate extends TaskMenuItemBase {
 
     @Override
     protected void updateState(TaskItemViewModel item) {
-        this.setGraphic(new SVGIcon(Icon.CALENDAR_MONTH));
-        this.setText("Remove due date");
+        update("menu.due.date.remove", Icon.EVENT_BUSY);
     }
 
     @Override
