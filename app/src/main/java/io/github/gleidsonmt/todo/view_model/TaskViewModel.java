@@ -1,12 +1,12 @@
-package io.github.gleidsonmt.todo.view.panel.items;
+package io.github.gleidsonmt.todo.view_model;
 
 import java.time.LocalDate;
 import java.util.Optional;
 
+import io.github.gleidsonmt.todo.global.Global;
 import io.github.gleidsonmt.todo.global.Presenter;
-import io.github.gleidsonmt.todo.global.Repository;
 import io.github.gleidsonmt.todo.model.ToDoTask;
-import io.github.gleidsonmt.todo.view_model.Model;
+import io.github.gleidsonmt.todo.view.panel.items.TaskItem;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.ObjectProperty;
@@ -22,9 +22,8 @@ import javafx.beans.property.SimpleObjectProperty;
  * 
  *         Version History: Initial version
  */
-public class TaskItemViewModel extends Model {
+public class TaskViewModel extends ViewModel {
 
-    private final Repository repository;
     private final Presenter<ToDoTask> presenter;
 
     private final TaskViewModelConverter converter = new TaskViewModelConverter();
@@ -35,18 +34,22 @@ public class TaskItemViewModel extends Model {
     private final ObjectProperty<LocalDate> dueDate;
     private final LongProperty listId;
 
-    private final TaskItem taskItem;
+    private TaskItem taskItem;
 
-    public TaskItemViewModel(ToDoTask task, TaskItem taskItem) {
+    public TaskViewModel(TaskItem taskItem) {
         this.taskItem = taskItem;
-        this.setId(task.getId());
-        this.repository = (Repository) System.getProperties().get("repository");
-        this.presenter = this.repository.<ToDoTask>of(ToDoTask.class);
-        this.completed = new SimpleBooleanProperty(task.isCompleted());
-        this.important = new SimpleBooleanProperty(task.isImportant());
-        this.myDay = new SimpleBooleanProperty(task.isMyDay());
-        this.dueDate = new SimpleObjectProperty<>(task.getDueDate());
-        this.listId = new SimpleLongProperty(task.getListId());
+        this.setId(Long.parseLong(taskItem.getId()));
+
+        this.presenter = Global.get(ToDoTask.class);
+
+        this.completed = new SimpleBooleanProperty(taskItem.completedProperty().get());
+        this.important = new SimpleBooleanProperty(taskItem.favoriteProperty().get());
+
+        this.myDay = new SimpleBooleanProperty(taskItem.isMyDay());
+        this.dueDate = new SimpleObjectProperty<>(taskItem.getDueDate());
+
+        this.listId = new SimpleLongProperty(taskItem.getListId());
+
         bind();
         registerListeners();
     }
@@ -124,7 +127,7 @@ public class TaskItemViewModel extends Model {
         return this.dueDate;
     }
 
-    public long getListId() {
+    public Long getListId() {
         return this.listId.get();
     }
 

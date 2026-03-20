@@ -6,7 +6,7 @@ import io.github.gleidsonmt.todo.model.ListType;
 import io.github.gleidsonmt.todo.model.ToDoTask;
 import io.github.gleidsonmt.todo.view.panel.Panel;
 import io.github.gleidsonmt.todo.view.panel.items.TaskItem;
-import io.github.gleidsonmt.todo.view.panel.items.TaskViewModelConverter;
+import io.github.gleidsonmt.todo.view_model.TaskViewModelConverter;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

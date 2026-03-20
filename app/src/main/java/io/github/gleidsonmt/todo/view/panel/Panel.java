@@ -131,23 +131,23 @@ public class Panel extends Container {
 
         Button hamb = new Hamburger();
 
-        this.addBreakpoint((event) -> {
-            // body.setLeft(null);
-            bar.getChildren().add(hamb);
-            bar.getChildren().forEach(el -> {
-                GridPane.setRowIndex(el, 1);
-            });
-            bar.addRow(0, hamb);
-            // GridPane.setColumnIndex(hamb, 0);
-        }, "<MD");
+        // this.addBreakpoint((event) -> {
+        //     // body.setLeft(null);
+        //     bar.getChildren().add(hamb);
+        //     bar.getChildren().forEach(el -> {
+        //         GridPane.setRowIndex(el, 1);
+        //     });
+        //     bar.addRow(0, hamb);
+        //     // GridPane.setColumnIndex(hamb, 0);
+        // }, "<MD");
 
-        this.addBreakpoint((event) -> {
-            // body.setLeft(sideNav);
-            bar.getChildren().remove(hamb);
-            bar.getChildren().forEach(el -> {
-                GridPane.setRowIndex(el, 0);
-            });
-        }, ">MD");
+        // this.addBreakpoint((event) -> {
+        //     // body.setLeft(sideNav);
+        //     bar.getChildren().remove(hamb);
+        //     bar.getChildren().forEach(el -> {
+        //         GridPane.setRowIndex(el, 0);
+        //     });
+        // }, ">MD");
 
     }
 
