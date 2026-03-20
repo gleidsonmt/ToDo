@@ -28,14 +28,7 @@ Panel {
   -fx-background-color: -fx-background;
 }
 
-#list-root #list-container .single-selection #task-item {
-  -fx-background-color: -fx-background;
-  -fx-border-color: -light-gray-2;
-  -fx-border-radius: 5px;
-  -fx-border-weight: 2px;
-}
-
-#task-item:selected .check-circle .box {
+.task-item:selected .check-circle .box {
   -fx-border-color: -fx-accent;
 }
 
@@ -51,15 +44,22 @@ Panel {
   -fx-border-width: 0px 0px 2px 0px;
 }
 
-#task-item .check-circle:hover .mark {
+.task-item .check-circle:hover .mark {
   -fx-border-color: -fx-accent;
 }
 
-#list-container .single-selection #task-item:selected .btn-favorite .icon {
+#list-container .single-selection .task-item:selected .btn-favorite .icon {
   -fx-fill: -fx-accent;
 }
 
-#list-root #list-container .single-selection #task-item:selected {
+#list-root #list-container .single-selection .task-item {
+  -fx-background-color: -fx-background;
+  -fx-border-color: -light-gray-2;
+  -fx-border-radius: 5px;
+  -fx-border-weight: 2px;
+}
+
+#list-root #list-container .single-selection .task-item:selected {
   -fx-border-width: 2px;
   -fx-background-color: -fx-background;
   -fx-border-color: linear-gradient(

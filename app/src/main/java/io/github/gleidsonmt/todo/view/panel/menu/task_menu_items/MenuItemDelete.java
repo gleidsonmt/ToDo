@@ -3,7 +3,7 @@ package io.github.gleidsonmt.todo.view.panel.menu.task_menu_items;
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import io.github.gleidsonmt.todo.utils.I18n;
-import io.github.gleidsonmt.todo.view.panel.items.TaskItemViewModel;
+import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
@@ -18,7 +18,7 @@ import javafx.scene.input.KeyCodeCombination;
  */
 public class MenuItemDelete extends MenuItem {
 
-    public MenuItemDelete(TaskItemViewModel viewModel) {
+    public MenuItemDelete(TaskViewModel viewModel) {
 
         setText("Delete");
         this.setAccelerator(new KeyCodeCombination(KeyCode.DELETE));

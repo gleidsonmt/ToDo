@@ -1,4 +1,4 @@
-package io.github.gleidsonmt.todo.view.panel.items;
+package io.github.gleidsonmt.todo.view_model;
 
 import java.time.LocalDate;
 
@@ -14,7 +14,7 @@ import io.github.gleidsonmt.todo.model.ToDoTask;
  */
 public class TaskViewModelConverter {
 
-    public ToDoTask convert(TaskItemViewModel model) {
+    public ToDoTask convert(TaskViewModel model) {
         ToDoTask temp = create(model.getId(), model.getName(), model.isCompleted(), model.isImportant(),
                 model.isMyDay(), model.getDueDate(), model.getListId());
 
@@ -25,7 +25,7 @@ public class TaskViewModelConverter {
         return create(id, name, false, false, false, null, 0);
     }
 
-    public ToDoTask create(int id, String name, boolean completed, boolean important, boolean myDay, LocalDate dueDate,
+    public ToDoTask create(long id, String name, boolean completed, boolean important, boolean myDay, LocalDate dueDate,
             long listId) {
         var temp = new ToDoTask(name);
         temp.setId(id);
@@ -35,6 +35,6 @@ public class TaskViewModelConverter {
         temp.setDueDate(dueDate);
         temp.setMyDay(myDay);
 
-        return temp;
+        return temp; 
     }
 }

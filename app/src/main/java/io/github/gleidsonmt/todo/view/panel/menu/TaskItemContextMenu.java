@@ -2,7 +2,6 @@ package io.github.gleidsonmt.todo.view.panel.menu;
 
 import java.time.LocalDate;
 
-import io.github.gleidsonmt.todo.view.panel.items.TaskItemViewModel;
 import io.github.gleidsonmt.todo.view.panel.menu.task_menu_items.MenuItemComplete;
 import io.github.gleidsonmt.todo.view.panel.menu.task_menu_items.MenuItemDelete;
 import io.github.gleidsonmt.todo.view.panel.menu.task_menu_items.MenuItemImportant;
@@ -11,6 +10,7 @@ import io.github.gleidsonmt.todo.view.panel.menu.task_menu_items.MenuItemMyDay;
 import io.github.gleidsonmt.todo.view.panel.menu.task_menu_items.MenuItemRemoveDueDate;
 import io.github.gleidsonmt.todo.view.panel.menu.task_menu_items.MenuItemToday;
 import io.github.gleidsonmt.todo.view.panel.menu.task_menu_items.MenuItemTomorrow;
+import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ContextMenu;
@@ -42,7 +42,7 @@ public class TaskItemContextMenu extends ContextMenu {
 
     private final ObservableList<MenuItem> moveable;
 
-    public TaskItemContextMenu(TaskItemViewModel item) {
+    public TaskItemContextMenu(TaskViewModel item) {
         // fixed in top
         this.menuItemMyDay = new MenuItemMyDay(item);
         this.menuItemChangeImportance = new MenuItemImportant(item);

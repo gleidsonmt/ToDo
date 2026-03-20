@@ -9,17 +9,17 @@ package io.github.gleidsonmt.todo.model;
  *         Version History: Initial version
  */
 public class Model {
-    private int id;
+    private long id;
 
     public Model(int id) {
         this.id = id;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 }
