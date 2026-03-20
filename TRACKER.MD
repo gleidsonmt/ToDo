@@ -38,13 +38,15 @@ Features
 
 # 14 - #8 Delete option task will call i18n text.
 
----
-
----
-
 # 8 - Every item on task item context menu will have i18n calls to set its text.
 
+---
+
+---
+
 # 3 - The drawer item can be dragged.
+
+# 15 -
 
 Bugs
 
