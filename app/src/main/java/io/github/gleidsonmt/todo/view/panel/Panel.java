@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import io.github.gleidsonmt.glad.base.responsive.Container;
+import io.github.gleidsonmt.glad.controls.button.Button;
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import io.github.gleidsonmt.todo.model.List;
@@ -128,25 +129,25 @@ public class Panel extends Container {
 
         this.getChildren().setAll(scroll, regionLimitTop, regionLimitBottom, bar, inputContainer);
 
-        // Button hamb = new Hamburger();
+        Button hamb = new Hamburger();
 
-        // this.addBreakpoint((event) -> {
-        // // body.setLeft(null);
-        // bar.getChildren().add(hamb);
-        // bar.getChildren().forEach(el -> {
-        // GridPane.setRowIndex(el, 1);
-        // });
-        // bar.addRow(0, hamb);
-        // // GridPane.setColumnIndex(hamb, 0);
-        // }, "<MD");
+        this.addBreakpoint((event) -> {
+            // body.setLeft(null);
+            bar.getChildren().add(hamb);
+            bar.getChildren().forEach(el -> {
+                GridPane.setRowIndex(el, 1);
+            });
+            bar.addRow(0, hamb);
+            // GridPane.setColumnIndex(hamb, 0);
+        }, "<MD");
 
-        // this.addBreakpoint((event) -> {
-        // // body.setLeft(sideNav);
-        // bar.getChildren().remove(hamb);
-        // bar.getChildren().forEach(el -> {
-        // GridPane.setRowIndex(el, 0);
-        // });
-        // }, ">MD");
+        this.addBreakpoint((event) -> {
+            // body.setLeft(sideNav);
+            bar.getChildren().remove(hamb);
+            bar.getChildren().forEach(el -> {
+                GridPane.setRowIndex(el, 0);
+            });
+        }, ">MD");
 
     }
 

@@ -13,35 +13,35 @@
 
 # 📑 Overview
 
-This is a part of my personal studies, it focus on design system learning, using a classical to do application. After looking at these examples how to do online I decide to made my version with javafx.
-
-## 🛠 Now
-
-1. Dashboard Style
-2. Responsive Design
-3. MySQL Database
+This is a part of my personal studies, it focus on design system learning, using a classical to do application. After looking at these examples how to do online I decide to made my own version with javafx.
 
 # 💻 Environment
 
-This lib is a component for JavaFx: Get in the official website [JavaFx](https://openjfx.io/), Tutorial [Getting Started](https://openjfx.io/openjfx-docs/) <br>
-I have a great workstation here, then I've using a gradle 8+ and Java and JavaFx +17 on Windows, MySql 8.0.14. <br>
-I use [HeidiSql](https://www.heidisql.com/download.php?download=installer) as database manager.<br>
+#### The project is build using Java, Gradle, JavaFx, MySQL<br>
 
 ---
 
-##### Database [Mysql]()
+The version of the tools can make trouble, then that's the versions I've been using<br>
+Java 23.0.2 (it's the java on my computer) <br>
+Gradle 8.3 (wrapper version) <br>
+MySQL 8.0.14 <br>
 
-##### Test Tools [ScenicView](), [CSSFX]()
+---
+
+## 🪚 Tools <br>
+
+[HeidiSql](https://www.heidisql.com/download.php?download=installer), to manage my database. <br>
+ScenicView, to see an interact with the project when it's running.<br>
+CSSFX, to update css in real time. <br>
+Glad, That's have custom controls, and other things I create for DashboardFx project. I decide to use as a project apart.
 
 # 🎨 Design Resources
 
-....
-
-##### Icons
+## Icons
 
 [Google Icons](https://fonts.google.com/icons)
 
-##### Images
+## Images
 
 [Empyt List Image ](https://dribbble.com/shots/3104572-Checklist-Graphic)
 
