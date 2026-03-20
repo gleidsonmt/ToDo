@@ -52,7 +52,7 @@ I really recommend to use jpackage to create your jar and the .exe. <br>
 !🗒️Note ** The generate you .exe you need the wix tool, you can get the url if you using intellij or from here https://wixtoolset.org 🥸\*** <br>
 In intellij or visual studio (in visual you need to prepare the ide to use javafx) it's really simple, only open the tab gradle and run the command build after jpackage.
 With visual sutdio, use command line to build.<br> At start I go with <code>./gradlew clean build</code> to build the project, and <code>./gradlew run</code> (to run right!?) and finnaly to generate the .exe <code>./gradlew jpackage</code><br>
-!🗒️Note \*\* Remove the dependencies from scenicview and cssfx, before use jpackage command, this dependencies are used to test and will not use in the final release.
+!🗒️Note \*\* Remove the dependencies from scenicview and cssfx, before use jpackage command, this dependencies are used to test and will impact the final release.
 
 # 📫 Contributing to Project
 
