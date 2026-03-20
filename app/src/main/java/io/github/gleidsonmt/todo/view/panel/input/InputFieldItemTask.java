@@ -5,7 +5,7 @@ import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import io.github.gleidsonmt.todo.model.List;
 import io.github.gleidsonmt.todo.model.ToDoTask;
 import io.github.gleidsonmt.todo.view.nav.SideNav;
-import io.github.gleidsonmt.todo.view.panel.items.TaskItemViewModel;
+import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import javafx.geometry.Side;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
@@ -23,7 +23,7 @@ import javafx.stage.PopupWindow;
 public class InputFieldItemTask extends InputFieldItem {
 
     private final ContextMenu contextMenu;
-    private TaskItemViewModel viewModel;
+    private TaskViewModel viewModel;
     private long listId = 0;
 
     public InputFieldItemTask(Icon icon, String text, ToDoTask viewModel) {

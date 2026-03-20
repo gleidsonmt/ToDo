@@ -1,12 +1,19 @@
 package io.github.gleidsonmt.todo.view.panel.items;
 
+import java.time.LocalDate;
+
+import io.github.gleidsonmt.todo.model.List;
 import io.github.gleidsonmt.todo.model.ToDoTask;
 import io.github.gleidsonmt.todo.view.panel.FavoriteButton;
 import io.github.gleidsonmt.todo.view.panel.actions.CompleteAction;
 import io.github.gleidsonmt.todo.view.panel.actions.ImportantAction;
 import io.github.gleidsonmt.todo.view.panel.containers.ListContainer;
 import io.github.gleidsonmt.todo.view.panel.menu.TaskItemContextMenu;
+import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.StringProperty;
 import javafx.geometry.Pos;
 import javafx.scene.control.CheckBox;
@@ -17,7 +24,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
 /**
- * Description:
+ * Description: UI componentt. Represents a task in the panel.
  *
  * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
  *         Created On: Feb 26, 2026
@@ -27,10 +34,14 @@ import javafx.scene.layout.Priority;
 public class TaskItem extends ToggleButton {
 
     private final GridPane body = new GridPane();
-
+    // Components
     private final CheckBox circleIcon;
     private final Label text;
     private final FavoriteButton favorite;
+    //
+    private BooleanProperty myDay;
+    private ObjectProperty<LocalDate> dueDate;
+    private ObjectProperty<List> list;
 
     private ToDoTask task;
     private ListContainer container;
@@ -40,21 +51,23 @@ public class TaskItem extends ToggleButton {
     private CompleteAction completed;
     private ImportantAction importantAction;
 
-    private TaskItemViewModel viewModel;
-
-    @Deprecated
-    public TaskItem(ListContainer container, ToDoTask task) {
-        this(container, task, true);
-    }
+    private TaskViewModel viewModel;
 
     public TaskItem(ToDoTask task) {
-        this.circleIcon = new CheckBox();
-        this.circleIcon.setSelected(task.isCompleted());
-        this.favorite = new FavoriteButton(task.isImportant());
-        this.text = new Title(task.getName());
+        this.task = task;
         this.setId(String.valueOf(task.getId()));
 
-        this.viewModel = new TaskItemViewModel(task, this);
+        this.circleIcon = new CheckBox();
+        this.circleIcon.setSelected(task.isCompleted());
+
+        this.favorite = new FavoriteButton(task.isImportant());
+        this.text = new Title(task.getName());
+
+        this.myDay = new SimpleBooleanProperty(task.isMyDay());
+        this.dueDate = new SimpleObjectProperty<>(task.getDueDate());
+        this.list = new SimpleObjectProperty<>();
+
+        this.viewModel = new TaskViewModel(this);
 
         init();
         setActions();
@@ -66,58 +79,7 @@ public class TaskItem extends ToggleButton {
         // text.strikethroughProperty().bind(this.completedProperty());
     }
 
-    @Deprecated
-    public TaskItem(ListContainer container, ToDoTask task, boolean needDetails) {
-        this.container = container;
-        this.task = task;
-        this.needDetails = needDetails;
-
-        this.circleIcon = new CheckBox();
-        this.getStyleClass().add("check-circle");
-        this.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-        this.circleIcon.setSelected(task.isCompleted());
-
-        this.favorite = new FavoriteButton(task.isImportant());
-        this.text = new Title(task.getName());
-
-        if (task.isCompleted()) {
-            this.text.getStyleClass().add("strike");
-        }
-
-        this.viewModel = new TaskItemViewModel(task, this);
-
-        init();
-        setActions();
-        registerListeners();
-    }
-
-    // private TaskItemContextMenu contextMenu = new
-    // TaskItemContextMenu(viewModel);
-
     private void setActions() {
-
-        // this.setOnContextMenuRequested(e -> {
-        // this.getContextMenu().hide();
-
-        // contextMenu.show(this, Side.BOTTOM, e.getX(), e.getY() - 50);
-        // });
-
-        // this.setContextMenu(contextMenu);
-
-        // this.setOnContextMenuRequested(e -> {
-        // System.out.println(e.getSource());
-        // System.out.println(e.getTarget());
-        // // if (contextMenu != null && contextMenu.isShowing()) {
-        // // contextMenu.hide();
-        // // }
-        // // contextMenu = new TaskItemContextMenu(viewModel);
-        // var contextMenu = new TaskItemContextMenu(viewModel);
-        // getScene().get
-        // // // System.out.println(e.getTarget());
-        // // // // this.getContextMenu().hide();
-        // // // System.out.println(contextMenu.isShowing());|
-        // contextMenu.show(this, Side.BOTTOM, e.getX(), e.getY() - 50);
-        // });
         var contextMenu = new TaskItemContextMenu(viewModel);
         this.setContextMenu(contextMenu);
     }
@@ -139,7 +101,7 @@ public class TaskItem extends ToggleButton {
 
         this.circleIcon.getStyleClass().add("check-circle");
 
-        this.setId("task-item");
+        this.getStyleClass().add("task-item");
         this.body.setId("task-container");
         this.body.setHgap(10);
         this.body.setVgap(2);
@@ -199,6 +161,18 @@ public class TaskItem extends ToggleButton {
         return this.circleIcon.selectedProperty();
     }
 
+    public boolean isMyDay() {
+        return this.myDay.get();
+    }
+
+    public LocalDate getDueDate() {
+        return this.dueDate.get();
+    }
+
+    public long getListId() {
+        return this.task.getListId();
+    }
+
     public CompleteAction onCompletedChange() {
         return completed;
     }
@@ -207,7 +181,7 @@ public class TaskItem extends ToggleButton {
         return importantAction;
     }
 
-    public TaskItemViewModel getViewModel() {
+    public TaskViewModel getViewModel() {
         return this.viewModel;
     }
 
@@ -215,9 +189,9 @@ public class TaskItem extends ToggleButton {
     public String toString() {
         StringBuilder build = new StringBuilder();
         build.append("TaskItem[");
-        build.append("{id=").append(viewModel.getId()).append(", ");
-        build.append("name=").append(viewModel.getName()).append(", ");
-        build.append("}]");
+        // build.append("{id=").append(viewModel.getId()).append(", ");
+        // build.append("name=").append(viewModel.getName()).append(", ");
+        // build.append("}]");
         return build.toString();
     }
 

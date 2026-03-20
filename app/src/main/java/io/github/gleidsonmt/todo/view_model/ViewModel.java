@@ -1,7 +1,7 @@
 package io.github.gleidsonmt.todo.view_model;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -13,16 +13,16 @@ import javafx.beans.property.StringProperty;
  * 
  *         Version History: Initial version
  */
-public class Model {
+public class ViewModel {
 
     private final StringProperty name = new SimpleStringProperty();
-    private final IntegerProperty id = new SimpleIntegerProperty();
+    private final LongProperty id = new SimpleLongProperty();
 
     public String getName() {
         return name.get();
     }
 
-    public int getId() {
+    public long getId() {
         return id.get();
     }
 
@@ -31,6 +31,10 @@ public class Model {
     }
 
     public void setId(int id) {
+        this.id.set(id);
+    }
+
+    public void setId(long id) {
         this.id.set(id);
     }
 

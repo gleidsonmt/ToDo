@@ -1,8 +1,8 @@
 package io.github.gleidsonmt.todo.view.panel.menu.task_menu_items;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
-import io.github.gleidsonmt.todo.view.panel.items.TaskItemViewModel;
 import io.github.gleidsonmt.todo.view.panel.menu.TaskMenuItemBase;
+import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
@@ -16,18 +16,18 @@ import javafx.event.EventHandler;
  */
 public class MenuItemMyDay extends TaskMenuItemBase {
 
-    public MenuItemMyDay(TaskItemViewModel item) {
+    public MenuItemMyDay(TaskViewModel item) {
         super(item);
         this.getStyleClass().add("menu-item-first");
     }
 
     @Override
-    protected void updateState(TaskItemViewModel item) {
+    protected void updateState(TaskViewModel item) {
         update(!item.isMyDay() ? "menu.myDay.on" : "menu.myDay.off", item.isMyDay() ? Icon.FLARE : Icon.SUN);
     }
 
     @Override
-    protected EventHandler<ActionEvent> createEvent(TaskItemViewModel item) {
+    protected EventHandler<ActionEvent> createEvent(TaskViewModel item) {
         return _ -> {
             // update the model
             item.setMyDay(!item.isMyDay());

@@ -87,6 +87,7 @@ public class DoubleListContainer extends ListContainer {
 
     @Override
     protected TaskItem createTaskItem(ToDoTask task) {
+
         TaskItem item = new TaskItem(task);
         group.getToggles().add(item);
 

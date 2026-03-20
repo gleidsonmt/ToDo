@@ -6,7 +6,7 @@ import io.github.gleidsonmt.todo.global.Global;
 import io.github.gleidsonmt.todo.global.Presenter;
 import io.github.gleidsonmt.todo.model.List;
 import io.github.gleidsonmt.todo.utils.I18n;
-import io.github.gleidsonmt.todo.view.panel.items.TaskItemViewModel;
+import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 
@@ -20,7 +20,7 @@ import javafx.scene.control.MenuItem;
  */
 public class MenuItemMoveTask extends Menu {
 
-    public MenuItemMoveTask(TaskItemViewModel item) {
+    public MenuItemMoveTask(TaskViewModel item) {
         setText(I18n.get("menu.moveTo"));
         setGraphic(new SVGIcon(Icon.FLEX_DIRECTION));
 
@@ -35,7 +35,7 @@ public class MenuItemMoveTask extends Menu {
 
 class MenuList extends MenuItem {
 
-    public MenuList(List list, TaskItemViewModel item) {
+    public MenuList(List list, TaskViewModel item) {
         setText(list.getName());
         setGraphic(new SVGIcon(list.getIcon()));
 

@@ -2,7 +2,7 @@ package io.github.gleidsonmt.todo.view.panel.actions;
 
 import java.util.EventListener;
 
-import io.github.gleidsonmt.todo.view.panel.items.TaskItemViewModel;
+import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 
 /**
  * Description:
@@ -15,5 +15,5 @@ import io.github.gleidsonmt.todo.view.panel.items.TaskItemViewModel;
 @FunctionalInterface
 public interface CompleteAction extends EventListener {
     // void handle(TaskItem item, ToDoTask task);
-    void handle(TaskItemViewModel viewModel);
+    void handle(TaskViewModel viewModel);
 }
