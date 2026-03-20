@@ -26,8 +26,6 @@ Java 23.0.2 (it's the java on my computer) <br>
 Gradle 8.3 (wrapper version) <br>
 MySQL 8.0.14 <br>
 
----
-
 ## 🪚 Tools <br>
 
 [HeidiSql](https://www.heidisql.com/download.php?download=installer), to manage my database. <br>
@@ -37,13 +35,13 @@ Glad, That's have custom controls, and other things I create for DashboardFx pro
 
 # 🎨 Design Resources
 
-## Icons
+### Icons
 
-[Google Icons](https://fonts.google.com/icons)
+#### [Google Icons](https://fonts.google.com/icons)
 
-## Images
+### Images
 
-[Empyt List Image ](https://dribbble.com/shots/3104572-Checklist-Graphic)
+#### [Empyt List Image ](https://dribbble.com/shots/3104572-Checklist-Graphic)
 
 [//]: # "# 🚀 Installing - (building)"
 [//]: # "..."
