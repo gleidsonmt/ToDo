@@ -13,7 +13,11 @@
 
 # 📑 Overview
 
-This is a part of my personal studies, it focus on design system learning, using a classical to do application. After looking at these examples how to do online I decide to made my own version with javafx.
+This is a part of my personal studies, it focus on design system learning, using a classical to do application. After looking at these examples how to do online I decide to made my own version with javafx. <br>
+
+One of my favorite tools is a Microsoft ToDo app, that's the reason they look a like, I don't have any intention to create a competive tool, it's only to learn. <br>
+
+To be more specific I really focus on learn MVVM, listeners, generics , inheritance, reusable code, at some point I just notice that my code is more behavior than create things, I literaly get lost using much listeners, suffer to understand concurrency, but that's the journey.
 
 # 💻 Environment
 
@@ -43,10 +47,7 @@ Glad, That's have custom controls, and other things I create for DashboardFx pro
 
 #### [Empyt List Image ](https://dribbble.com/shots/3104572-Checklist-Graphic)
 
-[//]: # "# 🚀 Installing - (building)"
-[//]: # "..."
-
-# 🏗️ Building
+# 🚀 Building
 
 I really recommend to use jpackage to create your jar and the .exe. <br>
 !🗒️Note ** The generate you .exe you need the wix tool, you can get the url if you using intellij or from here https://wixtoolset.org 🥸\*** <br>

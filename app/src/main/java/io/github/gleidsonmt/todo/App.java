@@ -13,7 +13,8 @@ import io.github.gleidsonmt.glad.theme.Css;
 import io.github.gleidsonmt.glad.theme.Font;
 import io.github.gleidsonmt.glad.theme.ThemeProvider;
 import io.github.gleidsonmt.todo.bd.DatabaseConnection;
-import io.github.gleidsonmt.todo.bd.dao.DaoUser;
+import io.github.gleidsonmt.todo.global.Global;
+import io.github.gleidsonmt.todo.global.UserPresenter;
 import io.github.gleidsonmt.todo.logger.LogFormatter;
 import io.github.gleidsonmt.todo.model.User;
 import io.github.gleidsonmt.todo.utils.Assets;
@@ -59,8 +60,8 @@ public class App extends Application {
         this.connection = new DatabaseConnection();
         Logger.getGlobal().info(() -> "Established connection... [" + (connection.connect() ? "OK" : "FAILED") + "]");
 
-        DaoUser dao = new DaoUser();
-        Optional<User> user = dao.getWhere("logged = 1;");
+        UserPresenter presenter = (UserPresenter) Global.get(User.class);
+        Optional<User> user = presenter.getLogged();
 
         Root root = new Root(user.isPresent() ? new MainView(user.get()) : new HomeLayout());
         Scene scene = new Scene(root, 1200, 728);
