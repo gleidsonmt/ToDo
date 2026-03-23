@@ -179,6 +179,8 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
         }
     }
 
+
+
     /**
      * This method uses a foreign key, to get a model.
      * This method uses a pattern defined to using foreign keys.
@@ -361,6 +363,7 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
     @ApiStatus.Experimental
     @Override
     public Task<ObservableList<T>> fetchWhere(ObservableList<T> items, String condition) {
+        items.clear();
         Task<ObservableList<T>> task = new Task<>() {
             @Override
             protected ObservableList<T> call() {
@@ -390,6 +393,29 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
         return task;
     }
 
+    public Task<ObservableList<T>> fetch(ObservableList<T> items, long ini, long fin) {
+        // SELECT * FROM sua_tabela
+        // LIMIT 81 OFFSET 19;
+        StringBuilder builder = new StringBuilder();
+        builder.append("limit").append(" ").append(String.valueOf(fin)).append(" ");
+        builder.append("offset").append(" ").append(String.valueOf(ini));
+
+        return fetch(items, ini, fin, null);
+    }
+
+    public Task<ObservableList<T>> fetch(ObservableList<T> items, long limit, long offset, String condition) {
+        // SELECT * FROM sua_tabela
+        // LIMIT 81 OFFSET 19;
+        StringBuilder builder = new StringBuilder();
+
+        if (condition != null) {
+            builder.append(" where ").append(condition).append(" ");
+        }
+        builder.append("limit").append(" ").append(String.valueOf(limit)).append(" ");
+        builder.append("offset").append(" ").append(String.valueOf(offset));
+        return fetchWhere(items, builder.toString());
+    }
+
     @ApiStatus.Experimental
     @Override
     public ObservableList<T> fetchByModel(@NotNull Model model) {
@@ -407,4 +433,40 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
         return items;
     }
 
+    public int sizeWhere(String condition) {
+        connect();
+        int size = 0;
+        // SELECT COUNT(*) AS size FROM (
+        // SELECT * FROM list LIMIT 3
+        // ) AS subconsulta;
+        ResultSet result = executeQuery("select count(*) as size from (" + condition + ") as subquery;");
+
+        // System.out.println(
+        // "select count(*) as size from (select * from list limit " + limit + "
+        // " + condition + ") as size;");
+        try {
+            result.first();
+
+            size = result.getInt("size");
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return size;
+    }
 }
+// @Override
+// public Optional<T> get(long id) {
+// connect();
+// ResultSet result = executeQuery("select * from " + getTable() + " where id =
+// " + id + ";");
+// try {
+// if (result.first())
+// return Optional.of(createElement(result));
+// else
+// return Optional.empty();
+// } catch (SQLException e) {
+// throw new RuntimeException(e);
+// }
+// }

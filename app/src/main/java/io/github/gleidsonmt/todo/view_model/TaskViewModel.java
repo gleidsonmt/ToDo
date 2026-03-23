@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import io.github.gleidsonmt.todo.global.Global;
 import io.github.gleidsonmt.todo.global.Presenter;
+import io.github.gleidsonmt.todo.global.TaskPresenter;
 import io.github.gleidsonmt.todo.model.ToDoTask;
 import io.github.gleidsonmt.todo.view.panel.items.TaskItem;
 import javafx.beans.property.BooleanProperty;
@@ -75,20 +76,11 @@ public class TaskViewModel extends ViewModel {
     }
 
     public void update() {
-        var temp = converter.convert(this);
-        var finded = find(temp);
-        if (finded.isPresent()) {
-            var index = presenter.getData().indexOf(finded.get());
-            presenter.getData().set(index, temp);
-        }
+        presenter.update(this);
     }
 
     public void delete() {
-        var temp = converter.convert(this);
-        var finded = find(temp);
-        if (finded.isPresent()) {
-            presenter.getData().remove(finded.get());
-        }
+        presenter.delete(this);
     }
 
     public void setMyDay(boolean myDay) {

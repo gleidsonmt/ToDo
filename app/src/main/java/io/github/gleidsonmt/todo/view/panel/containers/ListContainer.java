@@ -6,6 +6,7 @@ import io.github.gleidsonmt.todo.model.List;
 import io.github.gleidsonmt.todo.model.ToDoTask;
 import io.github.gleidsonmt.todo.view.panel.items.TaskItem;
 import io.github.gleidsonmt.todo.view.panel.sections.EmptySection;
+import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import io.github.gleidsonmt.todo.view_model.TaskViewModelConverter;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -26,7 +27,7 @@ import javafx.scene.layout.VBox;
 public abstract class ListContainer extends VBox {
 
     protected ObservableList<ToDoTask> data;
-    protected List list;
+    protected ListViewModel list;
 
     protected ToggleGroup group;
 
@@ -36,9 +37,10 @@ public abstract class ListContainer extends VBox {
      * @param list The filtered list.
      * @param data The core list.
      */
-    public ListContainer(List list, ObservableList<ToDoTask> data) {
+    // public ListContainer(List list, ObservableList<ToDoTask> data) {
+    public ListContainer(ListViewModel list) {
         this.list = list;
-        this.data = data;
+        // this.data = data;
         this.group = new ToggleGroup();
         this.setId("list-container");
 

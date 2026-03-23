@@ -2,6 +2,7 @@ package io.github.gleidsonmt.todo.global;
 
 import io.github.gleidsonmt.todo.bd.dao.internal.AbstractDao;
 import io.github.gleidsonmt.todo.model.Model;
+import io.github.gleidsonmt.todo.view_model.ViewModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -43,7 +44,8 @@ public class AbstractPresenter<T extends Model> implements Presenter<T> {
      * database (dao) actions.
      */
     private final ListChangeListener<T> commitChangesInDatabase = (ListChangeListener<T>) c -> {
-        if (!isLoaded) return;
+        if (!isLoaded)
+            return;
         if (c.next()) {
             if (c.wasReplaced()) {
                 c.getAddedSubList().forEach(model -> dao.update(model));
@@ -64,6 +66,22 @@ public class AbstractPresenter<T extends Model> implements Presenter<T> {
         data.addListener(commitChangesInDatabase);
         task.setOnSucceeded(e -> isLoaded = true);
         return task;
+    }
+
+    public Task<ObservableList<T>> fetch(long range) {
+        return fetch(range, null);
+    }
+
+    public Task<ObservableList<T>> fetch(long range, String where) {
+        return fetch(0, range, where);
+    }
+
+    public Task<ObservableList<T>> fetch(long ini, long fin) {
+        return fetch(ini, fin, null);
+    }
+
+    public Task<ObservableList<T>> fetch(long limit, long offset, String where) {
+        return dao.fetch(data, limit, offset, where);
     }
 
 }

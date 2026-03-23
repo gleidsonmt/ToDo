@@ -6,7 +6,6 @@ import io.github.gleidsonmt.todo.global.Global;
 import io.github.gleidsonmt.todo.global.ListPresenter;
 import io.github.gleidsonmt.todo.model.List;
 import io.github.gleidsonmt.todo.view.ViewList;
-import io.github.gleidsonmt.todo.view.panel.menu.ListContextMenu;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
@@ -16,7 +15,6 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.geometry.Side;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -155,15 +153,15 @@ public class CustomDrawerItem extends ToggleButton {
     }
 
     private void setActions() {
-        var context = new ListContextMenu(this);
-        this.setOnContextMenuRequested(e -> {
+        // var context = new ListContextMenu(this);
+        // this.setOnContextMenuRequested(e -> {
 
-            var current = (SideNav) getScene().lookup("#drawer");
-            current.select((ViewList) this.getUserData());
+        //     var current = (SideNav) getScene().lookup("#drawer");
+        //     current.select((ViewList) this.getUserData());
 
-            context.show(this, Side.TOP, 10, 0);
+        //     context.show(this, Side.TOP, 10, 0);
 
-        });
+        // });
     }
 
     public ViewList getViewList() {

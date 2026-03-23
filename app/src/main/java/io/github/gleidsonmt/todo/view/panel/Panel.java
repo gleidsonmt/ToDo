@@ -84,13 +84,13 @@ public class Panel extends Container {
      * 
      * @param listRoot The list root.
      */
-    public void setContent(ListRoot listRoot) {
+    public void setContent(ListRootNew listRoot) {
         // remove and set all children for this list root
         this.container.getChildren().setAll(listRoot);
         // This ensure that if the list selected is not a fixed list you only
         // add the task a custom list not the tasks, tasks is a fixed list with
         // no id.
-        listRoot.actualListProperty().addListener((_, _, newValue) -> inputContainer.addTasksItem(newValue.isFixed()));
+        // listRoot.actualListProperty().addListener((_, _, newValue) -> inputContainer.addTasksItem(newValue.isFixed()));
     }
 
     public ListRoot getListRoot() {
@@ -132,21 +132,21 @@ public class Panel extends Container {
         Button hamb = new Hamburger();
 
         // this.addBreakpoint((event) -> {
-        //     // body.setLeft(null);
-        //     bar.getChildren().add(hamb);
-        //     bar.getChildren().forEach(el -> {
-        //         GridPane.setRowIndex(el, 1);
-        //     });
-        //     bar.addRow(0, hamb);
-        //     // GridPane.setColumnIndex(hamb, 0);
+        // // body.setLeft(null);
+        // bar.getChildren().add(hamb);
+        // bar.getChildren().forEach(el -> {
+        // GridPane.setRowIndex(el, 1);
+        // });
+        // bar.addRow(0, hamb);
+        // // GridPane.setColumnIndex(hamb, 0);
         // }, "<MD");
 
         // this.addBreakpoint((event) -> {
-        //     // body.setLeft(sideNav);
-        //     bar.getChildren().remove(hamb);
-        //     bar.getChildren().forEach(el -> {
-        //         GridPane.setRowIndex(el, 0);
-        //     });
+        // // body.setLeft(sideNav);
+        // bar.getChildren().remove(hamb);
+        // bar.getChildren().forEach(el -> {
+        // GridPane.setRowIndex(el, 0);
+        // });
         // }, ">MD");
 
     }
@@ -217,4 +217,5 @@ public class Panel extends Container {
     public ObjectProperty<Icon> titleIconProperty() {
         return this.svgIcon.iconProperty();
     }
+
 }

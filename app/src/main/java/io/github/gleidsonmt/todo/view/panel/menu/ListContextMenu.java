@@ -3,6 +3,7 @@ package io.github.gleidsonmt.todo.view.panel.menu;
 import java.util.List;
 
 import io.github.gleidsonmt.todo.view.nav.CustomDrawerItem;
+import io.github.gleidsonmt.todo.view.nav.CustomDrawerItemNew;
 import io.github.gleidsonmt.todo.view.panel.menu.list_menu_items.MenuItemDeleteList;
 import io.github.gleidsonmt.todo.view.panel.menu.list_menu_items.MenuItemReanameList;
 import javafx.scene.control.ContextMenu;
@@ -20,11 +21,11 @@ import javafx.scene.control.SeparatorMenuItem;
 public class ListContextMenu extends ContextMenu {
 
     // private MenuItemDeleteList menuItemDeleteList;
-    private CustomDrawerItem item;
+    private CustomDrawerItemNew item;
 
-    public ListContextMenu(CustomDrawerItem item) {
+    public ListContextMenu(CustomDrawerItemNew item) {
         this.item = item;
-        getItems().setAll(item.getViewList().getList().isFixed() ? layoutFixed() : layoutUnfixed());
+        getItems().setAll(item.getViewModel().isFixed() ? layoutFixed() : layoutUnfixed());
     }
 
     @SuppressWarnings("null")

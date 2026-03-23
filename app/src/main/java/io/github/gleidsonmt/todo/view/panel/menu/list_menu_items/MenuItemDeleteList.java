@@ -2,11 +2,7 @@ package io.github.gleidsonmt.todo.view.panel.menu.list_menu_items;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
-import io.github.gleidsonmt.todo.global.Global;
-import io.github.gleidsonmt.todo.global.ListPresenter;
-import io.github.gleidsonmt.todo.model.List;
-import io.github.gleidsonmt.todo.view.nav.CustomDrawerItem;
-import io.github.gleidsonmt.todo.view.nav.SideNav;
+import io.github.gleidsonmt.todo.view.nav.CustomDrawerItemNew;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
@@ -21,7 +17,7 @@ import javafx.scene.input.KeyCodeCombination;
  */
 public class MenuItemDeleteList extends MenuItem {
 
-    public MenuItemDeleteList(CustomDrawerItem item) {
+    public MenuItemDeleteList(CustomDrawerItemNew item) {
 
         setText("Delete");
         this.setAccelerator(new KeyCodeCombination(KeyCode.DELETE));
@@ -31,11 +27,11 @@ public class MenuItemDeleteList extends MenuItem {
 
         this.setOnAction(e -> {
             // viewModel.delete();
-            SideNav nav = (SideNav) item.getScene().lookup("#drawer");
+            // SideNav nav = (SideNav) item.getScene().lookup("#drawer");
             // nav.getChildren().remove(item);
-            nav.getItems().remove(item.getViewList());
-            ListPresenter presenter = (ListPresenter) Global.get(List.class);
-            presenter.delete(item.getViewList().getList());
+            // nav.getItems().remove(item.getViewList());
+            // ListPresenter presenter = (ListPresenter) Global.get(List.class);
+            // presenter.delete(item.getViewList().getList());
             // repo.of(List.class).getData().remove(index);
             // repo.delete(item.getViewList().getList());
         });

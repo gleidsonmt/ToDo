@@ -6,6 +6,7 @@ import java.sql.SQLException;
 
 import io.github.gleidsonmt.todo.bd.dao.internal.AbstractDao;
 import io.github.gleidsonmt.todo.model.List;
+import io.github.gleidsonmt.todo.view_model.ListViewModelConverter;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
@@ -13,15 +14,11 @@ import io.github.gleidsonmt.todo.model.List;
  */
 public final class DaoList extends AbstractDao<List> {
 
+    private final ListViewModelConverter converter = new ListViewModelConverter();
+
     @Override
-    public synchronized List createElement(ResultSet result) throws SQLException {
-
-        List item = new List(result.getString("list.name"));
-        item.setId(result.getInt("list.id"));
-        item.setName(result.getString("list.name"));
-        item.setFixed(result.getBoolean("list.fixed"));
-
-        return item;
+    public List createElement(ResultSet result) throws SQLException {
+        return converter.create(result.getInt("list.id"), result.getString("list.name"));
     }
 
     @Override
@@ -33,6 +30,21 @@ public final class DaoList extends AbstractDao<List> {
             throw new RuntimeException(e);
         }
         return model;
+    }
+
+    public int getSize(long lis_id) {
+        String sql = "select size from sizes where list_id = " + lis_id;
+        ResultSet result = executeQuery(sql);
+        var size = 0;
+        try {
+            if (result.first()) {
+                size = result.getInt("size");
+            }
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return size;
     }
 
 }

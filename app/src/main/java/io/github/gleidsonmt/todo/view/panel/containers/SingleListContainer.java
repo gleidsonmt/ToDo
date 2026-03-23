@@ -1,12 +1,10 @@
 package io.github.gleidsonmt.todo.view.panel.containers;
 
-import io.github.gleidsonmt.todo.model.List;
 import io.github.gleidsonmt.todo.model.ToDoTask;
 import io.github.gleidsonmt.todo.view.panel.items.TaskItem;
 import io.github.gleidsonmt.todo.view.panel.sections.SingleSection;
+import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import javafx.application.Platform;
-import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
 
 /**
  * Description: The first main list container, is a simple list container
@@ -21,10 +19,14 @@ public class SingleListContainer extends ListContainer {
 
     private final SingleSection sectionIncomplete = new SingleSection();
 
-    public SingleListContainer(List list, ObservableList<ToDoTask> data) {
-        super(list, data);
-        init();
-        registerListeners();
+    // public SingleListContainer(List list, ObservableList<ToDoTask> data) {
+    // // super(list, data);
+    // init();
+    // registerListeners();
+    // }
+
+    public SingleListContainer(ListViewModel model) {
+        super(model);
     }
 
     private void init() {
@@ -34,22 +36,23 @@ public class SingleListContainer extends ListContainer {
     private void registerListeners() {
         // this list filter items from the main data list
         // with this list updated so the ui needs to adapat it
-        list.getItems().addListener((ListChangeListener<ToDoTask>) c -> {
-            if (c.next()) {
-                if (c.wasReplaced()) {
-                    // Todo: do not do something if the data is changed
-                    return;
-                }
-                if (c.wasAdded()) {
-                    c.getAddedSubList().forEach(task -> sectionIncomplete.getChildren().add(createTaskItem(task)));
-                }
-                if (c.wasRemoved()) {
-                    c.getRemoved().forEach(el -> {
-                        sectionIncomplete.getChildren().remove(sectionIncomplete.get(el));
-                    });
-                }
-            }
-        });
+        // list.getItems().addListener((ListChangeListener<ToDoTask>) c -> {
+        // if (c.next()) {
+        // if (c.wasReplaced()) {
+        // // Todo: do not do something if the data is changed
+        // return;
+        // }
+        // if (c.wasAdded()) {
+        // c.getAddedSubList().forEach(task ->
+        // sectionIncomplete.getChildren().add(createTaskItem(task)));
+        // }
+        // if (c.wasRemoved()) {
+        // c.getRemoved().forEach(el -> {
+        // sectionIncomplete.getChildren().remove(sectionIncomplete.get(el));
+        // });
+        // }
+        // }
+        // });
     }
 
     /**
@@ -80,7 +83,7 @@ public class SingleListContainer extends ListContainer {
      */
     @Override
     public void load() {
-        loadTasks(_ -> list.getItems().forEach(this::loadTask));
+        // loadTasks(_ -> list.getItems().forEach(this::loadTask));
     }
 
     private void loadTask(ToDoTask task) {

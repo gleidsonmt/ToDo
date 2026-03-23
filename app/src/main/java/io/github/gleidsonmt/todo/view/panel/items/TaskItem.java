@@ -189,9 +189,9 @@ public class TaskItem extends ToggleButton {
     public String toString() {
         StringBuilder build = new StringBuilder();
         build.append("TaskItem[");
-        // build.append("{id=").append(viewModel.getId()).append(", ");
-        // build.append("name=").append(viewModel.getName()).append(", ");
-        // build.append("}]");
+        build.append("{id=").append(viewModel.getId()).append(", ");
+        build.append("name=").append(viewModel.getName()).append(", ");
+        build.append("}]");
         return build.toString();
     }
 

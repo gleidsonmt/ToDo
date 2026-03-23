@@ -5,6 +5,7 @@ import io.github.gleidsonmt.todo.model.ListType;
 import io.github.gleidsonmt.todo.model.ToDoTask;
 import io.github.gleidsonmt.todo.view.panel.items.TaskItem;
 import io.github.gleidsonmt.todo.view.panel.sections.AnimatedSection;
+import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
@@ -25,8 +26,8 @@ public class MultipleListContainer extends ListContainer {
 
     private final BooleanProperty hasChild = new SimpleBooleanProperty(false);
 
-    public MultipleListContainer(List list, ObservableList<ToDoTask> data) {
-        super(list, data);
+    public MultipleListContainer(ListViewModel list, ObservableList<ToDoTask> data) {
+        super(list);
         this.setSpacing(5);
 
         hasChild.bind(Bindings.size(this.getChildren()).greaterThan(1));
@@ -116,7 +117,7 @@ public class MultipleListContainer extends ListContainer {
     @Override
     public void load() {
         // loadTasks(_ -> list.getLists().forEach(this::loadLists));
-        list.getLists().forEach(this::loadLists);
+        // list.getLists().forEach(this::loadLists);
     }
 
     private void loadLists(List list) {

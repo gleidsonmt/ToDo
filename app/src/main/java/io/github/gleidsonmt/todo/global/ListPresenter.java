@@ -1,6 +1,7 @@
 package io.github.gleidsonmt.todo.global;
 
 import io.github.gleidsonmt.todo.bd.dao.DaoList;
+import io.github.gleidsonmt.todo.bd.dao.internal.Dao;
 import io.github.gleidsonmt.todo.model.List;
 
 /**
@@ -32,5 +33,15 @@ public class ListPresenter extends AbstractPresenter<List> {
     @Override
     public Class<List> getModelClass() {
         return List.class;
+    }
+
+    public int size(long id) {
+        return ((DaoList) dao).getSize(id);
+    }
+
+    public int sizeFrom(int limit, long id) {
+
+        // return dao.sizeWhere(limit, " where list_id = " + list.getId());
+        return dao.sizeWhere("select * from task where list_id = " + id + " limit " + limit);
     }
 }

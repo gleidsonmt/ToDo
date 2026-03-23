@@ -46,7 +46,7 @@ Features
 
 # 3 - The drawer item can be dragged.
 
-# 15 -
+# 15 - O drawer sera simples e
 
 Bugs
 

@@ -1,13 +1,15 @@
 package io.github.gleidsonmt.todo.view.panel.containers;
 
-import io.github.gleidsonmt.todo.model.List;
+import io.github.gleidsonmt.todo.global.Global;
+import io.github.gleidsonmt.todo.global.TaskPresenter;
 import io.github.gleidsonmt.todo.model.ToDoTask;
 import io.github.gleidsonmt.todo.view.panel.items.TaskItem;
 import io.github.gleidsonmt.todo.view.panel.sections.AnimatedSection;
 import io.github.gleidsonmt.todo.view.panel.sections.SingleSection;
+import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import javafx.application.Platform;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 
 /**
  * Description:
@@ -19,12 +21,15 @@ import javafx.collections.ObservableList;
  */
 public class DoubleListContainer extends ListContainer {
 
-    private final SingleSection sectionIncomplete = new SingleSection();
+    private final SingleSection sectionIncomplete;
     private final AnimatedSection sectionCompleted;
 
-    public DoubleListContainer(List list, ObservableList<ToDoTask> data) {
-        super(list, data);
+    private ObservableList<ToDoTask> items;
 
+    public DoubleListContainer(ListViewModel list) {
+        super(list);
+
+        sectionIncomplete = new SingleSection();
         sectionCompleted = new AnimatedSection();
 
         this.getChildren().add(0, sectionIncomplete);
@@ -35,47 +40,55 @@ public class DoubleListContainer extends ListContainer {
 
     private void registerListeners() {
 
-        list.getItems().addListener((ListChangeListener<ToDoTask>) c -> {
-            if (c.next()) {
-                if (c.wasReplaced()) {
-                    // Todo: do not do something if the data is changed
-                    return;
-                }
-                if (c.wasAdded()) {
-                    c.getAddedSubList().forEach(task -> {
-                        loadTask(task);
-                    });
-                }
+        // list.getItems().addListener((ListChangeListener<ToDoTask>) c -> {
+        // if (c.next()) {
+        // if (c.wasReplaced()) {
+        // // Todo: do not do something if the data is changed
+        // return;
+        // }
+        // if (c.wasAdded()) {
+        // c.getAddedSubList().forEach(task -> {
+        // loadTask(task);
+        // });
+        // }
 
-                if (c.wasRemoved()) {
-                    c.getRemoved().forEach(el -> {
-                        Platform.runLater(() -> {
-                            if (el.isCompleted()) {
-                                sectionCompleted.getItems().remove(sectionCompleted.get(el));
-                            } else {
-                                sectionIncomplete.getChildren().remove(sectionIncomplete.get(el));
-                            }
-                        });
+        // if (c.wasRemoved()) {
+        // c.getRemoved().forEach(el -> {
+        // Platform.runLater(() -> {
+        // if (el.isCompleted()) {
+        // sectionCompleted.getItems().remove(sectionCompleted.get(el));
+        // } else {
+        // sectionIncomplete.getChildren().remove(sectionIncomplete.get(el));
+        // }
+        // });
 
-                    });
-                }
-            }
-        });
+        // });
+        // }
+        // }
+        // });
     }
 
     @Override
     public void load() {
-        loadTasks(_ -> list.getItems().forEach(this::loadTask));
+        TaskPresenter presenter = (TaskPresenter) Global.get(ToDoTask.class);
+
+        Task<ObservableList<ToDoTask>> task = presenter.fetch(10, 0, "list_id = " + list.getId());
+        new Thread(task).start();
+
+        task.setOnSucceeded(e -> {
+            task.getValue().forEach(el -> loadTask(el));
+            items = task.getValue();
+        });
     }
 
     private void loadTask(ToDoTask task) {
+
+        TaskItem taskItem = createTaskItem(task);
         try {
             Thread.sleep((long) (sectionIncomplete.getSpeed() / 2));
         } catch (InterruptedException e1) {
 
         }
-
-        TaskItem taskItem = createTaskItem(task);
         Platform.runLater(() -> {
             if (task.isCompleted()) {
                 sectionCompleted.getItems().add(taskItem);
@@ -83,6 +96,8 @@ public class DoubleListContainer extends ListContainer {
                 sectionIncomplete.getChildren().add(0, taskItem);
             }
         });
+        // TODO Auto-generated method stub
+
     }
 
     @Override
@@ -108,7 +123,6 @@ public class DoubleListContainer extends ListContainer {
             viewModel.update();
 
         });
-
         return item;
     }
 }
