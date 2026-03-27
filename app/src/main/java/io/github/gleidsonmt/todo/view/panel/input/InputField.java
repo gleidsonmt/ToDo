@@ -2,11 +2,14 @@ package io.github.gleidsonmt.todo.view.panel.input;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
-import io.github.gleidsonmt.todo.model.ListType;
+import io.github.gleidsonmt.todo.global.Global;
+import io.github.gleidsonmt.todo.global.TaskPresenter;
 import io.github.gleidsonmt.todo.model.ToDoTask;
+import io.github.gleidsonmt.todo.view.nav.SideNavNew;
 import io.github.gleidsonmt.todo.view.panel.Panel;
 import io.github.gleidsonmt.todo.view.panel.items.TaskItem;
 import io.github.gleidsonmt.todo.view_model.TaskViewModelConverter;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -123,28 +126,23 @@ public class InputField extends GridPane {
                         return;
 
                     // Create another using the prepared here.
-                    // task.setName(textInput.getText());
-                    // temp.setRemind(task.getRemind()); // to solve
-                    // temp.setCompleted(task.isCompleted()); // to solve
-                    // temp.setDueDate(task.getDueDate()); // to solve
-                    // temp.setRecurrenceId(task.getRecurrenceId());
+                    ToDoTask task = new ToDoTask(textInput.getText());
+                    task.setImportant(false);
+                    task.setCompleted(false);
+                    task.setMyDay(false);
 
-                    // task.setImportant(panel.getListRoot().getActuaList().getType().equals(ListType.IMPORTANT));
+                    task.setListId(panel.getListRoot().getActuaList().getId());
 
-                    // if (!panel.getListRoot().getActuaList().isFixed()) {
-                    // task.setListId(panel.getListRoot().getActuaList().getId());
-                    // }
+                    // panel.getListRoot().getData().add(task);
 
-                    // taskItem.getViewModel().setList();
-                    // Pass the task to the list root get from the panel
-                    // adding to the main data will be reflected in the database
-                    // as well
+                    TaskPresenter presenter = (TaskPresenter) Global.get(ToDoTask.class);
+                    presenter.store(task);
 
-                    panel.getListRoot().getData()
-                            .add(converter.create(0, textInput.getText(), false,
-                                    panel.getListRoot().getActuaList().getType().equals(ListType.IMPORTANT), false,
-                                    null, panel.getListRoot().getActuaList().isFixed() ? getListId()
-                                            : panel.getListRoot().getActuaList().getId()));
+                    Platform.runLater(() -> {
+                        SideNavNew nav = (SideNavNew) getScene().lookup("#drawer");
+                        nav.getSelected().updateNotifications();
+                        textInput.clear();
+                    });
 
                 }
             }

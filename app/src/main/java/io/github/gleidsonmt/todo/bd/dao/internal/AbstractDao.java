@@ -74,6 +74,7 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
         } catch (SQLException e) {
             errorMessage = "Error on updating a on: SQL => '" + sql + "';\n" + e;
             logger.severe(errorMessage);
+            e.printStackTrace();
             throw new RuntimeException(e);
             // return false;
         } finally {
@@ -104,6 +105,7 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
         } catch (SQLException e) {
             errorMessage = "SQL Action, [Type = ERROR]  SQL => \n" + sql + "';\n" + e;
             logger.severe(errorMessage);
+            e.printStackTrace();
             return false;
         } finally {
             if (autoCloseable)
@@ -178,8 +180,6 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
             throw new RuntimeException(e);
         }
     }
-
-
 
     /**
      * This method uses a foreign key, to get a model.
@@ -308,7 +308,7 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
     }
 
     @ApiStatus.Internal
-    private void connect() {
+    protected void connect() {
         try {
             if (!data.hasConnection() || data.getConnection().isClosed()) {
                 data.connect();
@@ -319,7 +319,7 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
     }
 
     @ApiStatus.Internal
-    private void close() {
+    protected void close() {
         data.close();
     }
 

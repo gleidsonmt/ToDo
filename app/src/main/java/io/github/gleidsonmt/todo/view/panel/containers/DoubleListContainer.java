@@ -7,7 +7,9 @@ import io.github.gleidsonmt.todo.view.panel.items.TaskItem;
 import io.github.gleidsonmt.todo.view.panel.sections.AnimatedSection;
 import io.github.gleidsonmt.todo.view.panel.sections.SingleSection;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
-import javafx.application.Platform;
+import io.github.gleidsonmt.todo.view_model.TaskViewModel;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.IntegerBinding;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 
@@ -24,105 +26,71 @@ public class DoubleListContainer extends ListContainer {
     private final SingleSection sectionIncomplete;
     private final AnimatedSection sectionCompleted;
 
-    private ObservableList<ToDoTask> items;
-
     public DoubleListContainer(ListViewModel list) {
         super(list);
 
-        sectionIncomplete = new SingleSection();
-        sectionCompleted = new AnimatedSection();
+        this.sectionIncomplete = new SingleSection();
+        this.sectionCompleted = new AnimatedSection();
 
         this.getChildren().add(0, sectionIncomplete);
         this.getChildren().add(1, sectionCompleted);
-
-        registerListeners();
-    }
-
-    private void registerListeners() {
-
-        // list.getItems().addListener((ListChangeListener<ToDoTask>) c -> {
-        // if (c.next()) {
-        // if (c.wasReplaced()) {
-        // // Todo: do not do something if the data is changed
-        // return;
-        // }
-        // if (c.wasAdded()) {
-        // c.getAddedSubList().forEach(task -> {
-        // loadTask(task);
-        // });
-        // }
-
-        // if (c.wasRemoved()) {
-        // c.getRemoved().forEach(el -> {
-        // Platform.runLater(() -> {
-        // if (el.isCompleted()) {
-        // sectionCompleted.getItems().remove(sectionCompleted.get(el));
-        // } else {
-        // sectionIncomplete.getChildren().remove(sectionIncomplete.get(el));
-        // }
-        // });
-
-        // });
-        // }
-        // }
-        // });
     }
 
     @Override
     public void load() {
         TaskPresenter presenter = (TaskPresenter) Global.get(ToDoTask.class);
-
-        Task<ObservableList<ToDoTask>> task = presenter.fetch(10, 0, "list_id = " + list.getId());
+        Task<ObservableList<ToDoTask>> task = presenter.fetch(40, 0, "list_id = " + list.getId());
         new Thread(task).start();
 
-        task.setOnSucceeded(e -> {
-            task.getValue().forEach(el -> loadTask(el));
-            items = task.getValue();
+        // update list task
+        task.setOnSucceeded(_ -> {
+            task.getValue().forEach(el -> {
+                data.add(new TaskViewModel(el));
+            });
+            // data = task.getValue();
+            sectionIncomplete.setList(data.filtered(el -> !el.isCompleted()));
+            sectionCompleted.setList(data.filtered(TaskViewModel::isCompleted));
+
+            bind();
         });
     }
 
-    private void loadTask(ToDoTask task) {
+    private void bind() {
 
-        TaskItem taskItem = createTaskItem(task);
-        try {
-            Thread.sleep((long) (sectionIncomplete.getSpeed() / 2));
-        } catch (InterruptedException e1) {
+        IntegerBinding sizeOfTheFirstSection = Bindings.size(sectionIncomplete.getSortedList());
+        IntegerBinding sizeOfTheSecondSection = Bindings.size(sectionCompleted.getSortedList());
 
-        }
-        Platform.runLater(() -> {
-            if (task.isCompleted()) {
-                sectionCompleted.getItems().add(taskItem);
-            } else {
-                sectionIncomplete.getChildren().add(0, taskItem);
-            }
+        this.sizeProperty().bind(sizeOfTheFirstSection.add(sizeOfTheSecondSection));
+
+        this.sizeProperty().addListener((_, _, val) -> {
+            this.setSpacing(sizeOfTheFirstSection.get() == 0 ? 0 : 10);
         });
-        // TODO Auto-generated method stub
-
+        this.setSpacing(this.sizeProperty().get() == 0 ? 0 : 10);
     }
 
     @Override
-    protected TaskItem createTaskItem(ToDoTask task) {
+    protected TaskItem createTaskItem(TaskViewModel task) {
 
-        TaskItem item = new TaskItem(task);
-        group.getToggles().add(item);
+        // TaskItem item = new TaskItem(task);
+        // group.getToggles().add(item);
 
-        item.setOnImportantChange(viewModel -> {
-            viewModel.update();
-        });
+        // item.setOnImportantChange(viewModel -> {
+        //     viewModel.update();
+        // });
 
-        item.setOnCompletedChange(viewModel -> {
+        // item.setOnCompletedChange(viewModel -> {
 
-            if (viewModel.isCompleted()) {
-                sectionIncomplete.getChildren().removeAll(item);
-                sectionCompleted.getItems().addAll(item);
-            } else {
-                sectionCompleted.getItems().removeAll(item);
-                sectionIncomplete.getChildren().add(0, item);
-            }
+        //     if (viewModel.isCompleted()) {
+        //         sectionIncomplete.getChildren().removeAll(item);
+        //         // sectionCompleted.getItems().addAll(item);
+        //     } else {
+        //         // sectionCompleted.getItems().removeAll(item);
+        //         sectionIncomplete.getChildren().add(0, item);
+        //     }
 
-            viewModel.update();
+        //     viewModel.update();
 
-        });
-        return item;
+        // });
+        return null;
     }
 }

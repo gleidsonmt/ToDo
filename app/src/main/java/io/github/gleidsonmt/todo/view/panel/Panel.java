@@ -90,11 +90,12 @@ public class Panel extends Container {
         // This ensure that if the list selected is not a fixed list you only
         // add the task a custom list not the tasks, tasks is a fixed list with
         // no id.
-        // listRoot.actualListProperty().addListener((_, _, newValue) -> inputContainer.addTasksItem(newValue.isFixed()));
+        // listRoot.actualListProperty().addListener((_, _, newValue) ->
+        // inputContainer.addTasksItem(newValue.isFixed()));
     }
 
-    public ListRoot getListRoot() {
-        return (ListRoot) this.container.getChildren().get(0);
+    public ListRootNew getListRoot() {
+        return (ListRootNew) this.container.getChildren().get(0);
     }
 
     private ScrollPane createScroll() {

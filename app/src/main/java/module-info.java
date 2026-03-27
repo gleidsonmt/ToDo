@@ -37,5 +37,7 @@ module io.github.gleidsonmt.todo {
     exports io.github.gleidsonmt.todo.view_model;
     exports io.github.gleidsonmt.todo.view.nav;
     exports io.github.gleidsonmt.todo.view.panel;
+    exports io.github.gleidsonmt.todo.view.panel.items;
+    exports io.github.gleidsonmt.todo.view.panel.containers;
 
 }

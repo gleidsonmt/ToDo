@@ -21,6 +21,7 @@ public class DaoSizes extends AbstractDao<Sizes> {
     public Sizes createElement(ResultSet result) throws SQLException {
         Sizes item = new Sizes(result.getInt("sizes.id"));
         item.setSize(result.getInt("sizes.size"));
+        item.setListId(result.getInt("sizes.list_id"));
         return item;
     }
 
@@ -28,6 +29,7 @@ public class DaoSizes extends AbstractDao<Sizes> {
     protected Sizes prepareElement(PreparedStatement prepare, Sizes model) {
         try {
             prepare.setInt(1, model.getSize());
+            prepare.setLong(2, model.getListId());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

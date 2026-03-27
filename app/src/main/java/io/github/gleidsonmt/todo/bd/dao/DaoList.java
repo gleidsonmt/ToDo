@@ -33,6 +33,7 @@ public final class DaoList extends AbstractDao<List> {
     }
 
     public int getSize(long lis_id) {
+        connect();
         String sql = "select size from sizes where list_id = " + lis_id;
         ResultSet result = executeQuery(sql);
         var size = 0;
@@ -43,6 +44,8 @@ public final class DaoList extends AbstractDao<List> {
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        } finally {
+            close();
         }
         return size;
     }

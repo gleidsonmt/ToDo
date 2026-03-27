@@ -12,9 +12,9 @@ import javafx.scene.control.Label;
  */
 public class Title extends Label {
 
-    public Title(String title) {
+    public Title() {
         this.getStyleClass().addAll("task-info", "h5", "bold");
         this.setWrapText(true);
-        this.setText(title);
+
     }
 }

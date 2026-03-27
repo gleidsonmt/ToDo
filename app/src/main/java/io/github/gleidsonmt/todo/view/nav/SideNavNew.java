@@ -6,11 +6,13 @@ import io.github.gleidsonmt.todo.global.Global;
 import io.github.gleidsonmt.todo.global.ListPresenter;
 import io.github.gleidsonmt.todo.model.List;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
+import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 /**
@@ -48,6 +50,7 @@ public class SideNavNew extends VBox {
 
     private void bind() {
         selected.bind(group.selectedToggleProperty().map(e -> (CustomDrawerItemNew) e));
+        VBox.setVgrow(container, Priority.ALWAYS);
     }
 
     public void load() {
@@ -62,7 +65,6 @@ public class SideNavNew extends VBox {
             });
             this.getChildren().add(new FooterNew());
             selectFirst();
-
         });
     }
 
@@ -78,6 +80,17 @@ public class SideNavNew extends VBox {
         group.selectToggle(group.getToggles().get(0));
     }
 
+    public CustomDrawerItemNew get(TaskViewModel model) {
+        Optional<CustomDrawerItemNew> optional = group.getToggles().stream().map(e -> (CustomDrawerItemNew) e)
+                .filter(el -> el.getViewModel().getId() == model.getListId()).findFirst();
+
+        return optional.get();
+    }
+
+    public CustomDrawerItemNew getSelected() {
+        return itemSelectedProperty().get();
+    }
+
     public ListViewModel add(List model) {
         return createItem(model, true);
     }
@@ -85,10 +98,13 @@ public class SideNavNew extends VBox {
     private ListViewModel createItem(List list, boolean editable) {
         ListViewModel viewModel = new ListViewModel(list);
 
-        CustomDrawerItemNew drawerItem = new CustomDrawerItemNew(viewModel, presenter.size(list.getId()));
+        CustomDrawerItemNew drawerItem = new CustomDrawerItemNew(viewModel);
+        drawerItem.updateNotifications();
+
         group.getToggles().add(drawerItem);
         container.getChildren().add(drawerItem);
         drawerItem.setEditable(editable);
+
         return viewModel;
     }
 

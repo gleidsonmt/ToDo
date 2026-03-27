@@ -2,6 +2,9 @@ package io.github.gleidsonmt.todo.view.nav;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
+import io.github.gleidsonmt.todo.global.Global;
+import io.github.gleidsonmt.todo.global.ListPresenter;
+import io.github.gleidsonmt.todo.model.List;
 import io.github.gleidsonmt.todo.view.panel.menu.ListContextMenu;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import javafx.beans.binding.Bindings;
@@ -49,23 +52,30 @@ public class CustomDrawerItemNew extends ToggleButton {
     private final IntegerProperty numberOfNotifications = new SimpleIntegerProperty(0);
     private final BooleanProperty editable = new SimpleBooleanProperty(false);
 
+    // test
+    private BooleanProperty update = new SimpleBooleanProperty(false);
+
     private ListViewModel viewModel;
 
-    public CustomDrawerItemNew(ListViewModel viewModel, int size) {
-        this(viewModel, size, false);
+    public CustomDrawerItemNew(ListViewModel viewModel) {
+        this(viewModel, false);
     }
 
-    public CustomDrawerItemNew(ListViewModel viewModel, int size, boolean fixed) {
+    public CustomDrawerItemNew(ListViewModel viewModel, boolean fixed) {
         this.viewModel = viewModel;
         this.fixed.set(fixed);
         this.setGraphic(container);
-        this.numberOfNotifications.set(size);
 
         init();
         configLayout();
         bind();
         registerListeners();
         setActions();
+    }
+
+    public void updateNotifications() {
+        ListPresenter presenter = (ListPresenter) Global.get(List.class);
+        this.numberOfNotifications.set(presenter.size(this.getViewModel().getId()));
     }
 
     public ListViewModel getViewModel() {
@@ -121,6 +131,7 @@ public class CustomDrawerItemNew extends ToggleButton {
         container.getRowConstraints().addAll(rowOne);
 
         GridPane.setHgrow(title, Priority.ALWAYS);
+
     }
 
     private void bind() {
@@ -179,4 +190,5 @@ public class CustomDrawerItemNew extends ToggleButton {
     public void setEditable(boolean val) {
         this.editable.set(val);
     }
+
 }

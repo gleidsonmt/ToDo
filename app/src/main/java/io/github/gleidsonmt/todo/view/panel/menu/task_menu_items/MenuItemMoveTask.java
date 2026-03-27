@@ -7,6 +7,9 @@ import io.github.gleidsonmt.todo.global.Presenter;
 import io.github.gleidsonmt.todo.model.List;
 import io.github.gleidsonmt.todo.utils.I18n;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 
@@ -25,9 +28,22 @@ public class MenuItemMoveTask extends Menu {
         setGraphic(new SVGIcon(Icon.FLEX_DIRECTION));
 
         Presenter<List> presenter = Global.get(List.class);
+        Task<ObservableList<List>> task = presenter.fetch(FXCollections.observableArrayList());
+        new Thread(task).start();
 
-        presenter.getData().forEach(list -> {
-            getItems().add(new MenuList(list, item));
+        task.setOnSucceeded(_ -> {
+
+            task.getValue().forEach((list) -> {
+                // don't add the option the task is already in
+                if (list.getId() != item.getListId()) {
+                    // Platform.runLater(() -> {
+
+                    getItems().add(new MenuList(list, item));
+                    // });
+
+                }
+            });
+
         });
     }
 
@@ -41,7 +57,6 @@ class MenuList extends MenuItem {
 
         setOnAction(e -> {
             item.setListId(list.getId());
-            item.update();
         });
     }
 

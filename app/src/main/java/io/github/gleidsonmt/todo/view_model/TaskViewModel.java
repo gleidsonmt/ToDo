@@ -4,10 +4,8 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 import io.github.gleidsonmt.todo.global.Global;
-import io.github.gleidsonmt.todo.global.Presenter;
 import io.github.gleidsonmt.todo.global.TaskPresenter;
 import io.github.gleidsonmt.todo.model.ToDoTask;
-import io.github.gleidsonmt.todo.view.panel.items.TaskItem;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.ObjectProperty;
@@ -25,7 +23,7 @@ import javafx.beans.property.SimpleObjectProperty;
  */
 public class TaskViewModel extends ViewModel {
 
-    private final Presenter<ToDoTask> presenter;
+    private final TaskPresenter presenter;
 
     private final TaskViewModelConverter converter = new TaskViewModelConverter();
 
@@ -35,52 +33,89 @@ public class TaskViewModel extends ViewModel {
     private final ObjectProperty<LocalDate> dueDate;
     private final LongProperty listId;
 
-    private TaskItem taskItem;
+    // private final TaskItem taskItem;
+    private final ToDoTask task;
 
-    public TaskViewModel(TaskItem taskItem) {
-        this.taskItem = taskItem;
-        this.setId(Long.parseLong(taskItem.getId()));
+    public TaskViewModel(ToDoTask task) {
+        this.task = task;
+        this.setId(task.getId());
 
-        this.presenter = Global.get(ToDoTask.class);
+        this.presenter = (TaskPresenter) Global.get(ToDoTask.class);
 
-        this.completed = new SimpleBooleanProperty(taskItem.completedProperty().get());
-        this.important = new SimpleBooleanProperty(taskItem.favoriteProperty().get());
+        this.setName(task.getName());
+        this.completed = new SimpleBooleanProperty(task.isCompleted());
+        this.important = new SimpleBooleanProperty(task.isImportant());
 
-        this.myDay = new SimpleBooleanProperty(taskItem.isMyDay());
-        this.dueDate = new SimpleObjectProperty<>(taskItem.getDueDate());
+        this.myDay = new SimpleBooleanProperty(task.isMyDay());
+        this.dueDate = new SimpleObjectProperty<>(task.getDueDate());
 
-        this.listId = new SimpleLongProperty(taskItem.getListId());
+        this.listId = new SimpleLongProperty(task.getListId());
 
         bind();
         registerListeners();
     }
 
     private void bind() {
-        this.nameProperty().bindBidirectional(taskItem.nameProperty());
-        this.important.bindBidirectional(taskItem.favoriteProperty());
-        this.completed.bindBidirectional(taskItem.completedProperty());
+
+        // this.nameProperty().bindBidirectional(taskItem.nameProperty());
+        // this.important.bindBidirectional(taskItem.favoriteProperty());
+        // this.completed.bindBidirectional(taskItem.completedProperty());
     }
 
     private void registerListeners() {
         this.important.addListener((_, _, _) -> {
-            taskItem.onImportantChange().handle(this);
+            // taskItem.onImportantChange().handle(this);
         });
 
-        this.completed.addListener((_, _, _) -> {
-            taskItem.onCompletedChange().handle(this);
-        });
+        // this.completed.addListener((_, _, _) -> {
+        // taskItem.onCompletedChange().handle(this);
+        // });
+
+        // this.listId.addListener((_, _, newVal) -> {
+        // System.out.println(taskItem.getP);
+        // if (newVal) {
+        // SideNavNew drawer = (SideNavNew)
+        // this.taskItem.getScene().lookup("#drawer");
+        // this.update();
+        // drawer.getSelected().updateNotifications();
+        // CustomDrawerItemNew drawerItem = drawer.get(this);
+        // drawerItem.updateNotifications();
+
+        // }
+        // });
+        // updateCount();
     }
 
-    public void save() {
-        presenter.getData().add(converter.convert(this));
+    public ToDoTask save() {
+        var converted = converter.convert(this);
+        presenter.store(converted);
+        this.setId(converted.getId());
+        return converted;
     }
 
     public void update() {
-        presenter.update(this);
+        // commit in db
+        var item = converter.convert(this);
+        presenter.update(item);
+        // ListRootNew listRoot = (ListRootNew)
+        // taskItem.getScene().lookup("#list-root");
+        // listRoot.getData().removeIf(el -> el.getId() == item.getId());
+        // updateCount();
     }
 
     public void delete() {
-        presenter.delete(this);
+        var item = converter.convert(this);
+        // ListRootNew listRoot = (ListRootNew)
+        // taskItem.getScene().lookup("#list-root");
+        // listRoot.getData().removeIf(el -> el.getId() == item.getId());
+        // listRoot.getContainer().remove(taskItem);
+        presenter.delete(item);
+        // updateCount();
+    }
+
+    private void updateCount() {
+        // SideNavNew nav = (SideNavNew) taskItem.getScene().lookup("#drawer");
+        // nav.getSelected().updateNotifications();
     }
 
     public void setMyDay(boolean myDay) {
@@ -89,6 +124,14 @@ public class TaskViewModel extends ViewModel {
 
     public boolean isMyDay() {
         return this.myDay.get();
+    }
+
+    public BooleanProperty completedProperty() {
+        return this.completed;
+    }
+
+    public BooleanProperty importantProperty() {
+        return this.important;
     }
 
     public boolean isCompleted() {
@@ -138,6 +181,7 @@ public class TaskViewModel extends ViewModel {
         sb.append(", name=").append(super.getName());
         sb.append(", myDay=").append(isMyDay());
         sb.append(", important=").append(isImportant());
+        sb.append(", listId=").append(listId);
         sb.append('}');
         return sb.toString();
     }

@@ -1,8 +1,9 @@
 package io.github.gleidsonmt.todo.global;
 
+import java.util.Optional;
+
 import io.github.gleidsonmt.todo.bd.dao.internal.AbstractDao;
 import io.github.gleidsonmt.todo.model.Model;
-import io.github.gleidsonmt.todo.view_model.ViewModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -29,6 +30,21 @@ public class AbstractPresenter<T extends Model> implements Presenter<T> {
     }
 
     @Override
+    public void save(T model) {
+        dao.store(model);
+    }
+
+    @Override
+    public void delete(T model) {
+        dao.delete(model);
+    }
+
+    @Override
+    public Optional<T> get(long id) {
+        return dao.get(id);
+    }
+
+    @Override
     public ObservableList<T> getData() {
         return this.data;
     }
@@ -43,6 +59,7 @@ public class AbstractPresenter<T extends Model> implements Presenter<T> {
      * For every action after loading the tasks, they will be reflection in
      * database (dao) actions.
      */
+    @Deprecated
     private final ListChangeListener<T> commitChangesInDatabase = (ListChangeListener<T>) c -> {
         if (!isLoaded)
             return;
@@ -60,12 +77,18 @@ public class AbstractPresenter<T extends Model> implements Presenter<T> {
         }
     };
 
+    @Deprecated
     @Override
     public Task<ObservableList<T>> fetch() {
         var task = this.dao.fetch(data);
-        data.addListener(commitChangesInDatabase);
-        task.setOnSucceeded(e -> isLoaded = true);
+        // data.addListener(commitChangesInDatabase);
+        // task.setOnSucceeded(e -> isLoaded = true);
         return task;
+    }
+
+    @Override
+    public Task<ObservableList<T>> fetch(ObservableList<T> items) {
+        return this.dao.fetch(items);
     }
 
     public Task<ObservableList<T>> fetch(long range) {

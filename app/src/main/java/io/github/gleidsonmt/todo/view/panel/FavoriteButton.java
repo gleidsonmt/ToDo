@@ -15,13 +15,12 @@ import javafx.scene.control.ToggleButton;
  */
 public class FavoriteButton extends ToggleButton {
 
-    public FavoriteButton(boolean selected) {
+    public FavoriteButton() {
 
         this.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         this.setPrefSize(30, 30);
         this.getStyleClass().add("btn-favorite");
-        this.setGraphic(new SVGIcon(!selected ? Icon.STAR : Icon.STAR_FILLED));
-        this.setSelected(selected);
+        setGraphic(new SVGIcon(Icon.STAR));
         //
         this.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {

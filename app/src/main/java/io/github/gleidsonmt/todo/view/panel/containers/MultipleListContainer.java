@@ -6,13 +6,13 @@ import io.github.gleidsonmt.todo.model.ToDoTask;
 import io.github.gleidsonmt.todo.view.panel.items.TaskItem;
 import io.github.gleidsonmt.todo.view.panel.sections.AnimatedSection;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
+import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 
 /**
  * Description:
@@ -96,15 +96,14 @@ public class MultipleListContainer extends ListContainer {
     }
 
     @Override
-    protected TaskItem createTaskItem(ToDoTask task) {
+    protected TaskItem createTaskItem(TaskViewModel task) {
         TaskItem item = new TaskItem(task);
         item.setOnCompletedChange(viewModel -> {
             AnimatedSection section = (AnimatedSection) item.getParent();
-            section.getItems().remove(section.get(task));
+            // section.getItems().remove(section.get(task));
             viewModel.update();
         });
         item.setOnImportantChange(viewModel -> {
-            // System.out.println("item = " + viewModel);
             viewModel.update();
         });
         return item;
@@ -153,7 +152,8 @@ public class MultipleListContainer extends ListContainer {
                 if (c.wasAdded()) {
                 }
                 if (c.wasRemoved()) {
-                    c.getRemoved().forEach(task -> section.getItems().remove(section.get(task)));
+                    // c.getRemoved().forEach(task ->
+                    // section.getItems().remove(section.get(task)));
                 }
             }
         };
@@ -170,27 +170,27 @@ public class MultipleListContainer extends ListContainer {
         // if (list.getType() == ListType.COMPLETED) {
 
         // }
-        new Thread(new Task<Object>() {
-            @Override
-            protected Object call() {
-                TaskItem taskItem = createTaskItem(task);
-                Platform.runLater(() -> {
+        // new Thread(new Task<Object>() {
+        //     @Override
+        //     protected Object call() {
+        //         TaskItem taskItem = createTaskItem(task);
+        //         Platform.runLater(() -> {
 
-                    section.getItems().add(taskItem);
+        //             // section.getItems().add(taskItem);
 
-                    // if (task.isCompleted()) {
-                    // sectionCompleted.getItems().add(taskItem);
-                    // } else {
-                    // sectionIncomplete.getChildren().add(0, taskItem);
-                    // }
-                    if (!getChildren().contains(section))
-                        getChildren().add(0, section);
-                });
+        //             // if (task.isCompleted()) {
+        //             // sectionCompleted.getItems().add(taskItem);
+        //             // } else {
+        //             // sectionIncomplete.getChildren().add(0, taskItem);
+        //             // }
+        //             if (!getChildren().contains(section))
+        //                 getChildren().add(0, section);
+        //         });
 
-                return taskItem;
-            }
+        //         return taskItem;
+        //     }
 
-        }).start();
+        // }).start();
         // Platform.runLater(() -> {
         // section.getItems().add(taskItem);
 

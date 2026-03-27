@@ -80,6 +80,11 @@ public class MainView extends Container implements Layout {
         panel.titleIconProperty().bind(Bindings.select(sideNav.itemSelectedProperty(), "viewModel", "icon"));
 
         listRoot.actualListProperty().bind(Bindings.select(sideNav.itemSelectedProperty(), "viewModel"));
+
+        // listRoot.needsUpdateProperty().bind(Bindings.select(sideNav.itemSelectedProperty(), "update"));
+
+        // Bindings.select(sideNav.itemSelectedProperty(), "viewModel",
+        // "numberOfNotifications");
     }
 
     private void bindOld() {

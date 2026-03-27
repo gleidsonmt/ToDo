@@ -1,8 +1,9 @@
 package io.github.gleidsonmt.todo.global;
 
 import io.github.gleidsonmt.todo.bd.dao.DaoList;
-import io.github.gleidsonmt.todo.bd.dao.internal.Dao;
+import io.github.gleidsonmt.todo.bd.dao.DaoSizes;
 import io.github.gleidsonmt.todo.model.List;
+import io.github.gleidsonmt.todo.model.Sizes;
 
 /**
  * Description:
@@ -14,6 +15,8 @@ import io.github.gleidsonmt.todo.model.List;
  */
 public class ListPresenter extends AbstractPresenter<List> {
 
+    private DaoSizes sizes;
+
     public ListPresenter() {
         super(new DaoList());
     }
@@ -22,12 +25,11 @@ public class ListPresenter extends AbstractPresenter<List> {
         dao.update(list);
     }
 
-    public void save(List list) {
-        dao.store(list);
-    }
-
-    public void delete(List list) {
-        dao.delete(list);
+    public void store(List list) {
+        Sizes si = new Sizes(0);
+        si.setSize(0);
+        si.setListId(list.getId());
+        sizes.store(si);
     }
 
     @Override

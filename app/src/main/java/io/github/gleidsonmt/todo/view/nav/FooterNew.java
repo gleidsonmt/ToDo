@@ -7,7 +7,6 @@ import io.github.gleidsonmt.todo.global.Presenter;
 import io.github.gleidsonmt.todo.model.List;
 import io.github.gleidsonmt.todo.utils.I18n;
 import io.github.gleidsonmt.todo.utils.StringUtils;
-import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -28,7 +27,7 @@ public class FooterNew extends GridPane {
     private final Label label;
 
     public FooterNew() {
-        label = new Label(I18n.get("drawer.newTask"));
+        label = new Label(I18n.get("drawer.new.list"));
         configLayout();
         setOnMouseClicked(e -> createNewList());
     }
@@ -84,7 +83,7 @@ public class FooterNew extends GridPane {
         }
         // add to
 
-        presenter.getData().add(list);
+        presenter.save(list);
 
         var nav = (SideNavNew) getScene().lookup("#drawer");
         nav.select(nav.add(list));

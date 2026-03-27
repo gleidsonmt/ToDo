@@ -50,7 +50,8 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass = 'io.github.gleidsonmt.todo.Start'
+    // mainClass = 'io.github.gleidsonmt.todo.Start'
+    mainClass = 'io.github.gleidsonmt.todo.ListRootTest'
     mainModule = 'io.github.gleidsonmt.todo'
 }
 

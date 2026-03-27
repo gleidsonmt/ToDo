@@ -3,7 +3,6 @@ package io.github.gleidsonmt.todo.view.panel.items;
 import java.time.LocalDate;
 
 import io.github.gleidsonmt.todo.model.List;
-import io.github.gleidsonmt.todo.model.ToDoTask;
 import io.github.gleidsonmt.todo.view.panel.FavoriteButton;
 import io.github.gleidsonmt.todo.view.panel.actions.CompleteAction;
 import io.github.gleidsonmt.todo.view.panel.actions.ImportantAction;
@@ -43,7 +42,7 @@ public class TaskItem extends ToggleButton {
     private ObjectProperty<LocalDate> dueDate;
     private ObjectProperty<List> list;
 
-    private ToDoTask task;
+    // private ToDoTask task;
     private ListContainer container;
 
     private boolean needDetails;
@@ -51,32 +50,34 @@ public class TaskItem extends ToggleButton {
     private CompleteAction completed;
     private ImportantAction importantAction;
 
-    private TaskViewModel viewModel;
+    private final TaskViewModel viewModel;
 
-    public TaskItem(ToDoTask task) {
-        this.task = task;
-        this.setId(String.valueOf(task.getId()));
+    public TaskItem(TaskViewModel viewModel) {
+        this.viewModel = viewModel;
+        this.setId(String.valueOf(viewModel.getId()));
 
         this.circleIcon = new CheckBox();
-        this.circleIcon.setSelected(task.isCompleted());
+        this.favorite = new FavoriteButton();
+        this.text = new Title();
 
-        this.favorite = new FavoriteButton(task.isImportant());
-        this.text = new Title(task.getName());
-
-        this.myDay = new SimpleBooleanProperty(task.isMyDay());
-        this.dueDate = new SimpleObjectProperty<>(task.getDueDate());
+        this.myDay = new SimpleBooleanProperty(viewModel.isMyDay());
+        this.dueDate = new SimpleObjectProperty<>(viewModel.getDueDate());
         this.list = new SimpleObjectProperty<>();
 
-        this.viewModel = new TaskViewModel(this);
-
         init();
-        setActions();
+        // setActions();
         bind();
-        registerListeners();
+        // registerListeners();
     }
 
     private void bind() {
-        // text.strikethroughProperty().bind(this.completedProperty());
+        this.text.textProperty().bind(viewModel.nameProperty());
+        this.circleIcon.selectedProperty().bindBidirectional(viewModel.completedProperty());
+        this.favorite.selectedProperty().bindBidirectional(viewModel.importantProperty());
+
+        this.circleIcon.selectedProperty().addListener((_, _, _) -> {
+            onCompletedChange().handle(viewModel);
+        });
     }
 
     private void setActions() {
@@ -136,11 +137,6 @@ public class TaskItem extends ToggleButton {
 
     }
 
-    @Deprecated
-    public ToDoTask getTask() {
-        return this.task;
-    }
-
     public void setOnCompletedChange(CompleteAction completeAction) {
         this.completed = completeAction;
     }
@@ -170,7 +166,7 @@ public class TaskItem extends ToggleButton {
     }
 
     public long getListId() {
-        return this.task.getListId();
+        return this.viewModel.getListId();
     }
 
     public CompleteAction onCompletedChange() {

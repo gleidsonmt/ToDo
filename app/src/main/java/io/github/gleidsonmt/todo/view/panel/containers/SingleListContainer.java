@@ -1,9 +1,9 @@
 package io.github.gleidsonmt.todo.view.panel.containers;
 
-import io.github.gleidsonmt.todo.model.ToDoTask;
 import io.github.gleidsonmt.todo.view.panel.items.TaskItem;
 import io.github.gleidsonmt.todo.view.panel.sections.SingleSection;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
+import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import javafx.application.Platform;
 
 /**
@@ -59,7 +59,7 @@ public class SingleListContainer extends ListContainer {
      * Create an task item (gui component) based on object domain state.
      */
     @Override
-    protected TaskItem createTaskItem(ToDoTask task) {
+    protected TaskItem createTaskItem(TaskViewModel task) {
         TaskItem item = new TaskItem(task);
         group.getToggles().add(item);
 
@@ -86,7 +86,7 @@ public class SingleListContainer extends ListContainer {
         // loadTasks(_ -> list.getItems().forEach(this::loadTask));
     }
 
-    private void loadTask(ToDoTask task) {
+    private void loadTask(TaskViewModel task) {
         try {
             Thread.sleep((long) (sectionIncomplete.getSpeed() / 2));
         } catch (InterruptedException e1) {

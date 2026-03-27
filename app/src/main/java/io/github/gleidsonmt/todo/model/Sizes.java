@@ -10,6 +10,7 @@ package io.github.gleidsonmt.todo.model;
  */
 public class Sizes extends Model {
 
+    private long listId = 0;
     private int size = 0;
 
     public Sizes(int id) {
@@ -22,6 +23,14 @@ public class Sizes extends Model {
 
     public void setSize(int size) {
         this.size = size;
+    }
+
+    public long getListId() {
+        return listId;
+    }
+
+    public void setListId(long listId) {
+        this.listId = listId;
     }
 
 }

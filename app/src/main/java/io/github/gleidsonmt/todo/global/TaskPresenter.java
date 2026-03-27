@@ -6,8 +6,6 @@ import io.github.gleidsonmt.todo.bd.dao.DaoSizes;
 import io.github.gleidsonmt.todo.bd.dao.DaoTask;
 import io.github.gleidsonmt.todo.model.Sizes;
 import io.github.gleidsonmt.todo.model.ToDoTask;
-import io.github.gleidsonmt.todo.view_model.TaskViewModel;
-import io.github.gleidsonmt.todo.view_model.TaskViewModelConverter;
 
 /**
  * Description:
@@ -19,35 +17,47 @@ import io.github.gleidsonmt.todo.view_model.TaskViewModelConverter;
  */
 public class TaskPresenter extends AbstractPresenter<ToDoTask> {
 
-    private final TaskViewModelConverter converter;
     private final DaoSizes sizes;
 
     public TaskPresenter() {
         super(new DaoTask());
-        this.converter = new TaskViewModelConverter();
         this.sizes = new DaoSizes();
     }
 
-    public void update(TaskViewModel viewModel) {
-        dao.update(converter.convert(viewModel));
-
-        Optional<Sizes> optional = sizes.getBy("list_id = " + viewModel.getListId());
-
-        if (optional.isPresent()) {
-
-            var size = optional.get();
-            if (!viewModel.isCompleted()) {
-                size.setSize(size.getSize() + 1);
-            } else {
-                size.setSize(size.getSize() - 1);
-            }
-            sizes.update(size);
-        }
-
+    public void update(ToDoTask task) {
+        dao.update(task);
+        updateSize(findSize(task), !task.isCompleted());
+        // somar ou subtrair / sum or subtract
     }
 
-    public void delete(TaskViewModel model) {
-        dao.delete(converter.convert(model));
+    public void store(ToDoTask task) {
+        dao.store(task);
+        updateSize(findSize(task), true);
+        // somar / sum
+    }
+
+    @Override
+    public void delete(ToDoTask task) {
+        dao.delete(task);
+        updateSize(findSize(task), false);
+        // subtrair / subtract
+    }
+
+    private void updateSize(Optional<Sizes> optional, boolean sum) {
+        if (optional.isPresent()) {
+            var size = optional.get();
+            sumOrSubtractSize(size, sum);
+            sizes.update(size);
+        }
+    }
+
+    private Sizes sumOrSubtractSize(Sizes size, boolean sum) {
+        size.setSize(size.getSize() + (sum ? +1 : -1));
+        return size;
+    }
+
+    private Optional<Sizes> findSize(ToDoTask task) {
+        return sizes.getBy("list_id = " + task.getListId());
     }
 
     @Override
