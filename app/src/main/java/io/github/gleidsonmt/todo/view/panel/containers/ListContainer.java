@@ -9,6 +9,7 @@ import io.github.gleidsonmt.todo.view.panel.sections.EmptySection;
 import io.github.gleidsonmt.todo.view.panel.sections.SingleSection;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
+import javafx.beans.Observable;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -32,7 +33,9 @@ import javafx.scene.layout.VBox;
  */
 public abstract class ListContainer extends VBox {
 
-    protected ObservableList<TaskViewModel> data = FXCollections.observableArrayList();
+    protected ObservableList<TaskViewModel> data = FXCollections
+            .observableArrayList(viewModel -> new Observable[] { viewModel.completedProperty() });
+
     private final ObjectProperty<TaskItem> selected = new SimpleObjectProperty<>();
     private final ObjectProperty<Comparators> comparator = new SimpleObjectProperty<>(Comparators.NONE);
 
@@ -136,8 +139,7 @@ public abstract class ListContainer extends VBox {
      * @param task The object model to create an UI Component.
      */
     public void add(TaskViewModel viewModel) {
-        TaskItem taskItem = createTaskItem(viewModel);
-        ToDoTask saved = viewModel.save();
+        viewModel.save();
         data.add(viewModel);
     }
 
@@ -148,8 +150,7 @@ public abstract class ListContainer extends VBox {
      * @param task The task to delete.
      */
     public void remove(TaskItem task) {
-        // task.getViewModel().delete();
-        data.remove((ToDoTask) task.getUserData());
+        data.remove(task.getViewModel());
     }
 
     public IntegerProperty sizeProperty() {

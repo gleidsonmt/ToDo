@@ -85,54 +85,68 @@ public class SingleSection extends VBox {
         this.sortedList = new SortedList<>(this.filteredList);
         this.sortedList.forEach(e -> {
             TaskItem item = loadTask(e);
-            add(item).play();
+            add(item);
         });
+        // this.filteredList.addListener(updateList);
         this.sortedList.addListener(updateList);
+        // getContainer().getData().addListener(updateList);
     }
 
     protected final ListChangeListener<TaskViewModel> updateList = (ListChangeListener<TaskViewModel>) c -> {
 
         if (c.next()) {
-            System.out.println("next" + c.wasPermutated());
-            System.out.println();
+            if (c.wasUpdated()) {
+
+                // System.out.println("Update detected from index " +
+                // c.getFrom() + " to " + c.getTo());
+                for (int i = c.getFrom(); i < c.getTo(); i++) {
+                    System.out.println("update " + c.getList().get(i));
+
+                }
+
+            }
             if (c.wasPermutated()) {
 
                 getChildren().remove(hasHeader ? 1 : 0, getChildren().size());
 
                 for (int i = c.getFrom(); i < c.getTo(); i++) {
                     TaskItem taskItem = loadTask(c.getList().get(i));
-                    add(taskItem).play();
+                    add(taskItem);
                 }
             }
 
             if (c.wasAdded()) {
                 c.getAddedSubList().forEach(el -> {
                     TaskItem taskItem = loadTask(el);
-                    add(taskItem).play();
+                    add(taskItem);
                 });
-            } else if (c.wasRemoved()) {
+            }
+            if (c.wasRemoved()) {
                 c.getRemoved().forEach(el -> {
-                    delete(el).play();
+                    delete(el);
                 });
             }
         }
 
     };
 
-    private Timeline delete(TaskViewModel task) {
+    private void delete(TaskViewModel task) {
 
         Optional<TaskItem> optional = getChildren().stream().filter(el -> el instanceof TaskItem)
                 .map(map -> (TaskItem) map).filter(el -> {
                     return el.getViewModel().getId() == task.getId();
                 }).findAny();
 
-        Timeline animation = null;
-        if (optional.isPresent()) {
-            animation = removeAnimation(optional.get());
-            animation.setOnFinished(e -> this.getChildren().remove(optional.get()));
-            animation.play();
-        }
-        return animation;
+        this.getChildren().remove(optional.get());
+
+        // Timeline animation = null;
+        // if (optional.isPresent()) {
+        // animation = removeAnimation(optional.get());
+        // animation.setOnFinished(e ->
+        // this.getChildren().remove(optional.get()));
+        // animation.play();
+        // }
+        // return animation;
     }
 
     protected TaskItem loadTask(TaskViewModel task) {
@@ -140,71 +154,17 @@ public class SingleSection extends VBox {
         TaskItem taskItem = createTaskItem(task);
         getContainer().getGroup().getToggles().add(taskItem);
 
-        // try {
-        // Thread.sleep((long) (sectionIncomplete.getSpeed() / 2));
-        // } catch (InterruptedException e1) {
-
-        // }
-        // if (task.isCompleted()) {
-        // sectionCompleted.getItems().add(taskItem);
-        // } else {
-        // sectionIncomplete.getChildren().add(0, taskItem);
-        // }
-
-        taskItem.setOnCompletedChange((viewModel) -> {
-
-            // loadTask(task);
-            // taskItem.getViewModel().setCompleted(!taskItem.getViewModel().isCompleted());
-
-            Optional<TaskViewModel> option = getContainer().getData().stream()
-                    .filter(el -> viewModel.getId() == el.getId()).findAny();
-
-            if (option.isPresent()) {
-                getContainer().getData().remove(option.get());
-                getContainer().getData().add(option.get());
-            }
-
-            // Timeline
-            // Timeline add = add(taskItem);
-            // add.play();
-
-            // var del = delete(viewModel);
-            // // del.setOnFinished(e ->
-            // // this.getChildren().remove(optional.get()));
-            // del.setOnFinished(e -> {
-            // add(taskItem);
-
-            // });
-
-            // getChildren().remove(taskItem);
-
-            // ToDoTask element =
-            // this.filteredList.getSource().stream().filter(el -> el.getId() ==
-            // viewModel.getId())
-            // .findAny().get();
-
-            // int index = this.filteredList.getSource().indexOf(task);
-            // getContainer().getData().set(index, viewModel);
-            // System.out.println("index = " + index);
-
-            // getContainer().getData().add(element);
-
-            // getContainer().getData().removeIf(el -> viewModel.getId() ==
-            // el.getId());
-            // viewModel.update();
-            // sortedList.re
-        });
         return taskItem;
 
     }
 
-    private Timeline add(TaskItem taskItem) {
-        var animation = addAnimation(taskItem);
-        taskItem.setOpacity(1);
+    protected void add(TaskItem taskItem) {
         this.getChildren().add(hasHeader ? 1 : 0, taskItem);
-        animation.setOnFinished(e -> getContainer().select(taskItem));
-        // animation.play();
-        return animation;
+        // var animation = addAnimation(taskItem);
+        // taskItem.setOpacity(1);
+        // animation.setOnFinished(e -> getContainer().select(taskItem));
+        // // animation.play();
+        // return animation;
     }
 
     private Timeline remove(TaskItem taskItem) {
@@ -213,42 +173,6 @@ public class SingleSection extends VBox {
         animation.setOnFinished(e -> this.getChildren().remove(taskItem));
         // animation.play();
         return animation;
-    }
-
-    public void swap(TaskItem taskItem) {
-
-        var addAnimation = addAnimation(taskItem);
-        var removeAnimation = removeAnimation(taskItem);
-
-        // taskItem.setOpacity(0);
-        // this.getChildren().add(hasHeader ? 1 : 0, taskItem);
-
-        // addAnimation.setOnFinished(e -> {
-        // removeAnimation.play();
-        // });
-
-        // var index =
-        // getContainer().getData().indexOf(taskItem.getViewModel());
-        // getContainer().getData().add(index, taskItem.getViewModel());
-
-        // getContainer().getData().removeIf(el ->
-        // taskItem.getViewModel().getId() == el.getId());
-        // if (!getContainer().getData().contains(taskItem.getViewModel())) {
-        // getContainer().getData().add(taskItem.getViewModel());
-
-        // }
-
-        // removeAnimation.setOnFinished(e -> {
-        // taskItem.setOpacity(0);
-
-        // // addAnimation.setOnFinished(_ -> {
-
-        // // });
-        // // addAnimation.play();
-
-        // });
-        // removeAnimation.play();
-
     }
 
     private ListContainer getContainer() {

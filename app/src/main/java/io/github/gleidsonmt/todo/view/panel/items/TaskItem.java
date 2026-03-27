@@ -74,10 +74,6 @@ public class TaskItem extends ToggleButton {
         this.text.textProperty().bind(viewModel.nameProperty());
         this.circleIcon.selectedProperty().bindBidirectional(viewModel.completedProperty());
         this.favorite.selectedProperty().bindBidirectional(viewModel.importantProperty());
-
-        this.circleIcon.selectedProperty().addListener((_, _, _) -> {
-            onCompletedChange().handle(viewModel);
-        });
     }
 
     private void setActions() {

@@ -32,13 +32,15 @@ public class AnimatedSection extends SingleSection {
         this.hasHeader = true;
 
         title = new SectionTitle(name, icon);
+
         title.setOnShow(e -> {
             getChildren().remove(1, getChildren().size());
         });
 
         title.setOnHide(e -> {
             sortedList.stream().forEach(el -> {
-                loadTask(el);
+                var a = loadTask(el);
+                add(a);
             });
         });
     }
@@ -50,8 +52,11 @@ public class AnimatedSection extends SingleSection {
         }
         list.addListener((ListChangeListener<TaskViewModel>) c -> {
             if (c.next()) {
+                System.out.println("list update = " + !c.getList().isEmpty());
                 if (!c.getList().isEmpty() && !getChildren().contains(title)) {
-                    getChildren().add(1, title);
+                    getChildren().add(0, title);
+                } else if (c.getList().isEmpty() && getChildren().contains(title)) {
+                    getChildren().remove( title);
                 }
             }
         });

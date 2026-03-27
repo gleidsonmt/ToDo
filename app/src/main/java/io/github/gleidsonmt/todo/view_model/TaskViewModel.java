@@ -179,8 +179,7 @@ public class TaskViewModel extends ViewModel {
         final StringBuffer sb = new StringBuffer("Task{");
         sb.append("id=").append(super.getId());
         sb.append(", name=").append(super.getName());
-        sb.append(", myDay=").append(isMyDay());
-        sb.append(", important=").append(isImportant());
+        sb.append(", completed=").append(isCompleted());
         sb.append(", listId=").append(listId);
         sb.append('}');
         return sb.toString();
