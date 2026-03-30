@@ -21,6 +21,7 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 /**
@@ -56,7 +57,7 @@ public abstract class ListContainer extends VBox {
         // this.data = data;
         this.group = new ToggleGroup();
         this.setId("list-container");
-        this.setStyle("-fx-border-width: 2px; -fx-border-color: gray;");
+        // this.setStyle("-fx-border-width: 2px; -fx-border-color: gray;");
 
         this.getChildren().add(new EmptySection());
 
@@ -71,6 +72,8 @@ public abstract class ListContainer extends VBox {
                         section.getSortedList().setComparator(switchComparator(val));
                     });
         });
+        
+        VBox.setVgrow(this, Priority.ALWAYS);
 
     }
 

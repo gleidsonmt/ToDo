@@ -28,6 +28,10 @@ Panel {
   -fx-background-color: -fx-background;
 }
 
+.task-item {
+  -fx-padding: 0px 5px 0px 5px;
+}
+
 .task-item:selected .check-circle .box {
   -fx-border-color: -fx-accent;
 }
@@ -203,10 +207,10 @@ Panel {
 .check-circle:determinate .box {
   -fx-padding: 8px;
   -fx-border-radius: 100px;
-  -fx-pref-height: 25px;
-  -fx-max-height: 25px;
-  -fx-pref-width: 25px;
-  -fx-max-width: 25px;
+  -fx-pref-height: 27px;
+  -fx-max-height: 27px;
+  -fx-pref-width: 27px;
+  -fx-max-width: 27px;
 }
 
 .check-circle:determinate .box {

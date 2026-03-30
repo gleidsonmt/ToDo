@@ -34,6 +34,7 @@ public class DoubleListContainer extends ListContainer {
 
         this.getChildren().add(0, sectionIncomplete);
         this.getChildren().add(1, sectionCompleted);
+
     }
 
     @Override
@@ -75,20 +76,20 @@ public class DoubleListContainer extends ListContainer {
         // group.getToggles().add(item);
 
         // item.setOnImportantChange(viewModel -> {
-        //     viewModel.update();
+        // viewModel.update();
         // });
 
         // item.setOnCompletedChange(viewModel -> {
 
-        //     if (viewModel.isCompleted()) {
-        //         sectionIncomplete.getChildren().removeAll(item);
-        //         // sectionCompleted.getItems().addAll(item);
-        //     } else {
-        //         // sectionCompleted.getItems().removeAll(item);
-        //         sectionIncomplete.getChildren().add(0, item);
-        //     }
+        // if (viewModel.isCompleted()) {
+        // sectionIncomplete.getChildren().removeAll(item);
+        // // sectionCompleted.getItems().addAll(item);
+        // } else {
+        // // sectionCompleted.getItems().removeAll(item);
+        // sectionIncomplete.getChildren().add(0, item);
+        // }
 
-        //     viewModel.update();
+        // viewModel.update();
 
         // });
         return null;

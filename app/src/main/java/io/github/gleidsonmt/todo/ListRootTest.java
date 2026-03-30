@@ -1,7 +1,10 @@
 package io.github.gleidsonmt.todo;
 
+import java.time.LocalDateTime;
+
 import org.scenicview.ScenicView;
 
+import fr.brouillard.oss.cssfx.CSSFX;
 import io.github.gleidsonmt.glad.theme.Css;
 import io.github.gleidsonmt.glad.theme.Font;
 import io.github.gleidsonmt.glad.theme.ThemeProvider;
@@ -11,6 +14,7 @@ import io.github.gleidsonmt.todo.model.List;
 import io.github.gleidsonmt.todo.model.ToDoTask;
 import io.github.gleidsonmt.todo.utils.Assets;
 import io.github.gleidsonmt.todo.view.panel.ListRootNew;
+import io.github.gleidsonmt.todo.view.panel.Panel;
 import io.github.gleidsonmt.todo.view.panel.items.TaskItem;
 import io.github.gleidsonmt.todo.view.panel.sections.Comparators;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
@@ -46,7 +50,10 @@ public class ListRootTest extends Application {
         ListRootNew listRoot = new ListRootNew();
         BorderPane.setMargin(listRoot, new Insets(10));
 
-        root.setCenter(listRoot);
+        Panel panel = new Panel();
+        panel.setContent(listRoot);
+
+        root.setCenter(panel);
         root.setRight(createAside(listRoot, viewModel));
         stage.setScene(new Scene(root, 800, 600));
 
@@ -56,16 +63,20 @@ public class ListRootTest extends Application {
         stage.show();
 
         ScenicView.show(root);
+        CSSFX.start(stage.getScene());
     }
 
     private Node createAside(ListRootNew listRoot, ListViewModel listViewModel) {
         VBox container = new VBox();
         BorderPane.setMargin(container, new Insets(10));
         container.setAlignment(Pos.TOP_CENTER);
-        TextField taskName = new TextField("Task Name");
-        Button addTask = new Button("Add a task");
 
-        container.getChildren().addAll(taskName, addTask);
+        TextField taskName = new TextField("Task Name");
+
+        Button btnPopulate = new Button("Populate tasks");
+        container.setSpacing(5);
+
+        container.getChildren().addAll(taskName, btnPopulate);
 
         ToDoTask task = new ToDoTask(1 + taskName.getText());
         task.setCompleted(true);
@@ -77,12 +88,18 @@ public class ListRootTest extends Application {
         // TaskViewModel model = new TaskViewModel(task);
         // TaskItem taskItem = new TaskItem(model);
 
-        listRoot.updateContainer(listViewModel);
-
-        addTask.setOnAction(e -> {
-            listRoot.getContainer().add(taskViewModel);
+        btnPopulate.setOnAction(e -> {
+            listRoot.updateContainer(listViewModel);
         });
 
+        Button addMyDay = new Button("Add to My Day");
+        addMyDay.setOnAction(e -> {
+            var selected = listRoot.getContainer().getSelected();
+            if (selected != null) {
+                selected.getViewModel().setMyDay(!selected.getViewModel().isMyDay());
+                selected.getViewModel().setRemind(LocalDateTime.now().plusDays(1));
+            }
+        });
         Button removeTask = new Button("Remove a task");
         Button sortAlpha = new Button("Sort Alphabetically");
         Button sortImportance = new Button("Sort Importance");
@@ -98,6 +115,7 @@ public class ListRootTest extends Application {
             listRoot.getContainer().setComparator(Comparators.IMPORTANCE);
         });
 
+        container.getChildren().add(addMyDay);
         container.getChildren().add(removeTask);
         container.getChildren().add(sortAlpha);
         container.getChildren().add(sortImportance);

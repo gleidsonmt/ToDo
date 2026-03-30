@@ -28,7 +28,7 @@ public class SingleSection extends VBox {
 
     // In the class, add a field for items (if not already present)
 
-    private double speed = 500;
+    private double speed = 200;
 
     protected FilteredList<TaskViewModel> filteredList;
     protected SortedList<TaskViewModel> sortedList;
@@ -44,9 +44,11 @@ public class SingleSection extends VBox {
 
         Timeline timeline = new Timeline();
         timeline.getKeyFrames().setAll(new KeyFrame(Duration.ZERO, new KeyValue(el.opacityProperty(), 1)),
-                new KeyFrame(Duration.millis(speed), new KeyValue(el.opacityProperty(), 0)),
-                new KeyFrame(Duration.ZERO, new KeyValue(el.translateXProperty(), 0)),
-                new KeyFrame(Duration.millis(speed), new KeyValue(el.translateXProperty(), 150)));
+                new KeyFrame(Duration.millis(speed), new KeyValue(el.opacityProperty(), 0)));
+        // new KeyFrame(Duration.ZERO, new KeyValue(el.translateXProperty(),
+        // 0)),
+        // new KeyFrame(Duration.millis(speed), new
+        // KeyValue(el.translateXProperty(), 500)));
 
         return timeline;
     }
@@ -61,9 +63,11 @@ public class SingleSection extends VBox {
 
         Timeline timeline = new Timeline();
         timeline.getKeyFrames().setAll(new KeyFrame(Duration.ZERO, new KeyValue(el.opacityProperty(), 0)),
-                new KeyFrame(Duration.millis(speed), new KeyValue(el.opacityProperty(), 1)),
-                new KeyFrame(Duration.ZERO, new KeyValue(el.translateXProperty(), -150)),
-                new KeyFrame(Duration.millis(speed), new KeyValue(el.translateXProperty(), 0)));
+                new KeyFrame(Duration.millis(speed), new KeyValue(el.opacityProperty(), 1)));
+        // new KeyFrame(Duration.ZERO, new KeyValue(el.translateXProperty(),
+        // -500)),
+        // new KeyFrame(Duration.millis(speed), new
+        // KeyValue(el.translateXProperty(), 0)));
 
         return timeline;
     }
@@ -101,9 +105,8 @@ public class SingleSection extends VBox {
                 // c.getFrom() + " to " + c.getTo());
                 for (int i = c.getFrom(); i < c.getTo(); i++) {
                     System.out.println("update " + c.getList().get(i));
-
                 }
-
+                return;
             }
             if (c.wasPermutated()) {
 
@@ -130,6 +133,12 @@ public class SingleSection extends VBox {
 
     };
 
+    protected TaskItem loadTask(TaskViewModel task) {
+        TaskItem taskItem = createTaskItem(task);
+        getContainer().getGroup().getToggles().add(taskItem);
+        return taskItem;
+    }
+
     private void delete(TaskViewModel task) {
 
         Optional<TaskItem> optional = getChildren().stream().filter(el -> el instanceof TaskItem)
@@ -137,33 +146,23 @@ public class SingleSection extends VBox {
                     return el.getViewModel().getId() == task.getId();
                 }).findAny();
 
-        this.getChildren().remove(optional.get());
-
-        // Timeline animation = null;
-        // if (optional.isPresent()) {
-        // animation = removeAnimation(optional.get());
-        // animation.setOnFinished(e ->
-        // this.getChildren().remove(optional.get()));
-        // animation.play();
-        // }
-        // return animation;
-    }
-
-    protected TaskItem loadTask(TaskViewModel task) {
-
-        TaskItem taskItem = createTaskItem(task);
-        getContainer().getGroup().getToggles().add(taskItem);
-
-        return taskItem;
+        if (optional.isPresent()) {
+            var animation = removeAnimation(optional.get());
+            optional.get().setOpacity(1);
+            animation.setOnFinished(_ -> {
+                this.getChildren().remove(optional.get());
+            });
+            animation.play();
+        }
 
     }
 
     protected void add(TaskItem taskItem) {
         this.getChildren().add(hasHeader ? 1 : 0, taskItem);
-        // var animation = addAnimation(taskItem);
-        // taskItem.setOpacity(1);
+        taskItem.setOpacity(0);
+        var animation = addAnimation(taskItem);
         // animation.setOnFinished(e -> getContainer().select(taskItem));
-        // // animation.play();
+        animation.play();
         // return animation;
     }
 

@@ -52,11 +52,10 @@ public class AnimatedSection extends SingleSection {
         }
         list.addListener((ListChangeListener<TaskViewModel>) c -> {
             if (c.next()) {
-                System.out.println("list update = " + !c.getList().isEmpty());
                 if (!c.getList().isEmpty() && !getChildren().contains(title)) {
                     getChildren().add(0, title);
                 } else if (c.getList().isEmpty() && getChildren().contains(title)) {
-                    getChildren().remove( title);
+                    getChildren().remove(title);
                 }
             }
         });

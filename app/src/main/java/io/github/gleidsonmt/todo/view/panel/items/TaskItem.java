@@ -45,10 +45,12 @@ public class TaskItem extends ToggleButton {
     // private ToDoTask task;
     private ListContainer container;
 
-    private boolean needDetails;
+    private BooleanProperty needDetails = new SimpleBooleanProperty();
 
     private CompleteAction completed;
     private ImportantAction importantAction;
+
+    private Options options;
 
     private final TaskViewModel viewModel;
 
@@ -64,10 +66,13 @@ public class TaskItem extends ToggleButton {
         this.dueDate = new SimpleObjectProperty<>(viewModel.getDueDate());
         this.list = new SimpleObjectProperty<>();
 
+        this.options = new Options(viewModel);
+        needDetails.bindBidirectional(options.hasProperty());
+
         init();
         // setActions();
         bind();
-        // registerListeners();
+        registerListeners();
     }
 
     private void bind() {
@@ -92,6 +97,13 @@ public class TaskItem extends ToggleButton {
 
         this.text.getStyleClass().add(completedProperty().get() ? "strike" : "");
 
+        needDetails.addListener((_, _, newVal) -> {
+            if (!newVal) {
+                minLayout();
+            } else {
+                detailsLayout();
+            }
+        });
     }
 
     private void init() {
@@ -103,23 +115,33 @@ public class TaskItem extends ToggleButton {
         this.body.setHgap(10);
         this.body.setVgap(2);
         this.body.setAlignment(Pos.CENTER_LEFT);
-        this.setMinHeight(50);
-
-        this.body.getChildren().addAll(circleIcon, text, favorite);
-        this.body.setMinHeight(USE_PREF_SIZE); // this enables label to use wrap
-                                               // text
-        this.setMinHeight(50);
-        this.setPrefHeight(50);
-
         this.setGraphic(body);
 
+        this.body.getChildren().addAll(circleIcon, text, favorite);
+        this.body.setPrefHeight(50);
+
         this.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+
+        // this.setMinHeight(Region.USE_PREF_SIZE);
+        this.body.setMinHeight(USE_PREF_SIZE); 
+                                               
+        // this.body.prefHeightProperty().bind(this.heightProperty());
+
         this.setPrefWidth(Double.MAX_VALUE);
+        
+        // this.minHeightProperty().bind(text.heightProperty().add(options.minHeightProperty()));
+        // this.minHeightProperty().bind(this.body.heightProperty());
+        this.prefHeightProperty().bind(this.body.heightProperty());
 
         minLayout();
+        this.body.setGridLinesVisible(true);
     }
 
     public void minLayout() {
+        this.body.getChildren().remove(options);
+
+        // this.minHeightProperty().unbind();
+        // this.body.getRowConstraints().clear();
 
         GridPane.setHgrow(text, Priority.ALWAYS);
         GridPane.setVgrow(text, Priority.ALWAYS);
@@ -128,8 +150,25 @@ public class TaskItem extends ToggleButton {
         GridPane.setColumnIndex(text, 1);
 
         GridPane.setColumnIndex(favorite, 2);
-        GridPane.setRowSpan(circleIcon, GridPane.REMAINING);
-        GridPane.setRowSpan(favorite, GridPane.REMAINING);
+    }
+
+    private void detailsLayout() {
+
+        this.body.getChildren().add(options);
+
+        GridPane.setColumnIndex(circleIcon, 0);
+        GridPane.setRowIndex(circleIcon, 0);
+        GridPane.setColumnIndex(text, 1);
+        GridPane.setRowIndex(text, 0);
+
+        GridPane.setColumnIndex(favorite, 2);
+        GridPane.setRowIndex(favorite, 0);
+
+        GridPane.setColumnIndex(options, 1);
+        GridPane.setRowIndex(options, 1);
+
+        // GridPane.setVgrow(options, Priority.ALWAYS);
+        GridPane.setHgrow(options, Priority.ALWAYS);
 
     }
 

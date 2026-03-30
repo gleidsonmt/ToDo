@@ -1,6 +1,7 @@
 package io.github.gleidsonmt.todo.view_model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import io.github.gleidsonmt.todo.global.Global;
@@ -29,6 +30,7 @@ public class TaskViewModel extends ViewModel {
 
     private final BooleanProperty completed;
     private final BooleanProperty important;
+    private final ObjectProperty<LocalDateTime> remind;
     private final BooleanProperty myDay;
     private final ObjectProperty<LocalDate> dueDate;
     private final LongProperty listId;
@@ -48,6 +50,7 @@ public class TaskViewModel extends ViewModel {
 
         this.myDay = new SimpleBooleanProperty(task.isMyDay());
         this.dueDate = new SimpleObjectProperty<>(task.getDueDate());
+        this.remind = new SimpleObjectProperty<>(task.getRemind());
 
         this.listId = new SimpleLongProperty(task.getListId());
 
@@ -118,12 +121,24 @@ public class TaskViewModel extends ViewModel {
         // nav.getSelected().updateNotifications();
     }
 
+    public ObjectProperty<LocalDateTime> remindProperty() {
+        return this.remind;
+    }
+
+    public void setRemind(LocalDateTime remind) {
+        this.remind.set(remind);
+    }
+
     public void setMyDay(boolean myDay) {
         this.myDay.set(myDay);
     }
 
     public boolean isMyDay() {
         return this.myDay.get();
+    }
+
+    public BooleanProperty myDayProperty() {
+        return this.myDay;
     }
 
     public BooleanProperty completedProperty() {
