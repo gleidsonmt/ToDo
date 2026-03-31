@@ -1,5 +1,7 @@
 package io.github.gleidsonmt.todo.view.panel.items;
 
+import io.github.gleidsonmt.glad.controls.icon.Icon;
+import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 
@@ -13,15 +15,25 @@ import javafx.scene.text.Text;
  */
 public class Option extends GridPane {
 
-    // private
-    // private ObjectProperty<Icon> icon = new SimpleObjectProperty<>();
-
     private Text text;
+    private SVGIcon icon;
 
     public Option(String text) {
-        this.text = new Text(text);
-        getChildren().addAll(this.text);
-        setFocusTraversable(false);
+        this(text, Icon.NONE);
     }
 
+    public Option(String text, Icon icon) {
+        this.text = new Text(text);
+        this.icon = new SVGIcon(icon);
+        this.icon.setScale(0.8);
+        getChildren().addAll(this.text, this.icon);
+        setFocusTraversable(false);
+        configLayout();
+    }
+
+    private void configLayout() {
+        this.setHgap(5);
+        GridPane.setColumnIndex(icon, 0);
+        GridPane.setColumnIndex(text, 1);
+    }
 }

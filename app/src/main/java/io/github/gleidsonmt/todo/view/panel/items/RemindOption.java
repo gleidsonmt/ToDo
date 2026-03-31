@@ -1,5 +1,7 @@
 package io.github.gleidsonmt.todo.view.panel.items;
 
+import io.github.gleidsonmt.glad.controls.icon.Icon;
+
 /**
  * Description:
  *
@@ -11,7 +13,7 @@ package io.github.gleidsonmt.todo.view.panel.items;
 public class RemindOption extends Option {
 
     public RemindOption() {
-        super("Remind me");
+        super("Remind me", Icon.ACCOUNT);
     }
 
 }

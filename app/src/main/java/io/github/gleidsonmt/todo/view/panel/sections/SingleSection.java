@@ -135,7 +135,8 @@ public class SingleSection extends VBox {
 
     protected TaskItem loadTask(TaskViewModel task) {
         TaskItem taskItem = createTaskItem(task);
-        getContainer().getGroup().getToggles().add(taskItem);
+        taskItem.setToggleGroup(getContainer().getGroup());
+        // getContainer().getGroup().getToggles().add(taskItem);
         return taskItem;
     }
 

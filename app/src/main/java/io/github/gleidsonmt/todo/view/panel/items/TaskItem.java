@@ -2,6 +2,8 @@ package io.github.gleidsonmt.todo.view.panel.items;
 
 import java.time.LocalDate;
 
+import org.jetbrains.annotations.ApiStatus.Experimental;
+
 import io.github.gleidsonmt.todo.model.List;
 import io.github.gleidsonmt.todo.view.panel.FavoriteButton;
 import io.github.gleidsonmt.todo.view.panel.actions.CompleteAction;
@@ -14,11 +16,11 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.StringProperty;
-import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
@@ -30,9 +32,9 @@ import javafx.scene.layout.Priority;
  * 
  *         Version History: Initial version
  */
-public class TaskItem extends ToggleButton {
+public class TaskItem extends GridToggle {
 
-    private final GridPane body = new GridPane();
+    // private final GridPane body = new GridPane();
     // Components
     private final CheckBox circleIcon;
     private final Label text;
@@ -70,9 +72,13 @@ public class TaskItem extends ToggleButton {
         needDetails.bindBidirectional(options.hasProperty());
 
         init();
-        // setActions();
+        setActions();
         bind();
         registerListeners();
+
+        this.addEventFilter(MouseEvent.MOUSE_RELEASED, e -> {
+            setSelected(true);
+        });
     }
 
     private void bind() {
@@ -82,8 +88,12 @@ public class TaskItem extends ToggleButton {
     }
 
     private void setActions() {
-        var contextMenu = new TaskItemContextMenu(viewModel);
-        this.setContextMenu(contextMenu);
+        this.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> {
+            if (e.getButton() == MouseButton.SECONDARY) {
+                var contextMenu = new TaskItemContextMenu(viewModel);
+                contextMenu.show(this, e.getScreenX(), e.getScreenY());
+            }
+        });
     }
 
     private void registerListeners() {
@@ -108,53 +118,36 @@ public class TaskItem extends ToggleButton {
 
     private void init() {
 
+        // this.setAlignment(Pos.TOP_LEFT);
+        // this.text.setAlignment(Pos.TOP_LEFT);
+        // this.circleIcon.setAlignment(Pos.TOP_LEFT);
+        // this.circleIcon.setPadding(new Insets(10,0,0,0));
+
         this.circleIcon.getStyleClass().add("check-circle");
-
         this.getStyleClass().add("task-item");
-        this.body.setId("task-container");
-        this.body.setHgap(10);
-        this.body.setVgap(2);
-        this.body.setAlignment(Pos.CENTER_LEFT);
-        this.setGraphic(body);
-
-        this.body.getChildren().addAll(circleIcon, text, favorite);
-        this.body.setPrefHeight(50);
-
-        this.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-
-        // this.setMinHeight(Region.USE_PREF_SIZE);
-        this.body.setMinHeight(USE_PREF_SIZE); 
-                                               
-        // this.body.prefHeightProperty().bind(this.heightProperty());
-
+        this.getChildren().addAll(circleIcon, text, favorite);
         this.setPrefWidth(Double.MAX_VALUE);
-        
-        // this.minHeightProperty().bind(text.heightProperty().add(options.minHeightProperty()));
-        // this.minHeightProperty().bind(this.body.heightProperty());
-        this.prefHeightProperty().bind(this.body.heightProperty());
-
+        this.setHgap(5);
         minLayout();
-        this.body.setGridLinesVisible(true);
+
     }
 
     public void minLayout() {
-        this.body.getChildren().remove(options);
-
-        // this.minHeightProperty().unbind();
-        // this.body.getRowConstraints().clear();
+        this.getChildren().remove(options);
 
         GridPane.setHgrow(text, Priority.ALWAYS);
-        GridPane.setVgrow(text, Priority.ALWAYS);
 
         GridPane.setColumnIndex(circleIcon, 0);
         GridPane.setColumnIndex(text, 1);
 
         GridPane.setColumnIndex(favorite, 2);
+
+        GridPane.setValignment(circleIcon, VPos.TOP);
     }
 
     private void detailsLayout() {
 
-        this.body.getChildren().add(options);
+        this.getChildren().add(options);
 
         GridPane.setColumnIndex(circleIcon, 0);
         GridPane.setRowIndex(circleIcon, 0);
@@ -167,15 +160,21 @@ public class TaskItem extends ToggleButton {
         GridPane.setColumnIndex(options, 1);
         GridPane.setRowIndex(options, 1);
 
-        // GridPane.setVgrow(options, Priority.ALWAYS);
+        GridPane.setHgrow(text, Priority.ALWAYS);
+
         GridPane.setHgrow(options, Priority.ALWAYS);
 
+        // this.setAlignment(Pos.TOP_LEFT);
+        // this.text.setAlignment(Pos.TOP_LEFT);
+        // this.circleIcon.setAlignment(Pos.TOP_LEFT);
     }
 
+    @Experimental
     public void setOnCompletedChange(CompleteAction completeAction) {
         this.completed = completeAction;
     }
 
+    @Experimental
     public void setOnImportantChange(ImportantAction action) {
         this.importantAction = action;
     }
@@ -204,10 +203,12 @@ public class TaskItem extends ToggleButton {
         return this.viewModel.getListId();
     }
 
+    @Experimental
     public CompleteAction onCompletedChange() {
         return completed;
     }
 
+    @Experimental
     public ImportantAction onImportantChange() {
         return importantAction;
     }

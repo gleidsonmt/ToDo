@@ -9,11 +9,13 @@ module io.github.gleidsonmt.todo {
     requires java.sql;
 
     // Tools (only runtime) remove when not needed
-    requires org.scenicview.scenicview;
     requires fr.brouillard.oss.cssfx;
 
+    requires org.scenicview.scenicview;
     requires io.github.gleidsonmt.glad;
 
+    // requires com.dlsc.gemsfx;
+    //
     requires java.logging;
     requires java.base;
     requires javafx.base;

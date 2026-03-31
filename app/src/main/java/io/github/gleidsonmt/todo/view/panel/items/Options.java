@@ -27,13 +27,15 @@ public class Options extends FlowPane {
 
     public Options(TaskViewModel viewModel) {
 
-        hasMyDayOption.bindBidirectional(viewModel.myDayProperty());
+        hasMyDayOption.bind(viewModel.myDayProperty());
         hasRemindOption.bind(viewModel.remindProperty().isNotNull());
 
         has.bind(hasMyDayOption.or(hasRemindOption));
 
-        this.setMinHeight(20);
-        
+        this.setMinHeight(10);
+        this.setHgap(5);
+        this.setVgap(5);
+
         hasMyDayOption.addListener((_, _, val) -> {
             if (val) {
                 if (!getChildren().contains(myDayOption)) {

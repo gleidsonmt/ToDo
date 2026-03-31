@@ -1,7 +1,5 @@
 package io.github.gleidsonmt.todo;
 
-import java.time.LocalDateTime;
-
 import org.scenicview.ScenicView;
 
 import fr.brouillard.oss.cssfx.CSSFX;
@@ -97,7 +95,7 @@ public class ListRootTest extends Application {
             var selected = listRoot.getContainer().getSelected();
             if (selected != null) {
                 selected.getViewModel().setMyDay(!selected.getViewModel().isMyDay());
-                selected.getViewModel().setRemind(LocalDateTime.now().plusDays(1));
+                // selected.getViewModel().setRemind(LocalDateTime.now().plusDays(1));  
             }
         });
         Button removeTask = new Button("Remove a task");

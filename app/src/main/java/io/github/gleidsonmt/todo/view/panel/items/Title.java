@@ -1,7 +1,6 @@
 package io.github.gleidsonmt.todo.view.panel.items;
 
 import javafx.scene.control.Label;
-import javafx.scene.layout.Region;
 
 /**
  * Description:
@@ -16,6 +15,6 @@ public class Title extends Label {
     public Title() {
         this.getStyleClass().addAll("task-info", "h5", "bold");
         this.setWrapText(true);
-        setMinHeight(Region.USE_PREF_SIZE);
+        // setMinHeight(Region.USE_PREF_SIZE);
     }
 }

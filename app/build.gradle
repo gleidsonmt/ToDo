@@ -30,15 +30,23 @@ dependencies {
 
     implementation("org.yaml:snakeyaml:2.5")
     
-    implementation files('lib/mysql-connector-java-8.0.14.jar')
-    implementation files('lib/glad-1.1.224.jar')
-    implementation files('lib/scenicview.jar')
+    implementation fileTree(dir: 'lib', include: ['*.jar'])
+    // implementation files('lib/mysql-connector-java-8.0.14.jar')
+    // implementation files('lib/glad-1.1.224.jar')
+    // implementation files('lib/scenicview.jar')
 
     implementation "fr.brouillard.oss:cssfx:11.5.1"
     implementation 'org.jetbrains:annotations:24.0.1'
+
+    // implementation 'com.dlsc.gemsfx:gemsfx:3.10.1'
+    // implementation 'org.apache.commons:commons-lang3:3.13.0'
+
+    // implementation 'commons-validator:commons-validator:1.7.0'
     
-    // implementation files('vendor/cssfx-11.5.1.jar');
-    // implementation fileTree('scenic-view-21-win') { include '*.jar' }
+    // implementation 'commons-collections:commons-collections:3.2.2'
+    // implementation 'commons-beanutils:commons-beanutils:1.9.4'
+    // implementation 'commons-digester:commons-digester:1.8.1'
+    // implementation 'commons-logging:commons-logging:1.2'
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -46,6 +54,9 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(23)
     }
+    // The line resolves the problem with the Java Language Server in VS Code, but it is not needed for gradle run. 
+    // Witouth this line, gradle run works, but the Java Language Server in VS Code reports “module not found” for module jars that are on the Gradle module path.
+    modularity.inferModulePath = true 
 }
 
 application {
