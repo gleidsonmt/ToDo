@@ -14,8 +14,18 @@ module io.github.gleidsonmt.todo {
     requires org.scenicview.scenicview;
     requires io.github.gleidsonmt.glad;
 
+    requires javafx.swing;
+    requires com.dlsc.gemsfx;
+    requires com.github.weisj.jsvg;
+    requires org.controlsfx.controls;
+    requires org.kordamp.ikonli.bootstrapicons;
+
     // requires com.dlsc.gemsfx;
-    //
+    // requires org.apache.commons.lang3;
+    // requires org.apache.commons.validator;
+    // requires org.apache.commons.collections;
+    // requires commons.collections;
+
     requires java.logging;
     requires java.base;
     requires javafx.base;

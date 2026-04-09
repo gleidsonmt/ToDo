@@ -71,7 +71,7 @@ public class DatabaseConnection {
             this.url = "jdbc:mysql://" + host + "/" + database
                     + "?useUnicode=true&allowPublicKeyRetrieval=true&useSSL=false&characterEncoding=utf8&serverTimezone="
                     + timeZone;
-            Logger.getGlobal().info("Loading database properties... [OK]");
+            Logger.getGlobal().config("Loading database properties... [OK]");
         } catch (IOException e) {
             msg = e.getMessage();
             Logger.getGlobal().severe("Loading database properties... [FAILED]");

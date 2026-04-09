@@ -22,11 +22,9 @@ public class DaoUser extends AbstractDao<User> {
     @Override
     protected User createElement(@NotNull ResultSet result) throws SQLException {
 
-        User item = new User();
-        item.setId(result.getInt("id"));
+        User item = new User(result.getLong("id"), result.getString("name"));
         item.setUsername(result.getString("username"));
         item.setSalt(result.getBytes("salt"));
-        item.setName(result.getString("name"));
         item.setLogged(result.getBoolean("logged"));
         item.setRemember(result.getBoolean("remember"));
         item.setPassword(result.getString("password"));
@@ -38,7 +36,7 @@ public class DaoUser extends AbstractDao<User> {
     }
 
     @Override
-    protected User prepareElement(PreparedStatement prepare, @NotNull User model) {
+    protected void prepareElement(PreparedStatement prepare, @NotNull User model) {
 
         String pass;
         byte[] salt;
@@ -63,7 +61,6 @@ public class DaoUser extends AbstractDao<User> {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return model;
     }
 
     public boolean validatePassword(@NotNull User user, String compare) {

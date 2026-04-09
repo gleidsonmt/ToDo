@@ -5,7 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import io.github.gleidsonmt.todo.bd.dao.internal.AbstractDao;
-import io.github.gleidsonmt.todo.model.Sizes;
+import io.github.gleidsonmt.todo.model.Size;
 
 /**
  * Description:
@@ -15,25 +15,24 @@ import io.github.gleidsonmt.todo.model.Sizes;
  * 
  *         Version History: Initial version
  */
-public class DaoSizes extends AbstractDao<Sizes> {
+public class DaoSize extends AbstractDao<Size> {
 
     @Override
-    public Sizes createElement(ResultSet result) throws SQLException {
-        Sizes item = new Sizes(result.getInt("sizes.id"));
-        item.setSize(result.getInt("sizes.size"));
-        item.setListId(result.getInt("sizes.list_id"));
+    public Size createElement(ResultSet result) throws SQLException {
+        Size item = new Size(result.getInt("size.id"));
+        item.setVal(result.getInt("size.val"));
+        item.setListId(result.getInt("size.list_id"));
         return item;
     }
 
     @Override
-    protected Sizes prepareElement(PreparedStatement prepare, Sizes model) {
+    protected void prepareElement(PreparedStatement prepare, Size model) {
         try {
-            prepare.setInt(1, model.getSize());
+            prepare.setInt(1, model.getVal());
             prepare.setLong(2, model.getListId());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return model;
     }
 
 }

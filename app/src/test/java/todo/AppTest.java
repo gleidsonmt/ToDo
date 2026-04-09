@@ -3,12 +3,13 @@
  */
 package todo;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 import io.github.gleidsonmt.todo.bd.DatabaseConnection;
-import io.github.gleidsonmt.todo.global.Repository;
+import io.github.gleidsonmt.todo.utils.StringUtils;
 
 class AppTest {
 
@@ -23,7 +24,8 @@ class AppTest {
 
     @Test
     void subText() {
-        Repository repo = new Repository();
+        assertEquals("my_day", StringUtils.camelToKebab("my_day"));
+        assertEquals("myDay", StringUtils.kebabToCamel("my_day"));
 
     }
 }

@@ -63,13 +63,13 @@ public class MainView extends Container implements Layout {
 
         // bind();
 
-        // this.addBreakpoint((event) -> {
-        // body.setLeft(null);
-        // }, "<MD");
+        this.addBreakpoint((event) -> {
+            body.setLeft(null);
+        }, "<MD");
 
-        // this.addBreakpoint((event) -> {
-        // body.setLeft(sideNav);
-        // }, ">MD");
+        this.addBreakpoint((event) -> {
+            body.setLeft(sideNav);
+        }, ">MD");
         // new Thread(task).start();
     }
 
@@ -81,7 +81,8 @@ public class MainView extends Container implements Layout {
 
         listRoot.actualListProperty().bind(Bindings.select(sideNav.itemSelectedProperty(), "viewModel"));
 
-        // listRoot.needsUpdateProperty().bind(Bindings.select(sideNav.itemSelectedProperty(), "update"));
+        // listRoot.needsUpdateProperty().bind(Bindings.select(sideNav.itemSelectedProperty(),
+        // "update"));
 
         // Bindings.select(sideNav.itemSelectedProperty(), "viewModel",
         // "numberOfNotifications");

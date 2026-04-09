@@ -8,21 +8,21 @@ package io.github.gleidsonmt.todo.model;
  * 
  *         Version History: Initial version
  */
-public class Sizes extends Model {
+public class Size extends Model {
 
     private long listId = 0;
-    private int size = 0;
+    private int val = 0;
 
-    public Sizes(int id) {
+    public Size(int id) {
         super(id);
     }
 
-    public int getSize() {
-        return this.size;
+    public int getVal() {
+        return this.val;
     }
 
-    public void setSize(int size) {
-        this.size = size;
+    public void setVal(int size) {
+        this.val = size;
     }
 
     public long getListId() {

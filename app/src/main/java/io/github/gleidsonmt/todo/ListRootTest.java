@@ -13,7 +13,6 @@ import io.github.gleidsonmt.todo.model.ToDoTask;
 import io.github.gleidsonmt.todo.utils.Assets;
 import io.github.gleidsonmt.todo.view.panel.ListRootNew;
 import io.github.gleidsonmt.todo.view.panel.Panel;
-import io.github.gleidsonmt.todo.view.panel.items.TaskItem;
 import io.github.gleidsonmt.todo.view.panel.sections.Comparators;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
@@ -77,16 +76,17 @@ public class ListRootTest extends Application {
         container.getChildren().addAll(taskName, btnPopulate);
 
         ToDoTask task = new ToDoTask(1 + taskName.getText());
-        task.setCompleted(true);
+        // task.setCompleted(true);
 
         TaskViewModel taskViewModel = new TaskViewModel(task);
-        TaskItem taskItem = new TaskItem(taskViewModel);
+        // TaskItem taskItem = new TaskItem(taskViewModel. new List());
 
         // ToDoTaskNew task = new TodoTaskNew();
         // TaskViewModel model = new TaskViewModel(task);
         // TaskItem taskItem = new TaskItem(model);
 
         btnPopulate.setOnAction(e -> {
+            System.out.println("list view model" + listViewModel);
             listRoot.updateContainer(listViewModel);
         });
 
@@ -95,7 +95,7 @@ public class ListRootTest extends Application {
             var selected = listRoot.getContainer().getSelected();
             if (selected != null) {
                 selected.getViewModel().setMyDay(!selected.getViewModel().isMyDay());
-                // selected.getViewModel().setRemind(LocalDateTime.now().plusDays(1));  
+                // selected.getViewModel().setRemind(LocalDateTime.now().plusDays(1));
             }
         });
         Button removeTask = new Button("Remove a task");

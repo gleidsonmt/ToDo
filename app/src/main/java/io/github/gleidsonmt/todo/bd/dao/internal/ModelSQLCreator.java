@@ -1,15 +1,16 @@
 package io.github.gleidsonmt.todo.bd.dao.internal;
 
-import io.github.gleidsonmt.todo.model.Model;
-import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.NotNull;
-
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
+
+import io.github.gleidsonmt.todo.model.Model;
 
 /**
  * Description: This class use a model to create a query sql.
@@ -70,6 +71,8 @@ public class ModelSQLCreator<T extends Model> {
         List<String> list = new ArrayList<>();
         recurse(list, model.getClass());
 
+        // recurse(list, ToDoTaskNew.);
+
         StringBuilder sql = new StringBuilder("insert into " + table + "(");
 
         for (int i = 1; i < list.size(); i++) {
@@ -121,10 +124,10 @@ public class ModelSQLCreator<T extends Model> {
      * This method gets the fields inside a model to create a Query SQL. <br>
      * <code><pre>
      *     public class User extend Entity {
-        *         private String name;
-        *         private String email;
-        *     }
-        * </code>
+         *         private String name;
+         *         private String email;
+         *     }
+         * </code>
      * </pre>
      * 
      * <br>
@@ -158,4 +161,5 @@ public class ModelSQLCreator<T extends Model> {
         matcher.appendTail(output);
         return output.toString();
     }
+
 }

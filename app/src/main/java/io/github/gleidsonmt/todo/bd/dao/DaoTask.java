@@ -19,66 +19,45 @@ public final class DaoTask extends AbstractDao<ToDoTask> {
 
     @Override
     protected ToDoTask createElement(@NotNull ResultSet result) throws SQLException {
-        ToDoTask item = new ToDoTask();
-        item.setId(result.getInt("task.id"));
-        item.setName(result.getString("task.name"));
-        item.setCompleted(result.getBoolean("task.completed"
 
-        ));
-        item.setImportant(result.getBoolean("task.important"));
+        return new ToDoTask(result.getInt("task.id"), result.getString("task.name"),
+                result.getBoolean("task.completed"), result.getBoolean("task.important"),
+                result.getBoolean("task.my_day"),
+                result.getDate("task.due_date") != null ? result.getDate("task.due_date").toLocalDate() : null,
+                result.getTimestamp("task.remind") != null ? result.getTimestamp("task.remind").toLocalDateTime()
+                        : null,
+                result.getDate("task.created_at").toLocalDate(), result.getInt("task.list_id"));
 
-        var te = result.getTimestamp("task.remind");
-
-        if (te != null) {
-            item.setRemind(te.toLocalDateTime());
-        }
-
-        var temp = result.getDate("task.due_date");
-        item.setDueDate(temp != null ? temp.toLocalDate() : null);
-
-        item.setListId(result.getInt("task.list_id"));
-        item.setMyDay(result.getBoolean("task.my_day"));
-        item.setRecurrenceId(result.getInt("task.recurrence_id"));
-        return item;
     }
 
     @Override
-    protected ToDoTask prepareElement(@NotNull PreparedStatement prepare, @NotNull ToDoTask model) {
+    protected void prepareElement(@NotNull PreparedStatement prepare, @NotNull ToDoTask model) {
         try {
             prepare.setString(1, model.getName());
-
-            if (model.getListId() == 0) {
-                prepare.setNull(2, (int) model.getListId());
-            } else {
-                prepare.setLong(2, model.getListId());
-            }
-
+            prepare.setBoolean(2, model.isCompleted());
             prepare.setBoolean(3, model.isImportant());
-
-            prepare.setBoolean(4, model.isCompleted());
-
-            if (model.getRemind() == null) {
-                prepare.setNull(5, 0);
-            } else {
-                prepare.setTimestamp(5, Timestamp.valueOf(model.getRemind()));
-            }
+            prepare.setBoolean(4, model.isMyDay());
 
             if (model.getDueDate() == null) {
+                prepare.setNull(5, 0);
+            } else {
+                prepare.setDate(5, Date.valueOf(model.getDueDate()));
+            }
+
+            if (model.getRemind() == null) {
                 prepare.setNull(6, 0);
             } else {
-                prepare.setDate(6, Date.valueOf(model.getDueDate()));
+                prepare.setTimestamp(6, Timestamp.valueOf(model.getRemind()));
             }
-            prepare.setBoolean(7, model.isMyDay());
 
-            if (model.getRecurrenceId() == 0) {
-                prepare.setNull(8, 0);
-            } else {
-                prepare.setInt(8, model.getRecurrenceId());
-            }
+            prepare.setDate(7, Date.valueOf(model.getCreatedAt()));
+
+            // prepare.setNull(8, (int) model.getListId());
+            prepare.setLong(8, model.getListId());
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return model;
     }
 
 }

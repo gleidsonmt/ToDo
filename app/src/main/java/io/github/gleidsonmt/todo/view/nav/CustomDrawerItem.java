@@ -64,7 +64,7 @@ public class CustomDrawerItem extends ToggleButton {
 
         svgIcon.iconProperty().bind(this.icon);
         svgIcon.setFocusTraversable(false);
-        this.icon.bind(viewList.getList().iconProperty());
+        // this.icon.bind(viewList.getList().iconProperty());
 
         init();
         bind();
@@ -113,7 +113,7 @@ public class CustomDrawerItem extends ToggleButton {
         this.focusWithinProperty().addListener((_, _, newVal) -> {
             if (!newVal) {
                 this.setEditable(newVal);
-                getViewList().getList().setName(this.text.getText());
+                // getViewList().getList().setName(this.text.getText());
                 ListPresenter presenter = (ListPresenter) Global.get(List.class);
                 presenter.update(getViewList().getList());
             }

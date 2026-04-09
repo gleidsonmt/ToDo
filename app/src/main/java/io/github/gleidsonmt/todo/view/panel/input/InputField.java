@@ -1,15 +1,13 @@
 package io.github.gleidsonmt.todo.view.panel.input;
 
+import java.time.LocalDate;
+
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
-import io.github.gleidsonmt.todo.global.Global;
-import io.github.gleidsonmt.todo.global.TaskPresenter;
 import io.github.gleidsonmt.todo.model.ToDoTask;
-import io.github.gleidsonmt.todo.view.nav.SideNavNew;
+import io.github.gleidsonmt.todo.view.panel.ListRootNew;
 import io.github.gleidsonmt.todo.view.panel.Panel;
-import io.github.gleidsonmt.todo.view.panel.items.TaskItem;
-import io.github.gleidsonmt.todo.view_model.TaskViewModelConverter;
-import javafx.application.Platform;
+import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -34,16 +32,15 @@ import javafx.scene.layout.StackPane;
 public class InputField extends GridPane {
 
     private final TextField textInput;
-    private final ToDoTask task;
     private final SVGIcon icon;
     private final HBox items;
     private final InputFieldItem tasks;
 
-    private TaskItem taskItem;
+    private ToDoTask task;
 
     public InputField() {
         // this.taskItem = taskItem;
-        this.task = new ToDoTask();
+        this.task = new ToDoTask("");
         this.textInput = createTextField();
         icon = new SVGIcon(Icon.ADD);
 
@@ -113,7 +110,6 @@ public class InputField extends GridPane {
     }
 
     private EventHandler<KeyEvent> createStoreEvent() {
-        TaskViewModelConverter converter = new TaskViewModelConverter();
         return (KeyEvent event) -> {
             if (event.getCode() == KeyCode.ENTER) {
                 if (this.getParent() instanceof Panel panel) {
@@ -125,24 +121,20 @@ public class InputField extends GridPane {
                     if (textInput.getText().isEmpty())
                         return;
 
+                    ListRootNew listRoot = (ListRootNew) panel.getScene().lookup("#list-root");
+                    var list = listRoot.getContainer().getList();
+
                     // Create another using the prepared here.
-                    ToDoTask task = new ToDoTask(textInput.getText());
-                    task.setImportant(false);
-                    task.setCompleted(false);
-                    task.setMyDay(false);
+                    task = new ToDoTask(0, textInput.getText(), false, false, false, null, null, LocalDate.now(),
+                            list.getId()
 
-                    task.setListId(panel.getListRoot().getActuaList().getId());
+                    );
 
-                    // panel.getListRoot().getData().add(task);
-
-                    TaskPresenter presenter = (TaskPresenter) Global.get(ToDoTask.class);
-                    presenter.store(task);
-
-                    Platform.runLater(() -> {
-                        SideNavNew nav = (SideNavNew) getScene().lookup("#drawer");
-                        nav.getSelected().updateNotifications();
-                        textInput.clear();
-                    });
+                    TaskViewModel taskViewModel = new TaskViewModel(task);
+                    taskViewModel.save();
+                    listRoot.getContainer().getData().add(taskViewModel);
+                    list.addNumberOfTasks(1);
+                    list.update();
 
                 }
             }

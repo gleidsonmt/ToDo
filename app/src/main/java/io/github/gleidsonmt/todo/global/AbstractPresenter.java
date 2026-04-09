@@ -19,6 +19,7 @@ import javafx.concurrent.Task;
  */
 public class AbstractPresenter<T extends Model> implements Presenter<T> {
 
+    @Deprecated
     private final ObservableList<T> data;
     protected AbstractDao<T> dao;
 
@@ -29,21 +30,7 @@ public class AbstractPresenter<T extends Model> implements Presenter<T> {
         this.dao = dao;
     }
 
-    @Override
-    public void save(T model) {
-        dao.store(model);
-    }
-
-    @Override
-    public void delete(T model) {
-        dao.delete(model);
-    }
-
-    @Override
-    public Optional<T> get(long id) {
-        return dao.get(id);
-    }
-
+    @Deprecated
     @Override
     public ObservableList<T> getData() {
         return this.data;
@@ -77,13 +64,9 @@ public class AbstractPresenter<T extends Model> implements Presenter<T> {
         }
     };
 
-    @Deprecated
     @Override
     public Task<ObservableList<T>> fetch() {
-        var task = this.dao.fetch(data);
-        // data.addListener(commitChangesInDatabase);
-        // task.setOnSucceeded(e -> isLoaded = true);
-        return task;
+        return fetch(FXCollections.observableArrayList());
     }
 
     @Override
@@ -105,6 +88,36 @@ public class AbstractPresenter<T extends Model> implements Presenter<T> {
 
     public Task<ObservableList<T>> fetch(long limit, long offset, String where) {
         return dao.fetch(data, limit, offset, where);
+    }
+
+    @Override
+    public long store(T model) {
+        return dao.store(model);
+    }
+
+    @Override
+    public boolean update(T model) {
+        return dao.update(model);
+    }
+
+    @Override
+    public boolean delete(T model) {
+        return dao.delete(model);
+    }
+
+    @Override
+    public boolean delete(long id) {
+        return dao.delete(id);
+    }
+
+    @Override
+    public Optional<T> get(long id) {
+        return dao.get(id);
+    }
+
+    @Override
+    public Optional<T> getFirst() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
 }

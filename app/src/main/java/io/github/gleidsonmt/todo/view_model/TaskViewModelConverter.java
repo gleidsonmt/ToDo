@@ -16,25 +16,18 @@ public class TaskViewModelConverter {
 
     public ToDoTask convert(TaskViewModel model) {
         ToDoTask temp = create(model.getId(), model.getName(), model.isCompleted(), model.isImportant(),
-                model.isMyDay(), model.getDueDate(), model.getListId());
+                model.isMyDay(), model.getDueDate(), model.getCreatedAt(), model.getListId());
 
         return temp;
     }
 
     public ToDoTask create(int id, String name) {
-        return create(id, name, false, false, false, null, 0);
+        return create(id, name, false, false, false, null, LocalDate.now(), 0);
     }
 
     public ToDoTask create(long id, String name, boolean completed, boolean important, boolean myDay, LocalDate dueDate,
-            long listId) {
-        var temp = new ToDoTask(name);
-        temp.setId(id);
-        temp.setCompleted(completed);
-        temp.setImportant(important);
-        temp.setListId(listId);
-        temp.setDueDate(dueDate);
-        temp.setMyDay(myDay);
-
-        return temp; 
+            LocalDate created, long listId) {
+        return new ToDoTask(id, name, completed, important, myDay, dueDate, null, created, listId);
     }
+
 }

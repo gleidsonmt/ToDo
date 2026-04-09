@@ -21,6 +21,8 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -53,17 +55,16 @@ public class CustomDrawerItemNew extends ToggleButton {
     private final BooleanProperty editable = new SimpleBooleanProperty(false);
 
     // test
-    private BooleanProperty update = new SimpleBooleanProperty(false);
-
     private ListViewModel viewModel;
 
-    public CustomDrawerItemNew(ListViewModel viewModel) {
-        this(viewModel, false);
-    }
+    // public CustomDrawerItemNew(ListViewModel viewModel) {
+    // this(viewModel, false);
+    // }
 
-    public CustomDrawerItemNew(ListViewModel viewModel, boolean fixed) {
+    public CustomDrawerItemNew(ListViewModel viewModel) {
         this.viewModel = viewModel;
-        this.fixed.set(fixed);
+        this.fixed.set(viewModel.isFixed());
+        viewModel.isFixed();
         this.setGraphic(container);
 
         init();
@@ -73,6 +74,7 @@ public class CustomDrawerItemNew extends ToggleButton {
         setActions();
     }
 
+    @Deprecated
     public void updateNotifications() {
         ListPresenter presenter = (ListPresenter) Global.get(List.class);
         this.numberOfNotifications.set(presenter.size(this.getViewModel().getId()));
@@ -131,7 +133,6 @@ public class CustomDrawerItemNew extends ToggleButton {
         container.getRowConstraints().addAll(rowOne);
 
         GridPane.setHgrow(title, Priority.ALWAYS);
-
     }
 
     private void bind() {
@@ -140,6 +141,7 @@ public class CustomDrawerItemNew extends ToggleButton {
         number.visibleProperty().bind(this.numberOfNotifications.greaterThan(0));
         this.title.textProperty().bindBidirectional(viewModel.nameProperty());
         title.disableProperty().bind(this.editable.not());
+
     }
 
     private void registerListeners() {
@@ -152,19 +154,18 @@ public class CustomDrawerItemNew extends ToggleButton {
         this.editable.addListener((_, _, newVal) -> {
             if (newVal) {
                 getScene().addPreLayoutPulseListener(() -> {
-                    title.requestFocus();
+                    if (this.isSelected()) {
+                        title.requestFocus();
+                    }
                 });
             }
         });
 
         this.focusWithinProperty().addListener((_, _, newVal) -> {
-            if (!newVal) {
+            if (!newVal && !this.getViewModel().isFixed()) {
                 viewModel.setName(this.title.getText());
                 this.setEditable(newVal);
-                // getViewList().getList().setName(this.text.getText());
-                // ListPresenter presenter = (ListPresenter)
-                // Global.get(List.class);
-                // presenter.update(getViewList().getList());
+                this.getViewModel().update();
             }
         });
     }
@@ -185,6 +186,17 @@ public class CustomDrawerItemNew extends ToggleButton {
                 e.consume();
             }
         });
+
+        this.addEventFilter(KeyEvent.KEY_PRESSED, e -> {
+            if (e.getCode() == KeyCode.ENTER) {
+                this.setEditable(false);
+                e.consume();
+            }
+        });
+    }
+
+    public IntegerProperty numberOfNotificationsProperty() {
+        return this.numberOfNotifications;
     }
 
     public void setEditable(boolean val) {

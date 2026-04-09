@@ -13,15 +13,13 @@ import io.github.gleidsonmt.todo.model.List;
 public class ListViewModelConverter {
 
     public List convert(ListViewModel model) {
-        List temp = create(model.getId(), model.getName());
-
+        
+        List temp = create(model.getId(), model.getName(), model.isFixed(), model.getNumberOfTasks());
         return temp;
     }
 
-    public List create(long id, String name) {
-        var temp = new List(name);
-        temp.setId(id);
-        return temp;
+    public List create(long id, String name, boolean fixed, int size) {
+        return new List(id, name, fixed, size);
     }
 
 }

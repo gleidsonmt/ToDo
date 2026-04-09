@@ -45,7 +45,8 @@ public class App extends Application {
 
         Logger.getGlobal().addHandler(handler);
         Logger.getGlobal().setUseParentHandlers(false);
-        Logger.getGlobal().setLevel(Level.OFF);
+        Logger.getGlobal().setLevel(Level.CONFIG);
+        handler.setLevel(Level.CONFIG);
     }
 
     @Override
@@ -58,7 +59,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         this.connection = new DatabaseConnection();
-        Logger.getGlobal().info(() -> "Established connection... [" + (connection.connect() ? "OK" : "FAILED") + "]");
+        Logger.getGlobal().config(() -> "Established connection... [" + (connection.connect() ? "OK" : "FAILED") + "]");
 
         UserPresenter presenter = (UserPresenter) Global.get(User.class);
         Optional<User> user = presenter.getLogged();
@@ -75,7 +76,7 @@ public class App extends Application {
         stage.setScene(scene);
         stage.show();
 
-        ScenicView.show(stage.getScene());
+//        ScenicView.show(stage.getScene());
         CSSFX.start(stage.getScene());
 
     }

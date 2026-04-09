@@ -49,7 +49,16 @@ public class ListRootNew extends VBox {
      * @param list The list of tasks to view in the container.
      */
     public void updateContainer(ListViewModel list) {
-        container = new DoubleListContainer(list);
+        var query = "";
+
+        query = switch (list.getType()) {
+        case DAILY -> "my_day = 1";
+        case IMPORTANT -> "important = 1";
+        case TASKS -> "list_id = 0";
+        default -> "list_id = " + list.getId();
+        };
+
+        container = new DoubleListContainer(list, query);
 
         container.load();
 
@@ -81,7 +90,7 @@ public class ListRootNew extends VBox {
         return actualList;
     }
 
-    public ListViewModel getActuaList() {
+    public ListViewModel getActualList() {
         return this.actualList.get();
     }
 

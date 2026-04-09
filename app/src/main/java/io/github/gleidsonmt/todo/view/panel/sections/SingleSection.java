@@ -2,9 +2,12 @@ package io.github.gleidsonmt.todo.view.panel.sections;
 
 import java.util.Optional;
 
+import org.jetbrains.annotations.ApiStatus.Experimental;
+
 import io.github.gleidsonmt.todo.model.ToDoTask;
 import io.github.gleidsonmt.todo.view.panel.containers.ListContainer;
 import io.github.gleidsonmt.todo.view.panel.items.TaskItem;
+import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -26,8 +29,6 @@ import javafx.util.Duration;
  */
 public class SingleSection extends VBox {
 
-    // In the class, add a field for items (if not already present)
-
     private double speed = 200;
 
     protected FilteredList<TaskViewModel> filteredList;
@@ -35,11 +36,15 @@ public class SingleSection extends VBox {
 
     protected boolean hasHeader = false;
 
-    public SingleSection() {
+    private ListViewModel listViewModel;
+
+    public SingleSection(ListViewModel listViewModel) {
+        this.listViewModel = listViewModel;
         this.getStyleClass().add("single-selection");
         this.setSpacing(5);
     }
 
+    @Experimental
     protected Timeline removeAnimation(Node el) {
 
         Timeline timeline = new Timeline();
@@ -59,6 +64,7 @@ public class SingleSection extends VBox {
      * @param el The task item.
      * @return The timeline.
      */
+    @Experimental
     protected Timeline addAnimation(Node el) {
 
         Timeline timeline = new Timeline();
@@ -96,19 +102,11 @@ public class SingleSection extends VBox {
         // getContainer().getData().addListener(updateList);
     }
 
-    protected final ListChangeListener<TaskViewModel> updateList = (ListChangeListener<TaskViewModel>) c -> {
+    @Experimental
+    protected final ListChangeListener<TaskViewModel> updateList = c -> {
 
         if (c.next()) {
-            if (c.wasUpdated()) {
-
-                // System.out.println("Update detected from index " +
-                // c.getFrom() + " to " + c.getTo());
-                for (int i = c.getFrom(); i < c.getTo(); i++) {
-                    System.out.println("update " + c.getList().get(i));
-                }
-                return;
-            }
-            if (c.wasPermutated()) {
+            if (c.wasPermutated()) { // used for comparators
 
                 getChildren().remove(hasHeader ? 1 : 0, getChildren().size());
 
@@ -121,25 +119,26 @@ public class SingleSection extends VBox {
             if (c.wasAdded()) {
                 c.getAddedSubList().forEach(el -> {
                     TaskItem taskItem = loadTask(el);
+
                     add(taskItem);
                 });
+
             }
             if (c.wasRemoved()) {
-                c.getRemoved().forEach(el -> {
-                    delete(el);
-                });
+                c.getRemoved().forEach(this::delete);
             }
         }
 
     };
 
-    protected TaskItem loadTask(TaskViewModel task) {
-        TaskItem taskItem = createTaskItem(task);
+    @Experimental
+    protected TaskItem loadTask(TaskViewModel viewModel) {
+        TaskItem taskItem = new TaskItem(viewModel, listViewModel);
         taskItem.setToggleGroup(getContainer().getGroup());
-        // getContainer().getGroup().getToggles().add(taskItem);
         return taskItem;
     }
 
+    @Experimental
     private void delete(TaskViewModel task) {
 
         Optional<TaskItem> optional = getChildren().stream().filter(el -> el instanceof TaskItem)
@@ -147,17 +146,10 @@ public class SingleSection extends VBox {
                     return el.getViewModel().getId() == task.getId();
                 }).findAny();
 
-        if (optional.isPresent()) {
-            var animation = removeAnimation(optional.get());
-            optional.get().setOpacity(1);
-            animation.setOnFinished(_ -> {
-                this.getChildren().remove(optional.get());
-            });
-            animation.play();
-        }
-
+        optional.ifPresent(this::remove);
     }
 
+    @Experimental
     protected void add(TaskItem taskItem) {
         this.getChildren().add(hasHeader ? 1 : 0, taskItem);
         taskItem.setOpacity(0);
@@ -167,23 +159,17 @@ public class SingleSection extends VBox {
         // return animation;
     }
 
+    @Experimental
     private Timeline remove(TaskItem taskItem) {
         var animation = removeAnimation(taskItem);
-        taskItem.setOpacity(0);
+        taskItem.setOpacity(1);
         animation.setOnFinished(e -> this.getChildren().remove(taskItem));
-        // animation.play();
+        animation.play();
         return animation;
     }
 
     private ListContainer getContainer() {
         return (ListContainer) this.getParent();
-    }
-
-    protected TaskItem createTaskItem(TaskViewModel task) {
-        TaskItem item = new TaskItem(task);
-        item.setId(String.valueOf(task.getId()));
-        item.setUserData(task);
-        return item;
     }
 
     public SortedList<TaskViewModel> getSortedList() {

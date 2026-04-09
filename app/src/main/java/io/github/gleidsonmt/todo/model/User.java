@@ -30,12 +30,12 @@ public class User extends Entity {
     @Ignore
     private final Folder folder;
 
-    public User() {
-        this(0, null, null, null);
+    public User(long id, String name) {
+        this(id, name, null, null);
     }
 
-    public User(int id, String name, String lastName, String email) {
-        super(0, name);
+    public User(long id, String name, String lastName, String email) {
+        super(id, name);
         folder = new Folder();
         logged.set(false);
 

@@ -30,7 +30,11 @@ public class LogFormatter extends Formatter {
     public String format(LogRecord record) {
         StringBuilder builder = new StringBuilder();
 
-        if (record.getLevel().equals(Level.WARNING)) {
+        if (record.getLevel().equals(Level.CONFIG)) {
+            builder.append(ANSI_GREEN);
+        } else if (record.getLevel().equals(Level.FINE)) {
+            builder.append(ANSI_PURPLE);
+        } else if (record.getLevel().equals(Level.WARNING)) {
             builder.append(ANSI_YELLOW);
         } else if (record.getLevel().equals(Level.INFO)) {
             builder.append(ANSI_CYAN);
@@ -59,7 +63,7 @@ public class LogFormatter extends Formatter {
         System.out.print("\033[H\033[2J");
         System.out.flush();
         // builder.append("\033[H\033[2J");
-        builder.append("\n");
+//        builder.append("\n");
 
         return builder.toString();
     }

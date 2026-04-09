@@ -7,14 +7,14 @@ import io.github.gleidsonmt.todo.utils.I18n;
  * Description:
  *
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- *         Created On: Mar 28, 2026
+ *         Created On: Mar 30, 2026
  * 
  *         Version History: Initial version
  */
-public class MyDayOption extends Option {
+public class TomorrowOption extends Option {
 
-    public MyDayOption() {
-        super(1, I18n.get("drawer.list.myDay"), Icon.SUN);
+    public TomorrowOption() {
+        super(3, I18n.get("option.tomorrow"), Icon.DATE_RANGE);
     }
 
 }

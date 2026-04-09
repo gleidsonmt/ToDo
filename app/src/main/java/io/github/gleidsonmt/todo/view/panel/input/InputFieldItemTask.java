@@ -1,10 +1,8 @@
 package io.github.gleidsonmt.todo.view.panel.input;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
-import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import io.github.gleidsonmt.todo.model.List;
 import io.github.gleidsonmt.todo.model.ToDoTask;
-import io.github.gleidsonmt.todo.view.nav.SideNav;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import javafx.geometry.Side;
 import javafx.scene.control.ContextMenu;
@@ -36,14 +34,14 @@ public class InputFieldItemTask extends InputFieldItem {
         this.setTooltip(tooltip);
 
         this.setOnMouseReleased(e -> {
-            SideNav nav = (SideNav) getScene().lookup("#drawer");
+            // SideNav nav = (SideNav) getScene().lookup("#drawer");
 
             contextMenu.getItems().clear();
             contextMenu.getItems().add(createMenuItem(null));
-            nav.getCustomLists().forEach(el -> {
-                var menuItem = createMenuItem(el);
-                contextMenu.getItems().add(menuItem);
-            });
+            // nav.getCustomLists().forEach(el -> {
+            // var menuItem = createMenuItem(el);
+            // contextMenu.getItems().add(menuItem);
+            // });
 
             if (contextMenu.isShowing())
                 return;
@@ -57,10 +55,12 @@ public class InputFieldItemTask extends InputFieldItem {
 
     private MenuItem createMenuItem(List list) {
         var menuItem = new MenuItem(list == null ? "Tasks" : list.getName());
-        menuItem.setGraphic(list == null ? new SVGIcon(Icon.HOME) : new SVGIcon(list.getIcon()));
+        // menuItem.setGraphic(list == null ? new SVGIcon(Icon.HOME) : new
+        // SVGIcon(list.getIcon()));
         menuItem.setOnAction(e -> {
-            this.setText(list == null ? "Tasks" : list.getName());
-            this.setGraphic(list == null ? new SVGIcon(Icon.HOME) : new SVGIcon(list.getIcon()));
+            // this.setText(list == null ? "Tasks" : list.getName());
+            // this.setGraphic(list == null ? new SVGIcon(Icon.HOME) : new
+            // SVGIcon(list.getIcon()));
 
             // this.task.setListId(list == null ? 0 : list.getId());
             this.listId = list == null ? 0 : list.getId();

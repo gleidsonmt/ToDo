@@ -2,11 +2,9 @@ package io.github.gleidsonmt.todo.view.nav;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
-import io.github.gleidsonmt.todo.global.Global;
-import io.github.gleidsonmt.todo.global.Presenter;
-import io.github.gleidsonmt.todo.model.List;
 import io.github.gleidsonmt.todo.utils.I18n;
 import io.github.gleidsonmt.todo.utils.StringUtils;
+import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -15,10 +13,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
 /**
- * Description: The Drawer Footer.
+ * Description:
  *
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- *         Created On: Mar 14, 2026
+ *         Created On: Mar 21, 2026
  * 
  *         Version History: Initial version
  */
@@ -27,7 +25,7 @@ public class Footer extends GridPane {
     private final Label label;
 
     public Footer() {
-        label = new Label(I18n.get("drawer.newTask"));
+        label = new Label(I18n.get("drawer.new.list"));
         configLayout();
         setOnMouseClicked(e -> createNewList());
     }
@@ -60,30 +58,27 @@ public class Footer extends GridPane {
      * @param lists
      */
     private void createNewList() {
-        // first step, get the last new list with the pattern [untitled [0-9]]
-        // and get his number
-        Presenter<List> presenter = Global.get(List.class);
 
-        var actualIncrementValue = presenter.getData().stream()
+        var nav = (SideNavNew) getScene().lookup("#drawer");
+
+        var actualVal = nav.getModels().stream()
                 // filter with the patter name (Untitled [some number])
-                .filter(list -> list.getName().matches("Untitled [0-9]+"))
+                .filter(el -> el.getName().matches("Untitled [0-9]+"))
                 // transform this number in an integer
                 .map(list -> StringUtils.getLastNumber(list.getName()))
                 // get the maximun value
                 .reduce(0, (a, b) -> Integer.max(a, b));
 
-        List list;
+        ListViewModel model;
 
-        if (actualIncrementValue == 0) {
+        if (actualVal == 0) {
             // if there's no patttern added to lists create
-            list = new List("Untitled 1");
+            model = new ListViewModel("Untitled 1");
         } else {
             // if there's a list update the increment
-            list = new List("Untitled " + (actualIncrementValue + 1));
+            model = new ListViewModel("Untitled " + (actualVal + 1));
         }
-        // add to
 
-        var nav = (SideNav) getScene().lookup("#drawer");
-        nav.selectList(list);
+        nav.add(model.save());
     }
 }

@@ -1,7 +1,6 @@
 package io.github.gleidsonmt.todo.global;
 
-import java.util.Optional;
-
+import io.github.gleidsonmt.todo.bd.dao.internal.Dao;
 import io.github.gleidsonmt.todo.model.Model;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -14,7 +13,7 @@ import javafx.concurrent.Task;
  * 
  *         Version History: Initial version
  */
-public interface Presenter<T extends Model> {
+public interface Presenter<T extends Model> extends Dao<T> {
 
     @Deprecated
     ObservableList<T> getData();
@@ -23,12 +22,6 @@ public interface Presenter<T extends Model> {
     Task<ObservableList<T>> fetch();
 
     Task<ObservableList<T>> fetch(ObservableList<T> items);
-
-    void save(T model);
-
-    void delete(T model);
-
-    Optional<T> get(long id);
 
     Class<T> getModelClass();
 }

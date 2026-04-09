@@ -3,6 +3,7 @@ package io.github.gleidsonmt.todo.view.panel.menu.list_menu_items;
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import io.github.gleidsonmt.todo.view.nav.CustomDrawerItemNew;
+import io.github.gleidsonmt.todo.view.nav.SideNavNew;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
@@ -26,14 +27,9 @@ public class MenuItemDeleteList extends MenuItem {
         this.setText("Delete Task");
 
         this.setOnAction(e -> {
-            // viewModel.delete();
-            // SideNav nav = (SideNav) item.getScene().lookup("#drawer");
-            // nav.getChildren().remove(item);
-            // nav.getItems().remove(item.getViewList());
-            // ListPresenter presenter = (ListPresenter) Global.get(List.class);
-            // presenter.delete(item.getViewList().getList());
-            // repo.of(List.class).getData().remove(index);
-            // repo.delete(item.getViewList().getList());
+            item.getViewModel().delete();
+            SideNavNew nav = (SideNavNew) item.getScene().lookup("#drawer");
+            nav.remove(item.getViewModel());
         });
     }
 

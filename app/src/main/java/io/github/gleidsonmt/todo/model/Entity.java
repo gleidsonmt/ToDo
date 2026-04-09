@@ -6,13 +6,9 @@ package io.github.gleidsonmt.todo.model;
  */
 public class Entity extends Model {
 
-    private String name;
+    private final String name;
 
-    public Entity() {
-        this(0, null);
-    }
-
-    public Entity(int id, String name) {
+    public Entity(long id, String name) {
         super(id);
         this.name = name;
     }
@@ -20,16 +16,5 @@ public class Entity extends Model {
     public String getName() {
         return name;
     }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    // public String toString() {
-    // final StringBuffer sb = new StringBuffer("Entity{");
-    // sb.append("name=").append(name);
-    // sb.append('}');
-    // return sb.toString();
-    // }
 
 }

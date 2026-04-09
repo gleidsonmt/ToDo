@@ -15,17 +15,11 @@ import javafx.collections.ObservableList;
  */
 public class Repository {
 
-    private final UserPresenter userPresenter;
-    private final ListPresenter listPresenter;
-    private final TaskPresenter taskPresenter;
-
     private final List<Presenter<?>> repos;
 
+    @SuppressWarnings("null")
     public Repository() {
-        this.userPresenter = new UserPresenter();
-        this.listPresenter = new ListPresenter();
-        this.taskPresenter = new TaskPresenter();
-        this.repos = List.of(userPresenter, listPresenter, taskPresenter);
+        this.repos = List.of(new UserPresenter(), new ListPresenter(), new TaskPresenter(), new SizePresenter());
     }
 
     public <T extends Model> Presenter<T> of(Class<?> presenter) {
@@ -53,62 +47,4 @@ public class Repository {
         }
         return null; // Or throw an exception if no match found
     }
-
-    // public Task<ObservableList<List>> loadLists() {
-    // return daoList.fetch(lists);
-    // }
-
-    /**
-     * For every action after loading the tasks, they will be reflection in
-     * database (dao) actions.
-     */
-    // private ListChangeListener<ToDoTask> createListener() {
-    // return ((ListChangeListener<ToDoTask>) c -> {
-    // if (c.next()) {
-    // if (c.wasReplaced()) {
-    // c.getAddedSubList().forEach(this::update);
-    // } else {
-    // if (c.wasAdded()) {
-    // c.getAddedSubList().forEach(this::store);
-    // } else if (c.wasRemoved()) {
-    // c.getRemoved().forEach(this::delete);
-    // }
-    // }
-    // }
-    // });
-    // }
-
-    // public ObservableList<ToDoTask> getData() {
-    // return this.data;
-    // }
-
-    public ObservableList<List> getLists() {
-        // return this.lists;
-        return null;
-    }
-
-    // private void delete(ToDoTask task) {
-    // dao.delete(task);
-    // }
-
-    // private void update(ToDoTask task) {
-    // dao.update(task);
-    // }
-
-    // private void store(ToDoTask task) {
-    // dao.store(task);
-    // }
-
-    // public void store(List list) {
-    // // daoList.store(list);
-    // }
-
-    // public void delete(List list) {
-    // // daoList.delete(list);
-    // }
-
-    // private void apply() {
-    // dao.commit();
-    // }
-
 }

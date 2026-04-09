@@ -3,6 +3,7 @@ package io.github.gleidsonmt.todo.bd.dao.internal;
 import java.util.Optional;
 
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.ApiStatus.Experimental;
 
 import io.github.gleidsonmt.todo.model.Model;
 
@@ -18,7 +19,7 @@ import io.github.gleidsonmt.todo.model.Model;
 public interface Dao<T extends Model> {
 
     // Default CRUD Actions
-    boolean store(T model);
+    long store(T model);
 
     boolean update(T model);
 
@@ -29,6 +30,7 @@ public interface Dao<T extends Model> {
     // Getters
     Optional<T> get(long id);
 
+    @Experimental
     Optional<T> getFirst();
 
 }

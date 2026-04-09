@@ -45,7 +45,7 @@ public class FormLogin extends VBox implements Form<User> {
 
     public FormLogin() {
 
-        this.user = new User();
+        // this.user = new User();
         this.dao = new DaoUser();
 
         this.setAlignment(Pos.CENTER);

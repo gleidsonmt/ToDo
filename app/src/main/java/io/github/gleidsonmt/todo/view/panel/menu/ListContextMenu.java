@@ -2,7 +2,6 @@ package io.github.gleidsonmt.todo.view.panel.menu;
 
 import java.util.List;
 
-import io.github.gleidsonmt.todo.view.nav.CustomDrawerItem;
 import io.github.gleidsonmt.todo.view.nav.CustomDrawerItemNew;
 import io.github.gleidsonmt.todo.view.panel.menu.list_menu_items.MenuItemDeleteList;
 import io.github.gleidsonmt.todo.view.panel.menu.list_menu_items.MenuItemReanameList;

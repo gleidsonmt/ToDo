@@ -36,7 +36,7 @@ public class FormSignUp extends VBox implements Form<User> {
     private final DaoUser daoUser;
 
     public FormSignUp() {
-        this.user = new User();
+        this.user = new User(0, "");
         this.daoUser = new DaoUser();
         this.setAlignment(Pos.CENTER);
         this.setSpacing(20D);

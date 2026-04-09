@@ -6,6 +6,7 @@ import io.github.gleidsonmt.todo.global.Global;
 import io.github.gleidsonmt.todo.global.Presenter;
 import io.github.gleidsonmt.todo.model.List;
 import io.github.gleidsonmt.todo.utils.I18n;
+import io.github.gleidsonmt.todo.utils.StringUtils;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -35,15 +36,12 @@ public class MenuItemMoveTask extends Menu {
 
             task.getValue().forEach((list) -> {
                 // don't add the option the task is already in
-                if (list.getId() != item.getListId()) {
+                if (list.getId() != item.getListId() && (!list.isFixed() || list.getId() == 0)) {
                     // Platform.runLater(() -> {
-
                     getItems().add(new MenuList(list, item));
                     // });
-
                 }
             });
-
         });
     }
 
@@ -52,11 +50,13 @@ public class MenuItemMoveTask extends Menu {
 class MenuList extends MenuItem {
 
     public MenuList(List list, TaskViewModel item) {
-        setText(list.getName());
-        setGraphic(new SVGIcon(list.getIcon()));
+//        setText(list.getName());
+        setText(StringUtils.name(list.getName()));
+        // setGraphic(new SVGIcon(list.getIcon()));
 
         setOnAction(e -> {
             item.setListId(list.getId());
+            item.update();
         });
     }
 

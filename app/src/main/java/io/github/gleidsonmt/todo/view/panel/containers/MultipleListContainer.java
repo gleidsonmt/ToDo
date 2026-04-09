@@ -7,7 +7,6 @@ import io.github.gleidsonmt.todo.view.panel.items.TaskItem;
 import io.github.gleidsonmt.todo.view.panel.sections.AnimatedSection;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
-import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -95,18 +94,17 @@ public class MultipleListContainer extends ListContainer {
         // });
     }
 
-    @Override
     protected TaskItem createTaskItem(TaskViewModel task) {
-        TaskItem item = new TaskItem(task);
-        item.setOnCompletedChange(viewModel -> {
-            AnimatedSection section = (AnimatedSection) item.getParent();
-            // section.getItems().remove(section.get(task));
-            viewModel.update();
-        });
-        item.setOnImportantChange(viewModel -> {
-            viewModel.update();
-        });
-        return item;
+        // TaskItem item = new TaskItem(task);
+        // item.setOnCompletedChange(viewModel -> {
+        //     AnimatedSection section = (AnimatedSection) item.getParent();
+        //     // section.getItems().remove(section.get(task));
+        //     viewModel.update();
+        // });
+        // item.setOnImportantChange(viewModel -> {
+        //     viewModel.update();
+        // });
+        return null;
     }
 
     public BooleanProperty hasChildProperty() {
@@ -121,20 +119,20 @@ public class MultipleListContainer extends ListContainer {
 
     private void loadLists(List list) {
 
-        AnimatedSection section = new AnimatedSection(list);
+        // AnimatedSection section = new AnimatedSection();
 
-        list.getItems().forEach(el -> {
-            loadTask(section, el, list.getType());
-            list.getItems().addListener(changeListener(section));
-            // hasChild.bind(Bindings.size(list.getItems()).greaterThan(0));
-        });
+        // list.getItems().forEach(el -> {
+        //     loadTask(section, el, list.getType());
+        //     list.getItems().addListener(changeListener(section));
+        //     // hasChild.bind(Bindings.size(list.getItems()).greaterThan(0));
+        // });
 
-        Platform.runLater(() -> {
-            if (!list.getItems().isEmpty()) {
-                if (!getChildren().contains(section))
-                    getChildren().add(0, section);
-            }
-        });
+        // Platform.runLater(() -> {
+        //     if (!list.getItems().isEmpty()) {
+        //         if (!getChildren().contains(section))
+        //             getChildren().add(0, section);
+        //     }
+        // });
     }
 
     /**
@@ -171,24 +169,24 @@ public class MultipleListContainer extends ListContainer {
 
         // }
         // new Thread(new Task<Object>() {
-        //     @Override
-        //     protected Object call() {
-        //         TaskItem taskItem = createTaskItem(task);
-        //         Platform.runLater(() -> {
+        // @Override
+        // protected Object call() {
+        // TaskItem taskItem = createTaskItem(task);
+        // Platform.runLater(() -> {
 
-        //             // section.getItems().add(taskItem);
+        // // section.getItems().add(taskItem);
 
-        //             // if (task.isCompleted()) {
-        //             // sectionCompleted.getItems().add(taskItem);
-        //             // } else {
-        //             // sectionIncomplete.getChildren().add(0, taskItem);
-        //             // }
-        //             if (!getChildren().contains(section))
-        //                 getChildren().add(0, section);
-        //         });
+        // // if (task.isCompleted()) {
+        // // sectionCompleted.getItems().add(taskItem);
+        // // } else {
+        // // sectionIncomplete.getChildren().add(0, taskItem);
+        // // }
+        // if (!getChildren().contains(section))
+        // getChildren().add(0, section);
+        // });
 
-        //         return taskItem;
-        //     }
+        // return taskItem;
+        // }
 
         // }).start();
         // Platform.runLater(() -> {

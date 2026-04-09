@@ -4,11 +4,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import io.github.gleidsonmt.todo.bd.dao.internal.Ignore;
-import io.github.gleidsonmt.todo.view.aside.Recurrence;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleObjectProperty;
 
 /**
  * Description:
@@ -18,110 +13,65 @@ import javafx.beans.property.SimpleObjectProperty;
  * 
  *         Version History: Initial version
  */
-@SuppressWarnings("unused")
-public class ToDoTask extends Entity implements Cloneable {
+public class ToDoTask extends Entity {
 
+    // sql = insert into task(name, list_id, important, completed, due_date,
+    // my_day, recurrence_id, created_at) values(?, ?, ?, ?, ?, ?, ?, ?);
     // eh o primeiro na lista
-    private int recurrenceId = 0;
-    private boolean myDay;
-    private LocalDate dueDate;
-    //
-    private final ObjectProperty<LocalDateTime> remind = new SimpleObjectProperty<>();
-    private final BooleanProperty completed;
-    // Doing and refactoring to improve memory usage
-    @Ignore
-    private Recurrence recurrence;
-    private boolean important;
-    private long listId = 0;
 
-    public ToDoTask() {
-        this(null);
-    }
+    @Ignore
+    private final int recurrenceId = 0;
+    // Doing and refactoring to improve memory usage
+
+    private final long listID;
+    private final LocalDate createdAt;
+    private final LocalDateTime remind;
+    private final LocalDate dueDate;
+    private final boolean myDay;
+    private final boolean important;
+    private final boolean completed;
 
     public ToDoTask(String name) {
-        this(name, false, false);
+        this(0, name, false, false, false, LocalDate.now(), LocalDateTime.now(), LocalDate.now(), 0);
     }
 
-    public ToDoTask(String name, LocalDate dueDate) {
-        this(name, false, false, dueDate);
-    }
-
-    public ToDoTask(String name, boolean completed, boolean important) {
-        this(name, completed, important, null);
-    }
-
-    public ToDoTask(String name, boolean completed, boolean important, LocalDate duaDate) {
-        this(0, name, completed, important, duaDate);
-    }
-
-    public ToDoTask(int id, String name, boolean completed, boolean important, LocalDate dueDate) {
+    public ToDoTask(long id, String name, boolean completed, boolean important, boolean myDay, LocalDate dueDate,
+            LocalDateTime remind, LocalDate createdAt, long listID) {
         super(id, name);
-        this.completed = new SimpleBooleanProperty(completed);
+        this.myDay = myDay;
+        this.completed = completed;
         this.dueDate = dueDate;
         this.important = important;
+        this.createdAt = createdAt;
+        this.remind = remind;
+        this.listID = listID;
+    }
+
+    public LocalDate getCreatedAt() {
+        return createdAt;
     }
 
     public LocalDate getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(LocalDate dueDate) {
-        this.dueDate = dueDate;
-    }
-
     public boolean isCompleted() {
-        return completed.get();
-    }
-
-    public BooleanProperty completedProperty() {
         return completed;
-    }
-
-    public void setCompleted(boolean completed) {
-        this.completed.set(completed);
     }
 
     public boolean isImportant() {
         return important;
     }
 
-    public void setImportant(boolean important) {
-        this.important = important;
-    }
-
-    public Recurrence getRecurrence() {
-        return recurrence;
-    }
-
-    public void setRecurrence(Recurrence recurrence) {
-        this.recurrence = recurrence;
-    }
-
     public long getListId() {
-        return listId;
-    }
-
-    public void setListId(long listId) {
-        this.listId = listId;
+        return listID;
     }
 
     public boolean isMyDay() {
         return myDay;
     }
 
-    public void setMyDay(boolean myDay) {
-        this.myDay = myDay;
-    }
-
-    public void setRemind(LocalDateTime remind) {
-        this.remind.set(remind);
-    }
-
     public LocalDateTime getRemind() {
-        return remind.get();
-    }
-
-    public ObjectProperty<LocalDateTime> remindProperty() {
         return remind;
     }
 
@@ -129,27 +79,12 @@ public class ToDoTask extends Entity implements Cloneable {
         return recurrenceId;
     }
 
-    public void setRecurrenceId(int recurrenceId) {
-        this.recurrenceId = recurrenceId;
-    }
-
-    @Override
-    public ToDoTask clone() throws CloneNotSupportedException {
-        try {
-            ToDoTask clone = (ToDoTask) super.clone();
-            // TODO: copy mutable state here, so the clone can't change the
-            // internals of the original
-            return clone;
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
-    }
-
     public String toJason() {
-        return "Task {" + "\n\tname=" + super.getName() + "\n\tid=" + super.getId() + "\n\trecurrenceId=" + recurrenceId
+        return """
+                Task {
+                \tname=""" + super.getName() + "\n\tid=" + super.getId() + "\n\trecurrenceId=" + recurrenceId
                 + "\n\tmyDay=" + myDay + "\n\tdueDate=" + dueDate + "\n\tremind=" + remind + "\n\tcompleted="
-                + completed + "\n\trecurrence=" + recurrence + "\n\timportant=" + important + "\n\trecurrenceId="
-                + recurrenceId + "\n\tlistId=" + listId + "\n}";
+                + recurrenceId + "\n\tlistId=" + listID + "\n}";
     }
 
     @Override
@@ -162,9 +97,8 @@ public class ToDoTask extends Entity implements Cloneable {
         sb.append(", dueDate=").append(dueDate);
         sb.append(", remind=").append(remind);
         sb.append(", completed=").append(completed);
-        sb.append(", recurrence=").append(recurrence);
         sb.append(", important=").append(important);
-        sb.append(", listId=").append(listId);
+        sb.append(", listId=").append(listID);
         sb.append('}');
         return sb.toString();
     }

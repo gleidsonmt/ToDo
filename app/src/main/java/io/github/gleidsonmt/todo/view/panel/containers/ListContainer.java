@@ -34,8 +34,9 @@ import javafx.scene.layout.VBox;
  */
 public abstract class ListContainer extends VBox {
 
-    protected ObservableList<TaskViewModel> data = FXCollections
-            .observableArrayList(viewModel -> new Observable[] { viewModel.completedProperty() });
+    protected ObservableList<TaskViewModel> data = FXCollections.observableArrayList(
+            viewModel -> new Observable[] { viewModel.completedProperty(), viewModel.listIdProperty(), viewModel.importantProperty(), viewModel.myDayProperty(), viewModel.listIdProperty() });
+//    protected ObservableList<TaskViewModel> data = FXCollections.observableArrayList(viewModel -> new Observable[] { viewModel.completedProperty() });
 
     private final ObjectProperty<TaskItem> selected = new SimpleObjectProperty<>();
     private final ObjectProperty<Comparators> comparator = new SimpleObjectProperty<>(Comparators.NONE);
@@ -72,7 +73,7 @@ public abstract class ListContainer extends VBox {
                         section.getSortedList().setComparator(switchComparator(val));
                     });
         });
-        
+
         VBox.setVgrow(this, Priority.ALWAYS);
 
     }
@@ -87,7 +88,6 @@ public abstract class ListContainer extends VBox {
         }
         default -> throw new AssertionError();
         }
-
     }
 
     private Comparator<TaskViewModel> createAlphaticallyComporator() {
@@ -111,8 +111,9 @@ public abstract class ListContainer extends VBox {
         this.group.selectToggle(value);
     }
 
-    @Deprecated
-    protected abstract TaskItem createTaskItem(TaskViewModel task);
+    public ListViewModel getList() {
+        return this.list;
+    }
 
     public abstract void load();
 

@@ -1,8 +1,8 @@
 package io.github.gleidsonmt.todo.view.panel.sections;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
-import io.github.gleidsonmt.todo.model.List;
 import io.github.gleidsonmt.todo.utils.I18n;
+import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ListChangeListener;
@@ -20,15 +20,17 @@ public class AnimatedSection extends SingleSection {
 
     private SectionTitle title;
 
-    public AnimatedSection() {
-        this(I18n.get("panel.tile.title"), Icon.NONE);
+    public AnimatedSection(ListViewModel listViewModel) {
+        this(listViewModel, I18n.get("panel.tile.title"), Icon.NONE);
     }
 
-    public AnimatedSection(List list) {
-        this(list.getName(), list.getIcon());
-    }
+    // public AnimatedSection(List list) {
+    // this(list.getName(), list.getIcon());
+    // }
 
-    public AnimatedSection(String name, Icon icon) {
+    public AnimatedSection(ListViewModel listViewModel, String name, Icon icon) {
+        super(listViewModel);
+
         this.hasHeader = true;
 
         title = new SectionTitle(name, icon);

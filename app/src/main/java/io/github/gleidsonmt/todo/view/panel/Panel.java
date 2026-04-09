@@ -8,7 +8,6 @@ import io.github.gleidsonmt.glad.controls.button.Button;
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import io.github.gleidsonmt.todo.model.List;
-import io.github.gleidsonmt.todo.model.ListType;
 import io.github.gleidsonmt.todo.view.panel.input.InputField;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
@@ -195,15 +194,15 @@ public class Panel extends Container {
         StackPane.setAlignment(grid, Pos.TOP_LEFT);
         GridPane.setColumnSpan(info, 2);
 
-        actualList.addListener((observable, oldValue, newValue) -> {
-            if (newValue.getType().equals(ListType.DAILY)) {
-                grid.add(info, 0, 1);
-                borderTop.set(80);
-            } else {
-                grid.getChildren().remove(info);
-                borderTop.set(60);
-            }
-        });
+        // actualList.addListener((observable, oldValue, newValue) -> {
+        // if (newValue.getType().equals(ListType.DAILY)) {
+        // grid.add(info, 0, 1);
+        // borderTop.set(80);
+        // } else {
+        // grid.getChildren().remove(info);
+        // borderTop.set(60);
+        // }
+        // });
         return grid;
     }
 

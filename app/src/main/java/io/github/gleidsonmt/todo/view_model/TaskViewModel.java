@@ -34,12 +34,11 @@ public class TaskViewModel extends ViewModel {
     private final BooleanProperty myDay;
     private final ObjectProperty<LocalDate> dueDate;
     private final LongProperty listId;
+    private final ObjectProperty<LocalDate> createdAt;
 
     // private final TaskItem taskItem;
-    private final ToDoTask task;
 
     public TaskViewModel(ToDoTask task) {
-        this.task = task;
         this.setId(task.getId());
 
         this.presenter = (TaskPresenter) Global.get(ToDoTask.class);
@@ -51,6 +50,7 @@ public class TaskViewModel extends ViewModel {
         this.myDay = new SimpleBooleanProperty(task.isMyDay());
         this.dueDate = new SimpleObjectProperty<>(task.getDueDate());
         this.remind = new SimpleObjectProperty<>(task.getRemind());
+        this.createdAt = new SimpleObjectProperty<>(task.getCreatedAt());
 
         this.listId = new SimpleLongProperty(task.getListId());
 
@@ -63,36 +63,16 @@ public class TaskViewModel extends ViewModel {
         // this.nameProperty().bindBidirectional(taskItem.nameProperty());
         // this.important.bindBidirectional(taskItem.favoriteProperty());
         // this.completed.bindBidirectional(taskItem.completedProperty());
+
     }
 
     private void registerListeners() {
-        this.important.addListener((_, _, _) -> {
-            // taskItem.onImportantChange().handle(this);
-        });
 
-        // this.completed.addListener((_, _, _) -> {
-        // taskItem.onCompletedChange().handle(this);
-        // });
-
-        // this.listId.addListener((_, _, newVal) -> {
-        // System.out.println(taskItem.getP);
-        // if (newVal) {
-        // SideNavNew drawer = (SideNavNew)
-        // this.taskItem.getScene().lookup("#drawer");
-        // this.update();
-        // drawer.getSelected().updateNotifications();
-        // CustomDrawerItemNew drawerItem = drawer.get(this);
-        // drawerItem.updateNotifications();
-
-        // }
-        // });
-        // updateCount();
     }
 
     public ToDoTask save() {
         var converted = converter.convert(this);
-        presenter.store(converted);
-        this.setId(converted.getId());
+        this.setId(presenter.store(converted));
         return converted;
     }
 
@@ -100,25 +80,11 @@ public class TaskViewModel extends ViewModel {
         // commit in db
         var item = converter.convert(this);
         presenter.update(item);
-        // ListRootNew listRoot = (ListRootNew)
-        // taskItem.getScene().lookup("#list-root");
-        // listRoot.getData().removeIf(el -> el.getId() == item.getId());
-        // updateCount();
     }
 
     public void delete() {
         var item = converter.convert(this);
-        // ListRootNew listRoot = (ListRootNew)
-        // taskItem.getScene().lookup("#list-root");
-        // listRoot.getData().removeIf(el -> el.getId() == item.getId());
-        // listRoot.getContainer().remove(taskItem);
         presenter.delete(item);
-        // updateCount();
-    }
-
-    private void updateCount() {
-        // SideNavNew nav = (SideNavNew) taskItem.getScene().lookup("#drawer");
-        // nav.getSelected().updateNotifications();
     }
 
     public ObjectProperty<LocalDateTime> remindProperty() {
@@ -177,8 +143,16 @@ public class TaskViewModel extends ViewModel {
         return this.dueDate;
     }
 
+    public LocalDate getCreatedAt() {
+        return this.createdAt.get();
+    }
+
     public Long getListId() {
         return this.listId.get();
+    }
+
+    public LongProperty listIdProperty() {
+        return this.listId;
     }
 
     public void setListId(long id) {
@@ -194,8 +168,11 @@ public class TaskViewModel extends ViewModel {
         final StringBuffer sb = new StringBuffer("Task{");
         sb.append("id=").append(super.getId());
         sb.append(", name=").append(super.getName());
+        sb.append(", myDay=").append(myDay.get());
+        sb.append(", important=").append(important.get());
         sb.append(", completed=").append(isCompleted());
-        sb.append(", listId=").append(listId);
+        sb.append(", dueDate=").append(dueDate.get());
+        sb.append(", listId=").append(listId.get());
         sb.append('}');
         return sb.toString();
     }

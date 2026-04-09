@@ -64,7 +64,7 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
             PreparedStatement preparedStatement = prepareStatement(sql);
             prepareElement(preparedStatement, model);
             preparedStatement.execute();
-            logger.info("[SQL Action, Type = UPDATE]  SQL => " + sql);
+            logger.fine("[SQL Action, Type = UPDATE]  SQL => " + sql);
             return true;
         } catch (SQLException e) {
             logger.severe("[SQL Action, Type = FETCH]  SQL => " + sql);
@@ -90,10 +90,10 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
             PreparedStatement preparedStatement = prepareStatement(sql);
             prepareElement(preparedStatement, model);
             preparedStatement.execute();
-            logger.info("[SQL Action, Type = STORE]  SQL => " + sql);
+            logger.fine("[SQL Action, Type = STORE]  SQL => " + sql);
             return getLastId();
         } catch (SQLException e) {
-            logger.info("[SQL Action, Type = ERROR]  SQL => " + sql);
+            logger.fine("[SQL Action, Type = ERROR]  SQL => " + sql);
             throw new RuntimeException(e);
         } finally {
             if (autoCloseable)
@@ -359,7 +359,7 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
             protected ObservableList<T> call() {
                 connect();
                 ResultSet result = executeQuery("select * from " + getTable() + " " + condition + ";");
-                logger.info(() -> "[SQL Action, Type = FETCH]  SQL => select * from " + getTable() + " " + condition + ";");
+                logger.fine(() -> "[SQL Action, Type = FETCH]  SQL => select * from " + getTable() + " " + condition + ";");
                 try {
                     if (data.hasConnection()) {
                         while (result.next()) {

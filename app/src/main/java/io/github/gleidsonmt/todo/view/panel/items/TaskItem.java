@@ -2,20 +2,20 @@ package io.github.gleidsonmt.todo.view.panel.items;
 
 import java.time.LocalDate;
 
+import io.github.gleidsonmt.todo.view.panel.events.TaskChangeEvent;
+import javafx.beans.property.*;
 import org.jetbrains.annotations.ApiStatus.Experimental;
 
 import io.github.gleidsonmt.todo.model.List;
+import io.github.gleidsonmt.todo.model.ListType;
+import io.github.gleidsonmt.todo.view.nav.SideNavNew;
 import io.github.gleidsonmt.todo.view.panel.FavoriteButton;
+import io.github.gleidsonmt.todo.view.panel.ListRootNew;
 import io.github.gleidsonmt.todo.view.panel.actions.CompleteAction;
 import io.github.gleidsonmt.todo.view.panel.actions.ImportantAction;
-import io.github.gleidsonmt.todo.view.panel.containers.ListContainer;
 import io.github.gleidsonmt.todo.view.panel.menu.TaskItemContextMenu;
+import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.StringProperty;
 import javafx.geometry.VPos;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -34,7 +34,6 @@ import javafx.scene.layout.Priority;
  */
 public class TaskItem extends GridToggle {
 
-    // private final GridPane body = new GridPane();
     // Components
     private final CheckBox circleIcon;
     private final Label text;
@@ -42,10 +41,7 @@ public class TaskItem extends GridToggle {
     //
     private BooleanProperty myDay;
     private ObjectProperty<LocalDate> dueDate;
-    private ObjectProperty<List> list;
-
-    // private ToDoTask task;
-    private ListContainer container;
+    private LongProperty listID;
 
     private BooleanProperty needDetails = new SimpleBooleanProperty();
 
@@ -55,10 +51,13 @@ public class TaskItem extends GridToggle {
     private Options options;
 
     private final TaskViewModel viewModel;
+    private final ListViewModel listViewModel;
 
-    public TaskItem(TaskViewModel viewModel) {
+    public TaskItem(TaskViewModel viewModel, ListViewModel listViewModel) {
         this.viewModel = viewModel;
+        this.listViewModel = listViewModel;
         this.setId(String.valueOf(viewModel.getId()));
+        this.setUserData(viewModel);
 
         this.circleIcon = new CheckBox();
         this.favorite = new FavoriteButton();
@@ -66,9 +65,9 @@ public class TaskItem extends GridToggle {
 
         this.myDay = new SimpleBooleanProperty(viewModel.isMyDay());
         this.dueDate = new SimpleObjectProperty<>(viewModel.getDueDate());
-        this.list = new SimpleObjectProperty<>();
+        this.listID = new SimpleLongProperty(viewModel.getListId());
 
-        this.options = new Options(viewModel);
+        this.options = new Options(viewModel, !listViewModel.isFixed() || listViewModel.getId() != 0);
         needDetails.bindBidirectional(options.hasProperty());
 
         init();
@@ -85,6 +84,7 @@ public class TaskItem extends GridToggle {
         this.text.textProperty().bind(viewModel.nameProperty());
         this.circleIcon.selectedProperty().bindBidirectional(viewModel.completedProperty());
         this.favorite.selectedProperty().bindBidirectional(viewModel.importantProperty());
+        this.myDay.bind(viewModel.myDayProperty());
     }
 
     private void setActions() {
@@ -98,11 +98,14 @@ public class TaskItem extends GridToggle {
 
     private void registerListeners() {
         completedProperty().addListener((_, _, newVal) -> {
+            if (!inScene())
+                return;
             if (newVal) {
                 this.text.getStyleClass().add("strike");
             } else {
                 this.text.getStyleClass().remove("strike");
             }
+            this.fireEvent(new TaskChangeEvent(TaskChangeEvent.COMPLETE, this.getViewModel()));
         });
 
         this.text.getStyleClass().add(completedProperty().get() ? "strike" : "");
@@ -114,22 +117,43 @@ public class TaskItem extends GridToggle {
                 detailsLayout();
             }
         });
+
+
+        this.favoriteProperty().addListener((_, _, _) -> this.fireEvent(new TaskChangeEvent(TaskChangeEvent.FAVORITE_CHANGED, this.getViewModel())));
+        this.myDay.addListener((_, _, _) -> this.fireEvent(new TaskChangeEvent(TaskChangeEvent.MY_DAY_CHANGED, this.getViewModel())));
+
+        this.viewModel.listIdProperty().addListener((_,old,val) -> {
+            if (old.longValue() != val.longValue()) {
+                this.fireEvent(new TaskChangeEvent(TaskChangeEvent.MOVED, viewModel, old.longValue(), val.longValue()));
+            }
+        });
+    }
+
+    private boolean inScene() {
+        return getScene() != null;
+    }
+
+    private SideNavNew getNav() {
+        return (SideNavNew) getScene().lookup("#drawer");
+    }
+
+    private ListRootNew getListRoot() {
+        return (ListRootNew) getScene().lookup("#list-root");
     }
 
     private void init() {
-
-        // this.setAlignment(Pos.TOP_LEFT);
-        // this.text.setAlignment(Pos.TOP_LEFT);
-        // this.circleIcon.setAlignment(Pos.TOP_LEFT);
-        // this.circleIcon.setPadding(new Insets(10,0,0,0));
 
         this.circleIcon.getStyleClass().add("check-circle");
         this.getStyleClass().add("task-item");
         this.getChildren().addAll(circleIcon, text, favorite);
         this.setPrefWidth(Double.MAX_VALUE);
         this.setHgap(5);
-        minLayout();
 
+        if (needDetails.get()) {
+            detailsLayout();
+        } else {
+            minLayout();
+        }
     }
 
     public void minLayout() {
@@ -141,7 +165,6 @@ public class TaskItem extends GridToggle {
         GridPane.setColumnIndex(text, 1);
 
         GridPane.setColumnIndex(favorite, 2);
-
         GridPane.setValignment(circleIcon, VPos.TOP);
     }
 
@@ -161,12 +184,7 @@ public class TaskItem extends GridToggle {
         GridPane.setRowIndex(options, 1);
 
         GridPane.setHgrow(text, Priority.ALWAYS);
-
         GridPane.setHgrow(options, Priority.ALWAYS);
-
-        // this.setAlignment(Pos.TOP_LEFT);
-        // this.text.setAlignment(Pos.TOP_LEFT);
-        // this.circleIcon.setAlignment(Pos.TOP_LEFT);
     }
 
     @Experimental
@@ -226,5 +244,4 @@ public class TaskItem extends GridToggle {
         build.append("}]");
         return build.toString();
     }
-
 }

@@ -9,14 +9,20 @@
 
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
+    id 'java'
+    id 'java-library'
+    id 'org.javamodularity.moduleplugin' version '1.8.12'
+    id 'org.openjfx.javafxplugin' version '0.0.13'
+    id 'org.beryx.jlink' version '2.25.0'
     id 'application'
-    id 'org.openjfx.javafxplugin' version '0.1.0'
-    id 'org.beryx.jlink' version '3.1.1'
 }
 
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
+    maven {
+        url "https://sandec.jfrog.io/artifactory/repo"
+    }
 }
 
 dependencies {
@@ -31,22 +37,11 @@ dependencies {
     implementation("org.yaml:snakeyaml:2.5")
     
     implementation fileTree(dir: 'lib', include: ['*.jar'])
-    // implementation files('lib/mysql-connector-java-8.0.14.jar')
-    // implementation files('lib/glad-1.1.224.jar')
-    // implementation files('lib/scenicview.jar')
 
     implementation "fr.brouillard.oss:cssfx:11.5.1"
     implementation 'org.jetbrains:annotations:24.0.1'
 
-    // implementation 'com.dlsc.gemsfx:gemsfx:3.10.1'
-    // implementation 'org.apache.commons:commons-lang3:3.13.0'
-
-    // implementation 'commons-validator:commons-validator:1.7.0'
-    
-    // implementation 'commons-collections:commons-collections:3.2.2'
-    // implementation 'commons-beanutils:commons-beanutils:1.9.4'
-    // implementation 'commons-digester:commons-digester:1.8.1'
-    // implementation 'commons-logging:commons-logging:1.2'
+    implementation 'com.dlsc.gemsfx:gemsfx:3.10.1'
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -62,7 +57,7 @@ java {
 application {
     // Define the main class for the application.
     // mainClass = 'io.github.gleidsonmt.todo.Start'
-    mainClass = 'io.github.gleidsonmt.todo.ListRootTest'
+    mainClass = 'io.github.gleidsonmt.todo.App'
     mainModule = 'io.github.gleidsonmt.todo'
 }
 

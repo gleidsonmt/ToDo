@@ -1,9 +1,9 @@
 package io.github.gleidsonmt.todo.global;
 
 import io.github.gleidsonmt.todo.bd.dao.DaoList;
-import io.github.gleidsonmt.todo.bd.dao.DaoSizes;
+import io.github.gleidsonmt.todo.bd.dao.DaoSize;
 import io.github.gleidsonmt.todo.model.List;
-import io.github.gleidsonmt.todo.model.Sizes;
+import io.github.gleidsonmt.todo.model.Size;
 
 /**
  * Description:
@@ -15,21 +15,24 @@ import io.github.gleidsonmt.todo.model.Sizes;
  */
 public class ListPresenter extends AbstractPresenter<List> {
 
-    private DaoSizes sizes;
+    private final DaoSize daoSize;
 
     public ListPresenter() {
         super(new DaoList());
+        daoSize = new DaoSize();
     }
 
-    public void update(List list) {
-        dao.update(list);
-    }
+    @Override
+    public long store(List list) {
 
-    public void store(List list) {
-        Sizes si = new Sizes(0);
-        si.setSize(0);
-        si.setListId(list.getId());
-        sizes.store(si);
+        long listID = dao.store(list);
+
+        Size size = new Size(0);
+        size.setVal(0);
+        size.setListId(listID);
+        daoSize.store(size);
+
+        return listID;
     }
 
     @Override
@@ -42,8 +45,6 @@ public class ListPresenter extends AbstractPresenter<List> {
     }
 
     public int sizeFrom(int limit, long id) {
-
-        // return dao.sizeWhere(limit, " where list_id = " + list.getId());
         return dao.sizeWhere("select * from task where list_id = " + id + " limit " + limit);
     }
 }
