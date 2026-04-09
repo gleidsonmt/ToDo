@@ -1,21 +1,18 @@
 package io.github.gleidsonmt.todo.bd.dao.internal;
 
+import io.github.gleidsonmt.todo.bd.DatabaseConnection;
+import io.github.gleidsonmt.todo.model.Model;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.NotNull;
-
-import io.github.gleidsonmt.todo.bd.DatabaseConnection;
-import io.github.gleidsonmt.todo.model.Model;
-import javafx.beans.property.SimpleListProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 
 /**
  * This class abstracts the common actions in a database.
@@ -24,21 +21,19 @@ import javafx.concurrent.Task;
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
  *         Create on 04/03/2024
  */
+@SuppressWarnings("unused")
 public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T> {
 
-    protected final ObservableList<T> items;
     // Mono state to grant only one connection per time
     protected static DatabaseConnection data = new DatabaseConnection();
-    // Some operations can be done and closed different from transactions.
+    // Some operations can be done and closed differently from transactions.
     protected static boolean autoCloseable = true;
-    private static String errorMessage;
 
     protected static final Logger logger = Logger.getGlobal();
 
     protected ModelSQLCreator<T> modelSQLCreator;
 
     public AbstractDao() {
-        items = new SimpleListProperty<>(FXCollections.observableArrayList());
         modelSQLCreator = new ModelSQLCreator<>(getClass());
     }
 
@@ -52,7 +47,7 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
      */
     protected abstract T createElement(ResultSet result) throws SQLException;
 
-    protected abstract T prepareElement(PreparedStatement prepare, T element) throws SQLException;
+    protected abstract void prepareElement(PreparedStatement prepare, T element) throws SQLException;
 
     /**
      * Updates a row in database.
@@ -69,17 +64,13 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
             PreparedStatement preparedStatement = prepareStatement(sql);
             prepareElement(preparedStatement, model);
             preparedStatement.execute();
-            Logger.getGlobal().log(Level.INFO, "SQL Action, [Type = UPDATE] =>\nSQL: {0}", sql);
+            logger.info("[SQL Action, Type = UPDATE]  SQL => " + sql);
             return true;
         } catch (SQLException e) {
-            errorMessage = "Error on updating a on: SQL => '" + sql + "';\n" + e;
-            logger.severe(errorMessage);
-            e.printStackTrace();
+            logger.severe("[SQL Action, Type = FETCH]  SQL => " + sql);
             throw new RuntimeException(e);
-            // return false;
         } finally {
-            if (autoCloseable)
-                close();
+            if (autoCloseable) close();
         }
     }
 
@@ -91,22 +82,19 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
      */
     @SuppressWarnings("null")
     @Override
-    public boolean store(T model) {
+    public long store(T model) {
         connect();
         String sql = "";
         try {
             sql = modelSQLCreator.create(DaoAction.CREATE, model);
             PreparedStatement preparedStatement = prepareStatement(sql);
-            model = prepareElement(preparedStatement, model);
+            prepareElement(preparedStatement, model);
             preparedStatement.execute();
-            model.setId(getLastId());
-            logger.info("SQL Action, [Type = STORE]  SQL => \n" + sql);
-            return true;
+            logger.info("[SQL Action, Type = STORE]  SQL => " + sql);
+            return getLastId();
         } catch (SQLException e) {
-            errorMessage = "SQL Action, [Type = ERROR]  SQL => \n" + sql + "';\n" + e;
-            logger.severe(errorMessage);
-            e.printStackTrace();
-            return false;
+            logger.info("[SQL Action, Type = ERROR]  SQL => " + sql);
+            throw new RuntimeException(e);
         } finally {
             if (autoCloseable)
                 close();
@@ -142,9 +130,9 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
     }
 
     /**
-     * Get and item using its id.
+     * Get the item using its id.
      * 
-     * @param The id to get the item.
+     * @param id The id to get the item.
      * @return The item.
      */
     @Override
@@ -164,7 +152,6 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
     /**
      * Get the first item in a tabale.
      * 
-     * @param The id to get the item.
      * @return The item.
      */
     @Override
@@ -250,14 +237,17 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
     }
 
     @ApiStatus.Internal
-    protected int getLastId() {
+    protected long getLastId() {
         ResultSet rs;
         try {
             rs = prepareStatement("SELECT LAST_INSERT_ID()").executeQuery();
             rs.first();
-            return rs.getInt(1);
+            return rs.getLong(1);
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } finally {
+            if (autoCloseable)
+                close();
         }
     }
 
@@ -364,14 +354,12 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
     @Override
     public Task<ObservableList<T>> fetchWhere(ObservableList<T> items, String condition) {
         items.clear();
-        Task<ObservableList<T>> task = new Task<>() {
+        return new Task<>() {
             @Override
             protected ObservableList<T> call() {
                 connect();
                 ResultSet result = executeQuery("select * from " + getTable() + " " + condition + ";");
-                Logger.getGlobal().info(() -> """
-                        SQL Action, [Type = FETCH]  SQL =>
-                        select * from """ + getTable() + " " + condition + ";");
+                logger.info(() -> "[SQL Action, Type = FETCH]  SQL => select * from " + getTable() + " " + condition + ";");
                 try {
                     if (data.hasConnection()) {
                         while (result.next()) {
@@ -380,25 +368,20 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
                         }
                     }
                 } catch (SQLException e) {
+                    logger.severe(() -> "[SQL Action, Type = ERROR]  SQL => select * from " + getTable() + " " + condition + ";");
                     throw new RuntimeException(e);
                 }
                 return items;
             }
         };
-
-        task.setOnFailed(e -> {
-            throw new RuntimeException(task.getException());
-        });
-
-        return task;
     }
 
     public Task<ObservableList<T>> fetch(ObservableList<T> items, long ini, long fin) {
         // SELECT * FROM sua_tabela
         // LIMIT 81 OFFSET 19;
-        StringBuilder builder = new StringBuilder();
-        builder.append("limit").append(" ").append(String.valueOf(fin)).append(" ");
-        builder.append("offset").append(" ").append(String.valueOf(ini));
+//        StringBuilder builder = new StringBuilder();
+//        builder.append("limit").append(" ").append(String.valueOf(fin)).append(" ");
+//        builder.append("offset").append(" ").append(String.valueOf(ini));
 
         return fetch(items, ini, fin, null);
     }
@@ -411,8 +394,8 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
         if (condition != null) {
             builder.append(" where ").append(condition).append(" ");
         }
-        builder.append("limit").append(" ").append(String.valueOf(limit)).append(" ");
-        builder.append("offset").append(" ").append(String.valueOf(offset));
+        builder.append("limit").append(" ").append(limit).append(" ");
+        builder.append("offset").append(" ").append(offset);
         return fetchWhere(items, builder.toString());
     }
 
@@ -422,7 +405,7 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
         connect();
         ResultSet result = executeQuery("select * from " + getTable() + " where "
                 + model.getClass().getSimpleName().toLowerCase() + "_id = " + model.getId() + ";");
-        items.clear();
+        ObservableList<T> items = FXCollections.observableArrayList();
         try {
             while (result.next()) {
                 items.add(createElement(result));
@@ -433,6 +416,7 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
         return items;
     }
 
+    @Deprecated
     public int sizeWhere(String condition) {
         connect();
         int size = 0;
