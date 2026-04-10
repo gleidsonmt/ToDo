@@ -32,13 +32,13 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
     // This dependency is used by the application.
-    implementation libs.guava
+//    implementation libs.guava
 
     implementation("org.yaml:snakeyaml:2.5")
     
     implementation fileTree(dir: 'lib', include: ['*.jar'])
 
-    implementation "fr.brouillard.oss:cssfx:11.5.1"
+//    implementation "fr.brouillard.oss:cssfx:11.5.1"
     implementation 'org.jetbrains:annotations:24.0.1'
 
     implementation 'com.dlsc.gemsfx:gemsfx:3.10.1'
@@ -51,7 +51,7 @@ java {
     }
     // The line resolves the problem with the Java Language Server in VS Code, but it is not needed for gradle run. 
     // Witouth this line, gradle run works, but the Java Language Server in VS Code reports “module not found” for module jars that are on the Gradle module path.
-    modularity.inferModulePath = true 
+//    modularity.inferModulePath = true
 }
 
 application {

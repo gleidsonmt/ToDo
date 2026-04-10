@@ -5,9 +5,6 @@ import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.scenicview.ScenicView;
-
-import fr.brouillard.oss.cssfx.CSSFX;
 import io.github.gleidsonmt.glad.base.Root;
 import io.github.gleidsonmt.glad.theme.Css;
 import io.github.gleidsonmt.glad.theme.Font;
@@ -76,8 +73,7 @@ public class App extends Application {
         stage.setScene(scene);
         stage.show();
 
-//        ScenicView.show(stage.getScene());
-        CSSFX.start(stage.getScene());
+        LibrariesTools.addTools(scene);
 
     }
 

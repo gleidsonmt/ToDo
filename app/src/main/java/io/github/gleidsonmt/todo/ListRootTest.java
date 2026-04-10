@@ -1,8 +1,5 @@
 package io.github.gleidsonmt.todo;
 
-import org.scenicview.ScenicView;
-
-import fr.brouillard.oss.cssfx.CSSFX;
 import io.github.gleidsonmt.glad.theme.Css;
 import io.github.gleidsonmt.glad.theme.Font;
 import io.github.gleidsonmt.glad.theme.ThemeProvider;
@@ -59,8 +56,6 @@ public class ListRootTest extends Application {
 
         stage.show();
 
-        ScenicView.show(root);
-        CSSFX.start(stage.getScene());
     }
 
     private Node createAside(ListRootNew listRoot, ListViewModel listViewModel) {

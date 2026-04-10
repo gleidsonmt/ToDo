@@ -260,6 +260,11 @@ Panel {
   -fx-fill: -red-800;
 }
 
+#input-container .menu-item-delete Text,
+#input-container .menu-item-delete .icon-container .icon {
+  -fx-fill: -red-800;
+}
+
 .context-menu > .menu-item .icon-container .icon,
 .context-menu .menu-item .text {
 }
@@ -288,4 +293,291 @@ Panel {
   -fx-scale-y: 0.03;
   -fx-rotate: 0;
   -fx-background-color: -text-color;
+}
+
+.year-view .header {
+  -fx-background-insets: -5px;
+}
+
+.year-view,
+.calendar-view {
+  -fx-background-radius: 5px;
+  -fx-background-color: transparent;
+}
+
+.calendar-view .header {
+}
+
+.calendar-view .previous-month-button,
+.calendar-view .next-month-button {
+  -fx-padding: 15px;
+  -fx-background-radius: 10px;
+}
+
+.calendar-view .dropdown {
+  -fx-padding: 10px;
+  -fx-cursor: hand;
+  -fx-background-radius: 10px;
+}
+
+.calendar-view .previous-month-button,
+.calendar-view .next-month-button {
+  -fx-cursor: hand;
+}
+
+.calendar-view .previous-month-button .arrow,
+.calendar-view .next-month-button .arrow {
+  -fx-padding: 7px 4px 7px 4px;
+}
+
+.calendar-view .selected {
+  -fx-background-color: -fx-accent;
+}
+
+.calendar-view .date-cell {
+  -fx-background-radius: 10px;
+}
+
+.calendar-view .date-cell:hover {
+  -fx-cursor: hand;
+  -fx-background-color: -light-gray-2;
+  -fx-border-color: -medium-gray;
+  -fx-border-radius: 10px;
+}
+
+.calendar-view .date-cell:hover .text {
+  -fx-fill: -fx-accent;
+}
+
+.calendar-view .date-cell .text {
+  -fx-fill: -text-color;
+}
+.calendar-view .selected .text {
+  -fx-fill: white;
+}
+
+.weekday-grid-pane {
+  -fx-effect: none;
+}
+
+.year-view .left-button .arrow,
+.year-view .right-button .arrow {
+  -fx-padding: 7px 4px 7px 4px;
+}
+
+.year-view .right-button,
+.year-view .left-button {
+  -fx-padding: 10px;
+}
+
+.year-view .selected {
+  -fx-background-radius: 10px;
+}
+
+.year-view .selected .selection-indicator {
+  -fx-background-color: white;
+}
+
+.calendar-view .year-month-view  {
+  -fx-background-color: red;
+  -fx-padding: -1px;
+}
+
+.calendar-view .year-month-view .container .grid-pane {
+  -fx-background-color: white;
+  -fx-padding: -1px;
+}
+
+.calendar-view .month-box .selection-indicator {
+  -fx-background-color: -fx-accent;
+}
+
+.calendar-view {
+  -fx-background-radius: 10px;
+  -fx-border-radius: 10px;
+  -fx-alignment: center;
+}
+
+.calendar-container {
+  -fx-alignment: center;
+  -fx-padding: 0px;
+  -fx-background-color: -fx-background;
+  -fx-border-color: -medium-gray;
+  -fx-border-radius: 10px;
+  -fx-background-radius: 10px;
+
+  -fx-pref-height: 360px;
+  -fx-max-height: 360px;
+}
+
+.time-picker .edit-button,
+.time-picker .edit-button:hover,
+.time-picker .edit-button:focused
+{
+  -fx-background-color: transparent;
+  -fx-border-color: transparent;
+}
+
+.time-picker > .box > .edit-button > .ikonli-font-icon {
+  -fx-icon-size: 22px;
+}
+
+.time-picker > .box > .fields-box {
+  -fx-padding: 0px 5px;
+}
+
+.time-picker > .box > .fields-box > .separator {
+  -fx-padding: 0px 1px;
+}
+
+.time-picker > .box > .fields-box > .separator:empty {
+  -fx-text-fill: derive(-fx-control-inner-background, -30%);
+}
+
+.time-picker > .box > .fields-box > .time-field {
+  -fx-pref-width: 100px;
+}
+
+.time-picker > .box > .fields-box > .time-field:empty {
+  -fx-text-fill: derive(-fx-control-inner-background, -30%);
+}
+
+.time-picker > .box > .fields-box > .time-field:focused {
+  -fx-background-radius: 2px;
+  -fx-background-color: -light-gray-2;
+  -fx-text-fill: white;
+}
+
+.time-picker > .box > .fields-box > .time-field.hour {
+  -fx-padding: 0px 0px;
+  -fx-alignment: center;
+}
+
+.time-picker > .box > .fields-box > .time-field.minute {
+  -fx-padding: 0px 0px;
+  -fx-alignment: center;
+}
+
+.time-picker > .box > .fields-box > .time-field.second {
+  -fx-padding: 0px 0px;
+  -fx-alignment: center;
+}
+
+.time-picker > .box > .fields-box > .time-field.millisecond {
+  -fx-pref-width: 2.0em;
+  -fx-padding: 0px 0px;
+  -fx-alignment: center;
+}
+
+.time-picker  {
+  -fx-background-color: white;
+  -fx-effect: none;
+  -fx-border-color: -medium-gray;
+  -fx-border-radius: 10px;
+}
+
+.time-picker > .box > .fields-box {
+  -fx-background-color: transparent;
+  -fx-effect: none;
+}
+
+.calendar-timer {
+  -fx-pref-height: 400px;
+  -fx-max-height: 400px;
+}
+
+
+/* --------------------------------------------------------------
+ * TimePickerPopup
+ */
+.time-picker-popup {
+  -fx-spacing: 5px;
+  -fx-pref-height: 210px;
+  -fx-pref-width: 165px;
+  -fx-background-color: -light-gray-2, white;
+  -fx-background-insets: 0, 1;
+  -fx-padding: 10px;
+  -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, .10), 20, 0.19, -1, 6);
+  -fx-cursor: default;
+  -fx-background-radius: 10px;
+}
+
+.time-picker-popup .time-list-view {
+  -fx-alignment: center;
+  -fx-padding: 0px;
+}
+
+.time-picker-popup .time-list-view .list-cell {
+  -fx-alignment: center;
+  -fx-background-color: white;
+}
+
+.time-picker-popup .time-list-view .list-cell .time-label .text {
+  -fx-fill: -text-color;
+}
+
+.time-picker-popup .time-list-view .list-cell:hover .time-label {
+  -fx-background-color: -light-gray;
+  -fx-background-insets: 0;
+}
+
+.time-picker-popup .list-cell .text {
+}
+
+.time-picker-popup .time-list-view .list-cell:selected .time-label {
+  -fx-background-insets: 0;
+  -fx-background-color: -fx-accent;
+}
+
+.time-picker-popup .time-list-view .list-cell .time-label {
+  -fx-alignment: center;
+  -fx-font-weight: bold;
+  -fx-background-color: transparent;
+  -fx-border-color: -light-gray-2;
+  -fx-background-radius: 2px;
+  -fx-text-fill: -text-color;
+  -fx-cursor: hand;
+  -fx-border-radius: 20px;
+  -fx-background-radius: 20px;
+  -fx-border-width: 1px;
+  -fx-fixed-cell-size: 20px;
+  -fx-pref-width: 60px;
+
+}
+
+.time-picker-popup .time-list-view .virtual-flow .clipped-container .sheet .time-cell:selected .time-label {
+  -fx-border-color: -fx-accent;
+}
+
+.time-picker-popup .time-list-view .virtual-flow .clipped-container .sheet .time-cell:selected .time-label .text {
+  -fx-fill: white;
+}
+
+.time-picker-popup .time-list-view {
+  -fx-fixed-cell-size: 35px;
+}
+
+.time-picker-popup .time-list-view .virtual-flow .clipped-container .sheet .time-cell:hover   {
+  -fx-background-color: transparent;
+}
+
+.time-picker-popup .time-list-view .vertical-scroll-bar {
+  -fx-pref-width: 80px;
+}
+.time-picker-popup {
+  -fx-alignment: center;
+
+}
+.time-picker-popup .time-list-view {
+  -fx-background-insets: 0px;
+  -fx-pref-width: 80px;
+}
+
+.time-picker-popup .time-list-view > .virtual-flow > .scroll-bar,
+.time-picker-popup .time-list-view > .virtual-flow > .scroll-bar .decrement-arrow,
+.time-picker-popup .time-list-view > .virtual-flow > .scroll-bar .increment-arrow,
+.time-picker-popup .time-list-view > .virtual-flow > .scroll-bar .decrement-button,
+.time-picker-popup .time-list-view > .virtual-flow > .scroll-bar .increment-button {
+  -fx-pref-width: 0;
+  -fx-pref-height: 0;
 }

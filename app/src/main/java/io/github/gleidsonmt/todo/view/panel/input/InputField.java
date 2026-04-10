@@ -25,9 +25,9 @@ import javafx.scene.layout.StackPane;
  * Description:
  *
  * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
- *         Created On: Mar 02, 2026
- * 
- *         Version History: Initial version
+ * Created On: Mar 02, 2026
+ * <p>
+ * Version History: Initial version
  */
 public class InputField extends GridPane {
 
@@ -35,6 +35,9 @@ public class InputField extends GridPane {
     private final SVGIcon icon;
     private final HBox items;
     private final InputFieldItem tasks;
+
+    private final InputFieldItemDueDate dueDate;
+    private final InputFieldItemRemind remind;
 
     private ToDoTask task;
 
@@ -45,6 +48,8 @@ public class InputField extends GridPane {
         icon = new SVGIcon(Icon.ADD);
 
         tasks = InputFieldFactory.createItem(InputFieldType.TASK, task);
+        dueDate = new InputFieldItemDueDate();
+        remind = new InputFieldItemRemind();
         items = createActions(task);
 
         init();
@@ -125,9 +130,8 @@ public class InputField extends GridPane {
                     var list = listRoot.getContainer().getList();
 
                     // Create another using the prepared here.
-                    task = new ToDoTask(0, textInput.getText(), false, false, false, null, null, LocalDate.now(),
+                    task = new ToDoTask(0, textInput.getText(), false, false, false, dueDate.getValue(), remind.getValue(), LocalDate.now(),
                             list.getId()
-
                     );
 
                     TaskViewModel taskViewModel = new TaskViewModel(task);
@@ -154,8 +158,7 @@ public class InputField extends GridPane {
         var _items = new HBox();
         _items.setAlignment(Pos.CENTER);
 
-        _items = new HBox(InputFieldFactory.createItem(InputFieldType.DUE_DATE, task),
-                InputFieldFactory.createItem(InputFieldType.REMIND, task),
+        _items = new HBox(dueDate, remind,
                 InputFieldFactory.createItem(InputFieldType.REPEAT, task));
         return _items;
     }

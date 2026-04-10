@@ -95,6 +95,10 @@ public class TaskViewModel extends ViewModel {
         this.remind.set(remind);
     }
 
+    public LocalDateTime getRemind() {
+        return this.remind.get();
+    }
+
     public void setMyDay(boolean myDay) {
         this.myDay.set(myDay);
     }
@@ -159,21 +163,20 @@ public class TaskViewModel extends ViewModel {
         this.listId.set(id);
     }
 
+    @Deprecated
     private Optional<ToDoTask> find(ToDoTask task) {
         return presenter.getData().stream().filter(el -> el.getId() == task.getId()).findAny();
     }
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("Task{");
-        sb.append("id=").append(super.getId());
-        sb.append(", name=").append(super.getName());
-        sb.append(", myDay=").append(myDay.get());
-        sb.append(", important=").append(important.get());
-        sb.append(", completed=").append(isCompleted());
-        sb.append(", dueDate=").append(dueDate.get());
-        sb.append(", listId=").append(listId.get());
-        sb.append('}');
-        return sb.toString();
+        return "Task{" + "id=" + super.getId() +
+               ", name=" + super.getName() +
+               ", myDay=" + myDay.get() +
+               ", important=" + important.get() +
+               ", completed=" + isCompleted() +
+               ", dueDate=" + dueDate.get() +
+               ", listId=" + listId.get() +
+               '}';
     }
 }

@@ -11,6 +11,7 @@ import io.github.gleidsonmt.todo.utils.I18n;
  * 
  *         Version History: Initial version
  */
+@Deprecated
 public class TomorrowOption extends Option {
 
     public TomorrowOption() {

@@ -11,17 +11,13 @@ import io.github.gleidsonmt.todo.model.ToDoTask;
  * 
  *         Version History: Initial version
  */
+@Deprecated
 public class InputFieldFactory {
+    @Deprecated
     public static InputFieldItem createItem(InputFieldType type, ToDoTask task) {
         switch (type) {
         case TASK -> {
             return new InputFieldItemTask(Icon.HOME, "Tasks", task);
-        }
-        case DUE_DATE -> {
-            return new InputFieldItemDueDate(Icon.CALENDAR_MONTH, task);
-        }
-        case REMIND -> {
-            return new InputFieldItemRemind(Icon.CLOCK, task);
         }
         case REPEAT -> {
             return new InputFieldItemRepeat(Icon.EVENT_REPEAT, task);

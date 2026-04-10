@@ -8,6 +8,7 @@ package io.github.gleidsonmt.todo.view.panel.input;
  * 
  *         Version History: Initial version
  */
+@Deprecated
 public enum InputFieldType {
     TASK, DUE_DATE, REMIND, REPEAT
 }

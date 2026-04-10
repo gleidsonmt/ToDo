@@ -99,4 +99,8 @@ public class Option extends GridPane {
         this.text.setText(name);
     }
 
+    public void setIcon(Icon icon) {
+        this.icon.setIcon(icon);
+    }
+
 }
