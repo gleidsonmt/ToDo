@@ -19,9 +19,9 @@ import io.github.gleidsonmt.todo.App;
 
 /**
  * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
- *         Created On: Feb 22, 2026
- * 
- *         Version History: Initial version
+ * Created On: Feb 22, 2026
+ * <p>
+ * Version History: Initial version
  */
 public class DatabaseConnection {
 
@@ -43,7 +43,6 @@ public class DatabaseConnection {
     public DatabaseConnection() {
         Properties properties = new Properties();
         try {
-
             // Loading properties
             InputStream file = App.class.getResourceAsStream("properties/db.properties");
 
@@ -69,15 +68,14 @@ public class DatabaseConnection {
 
             String timeZone = String.valueOf(TimeZone.getDefault().toZoneId());
             this.url = "jdbc:mysql://" + host + "/" + database
-                    + "?useUnicode=true&allowPublicKeyRetrieval=true&useSSL=false&characterEncoding=utf8&serverTimezone="
-                    + timeZone;
+                       + "?useUnicode=true&allowPublicKeyRetrieval=true&useSSL=false&characterEncoding=utf8&serverTimezone="
+                       + timeZone;
             Logger.getGlobal().config("Loading database properties... [OK]");
         } catch (IOException e) {
             msg = e.getMessage();
             Logger.getGlobal().severe("Loading database properties... [FAILED]");
             throw new RuntimeException(e);
         }
-
     }
 
     public boolean connect() {
@@ -87,14 +85,14 @@ public class DatabaseConnection {
             connection = DriverManager.getConnection(url, user, password);
             return connection != null;
         } catch (IllegalAccessException | InstantiationException | ClassNotFoundException | SQLException
-                | InvocationTargetException | NoSuchMethodException e) {
+                 | InvocationTargetException | NoSuchMethodException e) {
             msg = """
-                    Error creating database class.
-                    Some configurations can be wrong.
-
-                     driver=com.mysql.cj.jdbc.Driver
-                     port=""" + port + "\n host=" + host + "\n database=" + database + "\n user=" + user
-                    + "\n password=" + password + "\n\n" + e;
+                          Error creating database class.
+                          Some configurations can be wrong.
+                          
+                           driver=com.mysql.cj.jdbc.Driver
+                           port=""" + port + "\n host=" + host + "\n database=" + database + "\n user=" + user
+                  + "\n password=" + password + "\n\n" + e;
             logger.log(Level.SEVERE, msg);
         }
         return false;
@@ -108,7 +106,7 @@ public class DatabaseConnection {
      * This method is used to retrieve data from a database using SELECT query.
      * This method returns the ResultSet object that returns the data according
      * to the query.
-     * 
+     *
      * @param SQL The SQL query.
      */
     public ResultSet executeQuery(String SQL) throws SQLException {
@@ -125,9 +123,9 @@ public class DatabaseConnection {
 
     /**
      * The method used for all types of SQL statements
-     * If the method return TRUE, return the ResultSet object and FALSE
+     * If the method returns TRUE, return the ResultSet object and FALSE
      * returns the int on.
-     * 
+     *
      * @param SQL The SQL to execute.
      * @return The result of the query.
      */

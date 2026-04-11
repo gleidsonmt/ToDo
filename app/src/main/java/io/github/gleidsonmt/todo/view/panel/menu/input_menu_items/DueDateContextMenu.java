@@ -1,6 +1,5 @@
 package io.github.gleidsonmt.todo.view.panel.menu.input_menu_items;
 
-import com.dlsc.gemsfx.CalendarView;
 import io.github.gleidsonmt.glad.base.Root;
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.todo.view.panel.input.InputFieldItem;

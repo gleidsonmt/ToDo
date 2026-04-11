@@ -140,7 +140,7 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
         connect();
         ResultSet result = executeQuery("select * from " + getTable() + " where id = " + id + ";");
         try {
-            if (result.first())
+            if (result.next())
                 return Optional.of(createElement(result));
             else
                 return Optional.empty();
@@ -241,7 +241,7 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
         ResultSet rs;
         try {
             rs = prepareStatement("SELECT LAST_INSERT_ID()").executeQuery();
-            rs.first();
+            rs.next();
             return rs.getLong(1);
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -317,7 +317,7 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
         connect();
         ResultSet result = executeQuery("select * from " + getTable() + " where " + condition + ";");
         try {
-            if (result.first())
+            if (result.next())
                 return Optional.of(createElement(result));
             else
                 return Optional.empty();

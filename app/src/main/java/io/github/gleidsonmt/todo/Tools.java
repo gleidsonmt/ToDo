@@ -15,7 +15,7 @@ import java.net.URLClassLoader;
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
  * Create on  27/08/2025
  */
-public final class LibrariesTools {
+public final class Tools {
 
     private static Class<?> loadClassJar(String jarDirectory, String fullClass) {
         Class<?> cls = null;
@@ -33,7 +33,7 @@ public final class LibrariesTools {
         return cls;
     }
 
-    public static void addTools(Scene scene) {
+    public static void showUp(Scene scene) {
         showScenicView(scene);
         listenCss(scene);
     }

@@ -31,11 +31,9 @@ public class DoubleListContainer extends ListContainer {
 
     private final SingleSection sectionIncomplete;
     private final AnimatedSection sectionCompleted;
-    private String query;
+    private final String query;
 
     static final Logger logger = Logger.getGlobal();
-
-    private boolean eventAction = true;
 
     public DoubleListContainer(ListViewModel list, String query) {
         super(list);
@@ -51,9 +49,6 @@ public class DoubleListContainer extends ListContainer {
     @Override
     public void load() {
         TaskPresenter taskPresenter = (TaskPresenter) Global.get(ToDoTask.class);
-        // Task<ObservableList<ToDoTask>> task = taskPresenter.fetch(40, 0,
-        // "list_id = " + list.getId());
-//        System.out.println("query = " + query);
         Task<ObservableList<ToDoTask>> task = taskPresenter.fetch(40, 0, query);
 
         new Thread(task).start();
@@ -115,18 +110,13 @@ public class DoubleListContainer extends ListContainer {
                 ListViewModel previous = drawer.get(e.getPrevious());
                 ListViewModel source = drawer.get(e.getActual());
 
-                System.out.println("previous = " + previous);
-                System.out.println("previous = " + previous.getNumberOfTasks());
-                System.out.println("source = " + source);
-                System.out.println("source = " + source.getNumberOfTasks());
-//
                 previous.addNumberOfTasks(-1);
                 source.addNumberOfTasks(1);
 
                 source.update();
                 previous.update();
-//
-                if (!list.isFixed()) {
+
+                if (!list.isFixed() || list.getId() == 0) {
                     data.remove(e.getModel());
                 }
             }

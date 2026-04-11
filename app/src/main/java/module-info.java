@@ -5,8 +5,10 @@ module io.github.gleidsonmt.todo {
     requires transitive javafx.fxml;
 
     requires org.yaml.snakeyaml;
-    requires transitive org.jetbrains.annotations;
     requires java.sql;
+
+    // Requer o módulo das anotações apenas durante a compilação
+    requires static org.jetbrains.annotations;
 
     // Tools (only runtime) remove when not needed
 
@@ -14,7 +16,8 @@ module io.github.gleidsonmt.todo {
 
     requires javafx.swing;
     requires com.dlsc.gemsfx;
-//    requires com.github.weisj.jsvg;
+
+    requires com.github.weisj.jsvg;
     requires org.controlsfx.controls;
     requires org.kordamp.ikonli.bootstrapicons;
 

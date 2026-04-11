@@ -10,12 +10,13 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'java'
-    id 'java-library'
-    id 'org.javamodularity.moduleplugin' version '1.8.12'
-    id 'org.openjfx.javafxplugin' version '0.0.13'
-    id 'org.beryx.jlink' version '2.25.0'
+    id 'org.javamodularity.moduleplugin' version '2.0.0'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
+    id 'org.beryx.jlink' version '3.1.1'
     id 'application'
 }
+
+version '0.0.1'
 
 repositories {
     // Use Maven Central for resolving dependencies.
@@ -32,16 +33,20 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
     // This dependency is used by the application.
-//    implementation libs.guava
+    implementation libs.guava
 
     implementation("org.yaml:snakeyaml:2.5")
-    
+
     implementation fileTree(dir: 'lib', include: ['*.jar'])
+    implementation("com.mysql:mysql-connector-j:9.6.0")
+    compileOnly("org.jetbrains:annotations:26.1.0")
 
-//    implementation "fr.brouillard.oss:cssfx:11.5.1"
-    implementation 'org.jetbrains:annotations:24.0.1'
+// Source: https://mvnrepository.com/artifact/org.slf4j/slf4j-simple
+//    implementation 'org.slf4j:slf4j-api:2.0.16'
+//    runtimeOnly 'org.slf4j:slf4j-simple:2.0.16'
 
-    implementation 'com.dlsc.gemsfx:gemsfx:3.10.1'
+//    implementation 'com.dlsc.gemsfx:gemsfx:3.10.1'
+    implementation 'com.dlsc.gemsfx:gemsfx:2.16.0'
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -54,16 +59,19 @@ java {
 //    modularity.inferModulePath = true
 }
 
+//tasks.withType(JavaCompile) {
+//    options.compilerArgs << "-Xlint:all" // Ativa todos os avisos
+//    options.compilerArgs << "-Werror"    // Transforma todos os avisos em ERROS de compilação
+//}
+
 application {
-    // Define the main class for the application.
-    // mainClass = 'io.github.gleidsonmt.todo.Start'
     mainClass = 'io.github.gleidsonmt.todo.App'
     mainModule = 'io.github.gleidsonmt.todo'
 }
 
 javafx {
     version = "23.0.2"
-    modules = [ 'javafx.controls', 'javafx.fxml' , 'javafx.graphics' , 'javafx.swing', 'javafx.web']
+    modules = ['javafx.controls', 'javafx.fxml', 'javafx.graphics', 'javafx.swing', 'javafx.web']
 }
 
 tasks.named('test') {
@@ -76,7 +84,7 @@ jlink {
     launcher {
         name = 'app'
     }
-        jpackage {
+    jpackage {
 
 //        imageOptions = [
 //                '--icon', 'logo_256.ico'
