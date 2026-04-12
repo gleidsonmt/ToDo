@@ -1,6 +1,7 @@
 package io.github.gleidsonmt.todo.view.panel.items;
 
 import java.time.LocalDate;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
@@ -104,28 +105,17 @@ public class Options extends FlowPane {
             return;
         }
 
-        if (option.getIndex() > getChildren().size()) {
-            getChildren().add(getChildren().size(), option);
-            updateBullets();
-            return;
-        }
-
-//        if (option.getIndex() == getChildren().size()) {
-//            getChildren().add(option.getIndex() - 1, option);
-//            updateBullets();
-//            return;
-//        }
-
         AtomicInteger act = new AtomicInteger();
-        getChildren().stream().filter(node -> node instanceof Option).forEach(node -> {
-            Option opt = (Option) node;
-            if (((Option) node).getIndex() < option.getIndex()) {
-                act.set(opt.getIndex());
-            } else {
-                act.set(getChildren().size() - 1);
-            }
-        });
-        getChildren().add(act.get(), option);
+        Optional<Option> optional = getChildren()
+                .stream()
+                .filter(node -> node instanceof Option)
+                .map(node -> (Option) node)
+                .filter(opt -> option.getIndex() < opt.getIndex()).findAny();
+
+        if (optional.isPresent()) {
+            act.set(getChildren().indexOf(optional.get()));
+            getChildren().add(act.get(), option);
+        } else getChildren().add(option);
         updateBullets();
     }
 
