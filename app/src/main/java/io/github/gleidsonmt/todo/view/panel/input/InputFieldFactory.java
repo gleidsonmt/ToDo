@@ -19,9 +19,6 @@ public class InputFieldFactory {
         case TASK -> {
             return new InputFieldItemTask(Icon.HOME, "Tasks", task);
         }
-        case REPEAT -> {
-            return new InputFieldItemRepeat(Icon.EVENT_REPEAT, task);
-        }
         }
         return null;
     }

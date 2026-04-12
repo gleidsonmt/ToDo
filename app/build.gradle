@@ -35,6 +35,8 @@ dependencies {
     // This dependency is used by the application.
     implementation libs.guava
 
+    implementation project(":glad")
+
     implementation("org.yaml:snakeyaml:2.5")
 
     implementation fileTree(dir: 'lib', include: ['*.jar'])

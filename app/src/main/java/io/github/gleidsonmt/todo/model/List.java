@@ -55,6 +55,6 @@ public class List extends Entity {
 
     @Override
     public String toString() {
-        return "List [id=" + super.getId() + ", fixed=" + fixed + "]";
+        return "List [id=" + super.getId() + ", name=" + getName() + ", fixed=" + fixed + "]";
     }
 }

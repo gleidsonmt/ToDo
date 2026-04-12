@@ -16,19 +16,17 @@ import io.github.gleidsonmt.todo.model.ToDoTask;
 public class TaskViewModelConverter {
 
     public ToDoTask convert(TaskViewModel model) {
-        ToDoTask temp = create(model.getId(), model.getName(), model.isCompleted(), model.isImportant(),
-                model.isMyDay(), model.getDueDate(), model.getRemind(), model.getCreatedAt(), model.getListId());
-
-        return temp;
+        return create(model.getId(), model.getName(), model.isCompleted(), model.isImportant(),
+                model.isMyDay(), model.getDueDate(), model.getRemind(), model.getCreatedAt(), model.getListId(), model.getRecurrenceID());
     }
 
     public ToDoTask create(int id, String name) {
-        return create(id, name, false, false, false, null, null, LocalDate.now(), 0);
+        return create(id, name, false, false, false, null, null, LocalDate.now(), 0, 0);
     }
 
     public ToDoTask create(long id, String name, boolean completed, boolean important, boolean myDay, LocalDate dueDate, LocalDateTime remind,
-            LocalDate created, long listId) {
-        return new ToDoTask(id, name, completed, important, myDay, dueDate, remind, created, listId);
+            LocalDate created, long listId, long recurrenceID) {
+        return new ToDoTask(id, name, completed, important, myDay, dueDate, remind, created, listId, recurrenceID);
     }
 
 }

@@ -26,7 +26,7 @@ public final class DaoTask extends AbstractDao<ToDoTask> {
                 result.getDate("task.due_date") != null ? result.getDate("task.due_date").toLocalDate() : null,
                 result.getTimestamp("task.remind") != null ? result.getTimestamp("task.remind").toLocalDateTime()
                         : null,
-                result.getDate("task.created_at").toLocalDate(), result.getInt("task.list_id"));
+                result.getDate("task.created_at").toLocalDate(), result.getInt("task.list_id"), result.getInt("task.recurrence_id"));
 
     }
 
@@ -54,6 +54,7 @@ public final class DaoTask extends AbstractDao<ToDoTask> {
 
             // prepare.setNull(8, (int) model.getListId());
             prepare.setLong(8, model.getListId());
+            prepare.setLong(9, model.getRecurrenceID());
 
         } catch (SQLException e) {
             throw new RuntimeException(e);

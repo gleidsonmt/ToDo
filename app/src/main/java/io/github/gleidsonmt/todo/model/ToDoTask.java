@@ -19,10 +19,7 @@ public class ToDoTask extends Entity {
     // my_day, recurrence_id, created_at) values(?, ?, ?, ?, ?, ?, ?, ?);
     // eh o primeiro na lista
 
-    @Ignore
-    private final int recurrenceId = 0;
-    // Doing and refactoring to improve memory usage
-
+    private final long recurrenceID;
     private final long listID;
     private final LocalDate createdAt;
     private final LocalDateTime remind;
@@ -32,11 +29,11 @@ public class ToDoTask extends Entity {
     private final boolean completed;
 
     public ToDoTask(String name) {
-        this(0, name, false, false, false, LocalDate.now(), LocalDateTime.now(), LocalDate.now(), 0);
+        this(0, name, false, false, false, LocalDate.now(), LocalDateTime.now(), LocalDate.now(), 0,0);
     }
 
     public ToDoTask(long id, String name, boolean completed, boolean important, boolean myDay, LocalDate dueDate,
-            LocalDateTime remind, LocalDate createdAt, long listID) {
+            LocalDateTime remind, LocalDate createdAt, long listID, long recurrenceID) {
         super(id, name);
         this.myDay = myDay;
         this.completed = completed;
@@ -45,6 +42,7 @@ public class ToDoTask extends Entity {
         this.createdAt = createdAt;
         this.remind = remind;
         this.listID = listID;
+        this.recurrenceID = recurrenceID;
     }
 
     public LocalDate getCreatedAt() {
@@ -75,32 +73,23 @@ public class ToDoTask extends Entity {
         return remind;
     }
 
-    public int getRecurrenceId() {
-        return recurrenceId;
+    public long getRecurrenceID() {
+        return recurrenceID;
     }
 
-    public String toJason() {
-        return """
-                Task {
-                \tname=""" + super.getName() + "\n\tid=" + super.getId() + "\n\trecurrenceId=" + recurrenceId
-                + "\n\tmyDay=" + myDay + "\n\tdueDate=" + dueDate + "\n\tremind=" + remind + "\n\tcompleted="
-                + recurrenceId + "\n\tlistId=" + listID + "\n}";
-    }
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("Task{");
-        sb.append("id=").append(super.getId());
-        sb.append(", name=").append(super.getName());
-        sb.append(", recurrenceId=").append(recurrenceId);
-        sb.append(", myDay=").append(myDay);
-        sb.append(", dueDate=").append(dueDate);
-        sb.append(", remind=").append(remind);
-        sb.append(", completed=").append(completed);
-        sb.append(", important=").append(important);
-        sb.append(", listId=").append(listID);
-        sb.append('}');
-        return sb.toString();
+        return "Task{" + "id=" + super.getId() +
+               ", name=" + super.getName() +
+               ", recurrenceId=" + recurrenceID +
+               ", myDay=" + myDay +
+               ", dueDate=" + dueDate +
+               ", remind=" + remind +
+               ", completed=" + completed +
+               ", important=" + important +
+               ", listId=" + listID +
+               '}';
     }
 
 }

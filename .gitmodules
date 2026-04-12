@@ -1,0 +1,4 @@
+[submodule "glad"]
+	path = glad
+	url = https://github.com/gleidsonmt/glad.git
+    branch = dev

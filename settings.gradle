@@ -11,4 +11,4 @@ plugins {
 }
 
 rootProject.name = 'todo'
-include('app')
+include('app', 'glad')

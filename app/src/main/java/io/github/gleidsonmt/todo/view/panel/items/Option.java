@@ -4,9 +4,12 @@ import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
+import org.kordamp.ikonli.Ikon;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 /**
  * Description:
@@ -20,7 +23,7 @@ public class Option extends GridPane {
 
     private int index;
     private Text text;
-    private SVGIcon icon;
+    private Node icon;
     private Circle circle = new Circle(3);
     private BooleanProperty needsBullet = new SimpleBooleanProperty();
 
@@ -28,15 +31,28 @@ public class Option extends GridPane {
         this(index, text, Icon.NONE);
     }
 
+    public Option(int index, String text, Ikon icon) {
+        this(index, text, new FontIcon(icon));
+    }
+
     public Option(int index, String text, Icon icon) {
+        this(index, text, new SVGIcon(icon));
+    }
+
+    public Option(int index, String text, Node icon) {
         this.index = index;
         this.text = new Text(text);
 
+        if (icon instanceof SVGIcon ik) {
+            ik.setScale(0.8);
+        } else if (icon instanceof FontIcon fk) {
+            fk.setIconSize(18);
+        }
+
         getChildren().addAll(this.text);
         if (icon != null) {
-            this.icon = new SVGIcon(icon);
+            this.icon = icon;
             getChildren().add(this.icon);
-            this.icon.setScale(0.8);
         }
         setFocusTraversable(false);
 
@@ -100,7 +116,24 @@ public class Option extends GridPane {
     }
 
     public void setIcon(Icon icon) {
-        this.icon.setIcon(icon);
+        if (this.icon instanceof SVGIcon ik) {
+            ik.setIcon(icon);
+        }
     }
 
+    public void setIcon(Ikon icon) {
+        if (this.icon instanceof FontIcon ik) {
+            ik.setIconCode(icon);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Option{" + "\n\tindex=" + index +
+               "\n\ttext=" + text +
+               "\n\ticon=" + icon +
+               "\n\tcircle=" + circle +
+               "\n\tneedsBullet=" + needsBullet +
+               "\n}";
+    }
 }

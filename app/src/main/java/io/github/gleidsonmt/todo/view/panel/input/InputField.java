@@ -38,6 +38,7 @@ public class InputField extends GridPane {
 
     private final InputFieldItemDueDate dueDate;
     private final InputFieldItemRemind remind;
+    private final InputFieldItemRepeat repeat;
 
     private ToDoTask task;
 
@@ -50,7 +51,8 @@ public class InputField extends GridPane {
         tasks = InputFieldFactory.createItem(InputFieldType.TASK, task);
         dueDate = new InputFieldItemDueDate();
         remind = new InputFieldItemRemind();
-        items = createActions(task);
+        repeat = new InputFieldItemRepeat();
+        items = createActions();
 
         init();
         configLayout();
@@ -131,7 +133,7 @@ public class InputField extends GridPane {
 
                     // Create another using the prepared here.
                     task = new ToDoTask(0, textInput.getText(), false, false, false, dueDate.getValue(), remind.getValue(), LocalDate.now(),
-                            list.getId()
+                            list.getId(), 0
                     );
 
                     TaskViewModel taskViewModel = new TaskViewModel(task);
@@ -154,12 +156,11 @@ public class InputField extends GridPane {
         return field;
     }
 
-    private HBox createActions(ToDoTask task) {
+    private HBox createActions() {
         var _items = new HBox();
         _items.setAlignment(Pos.CENTER);
 
-        _items = new HBox(dueDate, remind,
-                InputFieldFactory.createItem(InputFieldType.REPEAT, task));
+        _items = new HBox(dueDate, remind, repeat);
         return _items;
     }
 

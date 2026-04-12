@@ -67,7 +67,7 @@ public class TaskItem extends GridToggle {
         this.dueDate = new SimpleObjectProperty<>(viewModel.getDueDate());
         this.listID = new SimpleLongProperty(viewModel.getListId());
 
-        this.options = new Options(viewModel, !listViewModel.isFixed() || listViewModel.getId() != 0);
+        this.options = new Options(this);
         needDetails.bindBidirectional(options.hasProperty());
 
         init();
@@ -233,6 +233,10 @@ public class TaskItem extends GridToggle {
 
     public TaskViewModel getViewModel() {
         return this.viewModel;
+    }
+
+    public ListViewModel getListViewModel() {
+        return this.listViewModel;
     }
 
     @Override

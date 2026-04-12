@@ -1,7 +1,7 @@
 package io.github.gleidsonmt.todo.view.panel.items;
 
 import java.time.LocalDate;
-import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.todo.global.Global;
@@ -9,7 +9,6 @@ import io.github.gleidsonmt.todo.global.ListPresenter;
 import io.github.gleidsonmt.todo.model.List;
 import io.github.gleidsonmt.todo.utils.StringUtils;
 import io.github.gleidsonmt.todo.view.panel.menu.input_menu_items.DateUtils;
-import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
@@ -19,9 +18,9 @@ import javafx.scene.layout.FlowPane;
  * Description:
  *
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- *         Created On: Mar 28, 2026
- * 
- *         Version History: Initial version
+ * Created On: Mar 28, 2026
+ * <p>
+ * Version History: Initial version
  */
 public class Options extends FlowPane {
 
@@ -29,11 +28,10 @@ public class Options extends FlowPane {
     private final TaskOption taskOption = new TaskOption();
     private final DueDateOption dueDateOption = new DueDateOption();
 
-    // private final RemindOption remindOption = new RemindOption();
     // private final BooleanProperty hasRemindOption = new
     // SimpleBooleanProperty();
 
-    public Options(TaskViewModel viewModel, boolean needTaskOption) {
+    public Options(TaskItem item) {
 
         this.setMinHeight(10);
         this.setHgap(5);
@@ -44,36 +42,37 @@ public class Options extends FlowPane {
         hasMyDayOption.addListener(createUpdateListener(myDayOption));
         BooleanProperty hasDueDateOption = new SimpleBooleanProperty();
         hasDueDateOption.addListener(createUpdateListener(dueDateOption));
+        RepeatOption repeatOption = new RepeatOption();
 
-        hasMyDayOption.bind(viewModel.myDayProperty());
-        hasDueDateOption.bind(viewModel.dueDateProperty().isNotNull());
+        BooleanProperty hasRepeatOption = new SimpleBooleanProperty();
+        hasRepeatOption.addListener(createUpdateListener(repeatOption));
+
+        hasMyDayOption.bind(item.getViewModel().myDayProperty());
+        hasDueDateOption.bind(item.getViewModel().dueDateProperty().isNotNull());
 
         BooleanProperty hasTaskOption = new SimpleBooleanProperty();
-        has.bind(hasTaskOption.or(hasMyDayOption).or(hasDueDateOption));
+        hasTaskOption.addListener(createUpdateListener(taskOption));
 
-        ListPresenter presenter = (ListPresenter) Global.get(List.class);
-        Optional<List> optional = presenter.get(viewModel.getListId());
+        hasTaskOption.bind(item.getListViewModel().idProperty().isNotEqualTo(item.getViewModel().listIdProperty()));
+        hasRepeatOption.bind(item.getListViewModel().idProperty().greaterThan(0));
 
-        if (needTaskOption && optional.isPresent()) {
-            taskOption.setName(StringUtils.name(optional.get().getName()));
-            addOption(taskOption);
+        has.bind(hasTaskOption.or(hasMyDayOption).or(hasDueDateOption).or(hasRepeatOption));
+
+        if (item.getViewModel().getDueDate() != null) {
+            updateDueDate(item.getViewModel().getDueDate());
         }
 
-        if (viewModel.getDueDate() != null) {
-           updateDueDate(viewModel.getDueDate());
-        }
-
-        viewModel.listIdProperty().addListener((_, _, val) -> {
-                var newVal = presenter.get(val.longValue());
-                taskOption.setName(StringUtils.name(newVal.get().getName()));
+        item.getViewModel().listIdProperty().addListener((_, _, val) -> {
+            ListPresenter presenter = (ListPresenter) Global.get(List.class);
+            var newVal = presenter.get(val.longValue());
+            newVal.ifPresent(list -> taskOption.setName(StringUtils.name(list.getName())));
         });
 
-        viewModel.dueDateProperty().addListener((_, _, val) -> {
+        item.getViewModel().dueDateProperty().addListener((_, _, val) -> {
             if (val != null) {
                 updateDueDate(val);
             }
         });
-
     }
 
     private void updateDueDate(LocalDate date) {
@@ -88,16 +87,16 @@ public class Options extends FlowPane {
     }
 
     private ChangeListener<Boolean> createUpdateListener(Option option) {
-        return (__, _, val) -> {
+        return (_, _, val) -> {
             if (val) {
                 if (!getChildren().contains(option)) {
                     addOption(option);
                 }
             } else {
-                getChildren().remove(option);
+                removeOption(option);
             }
         };
-    };
+    }
 
     public void addOption(Option option) {
         if (getChildren().isEmpty()) {
@@ -110,12 +109,23 @@ public class Options extends FlowPane {
             updateBullets();
             return;
         }
-        if (option.getIndex() == getChildren().size()) {
-            getChildren().add(option.getIndex() -1, option);
-            updateBullets();
-            return;
-        }
-        getChildren().add(option.getIndex(), option);
+
+//        if (option.getIndex() == getChildren().size()) {
+//            getChildren().add(option.getIndex() - 1, option);
+//            updateBullets();
+//            return;
+//        }
+
+        AtomicInteger act = new AtomicInteger();
+        getChildren().stream().filter(node -> node instanceof Option).forEach(node -> {
+            Option opt = (Option) node;
+            if (((Option) node).getIndex() < option.getIndex()) {
+                act.set(opt.getIndex());
+            } else {
+                act.set(getChildren().size() - 1);
+            }
+        });
+        getChildren().add(act.get(), option);
         updateBullets();
     }
 
@@ -129,11 +139,7 @@ public class Options extends FlowPane {
             Option opt = (Option) node;
             if (getChildren().size() > 1) {
                 var ind = getChildren().indexOf(opt);
-                if (ind != 0) {
-                    opt.needsBulletProperty().set(true);
-                } else {
-                    opt.needsBulletProperty().set(false);
-                }
+                opt.needsBulletProperty().set(ind != 0);
             } else {
                 opt.needsBulletProperty().set(false);
             }

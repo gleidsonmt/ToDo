@@ -11,8 +11,7 @@ package io.github.gleidsonmt.todo.view.panel.items;
 public class TaskOption extends Option {
 
     public TaskOption() {
-        super(0, "Task", null);
-
+        super(0, "Task");
     }
 
 }

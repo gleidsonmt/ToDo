@@ -42,4 +42,8 @@ public class ViewModel {
         return this.name;
     }
 
+    public LongProperty idProperty() {
+        return this.id;
+    }
+
 }

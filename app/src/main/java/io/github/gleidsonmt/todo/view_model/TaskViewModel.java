@@ -34,6 +34,7 @@ public class TaskViewModel extends ViewModel {
     private final BooleanProperty myDay;
     private final ObjectProperty<LocalDate> dueDate;
     private final LongProperty listId;
+    private final LongProperty recurrenceID;
     private final ObjectProperty<LocalDate> createdAt;
 
     // private final TaskItem taskItem;
@@ -53,6 +54,7 @@ public class TaskViewModel extends ViewModel {
         this.createdAt = new SimpleObjectProperty<>(task.getCreatedAt());
 
         this.listId = new SimpleLongProperty(task.getListId());
+        this.recurrenceID = new SimpleLongProperty(task.getRecurrenceID());
 
         bind();
         registerListeners();
@@ -85,6 +87,10 @@ public class TaskViewModel extends ViewModel {
     public void delete() {
         var item = converter.convert(this);
         presenter.delete(item);
+    }
+
+    public long getRecurrenceID() {
+        return this.recurrenceID.get();
     }
 
     public ObjectProperty<LocalDateTime> remindProperty() {

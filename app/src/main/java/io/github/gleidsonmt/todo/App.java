@@ -73,7 +73,7 @@ public class App extends Application {
         stage.setScene(scene);
         stage.show();
 
-        Tools.showUp(scene);
+//        Tools.showUp(scene);
 
     }
 

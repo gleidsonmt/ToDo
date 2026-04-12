@@ -26,6 +26,9 @@ module io.github.gleidsonmt.todo {
     requires java.logging;
     requires java.base;
     requires javafx.base;
+    requires org.kordamp.ikonli.javafx;
+    requires org.kordamp.ikonli.core;
+    requires org.kordamp.ikonli.materialdesign;
 
     opens io.github.gleidsonmt.todo to javafx.graphics, javafx.fxml, java.sql;
     opens io.github.gleidsonmt.todo.view to javafx.graphics, javafx.fxml, java.sql;
@@ -49,5 +52,7 @@ module io.github.gleidsonmt.todo {
     exports io.github.gleidsonmt.todo.view.panel;
     exports io.github.gleidsonmt.todo.view.panel.items;
     exports io.github.gleidsonmt.todo.view.panel.containers;
+    exports io.github.gleidsonmt.todo.model.recurrence;
+    opens io.github.gleidsonmt.todo.model.recurrence to javafx.base;
 
 }
