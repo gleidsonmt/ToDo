@@ -20,15 +20,13 @@ import javafx.util.Duration;
  * Description:
  *
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- *         Created On: Mar 26, 2026
- * 
- *         Version History: Initial version
+ * Created On: Mar 26, 2026
  */
 public class SectionTitle extends GridPane {
 
     private final Label titleLabel = new Label();
     private final Text sizeIndicator = new Text("0");
-    private SVGIcon arrow = new SVGIcon(Icon.CHEVRON_RIGHT);
+    private final SVGIcon arrow = new SVGIcon(Icon.CHEVRON_RIGHT);
 
     private final BooleanProperty collapsed = new SimpleBooleanProperty(false);
 
@@ -43,7 +41,7 @@ public class SectionTitle extends GridPane {
         init();
         configLayout();
 
-        this.setOnMouseClicked(e -> collapsed.set(!collapsed.get()));
+        this.setOnMouseClicked(_ -> collapsed.set(!collapsed.get()));
         registerListeners();
     }
 

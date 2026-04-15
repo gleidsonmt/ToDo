@@ -21,9 +21,7 @@ import javafx.scene.layout.VBox;
  * Description:
  *
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- *         Created On: Mar 20, 2026
- * 
- *         Version History: Initial version
+ * Created On: Mar 20, 2026
  */
 public class SideNavNew extends VBox {
 
@@ -31,8 +29,6 @@ public class SideNavNew extends VBox {
     private ObjectProperty<CustomDrawerItemNew> selected;
     private VBox smartListsContainer;
     private VBox container;
-
-    private ListPresenter presenter;
 
     public SideNavNew() {
         init();
@@ -58,15 +54,13 @@ public class SideNavNew extends VBox {
     }
 
     public void load() {
-        presenter = (ListPresenter) Global.get(List.class);
+        ListPresenter presenter = (ListPresenter) Global.get(List.class);
         Task<ObservableList<List>> task = presenter.fetch();
 
         new Thread(task).start();
 
         task.setOnSucceeded(_ -> {
-            task.getValue().forEach(list -> {
-                createItem(list);
-            });
+            task.getValue().forEach(this::createItem);
 
             this.getChildren().add(new Footer());
             selectFirst();
@@ -77,13 +71,11 @@ public class SideNavNew extends VBox {
         Optional<CustomDrawerItemNew> optional = group.getToggles().stream().map(e -> (CustomDrawerItemNew) e)
                 .filter(el -> el.getViewModel().getId() == list.getId()).findFirst();
 
-        if (optional.isPresent()) {
-            group.selectToggle(optional.get());
-        }
+        optional.ifPresent(customDrawerItemNew -> group.selectToggle(customDrawerItemNew));
     }
 
     public void selectFirst() {
-        group.selectToggle(group.getToggles().get(0));
+        group.selectToggle(group.getToggles().getFirst());
     }
 
     @Deprecated
@@ -91,7 +83,7 @@ public class SideNavNew extends VBox {
         Optional<CustomDrawerItemNew> optional = group.getToggles().stream().map(e -> (CustomDrawerItemNew) e)
                 .filter(el -> el.getViewModel().getId() == model.getListId()).findFirst();
 
-        return optional.get();
+        return optional.orElse(null);
     }
 
     public ListViewModel get(long id) {
@@ -103,14 +95,14 @@ public class SideNavNew extends VBox {
 
     public ListViewModel get(ListType type) {
         Optional<ListViewModel> optional = group.getToggles().stream().map(e -> (CustomDrawerItemNew) e)
-                .filter(el -> el.getViewModel().getType() == type).map(el -> el.getViewModel()).findFirst();
+                .filter(el -> el.getViewModel().getType() == type).map(CustomDrawerItemNew::getViewModel).findFirst();
 
         return optional.orElse(null);
     }
 
     public java.util.List<ListViewModel> getModels() {
         return group.getToggles().stream().filter(el -> el instanceof CustomDrawerItemNew)
-                .map(e -> (CustomDrawerItemNew) e).map(el -> el.getViewModel()).toList();
+                .map(e -> (CustomDrawerItemNew) e).map(CustomDrawerItemNew::getViewModel).toList();
     }
 
     public CustomDrawerItemNew getSelected() {
@@ -130,14 +122,12 @@ public class SideNavNew extends VBox {
         Optional<CustomDrawerItemNew> optional = group.getToggles().stream().map(e -> (CustomDrawerItemNew) e)
                 .filter(el -> el.getViewModel().getId() == model.getId()).findFirst();
 
-        container.getChildren().remove(optional.get());
+        optional.ifPresent(e -> container.getChildren().remove(e));
     }
 
     private ListViewModel createItem(List list) {
-
         ListViewModel viewModel = new ListViewModel(list);
         return createItem(viewModel);
-
     }
 
     private ListViewModel createItem(ListViewModel viewModel) {
