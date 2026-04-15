@@ -29,18 +29,11 @@ module io.github.gleidsonmt.todo {
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.ikonli.core;
     requires org.kordamp.ikonli.materialdesign;
+    requires org.jspecify;
 
     opens io.github.gleidsonmt.todo to javafx.graphics, javafx.fxml, java.sql;
     opens io.github.gleidsonmt.todo.view to javafx.graphics, javafx.fxml, java.sql;
     opens io.github.gleidsonmt.todo.view.presentation to org.yaml.snakeyaml, javafx.graphics, javafx.fxml, java.sql;
-
-//    opens io.github.gleidsonmt.todo.view.panel to org.scenicview.scenicview;
-//
-//    opens io.github.gleidsonmt.todo.view.nav to org.scenicview.scenicview;
-//    opens io.github.gleidsonmt.todo.view.panel.items to org.scenicview.scenicview;
-//    opens io.github.gleidsonmt.todo.view.panel.actions to org.scenicview.scenicview;
-//    opens io.github.gleidsonmt.todo.view.panel.input to org.scenicview.scenicview;
-//    opens io.github.gleidsonmt.todo.view.panel.sections to org.scenicview.scenicview;
 
     opens io.github.gleidsonmt.todo.model to javafx.base;
 
