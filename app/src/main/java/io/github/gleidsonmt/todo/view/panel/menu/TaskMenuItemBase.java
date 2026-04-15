@@ -13,14 +13,12 @@ import javafx.scene.control.MenuItem;
  * Description:
  *
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- *         Created On: Mar 08, 2026
- * 
- *         Version History: Initial version
+ * Created On: Mar 08, 2026
  */
 public abstract class TaskMenuItemBase extends MenuItem {
 
     public TaskMenuItemBase(TaskViewModel taskItem) {
-        this.setOnAction(e -> {
+        this.setOnAction(_ -> {
             createEvent(taskItem).handle(new ActionEvent());
             updateState(taskItem);
         });
@@ -32,12 +30,7 @@ public abstract class TaskMenuItemBase extends MenuItem {
         setGraphic(new SVGIcon(icon));
     }
 
-    protected ListContainer getListContainer() {
-        return (ListContainer) this.getParentPopup().getOwnerWindow().getScene().lookup("#list-container");
-    }
-
     protected abstract void updateState(TaskViewModel item);
 
     protected abstract EventHandler<ActionEvent> createEvent(TaskViewModel item);
-
 }
