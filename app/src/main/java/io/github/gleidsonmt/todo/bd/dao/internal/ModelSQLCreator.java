@@ -15,7 +15,7 @@ import io.github.gleidsonmt.todo.model.Model;
 /**
  * Description: This class use a model to create a query sql.
  * Ex. Give the class model →
- * 
+ *
  * <pre>
  *     <code>
  *         class Person {
@@ -24,7 +24,7 @@ import io.github.gleidsonmt.todo.model.Model;
  *         }
  *     </code>
  * </pre>
- * 
+ * <p>
  * This class will pass troughout the object person and create an string based
  * on its fields.
  * Also, it uses an enum action that define a return as SQL
@@ -33,9 +33,9 @@ import io.github.gleidsonmt.todo.model.Model;
  * Instead
  * insert into person(id, name) values(?, ?);
  * Those sql are used for the base class {@link AbstractDao}
- * 
+ *
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- *         Create on 17/01/2025
+ * Create on 17/01/2025
  */
 public class ModelSQLCreator<T extends Model> {
 
@@ -124,12 +124,12 @@ public class ModelSQLCreator<T extends Model> {
      * This method gets the fields inside a model to create a Query SQL. <br>
      * <code><pre>
      *     public class User extend Entity {
-         *         private String name;
-         *         private String email;
-         *     }
-         * </code>
+     *         private String name;
+     *         private String email;
+     *     }
+     * </code>
      * </pre>
-     * 
+     *
      * <br>
      * Result -> <br>
      * List<String> list = new ArrayList<>("name", "email");
