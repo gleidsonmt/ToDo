@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  * Provides a connection to database, set and get elements from a database.
  *
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- *         Create on 04/03/2024
+ * Create on 04/03/2024
  */
 @SuppressWarnings("unused")
 public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T> {
@@ -43,7 +43,7 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
      * @param result The result to select.
      * @return The model created.
      * @throws SQLException if a database access error occurs or this method is
-     *                          called on a closed result set.
+     *                      called on a closed result set.
      */
     protected abstract T createElement(ResultSet result) throws SQLException;
 
@@ -131,7 +131,7 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
 
     /**
      * Get the item using its id.
-     * 
+     *
      * @param id The id to get the item.
      * @return The item.
      */
@@ -151,7 +151,7 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
 
     /**
      * Get the first item in a tabale.
-     * 
+     *
      * @return The item.
      */
     @Override
@@ -183,7 +183,7 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
     public T getByModel(Model model) {
         connect();
         ResultSet result = executeQuery("select * from " + getTable() + " where "
-                + model.getClass().getSimpleName().toLowerCase() + "_id = " + model.getId() + ";");
+                                        + model.getClass().getSimpleName().toLowerCase() + "_id = " + model.getId() + ";");
         try {
             if (result.first()) {
                 return createElement(result);
@@ -203,8 +203,8 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
         connect();
         ResultSet result = executeQuery("select * from " + getTable() + " where " + condition + ";");
         try {
-            if (result.first()) {
-                return Optional.of(createElement(result));
+            if (result.next()) {
+                return Optional.ofNullable(createElement(result));
             } else
                 return Optional.empty();
         } catch (SQLException e) {
@@ -404,7 +404,7 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
     public ObservableList<T> fetchByModel(@NotNull Model model) {
         connect();
         ResultSet result = executeQuery("select * from " + getTable() + " where "
-                + model.getClass().getSimpleName().toLowerCase() + "_id = " + model.getId() + ";");
+                                        + model.getClass().getSimpleName().toLowerCase() + "_id = " + model.getId() + ";");
         ObservableList<T> items = FXCollections.observableArrayList();
         try {
             while (result.next()) {
