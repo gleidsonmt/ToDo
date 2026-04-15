@@ -34,9 +34,7 @@ import javafx.scene.layout.RowConstraints;
  * Description:
  *
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- *         Created On: Mar 20, 2026
- * 
- *         Version History: Initial version
+ * Created On: Mar 20, 2026
  */
 public class CustomDrawerItemNew extends ToggleButton {
 

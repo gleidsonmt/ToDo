@@ -1,10 +1,5 @@
 package io.github.gleidsonmt.todo;
 
-import java.util.Optional;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import io.github.gleidsonmt.glad.base.Root;
 import io.github.gleidsonmt.glad.theme.Css;
 import io.github.gleidsonmt.glad.theme.Font;
@@ -21,13 +16,16 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.util.Optional;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * Description:
  *
  * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
- *         Created On: Feb 22, 2026
- * 
- *         Version History: Initial version
+ * Created On: Feb 22, 2026
  */
 public class App extends Application {
 
@@ -74,7 +72,13 @@ public class App extends Application {
         stage.show();
 
 //        Tools.showUp(scene);
+        Tools.analyzeNodes(scene);
+        Tools.listenCss(scene);
 
+//        LocalDate actual = LocalDate.now();
+//
+//        actual.plusWeeks(1);
+//        System.out.println(actual.with(actual.getDayOfWeek()).plusWeeks(1));
     }
 
 }

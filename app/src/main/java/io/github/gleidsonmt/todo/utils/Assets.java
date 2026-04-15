@@ -7,7 +7,7 @@ import javafx.scene.image.Image;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- *         Create on 19/02/2025
+ * Create on 19/02/2025
  */
 public class Assets {
 

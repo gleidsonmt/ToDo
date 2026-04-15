@@ -1,6 +1,5 @@
 package io.github.gleidsonmt.todo.view.panel.menu.input_menu_items;
 
-//import com.dlsc.gemsfx.CalendarView;
 import com.dlsc.gemsfx.CalendarView;
 import io.github.gleidsonmt.glad.base.Root;
 import javafx.event.ActionEvent;
@@ -30,9 +29,10 @@ public class CalendarPane extends VBox {
         cancel.setCancelButton(true);
 
         HBox buttons = new HBox(save, cancel);
+        buttons.setMinHeight(50);
         buttons.setAlignment(Pos.CENTER);
 
-        cancel.setOnAction(e -> {
+        cancel.setOnAction(_ -> {
             Root root = (Root) getScene().getRoot();
             root.flow().remove(this);
         });

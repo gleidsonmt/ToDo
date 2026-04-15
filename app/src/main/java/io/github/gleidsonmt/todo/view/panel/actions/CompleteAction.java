@@ -8,10 +8,9 @@ import io.github.gleidsonmt.todo.view_model.TaskViewModel;
  * Description:
  *
  * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
- *         Created On: Feb 27, 2026
- * 
- *         Version History: Initial version
+ * Created On: Feb 27, 2026
  */
+@Deprecated(forRemoval = true)
 @FunctionalInterface
 public interface CompleteAction extends EventListener {
     // void handle(TaskItem item, ToDoTask task);
