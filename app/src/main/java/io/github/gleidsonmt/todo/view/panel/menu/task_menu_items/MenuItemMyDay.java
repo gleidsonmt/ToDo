@@ -11,8 +11,8 @@ import javafx.event.EventHandler;
  * This in specif puts the task as an task to do in my day list.
  *
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- *         Created On: Mar 06, 2026
- * 
+ * Created On: Mar 06, 2026
+ *
  */
 public class MenuItemMyDay extends TaskMenuItemBase {
 
@@ -28,10 +28,6 @@ public class MenuItemMyDay extends TaskMenuItemBase {
 
     @Override
     protected EventHandler<ActionEvent> createEvent(TaskViewModel item) {
-        return _ -> {
-            // update the model
-            item.setMyDay(!item.isMyDay());
-            item.update();
-        };
+        return _ -> item.setMyDay(!item.isMyDay());
     }
 }
