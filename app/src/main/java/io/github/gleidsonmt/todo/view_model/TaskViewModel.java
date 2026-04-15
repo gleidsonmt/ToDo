@@ -7,6 +7,7 @@ import java.util.Optional;
 import io.github.gleidsonmt.todo.global.Global;
 import io.github.gleidsonmt.todo.global.TaskPresenter;
 import io.github.gleidsonmt.todo.model.ToDoTask;
+import io.github.gleidsonmt.todo.model.recurrence.Recurrence;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.ObjectProperty;
@@ -18,13 +19,13 @@ import javafx.beans.property.SimpleObjectProperty;
  * Description:
  *
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- *         Created On: Mar 09, 2026
- * 
- *         Version History: Initial version
+ * Created On: Mar 09, 2026
+ * <p>
+ * Version History: Initial version
  */
 public class TaskViewModel extends ViewModel {
 
-    private final TaskPresenter presenter;
+    private TaskPresenter presenter;
 
     private final TaskViewModelConverter converter = new TaskViewModelConverter();
 
@@ -34,41 +35,30 @@ public class TaskViewModel extends ViewModel {
     private final BooleanProperty myDay;
     private final ObjectProperty<LocalDate> dueDate;
     private final LongProperty listId;
-    private final LongProperty recurrenceID;
     private final ObjectProperty<LocalDate> createdAt;
 
     // private final TaskItem taskItem;
 
+    public TaskViewModel() {
+        this(null);
+    }
+
     public TaskViewModel(ToDoTask task) {
-        this.setId(task.getId());
+        this.setId(task != null ? task.getId() : 0);
 
         this.presenter = (TaskPresenter) Global.get(ToDoTask.class);
+//        task != null ?  : ""
+        this.setName(task != null ? task.getName() : "");
+        this.completed = new SimpleBooleanProperty(task != null && task.isCompleted());
+        this.important = new SimpleBooleanProperty(task != null && task.isImportant());
 
-        this.setName(task.getName());
-        this.completed = new SimpleBooleanProperty(task.isCompleted());
-        this.important = new SimpleBooleanProperty(task.isImportant());
+        this.myDay = new SimpleBooleanProperty(task != null && task.isMyDay());
 
-        this.myDay = new SimpleBooleanProperty(task.isMyDay());
-        this.dueDate = new SimpleObjectProperty<>(task.getDueDate());
-        this.remind = new SimpleObjectProperty<>(task.getRemind());
-        this.createdAt = new SimpleObjectProperty<>(task.getCreatedAt());
+        this.dueDate = new SimpleObjectProperty<>(task != null ? task.getDueDate() : null);
+        this.remind = new SimpleObjectProperty<>(task != null ? task.getRemind() : null);
+        this.createdAt = new SimpleObjectProperty<>(task != null ? task.getCreatedAt() : null);
 
-        this.listId = new SimpleLongProperty(task.getListId());
-        this.recurrenceID = new SimpleLongProperty(task.getRecurrenceID());
-
-        bind();
-        registerListeners();
-    }
-
-    private void bind() {
-
-        // this.nameProperty().bindBidirectional(taskItem.nameProperty());
-        // this.important.bindBidirectional(taskItem.favoriteProperty());
-        // this.completed.bindBidirectional(taskItem.completedProperty());
-
-    }
-
-    private void registerListeners() {
+        this.listId = new SimpleLongProperty(task != null ? task.getListId() : 0);
 
     }
 
@@ -76,6 +66,10 @@ public class TaskViewModel extends ViewModel {
         var converted = converter.convert(this);
         this.setId(presenter.store(converted));
         return converted;
+    }
+
+    public void storeRecurrence(Recurrence rec) {
+        presenter.storeRecurrence(rec);
     }
 
     public void update() {
@@ -89,16 +83,16 @@ public class TaskViewModel extends ViewModel {
         presenter.delete(item);
     }
 
-    public long getRecurrenceID() {
-        return this.recurrenceID.get();
-    }
-
     public ObjectProperty<LocalDateTime> remindProperty() {
         return this.remind;
     }
 
     public void setRemind(LocalDateTime remind) {
         this.remind.set(remind);
+    }
+
+    public void setCreatedAt(LocalDate createdAt) {
+        this.createdAt.set(createdAt);
     }
 
     public LocalDateTime getRemind() {
@@ -182,6 +176,7 @@ public class TaskViewModel extends ViewModel {
                ", important=" + important.get() +
                ", completed=" + isCompleted() +
                ", dueDate=" + dueDate.get() +
+               ", createdAt=" + createdAt.get() +
                ", listId=" + listId.get() +
                '}';
     }
