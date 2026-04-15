@@ -2,34 +2,39 @@ package io.github.gleidsonmt.todo.view;
 
 import io.github.gleidsonmt.glad.base.Layout;
 import io.github.gleidsonmt.glad.base.responsive.Container;
+import io.github.gleidsonmt.todo.model.ListType;
 import io.github.gleidsonmt.todo.model.User;
 import io.github.gleidsonmt.todo.view.nav.SideNavNew;
 import io.github.gleidsonmt.todo.view.panel.ListRootNew;
 import io.github.gleidsonmt.todo.view.panel.Panel;
+import io.github.gleidsonmt.todo.view.panel.events.TaskChangeEvent;
+import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import javafx.beans.binding.Bindings;
 import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
+
+import java.util.logging.Logger;
 
 /**
  * Description: The class responsible for call the tasks to create the main
  * view.
  *
  * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
- *         Created On: Feb 25, 2026
- * 
- *         Version History: Initial version
+ * Created On: Feb 25, 2026
+ * <p>
+ * Version History: Initial version
  */
 public class MainView extends Container implements Layout {
 
     // the logged user
     private User user;
     // the content layout
-    private BorderPane body;
+    private final BorderPane body;
     // the navigation (drawwer or sidenav)
-    private SideNavNew sideNav;
+    private final SideNavNew sideNav;
 
-    private Panel panel;
-    private ListRootNew listRoot;
+    private final Panel panel;
+    private final ListRootNew listRoot;
 
     public MainView(User user) {
         this.user = user;
@@ -39,6 +44,50 @@ public class MainView extends Container implements Layout {
         this.listRoot = new ListRootNew();
         getChildren().add(body);
         init();
+
+        this.addEventHandler(TaskChangeEvent.ADD, e -> {
+            Logger.getGlobal().info(() -> "[TaskChangeEvent [FILTER], Type = " + e.getEventType() + " ] -> " + e.getModel());
+            sideNav.get(e.getModel().getListId()).addNumberOfTasks(1).update();
+        });
+
+        this.addEventHandler(TaskChangeEvent.DELETE_TASK, e -> {
+            Logger.getGlobal().info(() -> "[TaskChangeEvent [FILTER], Type = " + e.getEventType() + " ] -> " + e.getModel());
+            sideNav.get(e.getModel().getListId()).addNumberOfTasks(-1).update();
+        });
+
+        this.addEventHandler(TaskChangeEvent.MOVED, e -> {
+            Logger.getGlobal().info(() -> "[TaskChangeEvent [FILTER], Type = " + e.getEventType() + " ] -> " + e.getModel());
+            if (e.getActual() != e.getPrevious()) {
+                sideNav.get(e.getActual()).addNumberOfTasks(1).update();
+                sideNav.get(e.getPrevious()).addNumberOfTasks(-1).update();
+            }
+        });
+
+        this.addEventHandler(TaskChangeEvent.MY_DAY_CHANGED, e -> {
+            Logger.getGlobal().info(() -> "[TaskChangeEvent [FILTER], Type = " + e.getEventType() + " ] -> " + e.getModel());
+            if (e.getModel().isCompleted()) return;
+            sideNav.get(ListType.DAILY).addNumberOfTasks(e.getModel().isMyDay() ? 1 : -1).update();
+        });
+
+        this.addEventHandler(TaskChangeEvent.FAVORITE_CHANGED, e -> {
+            Logger.getGlobal().info(() -> "[TaskChangeEvent [FILTER], Type = " + e.getEventType() + " ] -> " + e.getModel());
+            if (e.getModel().isCompleted()) return;
+            sideNav.get(ListType.IMPORTANT).addNumberOfTasks(e.getModel().isImportant() ? 1 : -1).update();
+        });
+
+        this.addEventHandler(TaskChangeEvent.COMPLETE, e -> {
+            Logger.getGlobal().info(() -> "[TaskChangeEvent [FILTER], Type = " + e.getEventType() + " ] -> " + e.getModel());
+
+            sideNav.get(e.getModel().getListId()).addNumberOfTasks(!e.getModel().isCompleted() ? 1 : -1).update();
+
+            if (e.getModel().isMyDay()) {
+                sideNav.get(ListType.DAILY).addNumberOfTasks(!e.getModel().isCompleted() ? 1 : -1).update();
+            }
+            if (e.getModel().isImportant()) {
+                sideNav.get(ListType.IMPORTANT).addNumberOfTasks(!e.getModel().isCompleted() ? 1 : -1).update();
+            }
+
+        });
     }
 
     public void init() {
