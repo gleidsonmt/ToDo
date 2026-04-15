@@ -12,9 +12,9 @@ import javafx.event.EventHandler;
  * Description:
  *
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- *         Created On: Mar 08, 2026
- * 
- *         Version History: Initial version
+ * Created On: Mar 08, 2026
+ * <p>
+ * Version History: Initial version
  */
 public class MenuItemToday extends TaskMenuItemBase {
 
@@ -32,7 +32,6 @@ public class MenuItemToday extends TaskMenuItemBase {
         return _ -> {
             viewModel.setMyDay(true);
             viewModel.setDueDate(LocalDate.now());
-            viewModel.update();
         };
     }
 
