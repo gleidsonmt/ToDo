@@ -10,9 +10,7 @@ import javafx.event.EventHandler;
  * Description:
  *
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- *         Created On: Mar 06, 2026
- * 
- *         Version History: Initial version
+ * Created On: Mar 06, 2026
  */
 public class MenuItemComplete extends TaskMenuItemBase {
 
@@ -28,10 +26,6 @@ public class MenuItemComplete extends TaskMenuItemBase {
 
     @Override
     protected EventHandler<ActionEvent> createEvent(TaskViewModel item) {
-        return _ -> {
-            // update the model
-            item.setCompleted(!item.isCompleted());
-            item.update();
-        };
+        return _ -> item.setCompleted(!item.isCompleted());
     }
 }

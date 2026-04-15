@@ -6,8 +6,8 @@ import javafx.scene.control.TextField;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- *         Create on 24/11/2018
- *         Version 1.0
+ * Create on 24/11/2018
+ * Version 1.0
  */
 public class Mask {
     public static void noSpaces(TextField field) {
@@ -149,8 +149,8 @@ public class Mask {
                         field.getText().length());
 
                 if ((user.length() >= 1) && (!user.contains("@")) && (domain.contains(".")) && (!domain.contains("@"))
-                        && (domain.indexOf(".") >= 1) && (domain.lastIndexOf(".") < domain.length() - 1)
-                        && subdomain.length() >= 2) {
+                    && (domain.indexOf(".") >= 1) && (domain.lastIndexOf(".") < domain.length() - 1)
+                    && subdomain.length() >= 2) {
                     is = true;
                 }
             }

@@ -3,20 +3,21 @@ package io.github.gleidsonmt.todo.view.panel.menu.task_menu_items;
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import io.github.gleidsonmt.todo.utils.I18n;
-import io.github.gleidsonmt.todo.view.panel.ListRootNew;
+import io.github.gleidsonmt.todo.view.panel.containers.ListContainer;
+import io.github.gleidsonmt.todo.view.panel.events.TaskChangeEvent;
+import io.github.gleidsonmt.todo.view.panel.items.TaskItem;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
-import javafx.stage.Stage;
 
 /**
  * Description:
  *
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- *         Created On: Mar 06, 2026
- * 
- *         Version History: Initial version
+ * Created On: Mar 06, 2026
+ * <p>
+ * Version History: Initial version
  */
 public class MenuItemDelete extends MenuItem {
 
@@ -28,11 +29,11 @@ public class MenuItemDelete extends MenuItem {
         this.setGraphic(new SVGIcon(Icon.DELETE));
         this.setText(I18n.get("menu.delete.task"));
 
-        this.setOnAction(e -> {
-            Stage stage = (Stage) this.getParentPopup().getOwnerWindow();
-            ListRootNew listRoot = (ListRootNew) stage.getScene().lookup("#list-root");
-            listRoot.getData().removeIf(el -> el.getId() == viewModel.getId());
-            viewModel.delete();
+        this.setOnAction(_ -> {
+            TaskItem item = (TaskItem) getParentPopup().getOwnerNode();
+            // first getParent is the Section and the second the ListContainer
+            ListContainer listContainer = (ListContainer) item.getParent().getParent();
+            listContainer.fireEvent(new TaskChangeEvent(TaskChangeEvent.DELETE_TASK, viewModel));
         });
     }
 
