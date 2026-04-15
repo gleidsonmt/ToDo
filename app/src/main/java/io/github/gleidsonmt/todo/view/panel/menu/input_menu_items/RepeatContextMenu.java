@@ -1,10 +1,16 @@
 package io.github.gleidsonmt.todo.view.panel.menu.input_menu_items;
 
+import io.github.gleidsonmt.glad.base.Root;
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
+import io.github.gleidsonmt.todo.model.recurrence.Daily;
 import io.github.gleidsonmt.todo.model.recurrence.Recurrence;
+import io.github.gleidsonmt.todo.model.recurrence.Weekly;
 import io.github.gleidsonmt.todo.view.panel.menu.custom.*;
+import javafx.event.ActionEvent;
+import javafx.geometry.Pos;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.SeparatorMenuItem;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
@@ -13,25 +19,53 @@ import javafx.scene.control.MenuItem;
 public class RepeatContextMenu extends CustomContextMenu<Recurrence> {
 
     public RepeatContextMenu() {
-
         MenuItem menuItemDaily = new MenuItem("Daily", new GridIconDaily());
-//        MenuItem menuItemWeekDays = new MenuItem("WeekDays", new GridIconWeekDays());
-//        MenuItem menuItemWeekly = new MenuItem("Weekly", new GridIconWeekly());
-//        MenuItem menuItemMonthly = new MenuItem("Monthly", new GridIconMonthly());
-//        MenuItem menuItemYearly = new MenuItem("Yearly", new YearlyIcon());
-//        MenuItem menuItemCustom = new MenuItem("Custom", new SVGIcon(Icon.EVENT_REPEAT));
+        MenuItem menuItemWeekDays = new MenuItem("WeekDays", new GridIconWeekDays());
+        MenuItem menuItemWeekly = new MenuItem("Weekly", new GridIconWeekly());
+        MenuItem menuItemMonthly = new MenuItem("Monthly", new GridIconMonthly());
+        MenuItem menuItemYearly = new MenuItem("Yearly", new YearlyIcon());
+        MenuItem menuItemCustom = new MenuItem("Custom", new SVGIcon(Icon.EVENT_REPEAT));
 
-        MenuItem menuItemDelete = new MenuItem("Never repeat", new SVGIcon(Icon.REMOVE));
+        MenuItem menuItemDelete = new MenuItem("Never repeat", new SVGIcon(Icon.DELETE));
         menuItemDelete.getStyleClass().addAll("menu-item-delete");
 
-//        this.getItems().addAll(menuItemDaily, menuItemWeekDays, menuItemWeekly, menuItemMonthly, menuItemYearly, menuItemCustom);
-        this.getItems().addAll(menuItemDaily);
+        this.getItems().addAll(menuItemDaily, menuItemWeekDays, menuItemWeekly, menuItemMonthly, menuItemYearly, menuItemCustom);
 
-//        menuItemDaily.setOnAction(e -> update(new Daily()));
-    }
+        menuItemDaily.setOnAction(_ -> setValue(new Daily()));
+        menuItemWeekDays.setOnAction(_ -> setValue(new Weekly(true)));
+        menuItemWeekly.setOnAction(_ -> setValue(new Weekly()));
+        menuItemMonthly.setOnAction(_ -> setValue(new Monthly()));
+        menuItemYearly.setOnAction(_ -> setValue(new Yearly()));
+        menuItemDelete.setOnAction(_ -> setValue(null));
 
-    @Override
-    protected void update(Recurrence value) {
+        selected.addListener((_, _, newValue) -> {
+            var separator = new SeparatorMenuItem();
+            if (newValue) {
+                getItems().addAll(separator, menuItemDelete);
+            } else {
+                getItems().remove(getItems().size() - 2, getItems().size());
+            }
+        });
 
+        RecurrenceBox container = new RecurrenceBox();
+
+        container.setOnSave(e -> {
+            setValue(container.getSelected());
+            container.getOnCancel().handle(new ActionEvent());
+        });
+
+        container.setOnCancel(e -> {
+            ((Root) getOwnerWindow().getScene().getRoot())
+                    .flow().hide();
+        });
+
+        menuItemCustom.setOnAction(e -> {
+            ((Root) getOwnerWindow().getScene().getRoot())
+                    .flow()
+                    .width(300)
+                    .content(container)
+                    .pos(Pos.TOP_LEFT)
+                    .show(target);
+        });
     }
 }

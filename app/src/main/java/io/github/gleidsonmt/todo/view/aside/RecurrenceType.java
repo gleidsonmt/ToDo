@@ -2,7 +2,7 @@ package io.github.gleidsonmt.todo.view.aside;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- *         Create on 12/12/2024
+ * Create on 12/12/2024
  */
 public enum RecurrenceType {
 
