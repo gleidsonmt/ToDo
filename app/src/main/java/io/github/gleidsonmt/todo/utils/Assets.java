@@ -1,15 +1,70 @@
 package io.github.gleidsonmt.todo.utils;
 
-import java.util.Objects;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.*;
 
+import io.github.classgraph.ClassGraph;
+import io.github.classgraph.ResourceList;
+import io.github.classgraph.ScanResult;
 import io.github.gleidsonmt.todo.App;
 import javafx.scene.image.Image;
+import io.github.classgraph.Resource;
+
+import java.io.InputStream;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
  * Create on 19/02/2025
  */
 public class Assets {
+
+    public static List<String> getIcons() throws IOException, URISyntaxException {
+
+//        }
+        try (ScanResult scanResult = new ClassGraph().acceptPaths("io/github/gleidsonmt/todo/icons").scan()) {
+            // Retorna os caminhos relativos de tudo que está na pasta 'icons'
+            return scanResult.getAllResources().getPaths();
+        }
+    }
+
+    public static Image getIconNew(String iconName) {
+        return getIconNew(iconName, 15);
+    }
+
+    public static Image getIconNew(String iconName, int size) {
+        try {
+            Optional<Image> icon = getAllIcons(size).stream().filter(el -> el.getUrl().endsWith(iconName)).findFirst();
+            return icon.orElse(null);
+        } catch (IOException | URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static List<Image> getAllIcons(int size) throws IOException, URISyntaxException {
+        // Defina o caminho relativo à raiz do classpath
+        String path = "/io/github/gleidsonmt/todo/icons";
+        List<Image> images = new ArrayList<>();
+        try (ScanResult scanResult = new ClassGraph()
+                .acceptPaths(path) // Limita o scan apenas a essa pasta
+                .scan()) {
+
+            // Obtém todos os recursos dentro do caminho especificado
+            ResourceList resources = scanResult.getAllResources();
+
+            // Filtra e processa apenas imagens (opcional, dependendo da extensão)
+            resources.filter(resource ->
+                    (resource.getPath().endsWith(".png") ||
+                    resource.getPath().endsWith(".jpg"))
+            ).forEach(resource -> {
+                Image image = new Image(resource.getURL().toExternalForm(), size, size, true, true);
+                images.add(image);
+                // Para carregar o conteúdo:
+                // InputStream is = resource.open();
+            });
+        }
+        return images;
+    }
 
     public static String getCss(String name) {
         return Objects.requireNonNull(App.class.getResource("css/" + name)).toExternalForm();
@@ -25,4 +80,12 @@ public class Assets {
                 true, true);
     }
 
+//    public static Image getIcon(String name) {
+//        return getIcon(name, 16);
+//    }
+//
+//    public static Image getIcon(String name, int size) {
+//        return new Image(Objects.requireNonNull(App.class.getResource("icons/" + name)).toExternalForm(), size, size,
+//                true, true);
+//    }
 }

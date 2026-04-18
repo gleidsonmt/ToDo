@@ -13,6 +13,5 @@ import org.kordamp.ikonli.materialdesign.MaterialDesign;
 public class RepeatOption extends Option {
     public RepeatOption() {
         super(3, "", Icon.SYNC);
-
     }
 }

@@ -7,9 +7,9 @@ import io.github.gleidsonmt.todo.utils.I18n;
  * Description:
  *
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- *         Created On: Mar 28, 2026
- * 
- *         Version History: Initial version
+ * Created On: Mar 28, 2026
+ * <p>
+ * Version History: Initial version
  */
 public class MyDayOption extends Option {
 

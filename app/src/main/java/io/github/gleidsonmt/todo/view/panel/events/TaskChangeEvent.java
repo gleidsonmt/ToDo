@@ -8,19 +8,28 @@ import javafx.event.EventType;
  * Description:
  *
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- *         Created On: Apr 07, 2026
- * 
- *         Version History: Initial version
+ * Created On: Apr 07, 2026
+ * <p>
+ * Version History: Initial version
  */
 public class TaskChangeEvent extends Event {
 
-    public static final EventType<TaskChangeEvent> TASK_CHANGE_EVENT_TYPE = new EventType<>(Event.ANY, "MOVED");
+    public static final EventType<TaskChangeEvent> ALL = new EventType<>(Event.ANY, "TASK_CHANGE");
 
-    public static final EventType<TaskChangeEvent> MOVED = new EventType<>(TASK_CHANGE_EVENT_TYPE, "MOVED");
-    public static final EventType<TaskChangeEvent> MY_DAY_CHANGED = new EventType<>(Event.ANY, "MY_DAY_CHANGED");
-    public static final EventType<TaskChangeEvent> FAVORITE_CHANGED = new EventType<>(Event.ANY, "FAVORITE_CHANGED");
-    public static final EventType<TaskChangeEvent> COMPLETE = new EventType<>(Event.ANY, "COMPLETE");
-    public static final EventType<TaskChangeEvent> DELETE_TASK = new EventType<>(Event.ANY, "DELETE_TASK");
+//    public static final EventType<TaskChangeEvent> MOVED = new EventType<>(Event.ANY, "MOVED");
+//    public static final EventType<TaskChangeEvent> MY_DAY_CHANGED = new EventType<>(Event.ANY, "MY_DAY_CHANGED");
+//    public static final EventType<TaskChangeEvent> ADD = new EventType<>(Event.ANY, "ADD");
+//    public static final EventType<TaskChangeEvent> FAVORITE_CHANGED = new EventType<>(Event.ANY, "FAVORITE_CHANGED");
+//    public static final EventType<TaskChangeEvent> COMPLETE = new EventType<>(Event.ANY, "COMPLETE");
+//    public static final EventType<TaskChangeEvent> DELETE_TASK = new EventType<>(Event.ANY, "DELETE_TASK");
+
+    public static final EventType<TaskChangeEvent> MOVED = new EventType<>(ALL, "MOVED");
+    public static final EventType<TaskChangeEvent> MY_DAY_CHANGED = new EventType<>(ALL, "MY_DAY_CHANGED");
+    public static final EventType<TaskChangeEvent> ADD = new EventType<>(ALL, "ADD");
+    public static final EventType<TaskChangeEvent> FAVORITE_CHANGED = new EventType<>(ALL, "FAVORITE_CHANGED");
+    public static final EventType<TaskChangeEvent> COMPLETE = new EventType<>(ALL, "COMPLETE");
+    public static final EventType<TaskChangeEvent> DELETE_TASK = new EventType<>(ALL, "DELETE_TASK");
+
 
     private final long idActual;
     private final long idPrevious;
@@ -34,6 +43,7 @@ public class TaskChangeEvent extends Event {
         this.idPrevious = model.getListId();
         this.model = model;
     }
+
     public TaskChangeEvent(EventType<? extends Event> eventType, TaskViewModel model, long previous, long actual) {
         super(eventType);
         this.idActual = actual;

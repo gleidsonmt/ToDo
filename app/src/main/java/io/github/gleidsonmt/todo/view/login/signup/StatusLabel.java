@@ -6,7 +6,7 @@ import javafx.scene.layout.HBox;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- *         Create on 27/10/2024
+ * Create on 27/10/2024
  */
 public class StatusLabel extends HBox {
 

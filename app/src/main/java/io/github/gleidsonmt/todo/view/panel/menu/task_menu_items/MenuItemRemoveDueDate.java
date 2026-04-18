@@ -10,9 +10,9 @@ import javafx.event.EventHandler;
  * Description:
  *
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- *         Created On: Mar 08, 2026
- * 
- *         Version History: Initial version
+ * Created On: Mar 08, 2026
+ * <p>
+ * Version History: Initial version
  */
 public class MenuItemRemoveDueDate extends TaskMenuItemBase {
 
@@ -27,9 +27,6 @@ public class MenuItemRemoveDueDate extends TaskMenuItemBase {
 
     @Override
     protected EventHandler<ActionEvent> createEvent(TaskViewModel item) {
-        return _ -> {
-            item.setDueDate(null);
-            item.update();
-        };
+        return _ -> item.setDueDate(null);
     }
 }

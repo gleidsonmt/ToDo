@@ -17,27 +17,19 @@ public final class Weekly extends Recurrence {
     private boolean onlyDaysOfWeek = false;
 
     public Weekly() {
-        this(1, DayOfWeek.values());
-    }
-
-    public Weekly(int gap) {
-        this(gap,  DayOfWeek.values());
-    }
-
-    public Weekly(int gap, DayOfWeek... daysOfWeek) {
-        this(gap, RecurrenceType.WEEKLY, daysOfWeek);
+        this(false);
     }
 
     public Weekly(boolean onlyDaysOfWeek) {
-        this(1, onlyDaysOfWeek, RecurrenceType.WEEKLY);
+        this(0, 1, 0, onlyDaysOfWeek, RecurrenceType.WEEKLY);
     }
 
-    public Weekly(int times, RecurrenceType type, DayOfWeek... daysOfWeek) {
-        this(times, false, type, daysOfWeek);
+    public Weekly(long id, int times, long taskID, RecurrenceType type, DayOfWeek... daysOfWeek) {
+        this(id, times, taskID, false, type, daysOfWeek);
     }
 
-    public Weekly(int times, boolean onlyDaysOfWeek, RecurrenceType type, DayOfWeek... daysOfWeek) {
-        super(0, times, type);
+    public Weekly(long id, int times, long taskID, boolean onlyDaysOfWeek, RecurrenceType type, DayOfWeek... daysOfWeek) {
+        super(id, times, taskID, type);
         this.onlyDaysOfWeek = onlyDaysOfWeek;
         if (onlyDaysOfWeek) {
             this.daysOfWeek = FXCollections.observableArrayList(getOnlyDaysOfWeek());
@@ -56,7 +48,7 @@ public final class Weekly extends Recurrence {
     }
 
     private DayOfWeek[] getOnlyDaysOfWeek() {
-        return new DayOfWeek[]{ DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.FRIDAY };
+        return new DayOfWeek[]{DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.FRIDAY};
     }
 
     public void setOnlyDaysOfWeek(boolean bol) {

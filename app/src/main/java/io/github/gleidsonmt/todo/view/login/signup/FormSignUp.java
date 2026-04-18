@@ -25,7 +25,7 @@ import javafx.util.Duration;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- *         Create on 28/10/2024
+ * Create on 28/10/2024
  */
 public class FormSignUp extends VBox implements Form<User> {
 
