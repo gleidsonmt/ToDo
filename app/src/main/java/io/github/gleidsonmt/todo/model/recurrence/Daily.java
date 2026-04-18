@@ -1,5 +1,7 @@
 package io.github.gleidsonmt.todo.model.recurrence;
 
+import java.time.DayOfWeek;
+
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
  * Create on  13/12/2024
@@ -7,15 +9,11 @@ package io.github.gleidsonmt.todo.model.recurrence;
 public final class Daily extends Recurrence {
 
     public Daily() {
-        this(1);
+        super(0, 1, 0, RecurrenceType.DAILY,  DayOfWeek.values());
     }
 
-    public Daily(int gap) {
-        this(0, gap, RecurrenceType.DAILY);
-    }
-
-    public Daily(long id, int times, RecurrenceType type) {
-        super(0, times, type);
+    public Daily(long id, int gap, int taskId) {
+        super(id, gap, taskId, RecurrenceType.DAILY,  DayOfWeek.values());
     }
 
     @Override

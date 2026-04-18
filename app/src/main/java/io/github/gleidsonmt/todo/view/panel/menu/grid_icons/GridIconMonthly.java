@@ -1,4 +1,4 @@
-package io.github.gleidsonmt.todo.view.panel.menu.custom;
+package io.github.gleidsonmt.todo.view.panel.menu.grid_icons;
 
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
@@ -23,13 +23,13 @@ public class GridIconMonthly extends GridIcon {
 
         this.getChildren().setAll(recOne, recTwo, recThree, recFour, recFive, recSix, recSeven);
 
-        GridPane.setConstraints(recOne, 1,0, 1,1, HPos.CENTER, VPos.CENTER);
-        GridPane.setConstraints(recTwo, 2,0, 1,1, HPos.CENTER, VPos.CENTER);
-        GridPane.setConstraints(recThree, 0,1, 1,1, HPos.CENTER, VPos.CENTER);
-        GridPane.setConstraints(recFour, 1,1, 1,1, HPos.CENTER, VPos.CENTER);
-        GridPane.setConstraints(recFive, 2,1, 1,1, HPos.CENTER, VPos.CENTER);
-        GridPane.setConstraints(recSix, 0,2, 1,1, HPos.CENTER, VPos.CENTER);
-        GridPane.setConstraints(recSeven, 1,2, 1,1, HPos.CENTER, VPos.CENTER);
+        GridPane.setConstraints(recOne, 1, 0, 1, 1, HPos.CENTER, VPos.CENTER);
+        GridPane.setConstraints(recTwo, 2, 0, 1, 1, HPos.CENTER, VPos.CENTER);
+        GridPane.setConstraints(recThree, 0, 1, 1, 1, HPos.CENTER, VPos.CENTER);
+        GridPane.setConstraints(recFour, 1, 1, 1, 1, HPos.CENTER, VPos.CENTER);
+        GridPane.setConstraints(recFive, 2, 1, 1, 1, HPos.CENTER, VPos.CENTER);
+        GridPane.setConstraints(recSix, 0, 2, 1, 1, HPos.CENTER, VPos.CENTER);
+        GridPane.setConstraints(recSeven, 1, 2, 1, 1, HPos.CENTER, VPos.CENTER);
 
         this.setHgap(2);
         this.setVgap(2);

@@ -15,7 +15,7 @@ import io.github.gleidsonmt.todo.model.User;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- *         Create on 04/03/2024
+ * Create on 04/03/2024
  */
 public class DaoUser extends AbstractDao<User> {
 

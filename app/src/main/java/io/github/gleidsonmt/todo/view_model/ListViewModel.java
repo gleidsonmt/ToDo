@@ -1,33 +1,28 @@
 package io.github.gleidsonmt.todo.view_model;
 
-import java.util.Optional;
-
 import io.github.gleidsonmt.glad.controls.icon.Icon;
-import io.github.gleidsonmt.todo.bd.dao.DaoSize;
+import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import io.github.gleidsonmt.todo.global.Global;
 import io.github.gleidsonmt.todo.global.ListPresenter;
-import io.github.gleidsonmt.todo.global.SizePresenter;
 import io.github.gleidsonmt.todo.model.List;
 import io.github.gleidsonmt.todo.model.ListType;
-import io.github.gleidsonmt.todo.model.Size;
+import io.github.gleidsonmt.todo.utils.Assets;
 import io.github.gleidsonmt.todo.utils.I18n;
 import io.github.gleidsonmt.todo.utils.StringUtils;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import io.github.gleidsonmt.todo.view_model.converter.ListViewModelConverter;
+import javafx.beans.property.*;
+import javafx.scene.Node;
+import javafx.scene.image.ImageView;
 
 /**
  * Description:
  *
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- *         Created On: Mar 20, 2026
- * 
- *         Version History: Initial version
+ * Created On: Mar 20, 2026
+ * <p>
+ * Version History: Initial version
  */
 public class ListViewModel extends ViewModel {
-
-    private ObjectProperty<Icon> icon;
 
     private boolean fixed;
     private ListType type;
@@ -36,27 +31,26 @@ public class ListViewModel extends ViewModel {
     private ListPresenter presenter;
 
     private IntegerProperty numberOfTasks = new SimpleIntegerProperty(0);
-    private SizePresenter sizePresenter;
+    private StringProperty iconName;
 
-    private Size size = null;
 
     private String keyName;
 
-    public ListViewModel(String name) {
-        this(new List(name));
-    }
+//    public ListViewModel(String name) {
+//        this(new List(name));
+//    }
+
+//    public ListViewModel(List list) {
+//        this(list, Icon.CHECK_LIST, list.isFixed());
+//    }
 
     public ListViewModel(List list) {
-        this(list, Icon.CHECK_LIST, list.isFixed());
-    }
-
-    public ListViewModel(List list, Icon icon, boolean fixed) {
         this.converter = new ListViewModelConverter();
-        this.fixed = fixed;
+        this.fixed = list.isFixed();
         this.setId(list.getId());
 
         this.type = ListType.convert(list.getName());
-        this.setNumberOfTasks(list.getSize());
+        this.numberOfTasks.set(list.getSize());
 
         if (fixed) {
             this.keyName = StringUtils.kebabToCamel(list.getName());
@@ -65,7 +59,18 @@ public class ListViewModel extends ViewModel {
             this.nameProperty().set(list.getName());
         }
 
-        this.icon = new SimpleObjectProperty<>(icon);
+        this.iconName = new SimpleStringProperty(list.getIconName());
+
+//        System.out.println("list.getIconName() = " + list.getIconName());
+//        if (list.isFixed()) {
+//            this.iconName.set(list.getIconName());
+//            this.icon.set(new SVGIcon(Icon.CHECK_LIST));
+//        } else if (list.getIconName() != null && list.getIconName().isEmpty()) {
+//            this.iconName.set(list.getIconName());
+//            this.icon.set(new ImageView(Assets.getIconNew(list.getIconName() + ".png")));
+//        } else {
+//            this.icon.set(new ImageView(Assets.getIconNew("check-list.png")));
+//        }
 
         presenter = (ListPresenter) Global.get(List.class);
         // sizePresenter = (SizePresenter) Global.get(Size.class);
@@ -116,46 +121,31 @@ public class ListViewModel extends ViewModel {
         return this.type;
     }
 
-    public ObjectProperty<Icon> iconProperty() {
-        return this.icon;
+    public StringProperty iconNameProperty() {
+        return this.iconName;
     }
 
-    public void setNumberOfTasks(int val) {
-        this.numberOfTasks.set(val);
+
+
+    public String getIconName() {
+        return this.iconName.get();
+    }
+
+    public void setIconName(String iconName) {
+        this.iconName.set(iconName);
     }
 
     public int getNumberOfTasks() {
         return this.numberOfTasks.get();
     }
 
-    public void addNumberOfTasks(int val) {
+    public ListViewModel addNumberOfTasks(int val) {
         this.numberOfTasks.set(getNumberOfTasks() + val);
+        return this;
     }
 
     public boolean isFixed() {
         return this.fixed;
-    }
-
-    @Deprecated
-    public void updateCount() {
-        DaoSize sizes = new DaoSize();
-        Optional<Size> optionalSize = sizes.getBy("list_id = " + this.getId());
-
-        if (optionalSize.isPresent()) {
-            // this.numberOfTasks.set(optionalSize.get().getSize());
-        } else {
-            this.numberOfTasks.set(0);
-        }
-    }
-
-    @Deprecated
-    public void addCount() {
-        this.numberOfTasks.set(this.numberOfTasks.get() + 1);
-    }
-
-    @Deprecated
-    public void subtractCount() {
-        this.numberOfTasks.set(this.numberOfTasks.get() - 1);
     }
 
     public IntegerProperty numberOfTasksProperty() {
@@ -164,6 +154,6 @@ public class ListViewModel extends ViewModel {
 
     @Override
     public String toString() {
-        return "ListViewModel [id=" + this.getId() + ", name=" + nameProperty().get() + ", icon=" + icon + "]";
+        return "ListViewModel [id=" + this.getId() + ", name=" + nameProperty().get() + ", iconName=" + iconName + "]";
     }
 }

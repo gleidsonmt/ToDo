@@ -19,12 +19,12 @@ import javafx.scene.control.MenuItem;
  * another.
  *
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- *         Created On: Mar 18, 2026
- * 
+ * Created On: Mar 18, 2026
+ *
  */
-public class MenuItemMoveTask extends Menu {
+public class MenuItemChooseTask extends Menu {
 
-    public MenuItemMoveTask(TaskViewModel item) {
+    public MenuItemChooseTask(TaskViewModel item) {
         setText(I18n.get("menu.moveTo"));
         setGraphic(new SVGIcon(Icon.FLEX_DIRECTION));
 
@@ -56,7 +56,6 @@ class MenuList extends MenuItem {
 
         setOnAction(e -> {
             item.setListId(list.getId());
-            item.update();
         });
     }
 

@@ -3,6 +3,7 @@ package io.github.gleidsonmt.todo.view.panel;
 import io.github.gleidsonmt.todo.view.panel.containers.DoubleListContainer;
 import io.github.gleidsonmt.todo.view.panel.containers.EmptyContainer;
 import io.github.gleidsonmt.todo.view.panel.containers.ListContainer;
+import io.github.gleidsonmt.todo.view.panel.events.TaskChangeEvent;
 import io.github.gleidsonmt.todo.view.panel.items.TaskItem;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
@@ -12,13 +13,15 @@ import javafx.collections.ObservableList;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
+import java.util.logging.Logger;
+
 /**
  * Description:
  *
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- *         Created On: Mar 23, 2026
- * 
- *         Version History: Initial version
+ * Created On: Mar 23, 2026
+ * <p>
+ * Version History: Initial version
  */
 public class ListRootNew extends VBox {
 
@@ -30,7 +33,7 @@ public class ListRootNew extends VBox {
     public ListRootNew() {
         init();
 
-        this.actualList.addListener((observable, oldValue, newValue) -> {
+        this.actualList.addListener((_, _, newValue) -> {
             this.getChildren().clear();
             updateContainer(newValue);
         });
@@ -52,10 +55,10 @@ public class ListRootNew extends VBox {
         var query = "";
 
         query = switch (list.getType()) {
-        case DAILY -> "my_day = 1";
-        case IMPORTANT -> "important = 1";
-        case TASKS -> "list_id = 0";
-        default -> "list_id = " + list.getId();
+            case DAILY -> "my_day = 1";
+            case IMPORTANT -> "important = 1";
+            case TASKS -> "list_id = 0";
+            default -> "list_id = " + list.getId();
         };
 
         container = new DoubleListContainer(list, query);
@@ -71,7 +74,7 @@ public class ListRootNew extends VBox {
     /**
      * If there's no task on the list root, so the image with a message will
      * show.
-     * 
+     *
      * @param empty If it neeeds update the list root node.
      */
     private void update(boolean empty) {

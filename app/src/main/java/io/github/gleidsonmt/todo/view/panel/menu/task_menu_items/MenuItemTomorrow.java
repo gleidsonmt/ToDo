@@ -29,7 +29,7 @@ public class MenuItemTomorrow extends TaskMenuItemBase {
 
     @Override
     protected EventHandler<ActionEvent> createEvent(TaskViewModel item) {
-        return e -> {
+        return _ -> {
             item.setDueDate(LocalDate.now().plusDays(1));
             item.update();
         };

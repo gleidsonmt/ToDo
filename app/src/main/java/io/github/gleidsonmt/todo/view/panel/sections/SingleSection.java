@@ -23,9 +23,9 @@ import javafx.util.Duration;
  * Description:
  *
  * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
- *         Created On: Feb 26, 2026
- * 
- *         Version History: Initial version
+ * Created On: Feb 26, 2026
+ * <p>
+ * Version History: Initial version
  */
 public class SingleSection extends VBox {
 
@@ -60,7 +60,7 @@ public class SingleSection extends VBox {
 
     /**
      * The animation when the item enters on the list container.
-     * 
+     *
      * @param el The task item.
      * @return The timeline.
      */

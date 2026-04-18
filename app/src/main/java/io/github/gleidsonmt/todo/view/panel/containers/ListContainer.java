@@ -28,14 +28,14 @@ import javafx.scene.layout.VBox;
  * Description: The core of the list container.
  *
  * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
- *         Created On: Feb 26, 2026
- * 
- *         Version History: Initial version
+ * Created On: Feb 26, 2026
+ * <p>
+ * Version History: Initial version
  */
 public abstract class ListContainer extends VBox {
 
     protected ObservableList<TaskViewModel> data = FXCollections.observableArrayList(
-            viewModel -> new Observable[] { viewModel.completedProperty(), viewModel.listIdProperty(), viewModel.importantProperty(), viewModel.myDayProperty(), viewModel.listIdProperty() });
+            viewModel -> new Observable[]{viewModel.completedProperty(), viewModel.importantProperty(), viewModel.myDayProperty(), viewModel.listIdProperty()});
 //    protected ObservableList<TaskViewModel> data = FXCollections.observableArrayList(viewModel -> new Observable[] { viewModel.completedProperty() });
 
     private final ObjectProperty<TaskItem> selected = new SimpleObjectProperty<>();
@@ -48,7 +48,7 @@ public abstract class ListContainer extends VBox {
 
     /**
      * Constructor
-     * 
+     *
      * @param list The filtered list.
      * @param data The core list.
      */
@@ -80,13 +80,13 @@ public abstract class ListContainer extends VBox {
 
     private Comparator<TaskViewModel> switchComparator(Comparators comparator) {
         switch (comparator) {
-        case ALPHABETICALLY -> {
-            return createAlphaticallyComporator();
-        }
-        case IMPORTANCE -> {
-            return createImportanceComparator();
-        }
-        default -> throw new AssertionError();
+            case ALPHABETICALLY -> {
+                return createAlphaticallyComporator();
+            }
+            case IMPORTANCE -> {
+                return createImportanceComparator();
+            }
+            default -> throw new AssertionError();
         }
     }
 
@@ -139,7 +139,7 @@ public abstract class ListContainer extends VBox {
      * Create UI component based on domain object.
      * Store this object in db using view model.
      * Add the task with id settled to the data list.
-     * 
+     *
      * @param task The object model to create an UI Component.
      */
     public void add(TaskViewModel viewModel) {
@@ -150,7 +150,7 @@ public abstract class ListContainer extends VBox {
     /**
      * Delete the object from database.
      * And remove this object from this UI container.
-     * 
+     *
      * @param task The task to delete.
      */
     public void remove(TaskItem task) {

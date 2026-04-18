@@ -1,7 +1,3 @@
-.ativo {
-    -fx-background-image: url("../img/ativo.png");
-    -fx-background-size: cover;
-}
 
 .key-button {
     -fx-background-color: derive(-mint, 80%);

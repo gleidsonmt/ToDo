@@ -17,7 +17,7 @@ import javafx.scene.control.Label;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- *         Create on 02/01/2025
+ * Create on 02/01/2025
  */
 public class I18n {
 

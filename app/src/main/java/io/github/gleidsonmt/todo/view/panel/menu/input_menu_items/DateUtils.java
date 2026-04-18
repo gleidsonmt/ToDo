@@ -1,5 +1,9 @@
 package io.github.gleidsonmt.todo.view.panel.menu.input_menu_items;
 
+import io.github.gleidsonmt.todo.model.recurrence.Recurrence;
+import io.github.gleidsonmt.todo.model.recurrence.RecurrenceType;
+import io.github.gleidsonmt.todo.utils.StringUtils;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -46,6 +50,16 @@ public class DateUtils {
         return format(dateTime.toLocalDate(), dateTime.toLocalTime());
     }
 
+    public static String format(Recurrence recurrence) {
+        if (recurrence.getType() == RecurrenceType.WEEKDAYS) {
+            return StringUtils.name(RecurrenceType.WEEKDAYS.toString());
+        } else if (recurrence.getType() != RecurrenceType.CUSTOM) {
+            return StringUtils.name(recurrence.toString());
+        } else {
+            return "Custom";
+        }
+    }
+
     public static String format(String init, LocalTime time, String with, LocalDate localDate) {
         if (localDate.equals(LocalDate.now())) {
             return init + DateTimeFormatter.ofPattern("H:mm").format(time) + ", Today";
@@ -54,12 +68,12 @@ public class DateUtils {
         } else if (localDate.equals(LocalDate.now().minusDays(1))) {
             return init + DateTimeFormatter.ofPattern("H:mm").format(time) + ", Yesterday";
         } else {
-            return  init + DateTimeFormatter.ofPattern("H:mm").format(time) + ", " +
-                    DateTimeFormatter
-                            .ofPattern("E d 'of' MMM")
-                            .format(localDate)
-                            .replaceFirst("\\.", ",")
-                            .replace(".", "");
+            return init + DateTimeFormatter.ofPattern("H:mm").format(time) + ", " +
+                   DateTimeFormatter
+                           .ofPattern("E d 'of' MMM")
+                           .format(localDate)
+                           .replaceFirst("\\.", ",")
+                           .replace(".", "");
         }
     }
 }

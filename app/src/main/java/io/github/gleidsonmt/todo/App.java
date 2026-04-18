@@ -45,7 +45,7 @@ public class App extends Application {
     }
 
     @Override
-    public void stop() throws Exception {
+    public void stop() {
         Logger.getGlobal().info("Application is stopping...");
         if (connection.hasConnection())
             connection.close();
@@ -71,14 +71,13 @@ public class App extends Application {
         stage.setScene(scene);
         stage.show();
 
+
 //        Tools.showUp(scene);
-        Tools.analyzeNodes(scene);
-        Tools.listenCss(scene);
+//        Tools.analyzeNodes(scene);
+//        Tools.listenCss(scene);
 
-//        LocalDate actual = LocalDate.now();
-//
-//        actual.plusWeeks(1);
-//        System.out.println(actual.with(actual.getDayOfWeek()).plusWeeks(1));
     }
-
+    public static void main(String[] args) {
+        launch(args);
+    }
 }

@@ -5,6 +5,7 @@ import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import io.github.gleidsonmt.todo.global.Global;
 import io.github.gleidsonmt.todo.global.ListPresenter;
 import io.github.gleidsonmt.todo.model.List;
+import io.github.gleidsonmt.todo.utils.Assets;
 import io.github.gleidsonmt.todo.view.panel.menu.ListContextMenu;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import javafx.beans.binding.Bindings;
@@ -17,10 +18,12 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Side;
+import javafx.scene.Node;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -40,11 +43,9 @@ public class CustomDrawerItemNew extends ToggleButton {
 
     // Components
     private Pane iconSelector = new Pane();
-    private SVGIcon svgIcon = new SVGIcon();
+    private ObjectProperty<Node> icon;
     private TextField title = new TextField();
     private Label number = new Label();
-
-    private ObjectProperty<Icon> icon = new SimpleObjectProperty<>();
 
     private final GridPane container = new GridPane();
 
@@ -61,8 +62,14 @@ public class CustomDrawerItemNew extends ToggleButton {
 
     public CustomDrawerItemNew(ListViewModel viewModel) {
         this.viewModel = viewModel;
+        this.icon = new SimpleObjectProperty<>();
+        if (viewModel.isFixed()) {
+            this.icon.set(new SVGIcon(Icon.valueOf(viewModel.getIconName().toUpperCase())));
+        } else if (viewModel.getIconName() != null && !viewModel.getIconName().isEmpty()) {
+            this.icon.set(new ImageView(Assets.getIconNew(viewModel.getIconName() + ".png")));
+        } else this.icon.set(new SVGIcon(Icon.CHECK_LIST));
+
         this.fixed.set(viewModel.isFixed());
-        viewModel.isFixed();
         this.setGraphic(container);
 
         init();
@@ -75,7 +82,6 @@ public class CustomDrawerItemNew extends ToggleButton {
     @Deprecated
     public void updateNotifications() {
         ListPresenter presenter = (ListPresenter) Global.get(List.class);
-        this.numberOfNotifications.set(presenter.size(this.getViewModel().getId()));
     }
 
     public ListViewModel getViewModel() {
@@ -95,7 +101,7 @@ public class CustomDrawerItemNew extends ToggleButton {
         iconSelector.setMaxSize(5, 30);
         iconSelector.getStyleClass().add("icon-selector");
 
-        container.getChildren().setAll(iconSelector, svgIcon, title, number);
+        container.getChildren().setAll(iconSelector, icon.get(), title, number);
     }
 
     private void configLayout() {
@@ -104,8 +110,8 @@ public class CustomDrawerItemNew extends ToggleButton {
 
         GridPane.setColumnIndex(iconSelector, 0);
         GridPane.setHalignment(iconSelector, HPos.LEFT);
-        GridPane.setColumnIndex(svgIcon, 1);
-        GridPane.setHalignment(svgIcon, HPos.CENTER);
+        GridPane.setColumnIndex(getIcon(), 1);
+        GridPane.setHalignment(getIcon(), HPos.CENTER);
         GridPane.setColumnIndex(title, 2);
         GridPane.setColumnIndex(number, 3);
         //
@@ -134,7 +140,7 @@ public class CustomDrawerItemNew extends ToggleButton {
     }
 
     private void bind() {
-        svgIcon.iconProperty().bind(viewModel.iconProperty());
+//        svgIcon.iconProperty().bind(viewModel.iconProperty());
         number.textProperty().bind(Bindings.convert(this.numberOfNotifications));
         number.visibleProperty().bind(this.numberOfNotifications.greaterThan(0));
         this.title.textProperty().bindBidirectional(viewModel.nameProperty());
@@ -191,6 +197,10 @@ public class CustomDrawerItemNew extends ToggleButton {
                 e.consume();
             }
         });
+    }
+
+    public Node getIcon() {
+        return this.icon.get();
     }
 
     public IntegerProperty numberOfNotificationsProperty() {

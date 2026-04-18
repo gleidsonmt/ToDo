@@ -31,9 +31,9 @@ import javafx.util.Duration;
  * Description:
  *
  * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
- *         Created On: Feb 23, 2026
- * 
- *         Version History: Initial version
+ * Created On: Feb 23, 2026
+ * <p>
+ * Version History: Initial version
  */
 public class Presentation extends StackPane {
 

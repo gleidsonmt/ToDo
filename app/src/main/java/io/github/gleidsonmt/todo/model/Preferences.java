@@ -7,7 +7,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- *         Create on 01/11/2024
+ * Create on 01/11/2024
  */
 public class Preferences extends Model {
 

@@ -17,9 +17,9 @@ import javafx.collections.ObservableList;
  * Description:
  *
  * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
- *         Created On: Feb 27, 2026
- * 
- *         Version History: Initial version
+ * Created On: Feb 27, 2026
+ * <p>
+ * Version History: Initial version
  */
 public class MultipleListContainer extends ListContainer {
 
@@ -137,7 +137,7 @@ public class MultipleListContainer extends ListContainer {
 
     /**
      * If the list as update behind the scenes.
-     * 
+     *
      * @param section
      * @return
      */
