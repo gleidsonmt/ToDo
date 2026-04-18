@@ -12,13 +12,11 @@ import javafx.collections.transformation.FilteredList;
  * Description:
  *
  * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
- *         Created On: Feb 26, 2026
- * 
- *         Version History: Initial version
+ * Created On: Feb 26, 2026
  */
 public class AnimatedSection extends SingleSection {
 
-    private SectionTitle title;
+    private final SectionTitle title;
 
     public AnimatedSection(ListViewModel listViewModel) {
         this(listViewModel, I18n.get("panel.tile.title"), Icon.NONE);
@@ -35,27 +33,23 @@ public class AnimatedSection extends SingleSection {
 
         title = new SectionTitle(name, icon);
 
-        title.setOnShow(e -> {
-            getChildren().remove(1, getChildren().size());
-        });
+        title.setOnShow(_ -> getChildren().remove(1, getChildren().size()));
 
-        title.setOnHide(e -> {
-            sortedList.stream().forEach(el -> {
-                var a = loadTask(el);
-                add(a);
-            });
-        });
+        title.setOnHide(_ -> sortedList.stream().forEach(el -> {
+            var a = loadTask(el);
+            add(a);
+        }));
     }
 
     @Override
     public void setList(FilteredList<TaskViewModel> list) {
         if (!list.isEmpty()) {
-            getChildren().add(0, this.title);
+            getChildren().addFirst(this.title);
         }
         list.addListener((ListChangeListener<TaskViewModel>) c -> {
             if (c.next()) {
                 if (!c.getList().isEmpty() && !getChildren().contains(title)) {
-                    getChildren().add(0, title);
+                    getChildren().addFirst(title);
                 } else if (c.getList().isEmpty() && getChildren().contains(title)) {
                     getChildren().remove(title);
                 }
