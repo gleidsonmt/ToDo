@@ -1,6 +1,9 @@
 package io.github.gleidsonmt.todo.model.recurrence;
 
 import io.github.gleidsonmt.todo.model.Model;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.time.DayOfWeek;
@@ -11,21 +14,32 @@ import java.time.DayOfWeek;
  */
 public abstract class Recurrence extends Model {
 
-    protected ObservableList<DayOfWeek> daysOfWeek; // only to pair with database model
+    private long taskID;
+    protected ObservableList<DayOfWeek> daysOfWeek;
     protected RecurrenceType type;
-    private int gap;
+    private final IntegerProperty gap;
 
-    public Recurrence() {
-        this(0, 0, RecurrenceType.DAILY);
+    public Recurrence(long id, int gap, long taskId, RecurrenceType type, DayOfWeek... dayOfWeek) {
+        super(id);
+        taskID = taskId;
+        this.gap = new SimpleIntegerProperty(gap);
+        this.type = type;
+        this.daysOfWeek = FXCollections.observableArrayList(dayOfWeek);
     }
 
-    public Recurrence(long id, int gap, RecurrenceType type) {
-        super(id);
-        this.gap = gap;
-        this.type = type;
+    public long getTaskID() {
+        return this.taskID;
+    }
+
+    public void setTaskID(long id) {
+        this.taskID = id;
     }
 
     public int getGap() {
+        return gap.get();
+    }
+
+    public IntegerProperty gapProperty() {
         return gap;
     }
 
@@ -38,4 +52,9 @@ public abstract class Recurrence extends Model {
     }
 
     public abstract String getShortName();
+
+    @Override
+    public String toString() {
+        return type.name();
+    }
 }

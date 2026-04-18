@@ -8,6 +8,7 @@ import io.github.gleidsonmt.todo.global.Global;
 import io.github.gleidsonmt.todo.global.TaskPresenter;
 import io.github.gleidsonmt.todo.model.ToDoTask;
 import io.github.gleidsonmt.todo.model.recurrence.Recurrence;
+import io.github.gleidsonmt.todo.view_model.converter.TaskViewModelConverter;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.ObjectProperty;
@@ -25,7 +26,7 @@ import javafx.beans.property.SimpleObjectProperty;
  */
 public class TaskViewModel extends ViewModel {
 
-    private TaskPresenter presenter;
+    private final TaskPresenter presenter;
 
     private final TaskViewModelConverter converter = new TaskViewModelConverter();
 
@@ -36,8 +37,6 @@ public class TaskViewModel extends ViewModel {
     private final ObjectProperty<LocalDate> dueDate;
     private final LongProperty listId;
     private final ObjectProperty<LocalDate> createdAt;
-
-    // private final TaskItem taskItem;
 
     public TaskViewModel() {
         this(null);
@@ -62,10 +61,9 @@ public class TaskViewModel extends ViewModel {
 
     }
 
-    public ToDoTask save() {
-        var converted = converter.convert(this);
+    public void save() {
+        var converted = converter.toModel(this);
         this.setId(presenter.store(converted));
-        return converted;
     }
 
     public void storeRecurrence(Recurrence rec) {
@@ -74,12 +72,12 @@ public class TaskViewModel extends ViewModel {
 
     public void update() {
         // commit in db
-        var item = converter.convert(this);
+        var item = converter.toModel(this);
         presenter.update(item);
     }
 
     public void delete() {
-        var item = converter.convert(this);
+        var item = converter.toModel(this);
         presenter.delete(item);
     }
 
@@ -161,11 +159,6 @@ public class TaskViewModel extends ViewModel {
 
     public void setListId(long id) {
         this.listId.set(id);
-    }
-
-    @Deprecated
-    private Optional<ToDoTask> find(ToDoTask task) {
-        return presenter.getData().stream().filter(el -> el.getId() == task.getId()).findAny();
     }
 
     @Override

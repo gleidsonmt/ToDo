@@ -34,15 +34,14 @@ public final class Tools {
     }
 
     public static void showUp(Scene scene) {
-        showScenicView(scene);
+        analyzeNodes(scene);
         listenCss(scene);
     }
 
-    private static void showScenicView(Scene scene) throws RuntimeException {
+    public static void analyzeNodes(Scene scene) throws RuntimeException {
         if (scene == null) return;
         ClassLoader originalCtx = Thread.currentThread().getContextClassLoader();
         Class<?> clazz = loadClassJar("./vendor/scenicview.jar", "org.scenicview.ScenicView");
-        System.out.println(clazz);
         if (clazz == null) return;
 
         try {
@@ -54,7 +53,7 @@ public final class Tools {
         }
     }
 
-    private static void listenCss(Scene scene) {
+    public static void listenCss(Scene scene) {
         if (scene == null) return;
         ClassLoader originalCtx = Thread.currentThread().getContextClassLoader();
         Class<?> clazz = loadClassJar("./vendor/cssfx-11.5.1.jar", "fr.brouillard.oss.cssfx.CSSFX");

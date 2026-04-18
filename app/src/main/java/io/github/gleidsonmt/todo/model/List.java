@@ -3,11 +3,11 @@ package io.github.gleidsonmt.todo.model;
 import io.github.gleidsonmt.todo.bd.dao.internal.Ignore;
 
 /**
- * 
+ *
  * Description: The base model class for lists.
- * 
+ *
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- *         Create on: 2026-02-03
+ * Create on: 2026-02-03
  */
 public class List extends Entity {
 
@@ -18,6 +18,7 @@ public class List extends Entity {
     // @Ignore
     // private final SimpleListProperty<List> lists;
 
+    private final String iconName;
     private final int size; // 2
     private final boolean fixed; // 3
 
@@ -26,19 +27,11 @@ public class List extends Entity {
 
     // all above needs refactoring
 
-    public List() {
-        this(0, null, false, 0);
-    }
-
-    public List(String name) {
-        this(0, name, false, 0);
-    }
-
-    public List(long id, String name, boolean fixed, int size) {
+    public List(long id, String name, boolean fixed, int size, String iconName) {
         super(id, name);
         this.fixed = fixed;
         this.size = size;
-
+        this.iconName = iconName == null ? "check-list" : iconName;
     }
 
     public boolean isFixed() {
@@ -51,6 +44,10 @@ public class List extends Entity {
 
     public String getI18nKey() {
         return this.i18nKey;
+    }
+
+    public String getIconName() {
+        return this.iconName;
     }
 
     @Override

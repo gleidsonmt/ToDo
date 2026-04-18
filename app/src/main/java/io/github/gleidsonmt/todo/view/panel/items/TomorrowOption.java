@@ -7,9 +7,9 @@ import io.github.gleidsonmt.todo.utils.I18n;
  * Description:
  *
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- *         Created On: Mar 30, 2026
- * 
- *         Version History: Initial version
+ * Created On: Mar 30, 2026
+ * <p>
+ * Version History: Initial version
  */
 @Deprecated
 public class TomorrowOption extends Option {

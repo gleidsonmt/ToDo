@@ -2,7 +2,12 @@ package io.github.gleidsonmt.todo.view.panel.menu.input_menu_items;
 
 import io.github.gleidsonmt.glad.base.Root;
 import io.github.gleidsonmt.glad.controls.icon.Icon;
+import io.github.gleidsonmt.todo.model.List;
+import io.github.gleidsonmt.todo.view.panel.menu.input_menu_items.custom_panels.CalendarTimePane;
+import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.geometry.Pos;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 
 import java.time.DayOfWeek;
@@ -26,7 +31,7 @@ public class RemindContextMenu extends CustomContextMenu<LocalDateTime> {
         menuItemDelete.getStyleClass().addAll("menu-item-delete");
 
         this.getItems().addAll(menuItemToday, menuItemTomorrow, menuItemNextWeek, menuItemPickDateAndTime);
-//
+
         menuItemToday.setOnAction(_ -> setValue(compose(LocalDate.now(), LocalTime.of(19, 0))));
         menuItemTomorrow.setOnAction(_ -> setValue(compose(LocalDate.now().plusDays(1), LocalTime.now())));
         menuItemNextWeek.setOnAction(_ -> setValue(compose(LocalDate.now().with(DayOfWeek.SUNDAY), LocalTime.now())));

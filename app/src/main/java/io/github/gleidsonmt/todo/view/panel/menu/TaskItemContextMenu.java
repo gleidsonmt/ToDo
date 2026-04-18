@@ -2,14 +2,7 @@ package io.github.gleidsonmt.todo.view.panel.menu;
 
 import java.time.LocalDate;
 
-import io.github.gleidsonmt.todo.view.panel.menu.task_menu_items.MenuItemComplete;
-import io.github.gleidsonmt.todo.view.panel.menu.task_menu_items.MenuItemDelete;
-import io.github.gleidsonmt.todo.view.panel.menu.task_menu_items.MenuItemImportant;
-import io.github.gleidsonmt.todo.view.panel.menu.task_menu_items.MenuItemMoveTask;
-import io.github.gleidsonmt.todo.view.panel.menu.task_menu_items.MenuItemMyDay;
-import io.github.gleidsonmt.todo.view.panel.menu.task_menu_items.MenuItemRemoveDueDate;
-import io.github.gleidsonmt.todo.view.panel.menu.task_menu_items.MenuItemToday;
-import io.github.gleidsonmt.todo.view.panel.menu.task_menu_items.MenuItemTomorrow;
+import io.github.gleidsonmt.todo.view.panel.menu.task_menu_items.*;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,9 +14,9 @@ import javafx.scene.control.SeparatorMenuItem;
  * Description:
  *
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- *         Created On: Mar 06, 2026
- * 
- *         Version History: Initial version
+ * Created On: Mar 06, 2026
+ * <p>
+ * Version History: Initial version
  */
 public class TaskItemContextMenu extends ContextMenu {
 
@@ -32,13 +25,13 @@ public class TaskItemContextMenu extends ContextMenu {
     private final MenuItemComplete menuItemComplete;
     private final MenuItemDelete menuItemDelete;
 
-    // private MenuItemDueDate menuItemDueDate;
-    private final MenuItemToday menuItemToday;
     private final MenuItemTomorrow menuItemTomorrow;
 
     private final MenuItemRemoveDueDate menuItemRemoveDueDate;
 
-    private final MenuItemMoveTask menuItemMoveTask;
+    private final MenuItemChooseTask menuItemChooseTask;
+    private final MenuItemToday menuItemToday;
+    private MenuItemDueDate menuItemDueDate;
 
     private final ObservableList<MenuItem> moveable;
 
@@ -52,13 +45,15 @@ public class TaskItemContextMenu extends ContextMenu {
         this.menuItemTomorrow = new MenuItemTomorrow(item);
         this.menuItemRemoveDueDate = new MenuItemRemoveDueDate(item);
         // fiexd in bottom
-        this.menuItemMoveTask = new MenuItemMoveTask(item);
+        this.menuItemChooseTask = new MenuItemChooseTask(item);
         this.menuItemDelete = new MenuItemDelete(item);
+
+        this.menuItemDueDate = new MenuItemDueDate();
 
         moveable = FXCollections.observableArrayList();
 
         getItems().addAll(menuItemMyDay, menuItemChangeImportance, menuItemComplete, new SeparatorMenuItem());
-        getItems().addAll(new SeparatorMenuItem(), menuItemMoveTask, new SeparatorMenuItem(), menuItemDelete);
+        getItems().addAll(new SeparatorMenuItem(), menuItemChooseTask, new SeparatorMenuItem(), menuItemDelete);
 
         item.dueDateProperty().addListener((_, _, newVal) -> {
             switchContextItems(newVal);

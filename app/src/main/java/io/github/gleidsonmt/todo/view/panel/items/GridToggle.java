@@ -15,11 +15,11 @@ import javafx.scene.layout.GridPane;
  * Used as base for TaskItem to allow selection of the entire item.
  * Grid toggles was created because it's almost impossible to achieve a toogle
  * button that grows its height as the content increases.
- * 
+ *
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- *         Created On: Mar 30, 2026
- * 
- *         Version History: Initial version
+ * Created On: Mar 30, 2026
+ * <p>
+ * Version History: Initial version
  */
 public class GridToggle extends GridPane implements Toggle {
 

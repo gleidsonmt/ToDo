@@ -9,14 +9,14 @@ import javafx.collections.ObservableList;
  * Description:
  *
  * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
- *         Created On: Feb 25, 2026
- * 
- *         Version History: Initial version
+ * Created On: Feb 25, 2026
+ * <p>
+ * Version History: Initial version
  */
 public abstract class Recurrence extends Model implements Cloneable {
 
     protected ObservableList<DayOfWeek> daysOfWeek; // only to pair with
-                                                    // database model
+    // database model
     protected RecurrenceType type;
     private int gap;
 

@@ -15,17 +15,18 @@ import org.kordamp.ikonli.javafx.FontIcon;
  * Description:
  *
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- *         Created On: Mar 28, 2026
- * 
- *         Version History: Initial version
+ * Created On: Mar 28, 2026
+ * <p>
+ * Version History: Initial version
  */
 public class Option extends GridPane {
 
-    private int index;
-    private Text text;
+    private final int index;
+    private final Text text;
     private Node icon;
-    private Circle circle = new Circle(3);
-    private BooleanProperty needsBullet = new SimpleBooleanProperty();
+    private SVGIcon repeatIcon;
+    private final Circle circle = new Circle(3);
+    private final BooleanProperty needsBullet = new SimpleBooleanProperty();
 
     public Option(int index, String text) {
         this(index, text, Icon.NONE);
@@ -42,6 +43,7 @@ public class Option extends GridPane {
     public Option(int index, String text, Node icon) {
         this.index = index;
         this.text = new Text(text);
+
 
         if (icon instanceof SVGIcon ik) {
             ik.setScale(0.8);
@@ -65,6 +67,7 @@ public class Option extends GridPane {
                 minLayout();
             }
         });
+
         if (needsBullet.get()) {
             bulletLayout();
         } else {
@@ -78,23 +81,29 @@ public class Option extends GridPane {
         if (icon != null) {
             GridPane.setColumnIndex(icon, 0);
             GridPane.setColumnIndex(text, 1);
-
+            if (repeatIcon != null) GridPane.setColumnIndex(repeatIcon, 2);
         } else {
             GridPane.setColumnIndex(text, 0);
+            if (repeatIcon != null) GridPane.setColumnIndex(repeatIcon, 1);
         }
     }
 
     private void bulletLayout() {
         this.setHgap(5);
 
-        getChildren().add(circle);
+        if (!getChildren().contains(circle)) getChildren().add(circle);
+
         if (icon != null) {
             GridPane.setColumnIndex(circle, 0);
             GridPane.setColumnIndex(icon, 1);
             GridPane.setColumnIndex(text, 2);
+            if (repeatIcon != null) GridPane.setColumnIndex(repeatIcon, 3);
+//            GridPane.setColumnIndex(repeatIcon, 3);
         } else {
             GridPane.setColumnIndex(circle, 0);
             GridPane.setColumnIndex(text, 1);
+            if (repeatIcon != null) GridPane.setColumnIndex(repeatIcon, 2);
+//            GridPane.setColumnIndex(repeatIcon, 2);
         }
 
     }
@@ -125,6 +134,24 @@ public class Option extends GridPane {
         if (this.icon instanceof FontIcon ik) {
             ik.setIconCode(icon);
         }
+    }
+
+    public void setNeedRepeatIcon(boolean repeatIcon) {
+
+        if (repeatIcon) {
+            this.repeatIcon = new SVGIcon(Icon.SYNC);
+            this.repeatIcon.setScale(0.7);
+            getChildren().add(this.repeatIcon);
+        } else {
+            getChildren().add(this.repeatIcon);
+        }
+
+        if (needsBullet.get()) {
+            bulletLayout();
+        } else {
+            minLayout();
+        }
+
     }
 
     @Override

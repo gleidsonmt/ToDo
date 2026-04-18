@@ -11,9 +11,9 @@ import javafx.scene.text.TextAlignment;
  * Description:
  *
  * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
- *         Created On: Feb 26, 2026
- * 
- *         Version History: Initial version
+ * Created On: Feb 26, 2026
+ * <p>
+ * Version History: Initial version
  */
 public class EmptyContainer extends StackPane {
 

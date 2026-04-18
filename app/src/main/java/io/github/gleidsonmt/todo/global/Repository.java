@@ -9,9 +9,9 @@ import javafx.collections.ObservableList;
  * Description:
  *
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- *         Created On: Feb 25, 2026
- * 
- *         Version History: Initial version
+ * Created On: Feb 25, 2026
+ * <p>
+ * Version History: Initial version
  */
 public class Repository {
 
@@ -19,7 +19,7 @@ public class Repository {
 
     @SuppressWarnings("null")
     public Repository() {
-        this.repos = List.of(new UserPresenter(), new ListPresenter(), new TaskPresenter(), new SizePresenter());
+        this.repos = List.of(new UserPresenter(), new ListPresenter(), new TaskPresenter());
     }
 
     public <T extends Model> Presenter<T> of(Class<?> presenter) {

@@ -9,9 +9,9 @@ import io.github.gleidsonmt.todo.bd.dao.internal.Ignore;
  * Description:
  *
  * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
- *         Created On: Feb 25, 2026
- * 
- *         Version History: Initial version
+ * Created On: Feb 25, 2026
+ * <p>
+ * Version History: Initial version
  */
 public class ToDoTask extends Entity {
 
@@ -19,7 +19,6 @@ public class ToDoTask extends Entity {
     // my_day, recurrence_id, created_at) values(?, ?, ?, ?, ?, ?, ?, ?);
     // eh o primeiro na lista
 
-    private final long recurrenceID;
     private final long listID;
     private final LocalDate createdAt;
     private final LocalDateTime remind;
@@ -29,11 +28,11 @@ public class ToDoTask extends Entity {
     private final boolean completed;
 
     public ToDoTask(String name) {
-        this(0, name, false, false, false, LocalDate.now(), LocalDateTime.now(), LocalDate.now(), 0,0);
+        this(0, name, false, false, false, LocalDate.now(), LocalDateTime.now(), LocalDate.now(),  0);
     }
 
     public ToDoTask(long id, String name, boolean completed, boolean important, boolean myDay, LocalDate dueDate,
-            LocalDateTime remind, LocalDate createdAt, long listID, long recurrenceID) {
+                    LocalDateTime remind, LocalDate createdAt, long listID) {
         super(id, name);
         this.myDay = myDay;
         this.completed = completed;
@@ -42,7 +41,6 @@ public class ToDoTask extends Entity {
         this.createdAt = createdAt;
         this.remind = remind;
         this.listID = listID;
-        this.recurrenceID = recurrenceID;
     }
 
     public LocalDate getCreatedAt() {
@@ -73,21 +71,16 @@ public class ToDoTask extends Entity {
         return remind;
     }
 
-    public long getRecurrenceID() {
-        return recurrenceID;
-    }
-
-
     @Override
     public String toString() {
         return "Task{" + "id=" + super.getId() +
                ", name=" + super.getName() +
-               ", recurrenceId=" + recurrenceID +
                ", myDay=" + myDay +
                ", dueDate=" + dueDate +
                ", remind=" + remind +
                ", completed=" + completed +
                ", important=" + important +
+               ", createdAt=" + createdAt +
                ", listId=" + listID +
                '}';
     }

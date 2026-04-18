@@ -1,13 +1,17 @@
 package io.github.gleidsonmt.todo.view.panel.items;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.todo.global.Global;
 import io.github.gleidsonmt.todo.global.ListPresenter;
+import io.github.gleidsonmt.todo.global.TaskPresenter;
 import io.github.gleidsonmt.todo.model.List;
+import io.github.gleidsonmt.todo.model.ToDoTask;
+import io.github.gleidsonmt.todo.model.recurrence.Recurrence;
 import io.github.gleidsonmt.todo.utils.StringUtils;
 import io.github.gleidsonmt.todo.view.panel.menu.input_menu_items.DateUtils;
 import javafx.beans.property.BooleanProperty;
@@ -20,8 +24,6 @@ import javafx.scene.layout.FlowPane;
  *
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
  * Created On: Mar 28, 2026
- * <p>
- * Version History: Initial version
  */
 public class Options extends FlowPane {
 
@@ -29,38 +31,55 @@ public class Options extends FlowPane {
     private final TaskOption taskOption = new TaskOption();
     private final DueDateOption dueDateOption = new DueDateOption();
 
-    // private final BooleanProperty hasRemindOption = new
-    // SimpleBooleanProperty();
+    private final RemindOption remindOption ;
 
     public Options(TaskItem item) {
 
         this.setMinHeight(10);
         this.setHgap(5);
-        this.setVgap(5);
+
+        TaskPresenter taskPresenter = (TaskPresenter) Global.get(ToDoTask.class);
+        Optional<Recurrence> recurrence = taskPresenter.getRecurrence(item.getViewModel().getId());
 
         MyDayOption myDayOption = new MyDayOption();
         BooleanProperty hasMyDayOption = new SimpleBooleanProperty();
         hasMyDayOption.addListener(createUpdateListener(myDayOption));
+        hasMyDayOption.bind(item.getViewModel().myDayProperty());
+
         BooleanProperty hasDueDateOption = new SimpleBooleanProperty();
         hasDueDateOption.addListener(createUpdateListener(dueDateOption));
-        RepeatOption repeatOption = new RepeatOption();
+        hasDueDateOption.bind(item.getViewModel().dueDateProperty().isNotNull());
 
         BooleanProperty hasRepeatOption = new SimpleBooleanProperty();
-        hasRepeatOption.addListener(createUpdateListener(repeatOption));
+//        hasRepeatOption.bind(item.getViewModel());
 
-        hasMyDayOption.bind(item.getViewModel().myDayProperty());
-        hasDueDateOption.bind(item.getViewModel().dueDateProperty().isNotNull());
+        remindOption = new RemindOption();
+        BooleanProperty hasRemindOption = new SimpleBooleanProperty();
+        hasRemindOption.addListener(createUpdateListener(remindOption));
+        hasRemindOption.bind(item.getViewModel().remindProperty().isNotNull());
+
+//        RepeatOption repeatOption = new RepeatOption();
+//        BooleanProperty hasRepeatOption = new SimpleBooleanProperty();
+//        hasRepeatOption.addListener(createUpdateListener(repeatOption));
 
         BooleanProperty hasTaskOption = new SimpleBooleanProperty();
         hasTaskOption.addListener(createUpdateListener(taskOption));
 
         hasTaskOption.bind(item.getListViewModel().idProperty().isNotEqualTo(item.getViewModel().listIdProperty()));
-        hasRepeatOption.bind(item.getListViewModel().idProperty().greaterThan(0));
+//        hasRepeatOption.bind(item.getListViewModel().idProperty().greaterThan(0));
 
-        has.bind(hasTaskOption.or(hasMyDayOption).or(hasDueDateOption).or(hasRepeatOption));
+        has.bind(hasTaskOption.or(hasMyDayOption).or(hasDueDateOption).or(hasRemindOption));
 
         if (item.getViewModel().getDueDate() != null) {
             updateDueDate(item.getViewModel().getDueDate());
+        }
+
+        if (item.getViewModel().getRemind() != null) {
+            remindOption.setName(DateUtils.format(item.getViewModel().getRemind().toLocalDate()));
+        }
+
+        if (recurrence.isPresent()) {
+            dueDateOption.setNeedRepeatIcon(true);
         }
 
         item.getViewModel().listIdProperty().addListener((_, _, val) -> {
@@ -74,14 +93,16 @@ public class Options extends FlowPane {
                 updateDueDate(val);
             }
         });
+
+        item.getViewModel().remindProperty().addListener((_, _, val) -> {
+            remindOption.setName(DateUtils.format(val.toLocalDate()));
+        });
     }
 
     private void updateDueDate(LocalDate date) {
         dueDateOption.setName(DateUtils.format(date));
         if (date.equals(LocalDate.now())) {
-            dueDateOption.setIcon(Icon.SUN);
-        } else if (date.equals(LocalDate.now().plusDays(1))) {
-            dueDateOption.setIcon(Icon.DATE_RANGE);
+            dueDateOption.setIcon(Icon.TODAY);
         } else {
             dueDateOption.setIcon(Icon.CALENDAR_MONTH);
         }
@@ -116,6 +137,7 @@ public class Options extends FlowPane {
             act.set(getChildren().indexOf(optional.get()));
             getChildren().add(act.get(), option);
         } else getChildren().add(option);
+
         updateBullets();
     }
 

@@ -14,7 +14,7 @@ import javafx.scene.text.TextFlow;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- *         Create on 27/10/2024
+ * Create on 27/10/2024
  */
 public class Header extends GridPane {
 

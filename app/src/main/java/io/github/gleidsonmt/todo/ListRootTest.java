@@ -28,9 +28,9 @@ import javafx.stage.Stage;
  * Description:
  *
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- *         Created On: Mar 25, 2026
- * 
- *         Version History: Initial version
+ * Created On: Mar 25, 2026
+ * <p>
+ * Version History: Initial version
  */
 public class ListRootTest extends Application {
 
@@ -81,7 +81,6 @@ public class ListRootTest extends Application {
         // TaskItem taskItem = new TaskItem(model);
 
         btnPopulate.setOnAction(e -> {
-            System.out.println("list view model" + listViewModel);
             listRoot.updateContainer(listViewModel);
         });
 

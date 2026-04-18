@@ -95,17 +95,15 @@ jlink {
     }
     jpackage {
 
-//        imageOptions = [
-//                '--icon', 'logo_256.ico'
-//        ]
-
+        imageOptions = [
+                '--icon', 'logo_128.ico'
+        ]
         installerType = 'exe'
         appVersion = version
         installerOptions = [
                 '--description', "A todo made in JavaFx UI Toolkit.",
                 '--copyright', 'Copyright © 2026 GLEIDSON NEVES DA SILVEIRA'
-//                , '--icon', 'logo_256.ico'
-
+                , '--icon', 'logo_128.ico'
         ]
 
         addExtraDependencies("javafx")

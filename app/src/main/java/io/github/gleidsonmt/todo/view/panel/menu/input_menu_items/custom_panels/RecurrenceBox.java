@@ -1,11 +1,11 @@
-package io.github.gleidsonmt.todo.view.panel.menu.input_menu_items;
+package io.github.gleidsonmt.todo.view.panel.menu.input_menu_items.custom_panels;
 
 import io.github.gleidsonmt.todo.model.recurrence.Daily;
 import io.github.gleidsonmt.todo.model.recurrence.Recurrence;
 import io.github.gleidsonmt.todo.model.recurrence.RecurrenceType;
 import io.github.gleidsonmt.todo.model.recurrence.Weekly;
-import io.github.gleidsonmt.todo.view.panel.menu.custom.Monthly;
-import io.github.gleidsonmt.todo.view.panel.menu.custom.Yearly;
+import io.github.gleidsonmt.todo.model.recurrence.Monthly;
+import io.github.gleidsonmt.todo.model.recurrence.Yearly;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.IntegerBinding;
 import javafx.event.ActionEvent;
@@ -15,9 +15,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
 import javafx.util.StringConverter;
-import org.jetbrains.annotations.NotNull;
 
 /**
  *

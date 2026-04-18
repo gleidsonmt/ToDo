@@ -12,7 +12,7 @@ import javafx.scene.image.Image;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- *         Create on 16/10/2024
+ * Create on 16/10/2024
  */
 @SuppressWarnings("unused")
 public class User extends Entity {

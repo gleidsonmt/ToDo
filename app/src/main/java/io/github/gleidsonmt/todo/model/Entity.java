@@ -2,7 +2,7 @@ package io.github.gleidsonmt.todo.model;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- *         Create on 02/03/2024
+ * Create on 02/03/2024
  */
 public class Entity extends Model {
 

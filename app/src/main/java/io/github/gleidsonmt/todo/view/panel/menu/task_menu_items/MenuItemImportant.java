@@ -10,9 +10,9 @@ import javafx.event.EventHandler;
  * Description:
  *
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- *         Created On: Mar 06, 2026
- * 
- *         Version History: Initial version
+ * Created On: Mar 06, 2026
+ * <p>
+ * Version History: Initial version
  */
 public class MenuItemImportant extends TaskMenuItemBase {
 
@@ -28,9 +28,6 @@ public class MenuItemImportant extends TaskMenuItemBase {
 
     @Override
     protected EventHandler<ActionEvent> createEvent(TaskViewModel item) {
-        return _ -> {
-            item.setImportant(!item.isImportant());
-            item.update();
-        };
+        return _ -> item.setImportant(!item.isImportant());
     }
 }

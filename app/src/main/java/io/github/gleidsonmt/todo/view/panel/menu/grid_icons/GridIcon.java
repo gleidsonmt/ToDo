@@ -1,4 +1,4 @@
-package io.github.gleidsonmt.todo.view.panel.menu.custom;
+package io.github.gleidsonmt.todo.view.panel.menu.grid_icons;
 
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -32,6 +32,7 @@ public class GridIcon extends GridPane {
         rectangle.setArcWidth(2);
         return rectangle;
     }
+
     protected Rectangle createBullet() {
         Rectangle rectangle = createDefault();
         rectangle.setWidth(2);

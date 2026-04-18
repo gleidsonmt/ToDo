@@ -1,21 +1,13 @@
 package io.github.gleidsonmt.todo.view.panel.items;
 
-import java.time.LocalDate;
-
-import io.github.gleidsonmt.todo.view.panel.events.TaskChangeEvent;
-import javafx.beans.property.*;
-import org.jetbrains.annotations.ApiStatus.Experimental;
-
-import io.github.gleidsonmt.todo.model.List;
-import io.github.gleidsonmt.todo.model.ListType;
-import io.github.gleidsonmt.todo.view.nav.SideNavNew;
 import io.github.gleidsonmt.todo.view.panel.FavoriteButton;
-import io.github.gleidsonmt.todo.view.panel.ListRootNew;
 import io.github.gleidsonmt.todo.view.panel.actions.CompleteAction;
 import io.github.gleidsonmt.todo.view.panel.actions.ImportantAction;
+import io.github.gleidsonmt.todo.view.panel.events.TaskChangeEvent;
 import io.github.gleidsonmt.todo.view.panel.menu.TaskItemContextMenu;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
+import javafx.beans.property.*;
 import javafx.geometry.VPos;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -23,14 +15,18 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import org.jetbrains.annotations.ApiStatus.Experimental;
+import org.jspecify.annotations.NonNull;
+
+import java.time.LocalDate;
 
 /**
- * Description: UI componentt. Represents a task in the panel.
+ * Description: UI component. Represents a task in the panel.
  *
  * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
- *         Created On: Feb 26, 2026
- * 
- *         Version History: Initial version
+ * Created On: Feb 26, 2026
+ * <p>
+ * Version History: Initial version
  */
 public class TaskItem extends GridToggle {
 
@@ -53,7 +49,7 @@ public class TaskItem extends GridToggle {
     private final TaskViewModel viewModel;
     private final ListViewModel listViewModel;
 
-    public TaskItem(TaskViewModel viewModel, ListViewModel listViewModel) {
+    public TaskItem(@NonNull TaskViewModel viewModel, ListViewModel listViewModel) {
         this.viewModel = viewModel;
         this.listViewModel = listViewModel;
         this.setId(String.valueOf(viewModel.getId()));
@@ -71,13 +67,26 @@ public class TaskItem extends GridToggle {
         needDetails.bindBidirectional(options.hasProperty());
 
         init();
-        setActions();
         bind();
+        setActions();
         registerListeners();
 
-        this.addEventFilter(MouseEvent.MOUSE_RELEASED, e -> {
-            setSelected(true);
-        });
+        this.addEventFilter(MouseEvent.MOUSE_RELEASED, _ -> setSelected(true));
+    }
+
+    private void init() {
+
+        this.circleIcon.getStyleClass().add("check-circle");
+        this.getStyleClass().add("task-item");
+        this.getChildren().addAll(circleIcon, text, favorite);
+        this.setPrefWidth(Double.MAX_VALUE);
+        this.setHgap(5);
+
+        if (needDetails.get()) {
+            detailsLayout();
+        } else {
+            minLayout();
+        }
     }
 
     private void bind() {
@@ -105,6 +114,7 @@ public class TaskItem extends GridToggle {
             } else {
                 this.text.getStyleClass().remove("strike");
             }
+            this.getViewModel().update();
             this.fireEvent(new TaskChangeEvent(TaskChangeEvent.COMPLETE, this.getViewModel()));
         });
 
@@ -118,12 +128,19 @@ public class TaskItem extends GridToggle {
             }
         });
 
+        this.favoriteProperty().addListener((_, _, _) -> {
+            this.getViewModel().update();
+            this.fireEvent(new TaskChangeEvent(TaskChangeEvent.FAVORITE_CHANGED, this.getViewModel()));
+        });
 
-        this.favoriteProperty().addListener((_, _, _) -> this.fireEvent(new TaskChangeEvent(TaskChangeEvent.FAVORITE_CHANGED, this.getViewModel())));
-        this.myDay.addListener((_, _, _) -> this.fireEvent(new TaskChangeEvent(TaskChangeEvent.MY_DAY_CHANGED, this.getViewModel())));
+        this.myDay.addListener((_, _, _) -> {
+            this.getViewModel().update();
+            this.fireEvent(new TaskChangeEvent(TaskChangeEvent.MY_DAY_CHANGED, this.getViewModel()));
+        });
 
-        this.viewModel.listIdProperty().addListener((_,old,val) -> {
+        this.viewModel.listIdProperty().addListener((_, old, val) -> {
             if (old.longValue() != val.longValue()) {
+                this.getViewModel().update();
                 this.fireEvent(new TaskChangeEvent(TaskChangeEvent.MOVED, viewModel, old.longValue(), val.longValue()));
             }
         });
@@ -133,28 +150,7 @@ public class TaskItem extends GridToggle {
         return getScene() != null;
     }
 
-    private SideNavNew getNav() {
-        return (SideNavNew) getScene().lookup("#drawer");
-    }
 
-    private ListRootNew getListRoot() {
-        return (ListRootNew) getScene().lookup("#list-root");
-    }
-
-    private void init() {
-
-        this.circleIcon.getStyleClass().add("check-circle");
-        this.getStyleClass().add("task-item");
-        this.getChildren().addAll(circleIcon, text, favorite);
-        this.setPrefWidth(Double.MAX_VALUE);
-        this.setHgap(5);
-
-        if (needDetails.get()) {
-            detailsLayout();
-        } else {
-            minLayout();
-        }
-    }
 
     public void minLayout() {
         this.getChildren().remove(options);
@@ -201,20 +197,12 @@ public class TaskItem extends GridToggle {
         return this.favorite.selectedProperty();
     }
 
-    public StringProperty nameProperty() {
-        return this.text.textProperty();
-    }
-
     public BooleanProperty completedProperty() {
         return this.circleIcon.selectedProperty();
     }
 
     public boolean isMyDay() {
         return this.myDay.get();
-    }
-
-    public LocalDate getDueDate() {
-        return this.dueDate.get();
     }
 
     public long getListId() {
@@ -241,11 +229,9 @@ public class TaskItem extends GridToggle {
 
     @Override
     public String toString() {
-        StringBuilder build = new StringBuilder();
-        build.append("TaskItem[");
-        build.append("{id=").append(viewModel.getId()).append(", ");
-        build.append("name=").append(viewModel.getName()).append(", ");
-        build.append("}]");
-        return build.toString();
+        return "TaskItem[" +
+               "{id=" + viewModel.getId() + ", " +
+               "name=" + viewModel.getName() + ", " +
+               "}]";
     }
 }
