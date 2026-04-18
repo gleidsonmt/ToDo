@@ -1,4 +1,4 @@
-package io.github.gleidsonmt.todo.view.panel.menu.input_menu_items;
+package io.github.gleidsonmt.todo.view.panel.menu.input_menu_items.custom_panels;
 
 import com.dlsc.gemsfx.TimePicker;
 import javafx.scene.control.Separator;
