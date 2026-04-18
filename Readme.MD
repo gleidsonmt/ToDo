@@ -13,9 +13,9 @@
 
 # 📑 Overview
 
-This is a part of my personal studies, it focus on design system learning, using a classical to do application. After looking at these examples how to do online I decide to made my own version with javafx inspired by them. <br>
+This is a part of my personal studies. It focuses on design system learning, using a classical to do application. After looking at these examples of how to do online, I decide to made my own version with javafx inspired by them. <br>
 
-One of my favorite tools is a Microsoft ToDo app, that's the reason they look a like, this clone focus on learning. <br>
+One of my favorite tools is a Microsoft ToDo app, that's the reason they look a like. This clone focuses on learning. <br>
 
 To be more specific, I really focus on learning MVVM, listeners, generics, inheritance, reusable code, at some point I just notice that my code is more behavior than create things, I literaly get lost using much listeners, suffer to understand concurrency, but that's the journey.
 
