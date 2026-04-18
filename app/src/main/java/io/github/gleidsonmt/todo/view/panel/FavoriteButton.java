@@ -6,12 +6,8 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.ToggleButton;
 
 /**
- * Description:
- *
  * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
- *         Created On: Feb 26, 2026
- * 
- *         Version History: Initial version
+ * Created On: Feb 26, 2026
  */
 public class FavoriteButton extends ToggleButton {
 
@@ -22,7 +18,7 @@ public class FavoriteButton extends ToggleButton {
         this.getStyleClass().add("btn-favorite");
         setGraphic(new SVGIcon(Icon.STAR));
         //
-        this.selectedProperty().addListener((observable, oldValue, newValue) -> {
+        this.selectedProperty().addListener((_, _, newValue) -> {
             if (newValue) {
                 setGraphic(new SVGIcon(Icon.STAR_FILLED));
             } else {
