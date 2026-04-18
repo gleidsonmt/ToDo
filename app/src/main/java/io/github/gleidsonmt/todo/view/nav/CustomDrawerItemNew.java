@@ -63,6 +63,7 @@ public class CustomDrawerItemNew extends ToggleButton {
     public CustomDrawerItemNew(ListViewModel viewModel) {
         this.viewModel = viewModel;
         this.icon = new SimpleObjectProperty<>();
+
         if (viewModel.isFixed()) {
             this.icon.set(new SVGIcon(Icon.valueOf(viewModel.getIconName().toUpperCase())));
         } else if (viewModel.getIconName() != null && !viewModel.getIconName().isEmpty()) {
@@ -79,7 +80,7 @@ public class CustomDrawerItemNew extends ToggleButton {
         setActions();
     }
 
-    @Deprecated
+    @Deprecated(forRemoval = true)
     public void updateNotifications() {
         ListPresenter presenter = (ListPresenter) Global.get(List.class);
     }

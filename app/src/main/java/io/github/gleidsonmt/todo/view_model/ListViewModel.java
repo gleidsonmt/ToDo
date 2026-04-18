@@ -61,20 +61,7 @@ public class ListViewModel extends ViewModel {
 
         this.iconName = new SimpleStringProperty(list.getIconName());
 
-//        System.out.println("list.getIconName() = " + list.getIconName());
-//        if (list.isFixed()) {
-//            this.iconName.set(list.getIconName());
-//            this.icon.set(new SVGIcon(Icon.CHECK_LIST));
-//        } else if (list.getIconName() != null && list.getIconName().isEmpty()) {
-//            this.iconName.set(list.getIconName());
-//            this.icon.set(new ImageView(Assets.getIconNew(list.getIconName() + ".png")));
-//        } else {
-//            this.icon.set(new ImageView(Assets.getIconNew("check-list.png")));
-//        }
-
         presenter = (ListPresenter) Global.get(List.class);
-        // sizePresenter = (SizePresenter) Global.get(Size.class);
-
         init();
     }
 

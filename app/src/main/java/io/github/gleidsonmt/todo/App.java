@@ -73,8 +73,8 @@ public class App extends Application {
 
 
 //        Tools.showUp(scene);
-//        Tools.analyzeNodes(scene);
-//        Tools.listenCss(scene);
+        Tools.analyzeNodes(scene);
+        Tools.listenCss(scene);
 
     }
     public static void main(String[] args) {
