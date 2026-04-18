@@ -9,11 +9,9 @@ import io.github.gleidsonmt.todo.model.Model;
 
 /**
  * Description: The base class for dao action models.
- * 
+ *
  * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
- *         Created On: Feb 22, 2026
- * 
- *         Version History: Initial version
+ * Created On: Feb 22, 2026
  */
 @ApiStatus.Internal
 public interface Dao<T extends Model> {

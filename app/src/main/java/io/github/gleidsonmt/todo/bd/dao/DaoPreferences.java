@@ -9,7 +9,7 @@ import io.github.gleidsonmt.todo.model.Preferences;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- *         Create on 01/11/2024
+ * Create on 01/11/2024
  */
 public final class DaoPreferences extends AbstractDao<Preferences> {
 
