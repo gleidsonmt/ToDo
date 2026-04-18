@@ -1,8 +1,9 @@
-running myu app as a service on windows
-https://nssm.cc
+[//]: # (running myu app as a service on windows)
 
+[//]: # (https://nssm.cc)
 
+## Bugs 
 
-Bugs --
+## Fatures
 
-1. Adicionar ao meu dia aciona option de tarefa no task item.
+1. Up the project.

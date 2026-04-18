@@ -11,9 +11,9 @@ import javafx.scene.input.KeyCodeCombination;
  * Description:
  *
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- *         Created On: Mar 16, 2026
- * 
- *         Version History: Initial version
+ * Created On: Mar 16, 2026
+ * <p>
+ * Version History: Initial version
  */
 public class MenuItemReanameList extends MenuItem {
 

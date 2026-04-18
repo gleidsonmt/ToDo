@@ -29,9 +29,9 @@ import javafx.scene.layout.VBox;
  * Description:
  *
  * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
- *         Created On: Feb 24, 2026
- * 
- *         Version History: Initial version
+ * Created On: Feb 24, 2026
+ * <p>
+ * Version History: Initial version
  */
 public class FormLogin extends VBox implements Form<User> {
 

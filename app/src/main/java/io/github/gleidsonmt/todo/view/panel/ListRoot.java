@@ -18,13 +18,12 @@ import javafx.scene.layout.VBox;
  * Description:
  *
  * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
- *         Created On: Feb 26, 2026
- * 
- *         Version History: Initial version
+ * Created On: Feb 26, 2026
+ * <p>
+ * Version History: Initial version
  */
 public class ListRoot extends VBox {
 
-    private ListContainer container;
     private final EmptyContainer emptyContainer;
     private final ObservableList<ToDoTask> data;
 
@@ -42,74 +41,13 @@ public class ListRoot extends VBox {
         this.actualList.addListener((observable, oldValue, newValue) -> {
             this.getChildren().clear();
             // layout.setRight(null);
-            updateContainer(newValue);
+//            updateContainer(newValue);
         });
         //
         VBox.setVgrow(emptyContainer, Priority.ALWAYS);
     }
 
-    /**
-     * Update the container/node type based of the type of the list.
-     *
-     * @param list The list of tasks to view in the container.
-     */
-    private void updateContainer(List list) {
-        // switch (list.getType()) {
-        // case IMPORTANT -> container = new SingleListContainer(list, data);
-        // case DEFAULT, DAILY, TASKS -> container = new
-        // DoubleListContainer(list, data);
-        // case COMPLETED, ALL -> container = new MultipleListContainer(list,
-        // data);
-        // default -> throw new IllegalArgumentException("Unexpected value: " +
-        // list.getType());
-        // }
 
-        // VBox.setVgrow(container, Priority.ALWAYS);
-
-        // if (container instanceof MultipleListContainer multipleListContainer)
-        // {
-        // multipleListContainer.hasChildProperty().addListener((observable,
-        // oldValue, newValue) -> {
-        // getChildren().setAll(!newValue ? emptyContainer : container);
-        // });
-        // this.getChildren().setAll(multipleListContainer.hasChildProperty().get()
-        // ? container : emptyContainer);
-        // } else {
-        // addListenerSize(list.getItems());
-        // }
-
-        // container.load();
-
-        // Repo<Dao<User>>, User> repo = Repository.<User>of();
-        // repo.store(list);
-    }
-
-    /**
-     * This listener is responsible to show a message indicating the list is
-     * empty.
-     * if the list is empty show a message/image indicating the list is empty.
-     * if the list is not empty show the items.
-     *
-     * @param items The items of the list.
-     */
-    private void addListenerSize(ObservableList<? extends Model> items) {
-        size.unbind();
-        size.bind(Bindings.size(items));
-
-        size.addListener((observable, oldValue, newValue) -> {
-            getChildren().setAll(newValue.intValue() == 0 ? emptyContainer : container);
-        });
-
-        this.getChildren().setAll(!items.isEmpty() ? container : emptyContainer);
-    }
-
-    public ObjectProperty<List> actualListProperty() {
-        return actualList;
-    }
-
-    public List getActuaList() {
-        return this.actualList.get();
-    }
 
     public ObservableList<ToDoTask> getData() {
         return this.data;

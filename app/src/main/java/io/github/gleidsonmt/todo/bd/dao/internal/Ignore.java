@@ -8,9 +8,9 @@ import java.lang.annotation.RetentionPolicy;
  * the database.
  *
  * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
- *         Created On: Feb 22, 2026
- * 
- *         Version History: Initial version
+ * Created On: Feb 22, 2026
+ * <p>
+ * Version History: Initial version
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Ignore {

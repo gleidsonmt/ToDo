@@ -2,6 +2,7 @@ package io.github.gleidsonmt.todo.view.nav;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
+import io.github.gleidsonmt.todo.model.List;
 import io.github.gleidsonmt.todo.utils.I18n;
 import io.github.gleidsonmt.todo.utils.StringUtils;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
@@ -16,9 +17,9 @@ import javafx.scene.layout.Priority;
  * Description:
  *
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- *         Created On: Mar 21, 2026
- * 
- *         Version History: Initial version
+ * Created On: Mar 21, 2026
+ * <p>
+ * Version History: Initial version
  */
 public class Footer extends GridPane {
 
@@ -49,12 +50,12 @@ public class Footer extends GridPane {
      * When this component is clicked, this method is triggered to add a new
      * list.
      * This list will be titled as Untitled 1.
-     * The name will depends if the list are in the lists or not.
+     * The name will depends on if the list are in the lists or not.
      * If there's no list untitled, add.
      * If there's on or more untitled lists, increment
      * ex. if a lists has a list called Untitled 1, the next list to add has to
      * be Untitled 2.
-     * 
+     *
      * @param lists
      */
     private void createNewList() {
@@ -70,14 +71,17 @@ public class Footer extends GridPane {
                 .reduce(0, (a, b) -> Integer.max(a, b));
 
         ListViewModel model;
+        var name = "";
 
         if (actualVal == 0) {
             // if there's no patttern added to lists create
-            model = new ListViewModel("Untitled 1");
+            name = "Untitled 1";
         } else {
             // if there's a list update the increment
-            model = new ListViewModel("Untitled " + (actualVal + 1));
+            name = "Untitled " + (actualVal + 1);
         }
+
+        model = new ListViewModel(new List(0, name, false, 0, null));
 
         nav.add(model.save());
     }

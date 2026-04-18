@@ -13,9 +13,9 @@ import javafx.scene.control.SeparatorMenuItem;
  * Description:
  *
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- *         Created On: Mar 16, 2026
- * 
- *         Version History: Initial version
+ * Created On: Mar 16, 2026
+ * <p>
+ * Version History: Initial version
  */
 public class ListContextMenu extends ContextMenu {
 

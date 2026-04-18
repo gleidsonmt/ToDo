@@ -1,11 +1,14 @@
 package io.github.gleidsonmt.todo.view.nav;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Optional;
 
 import io.github.gleidsonmt.todo.global.Global;
 import io.github.gleidsonmt.todo.global.ListPresenter;
 import io.github.gleidsonmt.todo.model.List;
 import io.github.gleidsonmt.todo.model.ListType;
+import io.github.gleidsonmt.todo.utils.Assets;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import javafx.beans.property.ObjectProperty;
@@ -14,6 +17,7 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.scene.control.Separator;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
@@ -131,6 +135,7 @@ public class SideNavNew extends VBox {
     }
 
     private ListViewModel createItem(ListViewModel viewModel) {
+
         CustomDrawerItemNew drawerItem = new CustomDrawerItemNew(viewModel);
         drawerItem.numberOfNotificationsProperty().bind(viewModel.numberOfTasksProperty());
 
@@ -138,8 +143,11 @@ public class SideNavNew extends VBox {
 
         if (viewModel.isFixed()) {
             smartListsContainer.getChildren().add(drawerItem);
+//            drawerItem.graphicProperty().bind(viewModel.iconProperty());
+
         } else {
             container.getChildren().add(drawerItem);
+//            drawerItem.graphicProperty().bind(viewModel.iconProperty());
         }
 
         // drawerItem.setEditable(!viewModel.isFixed());

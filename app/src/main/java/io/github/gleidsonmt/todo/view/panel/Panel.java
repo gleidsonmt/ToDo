@@ -8,17 +8,16 @@ import io.github.gleidsonmt.glad.controls.button.Button;
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import io.github.gleidsonmt.todo.model.List;
+import io.github.gleidsonmt.todo.utils.Assets;
 import io.github.gleidsonmt.todo.view.panel.input.InputField;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.BoxBlur;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
@@ -37,9 +36,9 @@ import javafx.scene.text.Text;
  * the place where you see the tasks and update them.
  *
  * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
- *         Created On: Feb 26, 2026
- * 
- *         Version History: Initial version
+ * Created On: Feb 26, 2026
+ * <p>
+ * Version History: Initial version
  */
 @SuppressWarnings("unused")
 public class Panel extends Container {
@@ -48,7 +47,7 @@ public class Panel extends Container {
     private final VBox container;
     private final GridPane bar;
 
-    private InputField inputContainer;
+    private final InputField inputContainer;
 
     private final int borderLimitBottom = 110;
 
@@ -62,7 +61,8 @@ public class Panel extends Container {
     // The actual list in the editor at the momment.
     private final ObjectProperty<List> actualList = new SimpleObjectProperty<>();
 
-    private final SVGIcon svgIcon = new SVGIcon();
+    private final StringProperty iconName = new SimpleStringProperty();
+    private ObjectProperty<Node> icon = new SimpleObjectProperty<>(new SVGIcon());
 
     public Panel() {
         this.scroll = createScroll();
@@ -72,6 +72,18 @@ public class Panel extends Container {
 
         configLayout();
         bind();
+
+//        icon.addListener((_,_,val ) -> {
+//            if (val != null) {
+//                if (!bar.getChildren().contains(val))
+                    bar.getChildren().add(icon.get());
+//            } else {
+//                bar.getChildren().remove(val);
+//            }
+//        });
+
+
+
     }
 
     private void bind() {
@@ -80,7 +92,7 @@ public class Panel extends Container {
 
     /**
      * Set the content of the panel as a new ListRoot component.
-     * 
+     *
      * @param listRoot The list root.
      */
     public void setContent(ListRootNew listRoot) {
@@ -184,10 +196,35 @@ public class Panel extends Container {
 
         title.setStyle("-fx-text-fill: -fx-accent; ");
 
-        grid.add(svgIcon, 0, 0);
+//        iconName.addListener((observable, oldValue, newValue) -> {
+//            if (newValue != null) {
+//                svgIcon = new ImageView(Assets.getIconNew(newValue + ".png", 32));
+//                if (!getChildren().contains(svgIcon)) {
+//                    grid.add(svgIcon, 0, 0);
+//                }
+//                GridPane.setColumnIndex(title, 1);
+//            } else {
+//                getChildren().remove(svgIcon);
+//                GridPane.setColumnIndex(title, 0);
+//            }
+//        });
+
+        iconName.addListener((observable, oldValue, newValue) -> {
+            System.out.println("iconName = " + iconName);
+            if (newValue != null) {
+                grid.getChildren().removeLast();
+                var icon = new ImageView(Assets.getIconNew(newValue + ".png", 32));
+                grid.getChildren().add(icon);
+                GridPane.setColumnIndex(icon, 0);
+                GridPane.setColumnIndex(title, 1);
+            } else {
+                GridPane.setColumnIndex(title, 0);
+            }
+        });
+
         grid.add(title, 1, 0);
 
-        svgIcon.setScale(1.8);
+//        svgIcon.setScale(1.8);
 
         grid.setMaxHeight(15);
         StackPane.setMargin(grid, new Insets(0, 20, 20, 20));
@@ -214,8 +251,8 @@ public class Panel extends Container {
         return actualList;
     }
 
-    public ObjectProperty<Icon> titleIconProperty() {
-        return this.svgIcon.iconProperty();
+    public StringProperty titleIconNameProperty() {
+        return this.iconName;
     }
 
 }

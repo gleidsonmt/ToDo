@@ -6,13 +6,13 @@ import javafx.concurrent.Task;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- *         Create on 17/01/2025
+ * Create on 17/01/2025
  */
 public interface ListDao<T extends Model> {
 
     /**
      * A javafx task that fills out a list.
-     * 
+     *
      * @param items The list to fill.
      * @return The list of items filled.
      */
@@ -20,7 +20,7 @@ public interface ListDao<T extends Model> {
 
     /**
      * If a fetching list action needs some options and conditions.
-     * 
+     *
      * @param items     The list to fill.
      * @param condition The condition to get the list.
      * @return The list filled.
@@ -29,7 +29,7 @@ public interface ListDao<T extends Model> {
 
     /**
      * Fetch an item using another.
-     * 
+     *
      * @param model The model with the foreign key.
      * @return The model.
      */

@@ -14,9 +14,9 @@ import javafx.scene.layout.Priority;
  * Description:
  *
  * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
- *         Created On: Feb 22, 2026
- * 
- *         Version History: Initial version
+ * Created On: Feb 22, 2026
+ * <p>
+ * Version History: Initial version
  */
 public class HomeLayout extends Container implements Layout {
     // Data Access Object -> User
@@ -79,7 +79,7 @@ public class HomeLayout extends Container implements Layout {
 
     /**
      * Verify if user is logged.
-     * 
+     *
      * @return if the user is logged.
      */
     private boolean isLogged() {

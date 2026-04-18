@@ -9,14 +9,14 @@ import io.github.gleidsonmt.todo.model.List;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- *         Create on 04/03/2024
+ * Create on 04/03/2024
  */
 public final class DaoList extends AbstractDao<List> {
 
     @Override
     public List createElement(ResultSet result) throws SQLException {
         return new List(result.getInt("list.id"), result.getString("list.name"), result.getBoolean("list.fixed"),
-                result.getInt("size"));
+                result.getInt("size"), result.getString("list.icon_name"));
     }
 
     @Override
@@ -25,6 +25,7 @@ public final class DaoList extends AbstractDao<List> {
             prepare.setString(1, model.getName());
             prepare.setBoolean(2, model.isFixed());
             prepare.setInt(3, model.getSize());
+            prepare.setString(4, model.getIconName());
             // prepare.setBoolean(2, model.isFixed());
         } catch (SQLException e) {
             throw new RuntimeException(e);

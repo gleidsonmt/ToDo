@@ -3,10 +3,12 @@ package io.github.gleidsonmt.todo.view.panel.menu.input_menu_items;
 import io.github.gleidsonmt.glad.base.Root;
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
-import io.github.gleidsonmt.todo.model.recurrence.Daily;
-import io.github.gleidsonmt.todo.model.recurrence.Recurrence;
-import io.github.gleidsonmt.todo.model.recurrence.Weekly;
-import io.github.gleidsonmt.todo.view.panel.menu.custom.*;
+import io.github.gleidsonmt.todo.model.List;
+import io.github.gleidsonmt.todo.model.recurrence.*;
+import io.github.gleidsonmt.todo.view.panel.menu.grid_icons.*;
+import io.github.gleidsonmt.todo.view.panel.menu.input_menu_items.custom_panels.RecurrenceBox;
+import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.control.MenuItem;
@@ -23,7 +25,7 @@ public class RepeatContextMenu extends CustomContextMenu<Recurrence> {
         MenuItem menuItemWeekDays = new MenuItem("WeekDays", new GridIconWeekDays());
         MenuItem menuItemWeekly = new MenuItem("Weekly", new GridIconWeekly());
         MenuItem menuItemMonthly = new MenuItem("Monthly", new GridIconMonthly());
-        MenuItem menuItemYearly = new MenuItem("Yearly", new YearlyIcon());
+        MenuItem menuItemYearly = new MenuItem("Yearly", new GridIconYearly());
         MenuItem menuItemCustom = new MenuItem("Custom", new SVGIcon(Icon.EVENT_REPEAT));
 
         MenuItem menuItemDelete = new MenuItem("Never repeat", new SVGIcon(Icon.DELETE));
@@ -54,12 +56,10 @@ public class RepeatContextMenu extends CustomContextMenu<Recurrence> {
             container.getOnCancel().handle(new ActionEvent());
         });
 
-        container.setOnCancel(e -> {
-            ((Root) getOwnerWindow().getScene().getRoot())
-                    .flow().hide();
-        });
+        container.setOnCancel(_ -> ((Root) getOwnerWindow().getScene().getRoot())
+                .flow().hide());
 
-        menuItemCustom.setOnAction(e -> {
+        menuItemCustom.setOnAction(_ -> {
             ((Root) getOwnerWindow().getScene().getRoot())
                     .flow()
                     .width(300)

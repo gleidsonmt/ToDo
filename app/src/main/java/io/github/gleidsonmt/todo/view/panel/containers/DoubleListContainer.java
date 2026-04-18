@@ -6,6 +6,7 @@ import io.github.gleidsonmt.todo.model.ListType;
 import io.github.gleidsonmt.todo.model.ToDoTask;
 import io.github.gleidsonmt.todo.view.nav.SideNavNew;
 import io.github.gleidsonmt.todo.view.panel.events.TaskChangeEvent;
+import io.github.gleidsonmt.todo.view.panel.items.TaskItem;
 import io.github.gleidsonmt.todo.view.panel.sections.AnimatedSection;
 import io.github.gleidsonmt.todo.view.panel.sections.SingleSection;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
@@ -23,9 +24,9 @@ import java.util.logging.Logger;
  * Description:
  *
  * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
- *         Created On: Feb 26, 2026
- * 
- *         Version History: Initial version
+ * Created On: Feb 26, 2026
+ * <p>
+ * Version History: Initial version
  */
 public class DoubleListContainer extends ListContainer {
 
@@ -43,7 +44,6 @@ public class DoubleListContainer extends ListContainer {
 
         this.getChildren().add(0, sectionIncomplete);
         this.getChildren().add(1, sectionCompleted);
-
     }
 
     @Override
@@ -78,44 +78,9 @@ public class DoubleListContainer extends ListContainer {
 
         this.setSpacing(this.sizeProperty().get() == 0 ? 0 : 10);
 
-        this.addEventHandler(TaskChangeEvent.COMPLETE, e -> {
+        this.addEventFilter(TaskChangeEvent.MOVED, (e) -> {
             logger.info(() -> "[TaskChangeEvent, Type = " + e.getEventType() + " ] -> " + e.getModel() + "");
-
-            SideNavNew drawer = (SideNavNew) getScene().lookup("#drawer");
-            ListViewModel parent = drawer.get(e.getModel().getListId());
-
-            if (list.isFixed()) {
-                list.addNumberOfTasks((!e.getModel().isCompleted() ? 1 : -1));
-                list.update();
-            } else {
-                if (e.getModel().isMyDay()) {
-                    ListViewModel daily = drawer.get(ListType.DAILY);
-                    daily.addNumberOfTasks((!e.getModel().isCompleted() ? 1 : -1));
-                    daily.update();
-                }
-
-                if (e.getModel().isImportant()) {
-                    ListViewModel imp = drawer.get(ListType.IMPORTANT);
-                    imp.addNumberOfTasks((!e.getModel().isCompleted() ? 1 : -1));
-                    imp.update();
-                }
-            }
-            parent.addNumberOfTasks((!e.getModel().isCompleted() ? 1 : -1));
-            parent.update();
-        });
-
-        this.addEventHandler(TaskChangeEvent.MOVED, (e) -> {
             if (e.getActual() != e.getPrevious()) {
-                SideNavNew drawer = (SideNavNew) getScene().lookup("#drawer");
-                ListViewModel previous = drawer.get(e.getPrevious());
-                ListViewModel source = drawer.get(e.getActual());
-
-                previous.addNumberOfTasks(-1);
-                source.addNumberOfTasks(1);
-
-                source.update();
-                previous.update();
-
                 if (!list.isFixed() || list.getId() == 0) {
                     data.remove(e.getModel());
                 }
@@ -123,70 +88,42 @@ public class DoubleListContainer extends ListContainer {
         });
 
         this.addEventHandler(TaskChangeEvent.MY_DAY_CHANGED, e -> {
-
             logger.info(() -> "[TaskChangeEvent, Type = " + e.getEventType() + " ] -> " + e.getModel() + "");
-            SideNavNew drawer = (SideNavNew) getScene().lookup("#drawer");
-            ListViewModel dailyList = drawer.get(ListType.DAILY);
-
-            if (list.getType() != ListType.DAILY) {
-                if (!e.getModel().isCompleted()) {
-                    dailyList.addNumberOfTasks(e.getModel().isMyDay() ? 1 : -1);
-                    dailyList.update();
-                }
-
-            } else {
+            if (getList().getType() == ListType.DAILY) {
                 if (!e.getModel().isMyDay()) {
                     data.remove(e.getModel());
                 }
-                    dailyList.addNumberOfTasks((!e.getModel().isCompleted() && e.getModel().isMyDay() ? 1 : -1));
-                    dailyList.update();
-
             }
         });
 
-        this.addEventHandler(TaskChangeEvent.FAVORITE_CHANGED, e -> {
+        this.addEventFilter(TaskChangeEvent.FAVORITE_CHANGED, e -> {
             logger.info(() -> "[TaskChangeEvent, Type = " + e.getEventType() + " ] -> " + e.getModel() + "");
-
-            SideNavNew drawer = (SideNavNew) getScene().lookup("#drawer");
-            ListViewModel impList = drawer.get(ListType.IMPORTANT);
-
-            if (list.getType() != ListType.IMPORTANT) {
-                if (!e.getModel().isCompleted()) {
-                    impList.addNumberOfTasks(e.getModel().isImportant() ? 1 : -1);
-                    impList.update();
-                }
-            } else {
+            if (getList().getType() == ListType.IMPORTANT) {
                 if (!e.getModel().isImportant()) {
                     data.remove(e.getModel());
                 }
-
-                impList.addNumberOfTasks((!e.getModel().isCompleted() && e.getModel().isMyDay() ? 1 : -1));
-                impList.update();
             }
-//            if (list.getType() != ListType.IMPORTANT) {
-//                SideNavNew drawer = (SideNavNew) getScene().lookup("#drawer");
-//                ListViewModel destination = drawer.get(ListType.IMPORTANT);
-//                destination.addNumberOfTasks((!e.getModel().isCompleted() && !e.getModel().isCompleted() ? 1 : -1));
-//            } else {
-//                data.remove(e.getModel());
-//            }
         });
 
-        this.addEventHandler(TaskChangeEvent.DELETE_TASK, e -> {
-            SideNavNew drawer = (SideNavNew) getScene().lookup("#drawer");
-            ListViewModel destination = drawer.get(e.getModel().getListId());
-            destination.addNumberOfTasks(-1);
-            data.remove(e.getModel());
+        this.addEventFilter(TaskChangeEvent.DELETE_TASK, e -> {
+            logger.info(() -> "[TaskChangeEvent, Type = " + e.getEventType() + " ] -> " + e.getModel());
+            getData().remove(e.getModel());
+            // chamar confirmacao
+            e.getModel().delete();
+        });
+
+        this.addEventFilter(TaskChangeEvent.ADD, e -> {
+            logger.info(() -> "[TaskChangeEvent, Type = " + e.getEventType() + " ] -> " + e.getModel());
+            getData().add(e.getModel());
         });
 
         data.addListener((ListChangeListener<TaskViewModel>) c -> {
             if (c.next()) {
-
                 if (c.wasUpdated()) {
                     c.getList().subList(c.getFrom(), c.getTo()).forEach(viewModel -> {
                         if (viewModel == null)
                             return;
-                        viewModel.update();
+//                        viewModel.update();
 //                        list.update();
                     });
                 }
