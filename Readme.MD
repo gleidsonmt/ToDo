@@ -1,4 +1,4 @@
-<h1 align="center">JavaFx TO DO Clone</h1>
+<h1 style="text-align: center">JavaFx TO DO Clone</h1>
 
 [//]: # "[![News](https://img.shields.io/badge/News-1-brightgreen.svg?style=for-the-badge)](http://gleidson28.blogspot.com)"
 [//]: # "![Version](https://img.shields.io/badge/Version-0.3.22-green.svg?style=for-the-badge)"
@@ -15,21 +15,21 @@
 
 This is a part of my personal studies, it focus on design system learning, using a classical to do application. After looking at these examples how to do online I decide to made my own version with javafx inspired by them. <br>
 
-One of my favorite tools is a Microsoft ToDo app, that's the reason they look a like, I don't have any intention to create a competive tool, it's focus on learning. <br>
+One of my favorite tools is a Microsoft ToDo app, that's the reason they look a like, this clone focus on learning. <br>
 
-To be more specific I really focus on learn MVVM, listeners, generics , inheritance, reusable code, at some point I just notice that my code is more behavior than create things, I literaly get lost using much listeners, suffer to understand concurrency, but that's the journey.
+To be more specific, I really focus on learning MVVM, listeners, generics, inheritance, reusable code, at some point I just notice that my code is more behavior than create things, I literaly get lost using much listeners, suffer to understand concurrency, but that's the journey.
 
 # 💻 Environment
 
-#### The project is build using common programming tools like Java, Gradle, JavaFx, MySQL<br>
+#### The project is built using common programming tools like Java, Gradle, JavaFx, MySQL<br>
 
 ---
 
 The version of the tools can make trouble, then that's the versions I've been using<br>
 Java 23.0.2 (it's the java on my computer) <br>
-Gradle 8.14 (wrapper version) <br>
-MySQL 8.14.4 <br>
-All dependecies are managed by gradle just make sure you're using complatible versions.
+Gradle 8.14.4 (wrapper version) <br>
+MySQL 8.0 <br>
+Gradle manages All dependencies, only make sure you're using compatible versions.
 
 ## 🪚 Tools <br>
 
@@ -43,9 +43,9 @@ Glad, That's one I like to make custom controls, and other things I create for D
 ### Icons
 
 #### [Google Icons](https://fonts.google.com/icons)
+#### [Noto Icons](https://fonts.google.com/noto/specimen/Noto+Color+Emoji)
 
 ### Images
-
 #### [Empyt List Image ](https://dribbble.com/shots/3104572-Checklist-Graphic)
 
 # 🚀 Building
