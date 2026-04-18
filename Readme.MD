@@ -13,29 +13,30 @@
 
 # 📑 Overview
 
-This is a part of my personal studies, it focus on design system learning, using a classical to do application. After looking at these examples how to do online I decide to made my own version with javafx. <br>
+This is a part of my personal studies, it focus on design system learning, using a classical to do application. After looking at these examples how to do online I decide to made my own version with javafx inspired by them. <br>
 
-One of my favorite tools is a Microsoft ToDo app, that's the reason they look a like, I don't have any intention to create a competive tool, it's only to learn. <br>
+One of my favorite tools is a Microsoft ToDo app, that's the reason they look a like, I don't have any intention to create a competive tool, it's focus on learning. <br>
 
 To be more specific I really focus on learn MVVM, listeners, generics , inheritance, reusable code, at some point I just notice that my code is more behavior than create things, I literaly get lost using much listeners, suffer to understand concurrency, but that's the journey.
 
 # 💻 Environment
 
-#### The project is build using Java, Gradle, JavaFx, MySQL<br>
+#### The project is build using common programming tools like Java, Gradle, JavaFx, MySQL<br>
 
 ---
 
 The version of the tools can make trouble, then that's the versions I've been using<br>
 Java 23.0.2 (it's the java on my computer) <br>
-Gradle 8.3 (wrapper version) <br>
-MySQL 8.0.14 <br>
+Gradle 8.14 (wrapper version) <br>
+MySQL 8.14.4 <br>
+All dependecies are managed by gradle just make sure you're using complatible versions.
 
 ## 🪚 Tools <br>
 
 [HeidiSql](https://www.heidisql.com/download.php?download=installer), to manage my database. <br>
 ScenicView, to see an interact with the project when it's running.<br>
 CSSFX, to update css in real time. <br>
-Glad, That's have custom controls, and other things I create for DashboardFx project. I decide to use as a project apart.
+Glad, That's one I like to make custom controls, and other things I create for DashboardFx project. I decide to use as a project apart.
 
 # 🎨 Design Resources
 
