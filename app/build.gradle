@@ -46,6 +46,7 @@ dependencies {
     implementation libs.guava
 
     implementation project(":glad")
+    implementation 'io.github.classgraph:classgraph:4.8.165'
 
     implementation("org.yaml:snakeyaml:2.5")
 
