@@ -4,6 +4,6 @@
 
 ## Bugs 
 
-## Fatures
+## Features
 
-1. Up the project.
+1. ~~Up the project.~~
