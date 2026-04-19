@@ -54,8 +54,8 @@ public class DatabaseConnection {
             properties.load(file);
 
             if (properties.isEmpty()) {
-                Logger.getGlobal().severe("Loading database properties... [FAILED]");
-                return;
+                logger.severe("[DatabaseConnection, method=Constructor]  ERROR => Loading database properties");
+                throw new RuntimeException("Loading database properties");
             }
 
             this.driver = properties.get("driver").toString();
@@ -70,10 +70,10 @@ public class DatabaseConnection {
             this.url = "jdbc:mysql://" + host + "/" + database
                        + "?useUnicode=true&allowPublicKeyRetrieval=true&useSSL=false&characterEncoding=utf8&serverTimezone="
                        + timeZone;
-            Logger.getGlobal().config("Loading database properties... [OK]");
+            logger.config("[ OK ] => [DatabaseConnection, method=Constructor] SUCCESSFULLY => Loaded database properties. ");
         } catch (IOException e) {
             msg = e.getMessage();
-            Logger.getGlobal().severe("Loading database properties... [FAILED]");
+            logger.severe("[DatabaseConnection, method=Constructor]  ERROR => Some of the properties are missing or invalid.");
             throw new RuntimeException(e);
         }
     }
@@ -93,7 +93,19 @@ public class DatabaseConnection {
                            driver=com.mysql.cj.jdbc.Driver
                            port=""" + port + "\n host=" + host + "\n database=" + database + "\n user=" + user
                   + "\n password=" + password + "\n\n" + e;
-            logger.log(Level.SEVERE, msg);
+            logger.severe(
+                    "[ OK ] => [DatabaseConnection, method=connect] ERROR => Some of the properties are missing or invalid.\n" +
+                    "DatabaseConnection {\n" +
+                    "   driver = '" + driver + "',\n" +
+                    "   host = '" + host + "',\n" +
+                    "   port = '" + port + "',\n" +
+                    "   user = '" + user + "',\n" +
+                    "   password = '" + user + "',\n" +
+                    "}\n"
+            );
+
+//                        \{ + name +}
+
         }
         return false;
     }

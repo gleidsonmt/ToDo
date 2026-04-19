@@ -31,7 +31,6 @@ public class App extends Application {
 
     private final LogFormatter formatter = new LogFormatter();
     private DatabaseConnection connection;
-
     @Override
     public void init() throws Exception {
         ConsoleHandler handler = new ConsoleHandler();
@@ -42,6 +41,11 @@ public class App extends Application {
         Logger.getGlobal().setUseParentHandlers(false);
         Logger.getGlobal().setLevel(Level.CONFIG);
         handler.setLevel(Level.CONFIG);
+
+        // UI Notifications info
+        // Config Database Configuration
+        // JavaFx Actions
+        // Database Actions
     }
 
     @Override
@@ -54,7 +58,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         this.connection = new DatabaseConnection();
-        Logger.getGlobal().config(() -> "Established connection... [" + (connection.connect() ? "OK" : "FAILED") + "]");
+        Logger.getGlobal().finest(() -> "Established connection... [" + (connection.connect() ? "OK" : "FAILED") + "]");
 
         UserPresenter presenter = (UserPresenter) Global.get(User.class);
         Optional<User> user = presenter.getLogged();
@@ -70,7 +74,6 @@ public class App extends Application {
         stage.setMinHeight(600);
         stage.setScene(scene);
         stage.show();
-
 
 //        Tools.showUp(scene);
         Tools.analyzeNodes(scene);

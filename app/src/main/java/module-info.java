@@ -8,9 +8,7 @@ module io.github.gleidsonmt.todo {
     requires java.sql;
 
     // Requer o módulo das anotações apenas durante a compilação
-    requires static org.jetbrains.annotations;
-
-    // Tools (only runtime) remove when not needed
+    requires static transitive org.jetbrains.annotations;
 
     requires io.github.gleidsonmt.glad;
 

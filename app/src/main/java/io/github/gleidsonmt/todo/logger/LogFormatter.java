@@ -1,5 +1,7 @@
 package io.github.gleidsonmt.todo.logger;
 
+import org.jspecify.annotations.NonNull;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Formatter;
@@ -40,6 +42,8 @@ public class LogFormatter extends Formatter {
             builder.append(ANSI_CYAN);
         } else if (record.getLevel().equals(Level.SEVERE)) {
             builder.append(ANSI_RED);
+        } else if (record.getLevel().equals(Level.FINEST)) {
+            builder.append(ANSI_BLUE);
         } else {
             throw new AssertionError();
         }
@@ -60,7 +64,7 @@ public class LogFormatter extends Formatter {
         }
 
         builder.append(ANSI_RESET);
-        System.out.print("\033[H\033[2J");
+        System.out.print("\033[H\033[2J\n");
         System.out.flush();
         // builder.append("\033[H\033[2J");
 //        builder.append("\n");
@@ -115,6 +119,7 @@ public class LogFormatter extends Formatter {
         return builder.toString();
     }
 
+    @Deprecated(since = "1.0", forRemoval = true)
     public void clearConsole() {
         try {
             String operatingSystem = System.getProperty("os.name"); // Check the
@@ -136,7 +141,7 @@ public class LogFormatter extends Formatter {
         }
     }
 
-    private String calcDate(long millisecs) {
+    private @NonNull String calcDate(long millisecs) {
         SimpleDateFormat date_format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date resultdate = new Date(millisecs);
         return date_format.format(resultdate);
