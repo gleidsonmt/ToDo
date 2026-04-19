@@ -18,8 +18,6 @@ import javafx.scene.layout.VBox;
 import java.util.Optional;
 
 /**
- * Description:
- *
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
  * Created On: Mar 20, 2026
  */
