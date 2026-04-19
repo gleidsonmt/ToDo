@@ -2,7 +2,7 @@ package io.github.gleidsonmt.todo.view.panel.menu.list_menu_items;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
-import io.github.gleidsonmt.todo.view.nav.CustomDrawerItemNew;
+import io.github.gleidsonmt.todo.view.nav.DrawerItem;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
@@ -17,7 +17,7 @@ import javafx.scene.input.KeyCodeCombination;
  */
 public class MenuItemReanameList extends MenuItem {
 
-    public MenuItemReanameList(CustomDrawerItemNew item) {
+    public MenuItemReanameList(DrawerItem item) {
         this.getStyleClass().addAll("menu-item-rename");
         this.setGraphic(new SVGIcon(Icon.EDIT_NOTE));
         this.setAccelerator(new KeyCodeCombination(KeyCode.F2));

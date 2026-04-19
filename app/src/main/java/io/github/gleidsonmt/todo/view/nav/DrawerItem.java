@@ -2,19 +2,11 @@ package io.github.gleidsonmt.todo.view.nav;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
-import io.github.gleidsonmt.todo.global.Global;
-import io.github.gleidsonmt.todo.global.ListPresenter;
-import io.github.gleidsonmt.todo.model.List;
 import io.github.gleidsonmt.todo.utils.Assets;
 import io.github.gleidsonmt.todo.view.panel.menu.ListContextMenu;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.*;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Side;
@@ -27,11 +19,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.*;
 
 /**
  * Description:
@@ -39,28 +27,22 @@ import javafx.scene.layout.RowConstraints;
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
  * Created On: Mar 20, 2026
  */
-public class CustomDrawerItemNew extends ToggleButton {
-
+public class DrawerItem extends ToggleButton {
+    // Testing
+    private final ObjectProperty<Node> icon;
     // Components
-    private Pane iconSelector = new Pane();
-    private ObjectProperty<Node> icon;
-    private TextField title = new TextField();
-    private Label number = new Label();
-
+    private final Pane iconSelector = new Pane();
+    private final TextField title = new TextField();
+    private final Label number = new Label();
+    // Containers
     private final GridPane container = new GridPane();
-
-    private final BooleanProperty fixed = new SimpleBooleanProperty(false);
+    // Properties
     private final IntegerProperty numberOfNotifications = new SimpleIntegerProperty(0);
     private final BooleanProperty editable = new SimpleBooleanProperty(false);
+    // Models
+    private final ListViewModel viewModel;
 
-    // test
-    private ListViewModel viewModel;
-
-    // public CustomDrawerItemNew(ListViewModel viewModel) {
-    // this(viewModel, false);
-    // }
-
-    public CustomDrawerItemNew(ListViewModel viewModel) {
+    public DrawerItem(ListViewModel viewModel) {
         this.viewModel = viewModel;
         this.icon = new SimpleObjectProperty<>();
 
@@ -70,7 +52,6 @@ public class CustomDrawerItemNew extends ToggleButton {
             this.icon.set(new ImageView(Assets.getIconNew(viewModel.getIconName() + ".png")));
         } else this.icon.set(new SVGIcon(Icon.CHECK_LIST));
 
-        this.fixed.set(viewModel.isFixed());
         this.setGraphic(container);
 
         init();
@@ -78,11 +59,6 @@ public class CustomDrawerItemNew extends ToggleButton {
         bind();
         registerListeners();
         setActions();
-    }
-
-    @Deprecated(forRemoval = true)
-    public void updateNotifications() {
-        ListPresenter presenter = (ListPresenter) Global.get(List.class);
     }
 
     public ListViewModel getViewModel() {
@@ -141,16 +117,14 @@ public class CustomDrawerItemNew extends ToggleButton {
     }
 
     private void bind() {
-//        svgIcon.iconProperty().bind(viewModel.iconProperty());
         number.textProperty().bind(Bindings.convert(this.numberOfNotifications));
         number.visibleProperty().bind(this.numberOfNotifications.greaterThan(0));
         this.title.textProperty().bindBidirectional(viewModel.nameProperty());
         title.disableProperty().bind(this.editable.not());
-
     }
 
     private void registerListeners() {
-        this.number.textProperty().addListener((observable, oldValue, newValue) -> {
+        this.number.textProperty().addListener((_, _, newValue) -> {
             if (newValue != null) {
                 number.setMaxWidth(number.getText().length() * 25);
             }
@@ -169,7 +143,7 @@ public class CustomDrawerItemNew extends ToggleButton {
         this.focusWithinProperty().addListener((_, _, newVal) -> {
             if (!newVal && !this.getViewModel().isFixed()) {
                 viewModel.setName(this.title.getText());
-                this.setEditable(newVal);
+                this.setEditable(false);
                 this.getViewModel().update();
             }
         });
@@ -177,7 +151,7 @@ public class CustomDrawerItemNew extends ToggleButton {
 
     private void setActions() {
         var context = new ListContextMenu(this);
-        this.setOnContextMenuRequested(e -> {
+        this.setOnContextMenuRequested(_ -> {
 
             var drawer = (SideNav) getScene().lookup("#drawer");
             drawer.select(viewModel);

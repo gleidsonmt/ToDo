@@ -24,7 +24,7 @@ import java.util.Optional;
 public class SideNav extends VBox {
 
     private ToggleGroup group;
-    private ObjectProperty<CustomDrawerItemNew> selected;
+    private ObjectProperty<DrawerItem> selected;
     private VBox smartListsContainer;
     private VBox container;
 
@@ -47,7 +47,7 @@ public class SideNav extends VBox {
     }
 
     private void bind() {
-        selected.bind(group.selectedToggleProperty().map(e -> (CustomDrawerItemNew) e));
+        selected.bind(group.selectedToggleProperty().map(e -> (DrawerItem) e));
         VBox.setVgrow(container, Priority.ALWAYS);
     }
 
@@ -66,10 +66,10 @@ public class SideNav extends VBox {
     }
 
     public void select(ListViewModel list) {
-        Optional<CustomDrawerItemNew> optional = group.getToggles().stream().map(e -> (CustomDrawerItemNew) e)
+        Optional<DrawerItem> optional = group.getToggles().stream().map(e -> (DrawerItem) e)
                 .filter(el -> el.getViewModel().getId() == list.getId()).findFirst();
 
-        optional.ifPresent(customDrawerItemNew -> group.selectToggle(customDrawerItemNew));
+        optional.ifPresent(drawerItem -> group.selectToggle(drawerItem));
     }
 
     public void selectFirst() {
@@ -77,33 +77,33 @@ public class SideNav extends VBox {
     }
 
     @Deprecated
-    public CustomDrawerItemNew get(TaskViewModel model) {
-        Optional<CustomDrawerItemNew> optional = group.getToggles().stream().map(e -> (CustomDrawerItemNew) e)
+    public DrawerItem get(TaskViewModel model) {
+        Optional<DrawerItem> optional = group.getToggles().stream().map(e -> (DrawerItem) e)
                 .filter(el -> el.getViewModel().getId() == model.getListId()).findFirst();
 
         return optional.orElse(null);
     }
 
     public ListViewModel get(long id) {
-        Optional<ListViewModel> optional = group.getToggles().stream().map(e -> (CustomDrawerItemNew) e)
-                .map(CustomDrawerItemNew::getViewModel).filter(viewModel -> viewModel.getId() == id).findFirst();
+        Optional<ListViewModel> optional = group.getToggles().stream().map(e -> (DrawerItem) e)
+                .map(DrawerItem::getViewModel).filter(viewModel -> viewModel.getId() == id).findFirst();
 
         return optional.orElse(null);
     }
 
     public ListViewModel get(ListType type) {
-        Optional<ListViewModel> optional = group.getToggles().stream().map(e -> (CustomDrawerItemNew) e)
-                .filter(el -> el.getViewModel().getType() == type).map(CustomDrawerItemNew::getViewModel).findFirst();
+        Optional<ListViewModel> optional = group.getToggles().stream().map(e -> (DrawerItem) e)
+                .filter(el -> el.getViewModel().getType() == type).map(DrawerItem::getViewModel).findFirst();
 
         return optional.orElse(null);
     }
 
     public java.util.List<ListViewModel> getModels() {
-        return group.getToggles().stream().filter(el -> el instanceof CustomDrawerItemNew)
-                .map(e -> (CustomDrawerItemNew) e).map(CustomDrawerItemNew::getViewModel).toList();
+        return group.getToggles().stream().filter(el -> el instanceof DrawerItem)
+                .map(e -> (DrawerItem) e).map(DrawerItem::getViewModel).toList();
     }
 
-    public CustomDrawerItemNew getSelected() {
+    public DrawerItem getSelected() {
         return itemSelectedProperty().get();
     }
 
@@ -117,7 +117,7 @@ public class SideNav extends VBox {
     }
 
     public void remove(ListViewModel model) {
-        Optional<CustomDrawerItemNew> optional = group.getToggles().stream().map(e -> (CustomDrawerItemNew) e)
+        Optional<DrawerItem> optional = group.getToggles().stream().map(e -> (DrawerItem) e)
                 .filter(el -> el.getViewModel().getId() == model.getId()).findFirst();
 
         optional.ifPresent(e -> container.getChildren().remove(e));
@@ -130,7 +130,7 @@ public class SideNav extends VBox {
 
     private ListViewModel createItem(ListViewModel viewModel) {
 
-        CustomDrawerItemNew drawerItem = new CustomDrawerItemNew(viewModel);
+        DrawerItem drawerItem = new DrawerItem(viewModel);
         drawerItem.numberOfNotificationsProperty().bind(viewModel.numberOfTasksProperty());
 
         group.getToggles().add(drawerItem);
@@ -153,7 +153,7 @@ public class SideNav extends VBox {
         return viewModel;
     }
 
-    public ObjectProperty<CustomDrawerItemNew> itemSelectedProperty() {
+    public ObjectProperty<DrawerItem> itemSelectedProperty() {
         return selected;
     }
 }
