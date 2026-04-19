@@ -4,11 +4,10 @@ import io.github.gleidsonmt.glad.base.Layout;
 import io.github.gleidsonmt.glad.base.responsive.Container;
 import io.github.gleidsonmt.todo.model.ListType;
 import io.github.gleidsonmt.todo.model.User;
-import io.github.gleidsonmt.todo.view.nav.SideNavNew;
+import io.github.gleidsonmt.todo.view.nav.SideNav;
 import io.github.gleidsonmt.todo.view.panel.ListRootNew;
 import io.github.gleidsonmt.todo.view.panel.Panel;
 import io.github.gleidsonmt.todo.view.panel.events.TaskChangeEvent;
-import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import javafx.beans.binding.Bindings;
 import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
@@ -31,7 +30,7 @@ public class MainView extends Container implements Layout {
     // the content layout
     private final BorderPane body;
     // the navigation (drawwer or sidenav)
-    private final SideNavNew sideNav;
+    private final SideNav sideNav;
 
     private final Panel panel;
     private final ListRootNew listRoot;
@@ -39,7 +38,7 @@ public class MainView extends Container implements Layout {
     public MainView(User user) {
         this.user = user;
         this.panel = new Panel();
-        this.sideNav = new SideNavNew();
+        this.sideNav = new SideNav();
         this.body = new BorderPane();
         this.listRoot = new ListRootNew();
         getChildren().add(body);

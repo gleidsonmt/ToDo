@@ -3,7 +3,7 @@ package io.github.gleidsonmt.todo.view.panel.menu.list_menu_items;
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import io.github.gleidsonmt.todo.view.nav.CustomDrawerItemNew;
-import io.github.gleidsonmt.todo.view.nav.SideNavNew;
+import io.github.gleidsonmt.todo.view.nav.SideNav;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
@@ -28,7 +28,7 @@ public class MenuItemDeleteList extends MenuItem {
 
         this.setOnAction(e -> {
             item.getViewModel().delete();
-            SideNavNew nav = (SideNavNew) item.getScene().lookup("#drawer");
+            SideNav nav = (SideNav) item.getScene().lookup("#drawer");
             nav.remove(item.getViewModel());
         });
     }

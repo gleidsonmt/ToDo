@@ -60,7 +60,7 @@ public class Footer extends GridPane {
      */
     private void createNewList() {
 
-        var nav = (SideNavNew) getScene().lookup("#drawer");
+        var nav = (SideNav) getScene().lookup("#drawer");
 
         var actualVal = nav.getModels().stream()
                 // filter with the patter name (Untitled [some number])

@@ -179,7 +179,7 @@ public class CustomDrawerItemNew extends ToggleButton {
         var context = new ListContextMenu(this);
         this.setOnContextMenuRequested(e -> {
 
-            var drawer = (SideNavNew) getScene().lookup("#drawer");
+            var drawer = (SideNav) getScene().lookup("#drawer");
             drawer.select(viewModel);
 
             context.show(this, Side.TOP, 10, 0);
