@@ -47,14 +47,14 @@ public class DatabaseConnection {
             InputStream file = App.class.getResourceAsStream("properties/db.properties");
 
             if (file == null) {
-                Logger.getGlobal().severe("Loading database properties... [FAILED]");
-                return;
+                logger.severe("[ ERROR ] => [DatabaseConnection, method=Constructor] => File properties/db.properties not found.");
+                throw new RuntimeException("File properties/db.properties not found.");
             }
 
             properties.load(file);
 
             if (properties.isEmpty()) {
-                logger.severe("[DatabaseConnection, method=Constructor]  ERROR => Loading database properties");
+                logger.severe("[ ERROR ] => [DatabaseConnection, method=Constructor] => File propertis/db.properties is empty.");
                 throw new RuntimeException("Loading database properties");
             }
 
@@ -70,10 +70,9 @@ public class DatabaseConnection {
             this.url = "jdbc:mysql://" + host + "/" + database
                        + "?useUnicode=true&allowPublicKeyRetrieval=true&useSSL=false&characterEncoding=utf8&serverTimezone="
                        + timeZone;
-            logger.config("[ OK ] => [DatabaseConnection, method=Constructor] SUCCESSFULLY => Loaded database properties. ");
+            logger.config("[ OK ] => [DatabaseConnection, method=Constructor] => Loaded database properties. ");
         } catch (IOException e) {
-            msg = e.getMessage();
-            logger.severe("[DatabaseConnection, method=Constructor]  ERROR => Some of the properties are missing or invalid.");
+            logger.severe("[ ERROR ] => [DatabaseConnection, method=Constructor] => Some of the properties are missing or invalid.");
             throw new RuntimeException(e);
         }
     }
@@ -83,18 +82,15 @@ public class DatabaseConnection {
             System.setProperty("jdbc.Driver", driver);
             Class.forName(driver).getDeclaredConstructor().newInstance();
             connection = DriverManager.getConnection(url, user, password);
-            return connection != null;
+            if (connection != null) {
+                logger.config("[ SUCCEED ] => [DatabaseConnection, method=connect] => Created connection with database. ");
+                return true;
+            }
+            return false;
         } catch (IllegalAccessException | InstantiationException | ClassNotFoundException | SQLException
                  | InvocationTargetException | NoSuchMethodException e) {
-            msg = """
-                          Error creating database class.
-                          Some configurations can be wrong.
-                          
-                           driver=com.mysql.cj.jdbc.Driver
-                           port=""" + port + "\n host=" + host + "\n database=" + database + "\n user=" + user
-                  + "\n password=" + password + "\n\n" + e;
             logger.severe(
-                    "[ OK ] => [DatabaseConnection, method=connect] ERROR => Some of the properties are missing or invalid.\n" +
+                    "[ ERROR ] => [DatabaseConnection, method=connect] => Some of the properties are missing or invalid.\n" +
                     "DatabaseConnection {\n" +
                     "   driver = '" + driver + "',\n" +
                     "   host = '" + host + "',\n" +
@@ -103,15 +99,16 @@ public class DatabaseConnection {
                     "   password = '" + user + "',\n" +
                     "}\n"
             );
-
-//                        \{ + name +}
-
         }
         return false;
     }
 
     public boolean hasConnection() {
-        return connection != null;
+        try {
+            return !connection.isClosed();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -127,8 +124,7 @@ public class DatabaseConnection {
             this.result = this.statement.executeQuery(SQL);
             return this.result;
         } catch (SQLException ex) {
-            msg = "Error on executing query. `" + SQL + "`" + ex;
-            logger.log(Level.SEVERE, msg);
+            logger.severe("[ ERROR ] => [DatabaseConnection, method=executeQuery] => Error on executing query. " + SQL);
         }
         return null;
     }
@@ -171,8 +167,11 @@ public class DatabaseConnection {
         return status;
     }
 
-    @ApiStatus.Experimental
-    public void close() {
+    /**
+     * Close the database connection.
+     * @return If the connection was closed successfully.
+     */
+    public boolean close() {
         try {
             if ((this.getResult() != null) && (this.statement != null)) {
                 this.getResult().close();
@@ -180,8 +179,11 @@ public class DatabaseConnection {
             }
             this.getConnection().close();
             connection.close();
+            logger.config("[ OK ] => [DatabaseConnection, method=close]  => Database connection has closed. ");
+            return true;
         } catch (SQLException ex) {
-            logger.log(Level.SEVERE, () -> "Error on closing database connection. " + ex);
+            logger.severe("[ ERROR ] => [DatabaseConnection, method=close]  => Error on closing database connection. ");
+            return false;
         }
     }
 
