@@ -19,21 +19,12 @@ import javafx.concurrent.Task;
  */
 public class AbstractPresenter<T extends Model> implements Presenter<T> {
 
-    @Deprecated
-    private final ObservableList<T> data;
     protected AbstractDao<T> dao;
 
     private boolean isLoaded = false;
 
     public AbstractPresenter(AbstractDao<T> dao) {
-        data = FXCollections.observableArrayList();
         this.dao = dao;
-    }
-
-    @Deprecated
-    @Override
-    public ObservableList<T> getData() {
-        return this.data;
     }
 
     @Override
@@ -41,28 +32,6 @@ public class AbstractPresenter<T extends Model> implements Presenter<T> {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getModelClass'");
     }
-
-    /**
-     * For every action after loading the tasks, they will be reflection in
-     * database (dao) actions.
-     */
-    @Deprecated
-    private final ListChangeListener<T> commitChangesInDatabase = (ListChangeListener<T>) c -> {
-        if (!isLoaded)
-            return;
-        if (c.next()) {
-            if (c.wasReplaced()) {
-                c.getAddedSubList().forEach(model -> dao.update(model));
-                return;
-            }
-            if (c.wasAdded()) {
-                c.getAddedSubList().forEach(model -> dao.store(model));
-            }
-            if (c.wasRemoved()) {
-                c.getRemoved().forEach(model -> dao.delete(model));
-            }
-        }
-    };
 
     @Override
     public Task<ObservableList<T>> fetch() {
@@ -87,7 +56,7 @@ public class AbstractPresenter<T extends Model> implements Presenter<T> {
     }
 
     public Task<ObservableList<T>> fetch(long limit, long offset, String where) {
-        return dao.fetch(data, limit, offset, where);
+        return dao.fetch(FXCollections.observableArrayList(), limit, offset, where);
     }
 
     @Override

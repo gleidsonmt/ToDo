@@ -15,13 +15,9 @@ import javafx.concurrent.Task;
  */
 public interface Presenter<T extends Model> extends Dao<T> {
 
-    @Deprecated
-    ObservableList<T> getData();
-
     Task<ObservableList<T>> fetch();
 
     Task<ObservableList<T>> fetch(ObservableList<T> items);
-
 
     Class<T> getModelClass();
 }

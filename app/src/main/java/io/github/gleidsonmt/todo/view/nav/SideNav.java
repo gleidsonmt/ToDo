@@ -211,9 +211,6 @@
 
 // }
 
-// @Deprecated
-// private void createItems(ObservableList<ToDoTask> data, User user) {
-
 // customLists = FXCollections.observableArrayList();
 // Task<ObservableList<List>> taskOf = daoList.fetch(customLists);
 
