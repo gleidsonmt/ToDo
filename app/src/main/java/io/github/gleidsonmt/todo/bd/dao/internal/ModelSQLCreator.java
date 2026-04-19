@@ -143,7 +143,7 @@ public class ModelSQLCreator<T extends Model> {
             Field[] params = clazz.getDeclaredFields();
             for (Field field : params) {
                 if (Arrays.stream(field.getDeclaredAnnotations()).noneMatch(e -> e.annotationType() == Ignore.class)) {
-                    list.add(0, camelCaseToKebabCase(field.getName()));
+                    list.addFirst(camelCaseToKebabCase(field.getName()));
                 }
             }
             recurse(list, clazz.getSuperclass());
