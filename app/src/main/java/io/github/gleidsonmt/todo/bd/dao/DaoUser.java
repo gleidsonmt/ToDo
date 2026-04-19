@@ -17,7 +17,7 @@ import io.github.gleidsonmt.todo.model.User;
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
  * Create on 04/03/2024
  */
-public class DaoUser extends AbstractDao<User> {
+public final class DaoUser extends AbstractDao<User> {
 
     @Override
     protected User createElement(@NotNull ResultSet result) throws SQLException {
