@@ -8,7 +8,7 @@ import io.github.gleidsonmt.todo.global.Presenter;
 import io.github.gleidsonmt.todo.model.List;
 import io.github.gleidsonmt.todo.model.ToDoTask;
 import io.github.gleidsonmt.todo.utils.Assets;
-import io.github.gleidsonmt.todo.view.panel.ListRootNew;
+import io.github.gleidsonmt.todo.view.panel.ListRoot;
 import io.github.gleidsonmt.todo.view.panel.Panel;
 import io.github.gleidsonmt.todo.view.panel.sections.Comparators;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
@@ -41,7 +41,7 @@ public class ListRootTest extends Application {
         ListViewModel viewModel = new ListViewModel(listPresenter.get(1).get());
 
         BorderPane root = new BorderPane();
-        ListRootNew listRoot = new ListRootNew();
+        ListRoot listRoot = new ListRoot();
         BorderPane.setMargin(listRoot, new Insets(10));
 
         Panel panel = new Panel();
@@ -58,7 +58,7 @@ public class ListRootTest extends Application {
 
     }
 
-    private Node createAside(ListRootNew listRoot, ListViewModel listViewModel) {
+    private Node createAside(ListRoot listRoot, ListViewModel listViewModel) {
         VBox container = new VBox();
         BorderPane.setMargin(container, new Insets(10));
         container.setAlignment(Pos.TOP_CENTER);

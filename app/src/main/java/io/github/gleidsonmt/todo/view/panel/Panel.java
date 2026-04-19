@@ -5,7 +5,6 @@ import java.time.format.DateTimeFormatter;
 
 import io.github.gleidsonmt.glad.base.responsive.Container;
 import io.github.gleidsonmt.glad.controls.button.Button;
-import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import io.github.gleidsonmt.todo.model.List;
 import io.github.gleidsonmt.todo.utils.Assets;
@@ -95,7 +94,7 @@ public class Panel extends Container {
      *
      * @param listRoot The list root.
      */
-    public void setContent(ListRootNew listRoot) {
+    public void setContent(ListRoot listRoot) {
         // remove and set all children for this list root
         this.container.getChildren().setAll(listRoot);
         // This ensure that if the list selected is not a fixed list you only
@@ -105,8 +104,8 @@ public class Panel extends Container {
         // inputContainer.addTasksItem(newValue.isFixed()));
     }
 
-    public ListRootNew getListRoot() {
-        return (ListRootNew) this.container.getChildren().get(0);
+    public ListRoot getListRoot() {
+        return (ListRoot) this.container.getChildren().get(0);
     }
 
     private ScrollPane createScroll() {

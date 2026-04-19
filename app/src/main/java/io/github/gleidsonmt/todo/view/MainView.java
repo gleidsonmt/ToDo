@@ -5,7 +5,7 @@ import io.github.gleidsonmt.glad.base.responsive.Container;
 import io.github.gleidsonmt.todo.model.ListType;
 import io.github.gleidsonmt.todo.model.User;
 import io.github.gleidsonmt.todo.view.nav.SideNav;
-import io.github.gleidsonmt.todo.view.panel.ListRootNew;
+import io.github.gleidsonmt.todo.view.panel.ListRoot;
 import io.github.gleidsonmt.todo.view.panel.Panel;
 import io.github.gleidsonmt.todo.view.panel.events.TaskChangeEvent;
 import javafx.beans.binding.Bindings;
@@ -33,14 +33,14 @@ public class MainView extends Container implements Layout {
     private final SideNav sideNav;
 
     private final Panel panel;
-    private final ListRootNew listRoot;
+    private final ListRoot listRoot;
 
     public MainView(User user) {
         this.user = user;
         this.panel = new Panel();
         this.sideNav = new SideNav();
         this.body = new BorderPane();
-        this.listRoot = new ListRootNew();
+        this.listRoot = new ListRoot();
         getChildren().add(body);
         init();
 

@@ -1,14 +1,12 @@
 package io.github.gleidsonmt.todo.view.panel;
 
-import io.github.gleidsonmt.todo.model.List;
-import io.github.gleidsonmt.todo.model.Model;
-import io.github.gleidsonmt.todo.model.ToDoTask;
+import io.github.gleidsonmt.todo.view.panel.containers.DoubleListContainer;
 import io.github.gleidsonmt.todo.view.panel.containers.EmptyContainer;
 import io.github.gleidsonmt.todo.view.panel.containers.ListContainer;
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.IntegerProperty;
+import io.github.gleidsonmt.todo.view.panel.items.TaskItem;
+import io.github.gleidsonmt.todo.view_model.ListViewModel;
+import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.Priority;
@@ -17,39 +15,86 @@ import javafx.scene.layout.VBox;
 /**
  * Description:
  *
- * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
- * Created On: Feb 26, 2026
+ * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
+ * Created On: Mar 23, 2026
  * <p>
  * Version History: Initial version
  */
 public class ListRoot extends VBox {
 
-    private final EmptyContainer emptyContainer;
-    private final ObservableList<ToDoTask> data;
+    private ListContainer container;
+    private EmptyContainer emptyContainer;
 
-    private final ObjectProperty<List> actualList = new SimpleObjectProperty<>();
+    private final ObjectProperty<ListViewModel> actualList = new SimpleObjectProperty<>();
 
-    private final IntegerProperty size = new SimpleIntegerProperty(0);
+    public ListRoot() {
+        init();
 
-    public ListRoot(ObservableList<ToDoTask> data) {
-        this.data = data;
-        this.emptyContainer = new EmptyContainer();
-
-        this.setId("list-root");
-        VBox.setVgrow(this, Priority.ALWAYS);
-
-        this.actualList.addListener((observable, oldValue, newValue) -> {
+        this.actualList.addListener((_, _, newValue) -> {
             this.getChildren().clear();
-            // layout.setRight(null);
-//            updateContainer(newValue);
+            updateContainer(newValue);
         });
-        //
-        VBox.setVgrow(emptyContainer, Priority.ALWAYS);
     }
 
+    private void init() {
+        this.setId("list-root");
+        this.emptyContainer = new EmptyContainer();
+        VBox.setVgrow(emptyContainer, Priority.ALWAYS);
+        VBox.setVgrow(this, Priority.ALWAYS);
+    }
 
+    /**
+     * Update the container/node type based of the type of the list.
+     *
+     * @param list The list of tasks to view in the container.
+     */
+    public void updateContainer(ListViewModel list) {
+        var query = "";
 
-    public ObservableList<ToDoTask> getData() {
-        return this.data;
+        query = switch (list.getType()) {
+            case DAILY -> "my_day = 1";
+            case IMPORTANT -> "important = 1";
+            case TASKS -> "list_id = 0";
+            default -> "list_id = " + list.getId();
+        };
+
+        container = new DoubleListContainer(list, query);
+
+        container.load();
+
+        container.sizeProperty().addListener((_, _, val) -> {
+            update(val.intValue() == 0);
+        });
+        update(container.sizeProperty().get() == 0);
+    }
+
+    /**
+     * If there's no task on the list root, so the image with a message will
+     * show.
+     *
+     * @param empty If it neeeds update the list root node.
+     */
+    private void update(boolean empty) {
+        this.getChildren().setAll(empty ? emptyContainer : container);
+    }
+
+    public ListContainer getContainer() {
+        return this.container;
+    }
+
+    public TaskItem getSelected() {
+        return this.getContainer().getSelected();
+    }
+
+    public ObjectProperty<ListViewModel> actualListProperty() {
+        return actualList;
+    }
+
+    public ListViewModel getActualList() {
+        return this.actualList.get();
+    }
+
+    public ObservableList<TaskViewModel> getData() {
+        return container.getData();
     }
 }
