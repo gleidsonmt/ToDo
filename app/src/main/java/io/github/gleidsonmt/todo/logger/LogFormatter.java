@@ -73,53 +73,6 @@ public class LogFormatter extends Formatter {
     }
 
     @Deprecated(since = "1.0", forRemoval = true)
-    public String formatOld(LogRecord record) {
-        // This example will print date/time, class, and log level in yellow,
-        // followed by the log message and it's parameters in white .
-        StringBuilder builder = new StringBuilder();
-
-        if (record.getLevel().equals(Level.WARNING)) {
-            builder.append(ANSI_YELLOW);
-        } else if (record.getLevel().equals(Level.INFO)) {
-            builder.append(ANSI_CYAN);
-        } else if (record.getLevel().equals(Level.SEVERE)) {
-            builder.append(ANSI_RED);
-        }
-
-        builder.append("[");
-        builder.append(calcDate(record.getMillis()));
-        builder.append("]");
-
-        builder.append(" [");
-        builder.append(record.getSourceClassName());
-        builder.append("]");
-
-        // builder.append(" [");
-        // builder.append(record.getLevel().getName());
-        // builder.append("]");
-
-        builder.append("\n");
-        builder.append(record.getMessage());
-        builder.append(ANSI_WHITE);
-
-        Object[] params = record.getParameters();
-
-        if (params != null) {
-            builder.append("\t");
-            for (int i = 0; i < params.length; i++) {
-                builder.append(params[i]);
-                if (i < params.length - 1)
-                    builder.append(", ");
-            }
-        }
-
-        builder.append(ANSI_RESET);
-        // builder.append("\n");
-
-        return builder.toString();
-    }
-
-    @Deprecated(since = "1.0", forRemoval = true)
     public void clearConsole() {
         try {
             String operatingSystem = System.getProperty("os.name"); // Check the
