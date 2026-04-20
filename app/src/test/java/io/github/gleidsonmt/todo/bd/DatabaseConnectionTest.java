@@ -16,57 +16,42 @@ class DatabaseConnectionTest {
 
     @Test
     void constructor() {
-        DatabaseConnection connection = new DatabaseConnection();
-        assertNotNull(connection);
+        DatabaseConnectionProto proto = DatabaseConnectionProto.INSTANCE;
+        assertNotNull(proto);
+        proto.close();
     }
 
     @Test
     void connect() {
-        DatabaseConnection connection = new DatabaseConnection();
-        assertTrue(connection.connect());
+        DatabaseConnectionProto proto = DatabaseConnectionProto.INSTANCE;
+        assertTrue(proto.connect());
+        proto.close();
     }
 
     @Test
     void hasConnection() {
-        DatabaseConnection connection = new DatabaseConnection();
-        connection.connect();
-        assertTrue(connection.hasConnection());
+        DatabaseConnectionProto proto = DatabaseConnectionProto.INSTANCE;
+        assertFalse(proto.hasConnection());
+        assertTrue(proto.connect());
+        assertTrue(proto.hasConnection());
+        proto.close();
     }
 
     @Test
     void getResult() throws SQLException {
-        DatabaseConnection connection = new DatabaseConnection();
-        connection.connect();
-        assertNotNull(connection.executeQuery("select * from list;"));
+        DatabaseConnectionProto proto = DatabaseConnectionProto.INSTANCE;
+        proto.connect();
+        assertNotNull(proto.executeQuery("select * from list;"));
+        proto.close();
     }
 
     @Test
     void executeQuery() throws SQLException {
-        DatabaseConnection connection = new DatabaseConnection();
-        connection.connect();
-        ResultSet resultSet = connection.executeQuery("select * from list;");
+        DatabaseConnectionProto proto = DatabaseConnectionProto.INSTANCE;
+        proto.connect();
+        ResultSet resultSet = proto.executeQuery("select * from list;");
+        assertNotNull(resultSet);
         assertTrue(resultSet.next());
-    }
-
-    @Test
-    void getLastID() {
-    }
-
-    @Test
-    void close() {
-    }
-
-
-
-    @Test
-    void getConnection() {
-    }
-
-    @Test
-    void getDatabase() {
-    }
-
-    @Test
-    void getErrorMessage() {
+        proto.close();
     }
 }
