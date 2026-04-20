@@ -14,33 +14,46 @@ import static org.junit.jupiter.api.Assertions.*;
 class DatabaseConnectionTest {
 
     @Test
-    void constructor_is_Working() {
-        DatabaseConnection connection = new DatabaseConnection();
-        assertNotNull(connection);
+    void is_constructor_working() {
+        DatabaseConnectionProto proto = DatabaseConnectionProto.INSTANCE;
+        assertNotNull(proto);
+        proto.close();
     }
-
+  
+  
     @Test
     void connecting_with_database() {
-        DatabaseConnection connection = new DatabaseConnection();
-        assertTrue(connection.connect());
+        DatabaseConnectionProto proto = DatabaseConnectionProto.INSTANCE;
+        assertTrue(proto.connect());
+        proto.close();
+    }
+  
+    @Test
+    void has_connection() {
+        DatabaseConnectionProto proto = DatabaseConnectionProto.INSTANCE;
+        assertFalse(proto.hasConnection());
+        assertTrue(proto.connect());
+        assertTrue(proto.hasConnection());
+        proto.close();
     }
 
+  
     @Test
     void is_query_working() throws SQLException {
-        DatabaseConnection connection = new DatabaseConnection();
-        connection.connect();
+        DatabaseConnectionProto proto = DatabaseConnectionProto.INSTANCE;
+        proto.connect();
         ResultSet resultSet = connection.executeQuery("select * from list;");
         assertTrue(resultSet.next());
-        resultSet.close();
+        proto.close();
     }
 
     @Test
-    void is_connection_closed() throws SQLException {
-        DatabaseConnection connection = new DatabaseConnection();
-        connection.connect();
-        assertTrue(connection.hasConnection());
-        assertTrue(connection.close());
-        assertFalse(connection.hasConnection());
-        assertTrue(connection.getConnection().isClosed());
+    void is_connection_closing() throws SQLException {
+        DatabaseConnectionProto proto = DatabaseConnectionProto.INSTANCE;
+        proto.connect();
+        assertTrue(proto.hasConnection());
+        assertTrue(proto.close());
+        assertFalse(proto.hasConnection());
+        assertTrue(proto.getConnection().isClosed());
     }
 }

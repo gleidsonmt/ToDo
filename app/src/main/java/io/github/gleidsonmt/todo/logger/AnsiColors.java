@@ -1,0 +1,39 @@
+package io.github.gleidsonmt.todo.logger;
+
+import org.jetbrains.annotations.Contract;
+
+/**
+ *
+ * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
+ * Created on  19/04/2026
+ */
+public enum AnsiColors {
+
+    ANSI_RESET("\u001B[0m"),
+    ANSI_BLACK("\u001B[30m"),
+    ANSI_RED("\u001B[31m"),
+    ANSI_GREEN("\u001B[32m"),
+    ANSI_YELLOW("\u001B[33m"),
+    ANSI_BLUE("\u001B[34m"),
+    ANSI_PURPLE("\u001B[35m"),
+    ANSI_CYAN("\u001B[36m"),
+    ANSI_WHITE("\u001B[37m");
+
+    private final String content;
+
+    @Contract(pure = true)
+    AnsiColors(String content) {
+        this.content = content;
+    }
+
+    @Contract(pure = true)
+    public String getContent() {
+        return content;
+    }
+
+    @Override
+    public String toString() {
+        return this.content;
+    }
+
+}
