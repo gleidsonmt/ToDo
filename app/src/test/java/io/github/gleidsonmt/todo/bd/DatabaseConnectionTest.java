@@ -17,10 +17,20 @@ class DatabaseConnectionTest {
     void is_constructor_working() {
         DatabaseConnectionProto proto = DatabaseConnectionProto.INSTANCE;
         assertNotNull(proto);
+    }
+
+    @Test
+    void verify_connection_is_working() {
+        DatabaseConnectionProto proto = DatabaseConnectionProto.INSTANCE;
+        assertNotNull(proto);
+        assertFalse(proto.hasConnection());
+        assertTrue(proto.connect());
+        assertTrue(proto.hasConnection());
         proto.close();
     }
-  
-  
+
+
+
     @Test
     void connecting_with_database() {
         DatabaseConnectionProto proto = DatabaseConnectionProto.INSTANCE;
@@ -36,13 +46,12 @@ class DatabaseConnectionTest {
         assertTrue(proto.hasConnection());
         proto.close();
     }
-
   
     @Test
     void is_query_working() throws SQLException {
         DatabaseConnectionProto proto = DatabaseConnectionProto.INSTANCE;
         proto.connect();
-        ResultSet resultSet = connection.executeQuery("select * from list;");
+        ResultSet resultSet = proto.executeQuery("select * from list;");
         assertTrue(resultSet.next());
         proto.close();
     }

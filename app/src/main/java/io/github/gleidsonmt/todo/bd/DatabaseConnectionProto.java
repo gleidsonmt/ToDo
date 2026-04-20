@@ -27,13 +27,12 @@ public enum DatabaseConnectionProto {
     private Statement statement;
     private ResultSet result;
 
-    private String driver;
-    private String user;
-    private String password;
-    private String url;
-    private String database;
-    private int port;
-    private String host;
+    private final String driver;
+    private final String user;
+    private final String password;
+    private final String url;
+    private final int port;
+    private final String host;
 
     private final Logger logger = Logger.getGlobal();
 
@@ -44,19 +43,19 @@ public enum DatabaseConnectionProto {
             InputStream file = App.class.getResourceAsStream("properties/db.properties");
 
             if (file == null) {
-                Logger.getGlobal().severe("Loading database properties... [FAILED]");
-                return;
+                logger.severe("[ ERROR ] => [DatabaseConnection, method=Constructor] => File properties/db.properties not found.");
+                throw new RuntimeException("File properties/db.properties not found.");
             }
 
             properties.load(file);
 
             if (properties.isEmpty()) {
-                logger.severe("[DatabaseConnection, method=Constructor]  ERROR => Loading database properties");
+                logger.severe("[ ERROR ] => [DatabaseConnection, method=Constructor] => File propertis/db.properties is empty.");
                 throw new RuntimeException("Loading database properties");
             }
 
             this.driver = properties.get("driver").toString();
-            database = properties.get("database").toString();
+            String database = properties.get("database").toString();
             port = Integer.parseInt(properties.get("port").toString()); // port-number
 
             host = properties.get("host") + ":" + port; // ex. localhost:3306
@@ -69,26 +68,26 @@ public enum DatabaseConnectionProto {
                        + timeZone;
             logger.config("[ OK ] => [DatabaseConnection, method=Constructor] SUCCESSFULLY => Loaded database properties. ");
         } catch (IOException e) {
-            logger.severe("[DatabaseConnection, method=Constructor]  ERROR => Some of the properties are missing or invalid.");
+            logger.severe("[ ERROR ] => [DatabaseConnection, method=Constructor]  ERROR => Some of the properties are missing or invalid.");
             throw new RuntimeException(e);
         }
     }
 
-    @Contract(pure = true)
-    public boolean hasConnection() {
-        return connection != null;
-    }
+
 
     public boolean connect() {
         try {
             System.setProperty("jdbc.Driver", driver);
             Class.forName(driver).getDeclaredConstructor().newInstance();
             connection = DriverManager.getConnection(url, user, password);
-            return connection != null;
+            if (connection != null) {
+                logger.config("[ OK ] => [DatabaseConnection, method=connect] => Created connection with database. ");
+                return true;
+            }
         } catch (IllegalAccessException | InstantiationException | ClassNotFoundException | SQLException
                  | InvocationTargetException | NoSuchMethodException e) {
             logger.severe(
-                    "[ OK ] => [DatabaseConnection, method=connect] ERROR => Some of the properties are missing or invalid.\n" +
+                    "[ ERROR ] => [DatabaseConnection, method=connect] => Some of the properties are missing or invalid.\n" +
                     "DatabaseConnection {\n" +
                     "   driver = '" + driver + "',\n" +
                     "   host = '" + host + "',\n" +
@@ -99,6 +98,15 @@ public enum DatabaseConnectionProto {
             );
         }
         return false;
+    }
+
+    @Contract(pure = true)
+    public boolean hasConnection() {
+        try {
+            return connection != null && !getConnection().isClosed();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -114,14 +122,14 @@ public enum DatabaseConnectionProto {
             this.result = this.statement.executeQuery(SQL);
             return this.result;
         } catch (SQLException ex) {
-//            msg = "Error on executing query. `" + SQL + "`" + ex;
-//            logger.log(Level.SEVERE, msg);
+            logger.severe("[ ERROR ] => [DatabaseConnection, method=executeQuery] => Error on executing query. " + SQL);
         }
         return null;
     }
 
     @ApiStatus.Experimental
-    public void close() {
+    public boolean close() {
+        if (!hasConnection()) return true;
         try {
             if ((this.getResult() != null) && (this.statement != null)) {
                 this.getResult().close();
@@ -129,8 +137,11 @@ public enum DatabaseConnectionProto {
             }
             this.getConnection().close();
             connection.close();
+            logger.config("[ OK ] => [DatabaseConnection, method=close]  => Database connection has closed. ");
+            return true;
         } catch (SQLException ex) {
-            logger.log(Level.SEVERE, () -> "Error on closing database connection. " + ex);
+            logger.severe("[ ERROR ] => [DatabaseConnection, method=close]  => Error on closing database connection. ");
+            return false;
         }
     }
 
