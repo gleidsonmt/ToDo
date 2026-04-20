@@ -105,7 +105,7 @@ public class DatabaseConnection {
 
     public boolean hasConnection() {
         try {
-            return !connection.isClosed();
+            return connection != null &&!connection.isClosed();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
