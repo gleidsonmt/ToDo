@@ -20,7 +20,7 @@ import javafx.scene.control.SeparatorMenuItem;
 public class ListContextMenu extends ContextMenu {
 
     // private MenuItemDeleteList menuItemDeleteList;
-    private DrawerItem item;
+    private final DrawerItem item;
 
     public ListContextMenu(DrawerItem item) {
         this.item = item;

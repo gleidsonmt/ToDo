@@ -4,6 +4,7 @@ import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import io.github.gleidsonmt.todo.view.nav.SideNav;
 import io.github.gleidsonmt.todo.view.panel.Panel;
+import javafx.beans.property.StringProperty;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -69,10 +70,6 @@ public class InputField extends GridPane {
             ((Panel) getParent()).getListRoot().getActualList().getId();
 
             options.needsTaskItem(((Panel) getParent()).getListRoot().getActualList().isFixed());
-            var nav = (SideNav) getScene().lookup("#drawer");
-
-            System.out.println("getScene() = " + nav.get(0));
-            System.out.println("nav.getCustomLists() = " + nav.getCustomLists());
 
             if (!newValue.isEmpty()) {
                 if (!getChildren().contains(options))
@@ -143,5 +140,7 @@ public class InputField extends GridPane {
         return field;
     }
 
-
+    public TextField getTextInput() {
+        return textInput;
+    }
 }
