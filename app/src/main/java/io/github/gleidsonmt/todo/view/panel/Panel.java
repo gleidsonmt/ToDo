@@ -9,6 +9,7 @@ import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import io.github.gleidsonmt.todo.model.List;
 import io.github.gleidsonmt.todo.utils.Assets;
 import io.github.gleidsonmt.todo.view.panel.input.InputField;
+import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -71,6 +72,9 @@ public class Panel extends Container {
 
         configLayout();
 
+
+
+
 //        icon.addListener((_,_,val ) -> {
 //            if (val != null) {
 //                if (!bar.getChildren().contains(val))
@@ -92,6 +96,11 @@ public class Panel extends Container {
     public void setContent(ListRoot listRoot) {
         // remove and set all children for this list root
         this.container.getChildren().setAll(listRoot);
+
+        listRoot.actualListProperty().addListener((observable, oldValue, newValue) -> {
+            this.inputContainer.getTextInput().clear();
+        });
+
         // This ensure that if the list selected is not a fixed list you only
         // add the task a custom list not the tasks, tasks is a fixed list with
         // no id.

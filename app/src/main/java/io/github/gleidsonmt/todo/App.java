@@ -63,7 +63,6 @@ public class App extends Application {
 
         UserPresenter presenter = (UserPresenter) Global.get(User.class);
         Optional<User> user = presenter.getLogged();
-
         Root root = new Root(user.isPresent() ? new MainView(user.get()) : new HomeLayout());
         Scene scene = new Scene(root, 1200, 728);
         ThemeProvider.install(scene, Css.ALL, Font.INSTAGRAM);
