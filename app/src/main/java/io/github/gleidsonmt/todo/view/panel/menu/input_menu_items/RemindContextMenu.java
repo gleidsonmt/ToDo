@@ -3,6 +3,7 @@ package io.github.gleidsonmt.todo.view.panel.menu.input_menu_items;
 import io.github.gleidsonmt.glad.base.Root;
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.todo.model.List;
+import io.github.gleidsonmt.todo.view.panel.input.InputFieldItem;
 import io.github.gleidsonmt.todo.view.panel.menu.input_menu_items.custom_panels.CalendarTimePane;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -21,8 +22,8 @@ import java.time.LocalTime;
  */
 public class RemindContextMenu extends CustomContextMenu<LocalDateTime> {
 
-    public RemindContextMenu() {
-
+    public RemindContextMenu(InputFieldItem<LocalDateTime> target) {
+        super(target);
         GridMenuItem menuItemToday = new GridMenuItem("Later Today", Icon.SHARE_ETA, DateUtils.format(LocalTime.of(19, 0)));
         GridMenuItem menuItemTomorrow = new GridMenuItem("Tomorrow", Icon.SHARE_ETA, DateUtils.format(LocalDate.now().plusDays(1), LocalTime.of(9, 0)));
         GridMenuItem menuItemNextWeek = new GridMenuItem("Next Week", Icon.SHARE_ETA, DateUtils.format(LocalDate.now().with(DayOfWeek.SUNDAY), LocalTime.of(9, 0)));
@@ -32,10 +33,10 @@ public class RemindContextMenu extends CustomContextMenu<LocalDateTime> {
 
         this.getItems().addAll(menuItemToday, menuItemTomorrow, menuItemNextWeek, menuItemPickDateAndTime);
 
-        menuItemToday.setOnAction(_ -> setValue(compose(LocalDate.now(), LocalTime.of(19, 0))));
-        menuItemTomorrow.setOnAction(_ -> setValue(compose(LocalDate.now().plusDays(1), LocalTime.now())));
-        menuItemNextWeek.setOnAction(_ -> setValue(compose(LocalDate.now().with(DayOfWeek.SUNDAY), LocalTime.now())));
-        menuItemDelete.setOnAction(_ -> setValue(null));
+        menuItemToday.setOnAction(_ -> target.setValue(compose(LocalDate.now(), LocalTime.of(19, 0))));
+        menuItemTomorrow.setOnAction(_ -> target.setValue(compose(LocalDate.now().plusDays(1), LocalTime.now())));
+        menuItemNextWeek.setOnAction(_ -> target.setValue(compose(LocalDate.now().with(DayOfWeek.SUNDAY), LocalTime.now())));
+        menuItemDelete.setOnAction(_ -> target.setValue(null));
 
         menuItemPickDateAndTime.setOnAction(_ -> {
 
@@ -50,20 +51,16 @@ public class RemindContextMenu extends CustomContextMenu<LocalDateTime> {
 
             container.setOnSave(_ -> {
                 if (container.getSelected() == null) {
-                    setValue(compose(LocalDate.now(), container.getTime()));
-                } else setValue(compose(container.getSelected(), container.getTime()));
+                    target.setValue(compose(LocalDate.now(), container.getTime()));
+                } else target.setValue(compose(container.getSelected(), container.getTime()));
                 root.flow().remove(container);
             });
         });
 
-        selected.addListener((_, _, newValue) -> {
+        if (target.getValue() != null) {
             var separator = new SeparatorMenuItem();
-            if (newValue) {
-                getItems().addAll(separator, menuItemDelete);
-            } else {
-                getItems().remove(getItems().size() - 2, getItems().size());
-            }
-        });
+            getItems().addAll(separator, menuItemDelete);
+        }
     }
 
     private LocalDateTime compose(LocalDate date, LocalTime time) {

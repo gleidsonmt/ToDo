@@ -29,24 +29,37 @@ public class InputFieldItem<T> extends Label {
 
     protected CustomContextMenu<T> contextMenu;
 
+    protected ObjectProperty<T> value;
+
     public InputFieldItem(Icon icon) {
         this(icon, null);
     }
 
     public InputFieldItem(Icon icon, String toolTipText) {
+
+        this.value = new SimpleObjectProperty<>();
+
         setTooltip(new Tooltip(toolTipText));
         setGraphic(new SVGIcon(icon));
         setText(null);
         getStyleClass().add("input-field-item");
+
         this.addEventFilter(MouseEvent.MOUSE_CLICKED, _ -> {
             ((Root) getScene().getRoot())
                     .flow().hide();
-//            contextMenu.show(this);
         });
         // setWrapText(true);
     }
 
+    public void setValue(T value) {
+        this.value.set(value);
+    }
+
     public T getValue() {
-        return contextMenu.getValue();
+        return value.get();
+    }
+
+    public ObjectProperty<T> valueProperty() {
+        return value;
     }
 }

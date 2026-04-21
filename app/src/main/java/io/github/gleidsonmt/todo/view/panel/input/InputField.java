@@ -45,22 +45,21 @@ public class InputField extends GridPane {
     private final InputFieldItem<LocalDateTime> remind;
     private final InputFieldItem<Recurrence> repeat;
 
-    private ToDoTask task;
 
     public InputField() {
         // this.taskItem = taskItem;
-        this.task = new ToDoTask("");
         this.textInput = createTextField();
         icon = new SVGIcon(Icon.ADD);
 
         tasks = new InputFieldItemTask();
-        dueDate = new InputFieldItem<>(Icon.CALENDAR_MONTH, "Add a due date");
-        remind = new InputFieldItem<>(Icon.CLOCK, "Remind me");
-        repeat = new InputFieldItem<>(Icon.EVENT_REPEAT, "Repeat");
+        dueDate = new InputFieldItemDueDate();
+        remind = new InputFieldRemind();
+        repeat = new InputFieldRepeat();
 
 //        dueDate = new InputFieldItem<>(Icon.CALENDAR_MONTH, "Add a due date", new DueDateContextMenu());
 //        remind = new InputFieldItem<>(Icon.CLOCK, "Remind me", new RemindContextMenu());
 //        repeat = new InputFieldItem<>(Icon.EVENT_REPEAT, "Repeat", new RepeatContextMenu());
+
         items = createActions();
 
         init();

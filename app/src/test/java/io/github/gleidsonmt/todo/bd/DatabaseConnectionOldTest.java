@@ -52,6 +52,7 @@ class DatabaseConnectionOldTest {
         DatabaseConnection proto = DatabaseConnection.INSTANCE;
         proto.connect();
         ResultSet resultSet = proto.executeQuery("select * from list;");
+        assertNotNull(resultSet);
         assertTrue(resultSet.next());
         proto.close();
     }

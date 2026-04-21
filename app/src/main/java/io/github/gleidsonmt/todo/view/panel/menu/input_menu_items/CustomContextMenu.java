@@ -24,17 +24,13 @@ import java.util.function.Predicate;
  */
 public abstract class CustomContextMenu<T> extends ContextMenu {
 
-    protected BooleanProperty selected;
-    protected ObjectProperty<T> value;
 
     protected InputFieldItem<T> target;
 
-    public CustomContextMenu() {
-        this.selected = new SimpleBooleanProperty(false);
-        this.value = new SimpleObjectProperty<>();
+    public CustomContextMenu(InputFieldItem<T> target) {
+        this.target = target;
 
-        value.addListener((_, _, val) -> {
-            setSelected(val != null);
+        target.valueProperty().addListener((_, _, val) -> {
 
             if (val != null) {
                 if (val instanceof LocalDate date) {
@@ -76,17 +72,4 @@ public abstract class CustomContextMenu<T> extends ContextMenu {
         super.show(target, side, dx, dy);
         Platform.requestNextPulse(); // makes sure the is on the right position
     }
-
-    protected void setSelected(boolean selected) {
-        this.selected.set(selected);
-    }
-
-    public T getValue() {
-        return value.getValue();
-    }
-
-    protected void setValue(T value) {
-        this.value.setValue(value);
-    }
-
 }

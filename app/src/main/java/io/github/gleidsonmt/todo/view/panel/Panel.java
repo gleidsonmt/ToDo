@@ -70,7 +70,6 @@ public class Panel extends Container {
         this.inputContainer = new InputField();
 
         configLayout();
-        bind();
 
 //        icon.addListener((_,_,val ) -> {
 //            if (val != null) {
@@ -82,10 +81,6 @@ public class Panel extends Container {
 //        });
 
 
-
-    }
-
-    private void bind() {
 
     }
 

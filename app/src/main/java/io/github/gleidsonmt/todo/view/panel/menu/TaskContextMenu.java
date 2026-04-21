@@ -22,7 +22,8 @@ import javafx.scene.image.ImageView;
  */
 public class TaskContextMenu extends CustomContextMenu<List> {
 
-    public TaskContextMenu(InputFieldItem<List> inputFieldItem) {
+    public TaskContextMenu(InputFieldItem<List> target) {
+        super(target);
         Presenter<List> presenter = Global.get(List.class);
         Task<ObservableList<List>> task = presenter.fetch(FXCollections.observableArrayList());
         new Thread(task).start();
@@ -31,18 +32,13 @@ public class TaskContextMenu extends CustomContextMenu<List> {
             task.getValue().forEach(list -> Platform.runLater(() -> {
                 if ((!list.isFixed() || list.getId() == 0)) {
                     MenuItem menuItem = new MenuItem(StringUtils.name(list.getName()));
-                    menuItem.setOnAction(_ -> setValue(list));
-
-
-
+                    menuItem.setOnAction(_ -> target.setValue(list));
 
 
                     getItems().add(menuItem);
                 }
             }));
-            Platform.runLater(() -> {
-                show(inputFieldItem);
-            });
+            Platform.runLater(() -> show(target));
         });
     }
 }
