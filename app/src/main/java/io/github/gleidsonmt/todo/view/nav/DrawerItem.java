@@ -186,4 +186,11 @@ public class DrawerItem extends ToggleButton {
         this.editable.set(val);
     }
 
+    @Override
+    public String toString() {
+        return "DrawerItem{"
+               + "\n\tviewModel=" + getViewModel() +
+               "\n\teditable=" + editable +
+               "\n}";
+    }
 }

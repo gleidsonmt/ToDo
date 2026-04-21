@@ -141,6 +141,9 @@ public class ListViewModel extends ViewModel {
 
     @Override
     public String toString() {
-        return "ListViewModel [id=" + this.getId() + ", name=" + nameProperty().get() + ", iconName=" + iconName + "]";
+        return "ListViewModel [id=" + this.getId() +
+               ", name=" + nameProperty().get() +
+               ", fixed=" + isFixed() +
+               ", iconName=" + iconName + "]";
     }
 }

@@ -2,6 +2,7 @@ package io.github.gleidsonmt.todo.view.panel.menu.input_menu_items;
 
 import io.github.gleidsonmt.todo.model.List;
 import io.github.gleidsonmt.todo.model.recurrence.Recurrence;
+import io.github.gleidsonmt.todo.utils.StringUtils;
 import io.github.gleidsonmt.todo.view.panel.input.InputFieldItem;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
@@ -22,8 +23,7 @@ import java.util.function.Predicate;
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
  * Create on  09/04/2026
  */
-public abstract class CustomContextMenu<T> extends ContextMenu {
-
+public class CustomContextMenu<T> extends ContextMenu {
 
     protected InputFieldItem<T> target;
 
@@ -44,7 +44,7 @@ public abstract class CustomContextMenu<T> extends ContextMenu {
                     target.setText(DateUtils.format(recurrence));
                 }
                 if (val instanceof List list) {
-                    target.setText(list.getName());
+                    target.setText(StringUtils.name(list.getName()));
                 }
             } else {
                 target.setText("");

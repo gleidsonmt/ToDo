@@ -103,6 +103,13 @@ public class SideNav extends VBox {
                 .map(e -> (DrawerItem) e).map(DrawerItem::getViewModel).toList();
     }
 
+    public java.util.List<DrawerItem> getCustomLists() {
+        return container.getChildren()
+                .stream()
+                .filter(el -> el instanceof DrawerItem)
+                .map(el -> (DrawerItem) el).toList();
+    }
+
     public DrawerItem getSelected() {
         return itemSelectedProperty().get();
     }
@@ -114,6 +121,14 @@ public class SideNav extends VBox {
 
     public ListViewModel add(ListViewModel model) {
         return createItem(model);
+    }
+
+    public void addAndSelect(ListViewModel model) {
+        var drawerItem = createDrawerItem(model);
+        group.getToggles().add(drawerItem);
+        container.getChildren().add(drawerItem);
+        drawerItem.setSelected(true);
+        drawerItem.setEditable(!model.isFixed());
     }
 
     public void remove(ListViewModel model) {
@@ -128,10 +143,16 @@ public class SideNav extends VBox {
         return createItem(viewModel);
     }
 
-    private ListViewModel createItem(ListViewModel viewModel) {
-
+    private DrawerItem createDrawerItem(ListViewModel viewModel) {
         DrawerItem drawerItem = new DrawerItem(viewModel);
         drawerItem.numberOfNotificationsProperty().bind(viewModel.numberOfTasksProperty());
+
+        return drawerItem;
+    }
+
+    private ListViewModel createItem(ListViewModel viewModel) {
+
+        DrawerItem drawerItem = createDrawerItem(viewModel);
 
         group.getToggles().add(drawerItem);
 

@@ -40,8 +40,8 @@ public class App extends Application {
 
         Logger.getGlobal().addHandler(handler);
         Logger.getGlobal().setUseParentHandlers(false);
-        Logger.getGlobal().setLevel(Level.CONFIG);
-        handler.setLevel(Level.CONFIG);
+        Logger.getGlobal().setLevel(Level.OFF);
+        handler.setLevel(Level.OFF);
 
         // UI Notifications info
         // Config Database Configuration

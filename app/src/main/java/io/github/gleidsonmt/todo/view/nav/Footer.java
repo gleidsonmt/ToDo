@@ -28,7 +28,7 @@ public class Footer extends GridPane {
     public Footer() {
         label = new Label(I18n.get("drawer.new.list"));
         configLayout();
-        setOnMouseClicked(e -> createNewList());
+        setOnMouseClicked(_ -> createNewList());
     }
 
     private void configLayout() {
@@ -62,13 +62,13 @@ public class Footer extends GridPane {
 
         var nav = (SideNav) getScene().lookup("#drawer");
 
-        var actualVal = nav.getModels().stream()
+        int actualVal = nav.getModels().stream()
                 // filter with the patter name (Untitled [some number])
                 .filter(el -> el.getName().matches("Untitled [0-9]+"))
                 // transform this number in an integer
                 .map(list -> StringUtils.getLastNumber(list.getName()))
                 // get the maximun value
-                .reduce(0, (a, b) -> Integer.max(a, b));
+                .reduce(0, Integer::max);
 
         ListViewModel model;
         var name = "";
@@ -83,6 +83,6 @@ public class Footer extends GridPane {
 
         model = new ListViewModel(new List(0, name, false, 0, null));
 
-        nav.add(model.save());
+        nav.addAndSelect(model.save());
     }
 }

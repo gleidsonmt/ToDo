@@ -3,24 +3,17 @@ package io.github.gleidsonmt.todo.view.panel.input;
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import io.github.gleidsonmt.todo.model.List;
-import io.github.gleidsonmt.todo.model.ToDoTask;
 import io.github.gleidsonmt.todo.model.recurrence.Recurrence;
+import io.github.gleidsonmt.todo.view.nav.SideNav;
 import io.github.gleidsonmt.todo.view.panel.Panel;
-import io.github.gleidsonmt.todo.view.panel.events.TaskChangeEvent;
-import io.github.gleidsonmt.todo.view.panel.menu.TaskContextMenu;
-import io.github.gleidsonmt.todo.view.panel.menu.input_menu_items.CustomContextMenu;
-import io.github.gleidsonmt.todo.view.panel.menu.input_menu_items.DueDateContextMenu;
-import io.github.gleidsonmt.todo.view.panel.menu.input_menu_items.RemindContextMenu;
-import io.github.gleidsonmt.todo.view.panel.menu.input_menu_items.RepeatContextMenu;
-import io.github.gleidsonmt.todo.view_model.ListViewModel;
-import io.github.gleidsonmt.todo.view_model.TaskViewModel;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 
 import java.time.LocalDate;
@@ -38,42 +31,22 @@ public class InputField extends GridPane {
 
     private final TextField textInput;
     private final SVGIcon icon;
-    private final HBox items;
 
-    private InputFieldItem<List> tasks;
-    private final InputFieldItem<LocalDate> dueDate;
-    private final InputFieldItem<LocalDateTime> remind;
-    private final InputFieldItem<Recurrence> repeat;
-
+    private  InputFieldOptions options;
 
     public InputField() {
-        // this.taskItem = taskItem;
         this.textInput = createTextField();
         icon = new SVGIcon(Icon.ADD);
 
-        tasks = new InputFieldItemTask();
-        dueDate = new InputFieldItemDueDate();
-        remind = new InputFieldRemind();
-        repeat = new InputFieldRepeat();
-
-//        dueDate = new InputFieldItem<>(Icon.CALENDAR_MONTH, "Add a due date", new DueDateContextMenu());
-//        remind = new InputFieldItem<>(Icon.CLOCK, "Remind me", new RemindContextMenu());
-//        repeat = new InputFieldItem<>(Icon.EVENT_REPEAT, "Repeat", new RepeatContextMenu());
-
-        items = createActions();
+        options = new InputFieldOptions();
 
         init();
         configLayout();
         registerListeners();
     }
 
-    public void addTasksItem(boolean add) {
-        if (add) {
-            if (!items.getChildren().contains(tasks))
-                items.getChildren().addFirst(tasks);
-        } else {
-            items.getChildren().remove(tasks);
-        }
+    public InputFieldOptions getOptions() {
+        return options;
     }
 
     private void init() {
@@ -89,7 +62,7 @@ public class InputField extends GridPane {
 
         GridPane.setColumnIndex(icon, 0);
         GridPane.setColumnIndex(textInput, 1);
-        GridPane.setColumnIndex(items, 2);
+        GridPane.setColumnIndex(options, 2);
 
         StackPane.setAlignment(this, Pos.BOTTOM_CENTER);
         StackPane.setMargin(this, new Insets(50, 50, 50, 50));
@@ -103,18 +76,20 @@ public class InputField extends GridPane {
 
     private void registerListeners() {
         textInput.textProperty().addListener((_, _, newValue) -> {
-//            addTasksItem(!newValue.isEmpty());
+
             ((Panel) getParent()).getListRoot().getActualList().getId();
 
-            if ( !((Panel) getParent()).getListRoot().getActualList().isFixed() ) {
-                addTasksItem(true);
-            }
+            options.needsTaskItem(((Panel) getParent()).getListRoot().getActualList().isFixed());
+            var nav = (SideNav) getScene().lookup("#drawer");
+
+            System.out.println("getScene() = " + nav.get(0));
+            System.out.println("nav.getCustomLists() = " + nav.getCustomLists());
 
             if (!newValue.isEmpty()) {
-                if (!getChildren().contains(items))
-                    getChildren().add(items);
+                if (!getChildren().contains(options))
+                    getChildren().add(options);
             } else {
-                getChildren().remove(items);
+                getChildren().remove(options);
             }
         });
 
@@ -141,7 +116,6 @@ public class InputField extends GridPane {
                     if (textInput.getText().isEmpty())
                         return;
 
-                    System.out.println("tasks.getValue() = " + tasks.getValue());
 
                     // Create another using the prepared here.
 //                    TaskViewModel viewModel = new TaskViewModel();
@@ -180,10 +154,5 @@ public class InputField extends GridPane {
         return field;
     }
 
-    private HBox createActions() {
-        var _items = new HBox();
-        _items.setAlignment(Pos.CENTER);
-        _items = new HBox(dueDate, remind, repeat);
-        return _items;
-    }
+
 }
