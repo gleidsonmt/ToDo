@@ -2,12 +2,8 @@ package io.github.gleidsonmt.todo.view.panel.input;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
-import io.github.gleidsonmt.todo.model.List;
-import io.github.gleidsonmt.todo.model.recurrence.Recurrence;
 import io.github.gleidsonmt.todo.view.nav.SideNav;
 import io.github.gleidsonmt.todo.view.panel.Panel;
-import javafx.application.Platform;
-import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -15,9 +11,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 /**
  * Description:
@@ -30,16 +23,12 @@ import java.time.LocalDateTime;
 public class InputField extends GridPane {
 
     private final TextField textInput;
-    private final SVGIcon icon;
 
-    private  InputFieldOptions options;
+    private final SVGIcon icon = new SVGIcon(Icon.ADD);
+    private final InputFieldOptions options = new InputFieldOptions();;
 
     public InputField() {
         this.textInput = createTextField();
-        icon = new SVGIcon(Icon.ADD);
-
-        options = new InputFieldOptions();
-
         init();
         configLayout();
         registerListeners();
