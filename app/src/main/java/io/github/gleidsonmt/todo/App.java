@@ -31,6 +31,7 @@ public class App extends Application {
 
     private final LogFormatter formatter = new LogFormatter();
     private DatabaseConnection connection;
+
     @Override
     public void init() throws Exception {
         ConsoleHandler handler = new ConsoleHandler();
@@ -57,7 +58,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        this.connection = new DatabaseConnection();
+        this.connection = DatabaseConnection.INSTANCE;
         Logger.getGlobal().finest(() -> "Established connection... [" + (connection.connect() ? "OK" : "FAILED") + "]");
 
         UserPresenter presenter = (UserPresenter) Global.get(User.class);

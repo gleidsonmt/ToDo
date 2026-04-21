@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T> {
 
     // Mono state to grant only one connection per time
-    protected static DatabaseConnection data = new DatabaseConnection();
+    protected static DatabaseConnection data = DatabaseConnection.INSTANCE;
     // Some operations can be done and closed differently from transactions.
     protected static boolean autoCloseable = true;
 

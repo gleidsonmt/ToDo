@@ -1,46 +1,42 @@
 package io.github.gleidsonmt.todo.bd;
 
+import io.github.gleidsonmt.todo.App;
+import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.Contract;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.Properties;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.jetbrains.annotations.ApiStatus;
-
-import io.github.gleidsonmt.todo.App;
-
 /**
+ *
  * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
- * Created On: Feb 22, 2026
- * <p>
- * Version History: Initial version
+ * Created on  20/04/2026
  */
-public class DatabaseConnection {
+@SuppressWarnings("unused")
+public enum DatabaseConnection {
+
+    INSTANCE;
 
     private Connection connection;
     private Statement statement;
     private ResultSet result;
 
-    private String driver;
-    private String user;
-    private String password;
-    private String url;
-    private String database;
-    private int port;
-    private String host;
+    private final String driver;
+    private final String user;
+    private final String password;
+    private final String url;
+    private final int port;
+    private final String host;
 
-    private static final Logger logger = Logger.getGlobal();
-    private String msg;
+    private final Logger logger = Logger.getGlobal();
 
-    public DatabaseConnection() {
+    DatabaseConnection() {
         Properties properties = new Properties();
         try {
             // Loading properties
@@ -59,7 +55,7 @@ public class DatabaseConnection {
             }
 
             this.driver = properties.get("driver").toString();
-            database = properties.get("database").toString();
+            String database = properties.get("database").toString();
             port = Integer.parseInt(properties.get("port").toString()); // port-number
 
             host = properties.get("host") + ":" + port; // ex. localhost:3306
@@ -70,12 +66,14 @@ public class DatabaseConnection {
             this.url = "jdbc:mysql://" + host + "/" + database
                        + "?useUnicode=true&allowPublicKeyRetrieval=true&useSSL=false&characterEncoding=utf8&serverTimezone="
                        + timeZone;
-            logger.config("[ OK ] => [DatabaseConnection, method=Constructor] => Loaded database properties. ");
+            logger.config("[ OK ] => [DatabaseConnection, method=Constructor] SUCCESSFULLY => Loaded database properties. ");
         } catch (IOException e) {
-            logger.severe("[ ERROR ] => [DatabaseConnection, method=Constructor] => Some of the properties are missing or invalid.");
+            logger.severe("[ ERROR ] => [DatabaseConnection, method=Constructor]  ERROR => Some of the properties are missing or invalid.");
             throw new RuntimeException(e);
         }
     }
+
+
 
     public boolean connect() {
         try {
@@ -83,10 +81,9 @@ public class DatabaseConnection {
             Class.forName(driver).getDeclaredConstructor().newInstance();
             connection = DriverManager.getConnection(url, user, password);
             if (connection != null) {
-                logger.config("[ SUCCEED ] => [DatabaseConnection, method=connect] => Created connection with database. ");
+                logger.config("[ OK ] => [DatabaseConnection, method=connect] => Created connection with database. ");
                 return true;
             }
-            return false;
         } catch (IllegalAccessException | InstantiationException | ClassNotFoundException | SQLException
                  | InvocationTargetException | NoSuchMethodException e) {
             logger.severe(
@@ -103,9 +100,10 @@ public class DatabaseConnection {
         return false;
     }
 
+    @Contract(pure = true)
     public boolean hasConnection() {
         try {
-            return connection != null &&!connection.isClosed();
+            return connection != null && !getConnection().isClosed();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -143,35 +141,14 @@ public class DatabaseConnection {
             this.statement.executeUpdate(SQL);
             return true;
         } catch (SQLException ex) {
-            this.msg = "Error on executing update using `" + SQL + "`" + ex;
-            logger.log(Level.SEVERE, msg);
+            logger.severe("[ ERROR ] => [DatabaseConnection, method=executeUpdate]  => Error on updating. SQL = " + SQL);
         }
         return false;
     }
 
     @ApiStatus.Experimental
-    public int getLastID() {
-        int status = 0;
-
-        try {
-            this.result = this.statement.executeQuery("SELECT LAST_INSERT_ID();");
-            while (this.result.next()) {
-                status = this.result.getInt(1);
-            }
-        } catch (SQLException e) {
-            this.msg = e.getMessage();
-            logger.log(Level.SEVERE, msg);
-            throw new RuntimeException(e);
-        }
-
-        return status;
-    }
-
-    /**
-     * Close the database connection.
-     * @return If the connection was closed successfully.
-     */
     public boolean close() {
+        if (!hasConnection()) return true;
         try {
             if ((this.getResult() != null) && (this.statement != null)) {
                 this.getResult().close();
@@ -187,20 +164,11 @@ public class DatabaseConnection {
         }
     }
 
-    public ResultSet getResult() {
-        return result;
-    }
-
     public Connection getConnection() {
         return connection;
     }
 
-    public String getDatabase() {
-        return database;
+    public ResultSet getResult() {
+        return result;
     }
-
-    public String getErrorMessage() {
-        return this.msg;
-    }
-
 }
