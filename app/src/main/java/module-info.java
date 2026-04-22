@@ -29,6 +29,7 @@ module io.github.gleidsonmt.todo {
     requires org.kordamp.ikonli.materialdesign;
     requires org.jspecify;
     requires io.github.classgraph;
+    requires java.prefs;
 
     opens io.github.gleidsonmt.todo to javafx.graphics, javafx.fxml, java.sql;
     opens io.github.gleidsonmt.todo.view to javafx.graphics, javafx.fxml, java.sql;
