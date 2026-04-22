@@ -73,13 +73,10 @@ public class Panel extends Container {
         this.bar = createHeader();
         this.inputContainer = new InputField();
 
-        title.setEditable(false);
         title.setOnMouseClicked(e -> title.requestFocus());
-
+        title.getStyleClass().add("inside-field");
         title.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (actualList.get().isFixed()) return;
-            title.setEditable(newValue);
-
             if (!newValue) {
                 actualList.get().setName(title.getText());
                 actualList.get().update();
@@ -90,18 +87,11 @@ public class Panel extends Container {
         configLayout();
 
         actualListProperty().addListener((observable, oldValue, newValue) -> {
+            title.setEditable(!newValue.isFixed());
             title.setText(newValue.getName());
         });
 
-
-//        icon.addListener((_,_,val ) -> {
-//            if (val != null) {
-//                if (!bar.getChildren().contains(val))
         bar.getChildren().add(icon.get());
-//            } else {
-//                bar.getChildren().remove(val);
-//            }
-//        });
 
     }
 
@@ -208,7 +198,6 @@ public class Panel extends Container {
 
     private GridPane createHeader() {
         GridPane grid = new GridPane();
-        grid.setHgap(10);
 
         Text info = new Text(DateTimeFormatter.ofPattern("EEEE, dd LLLL").format(LocalDate.now()));
 

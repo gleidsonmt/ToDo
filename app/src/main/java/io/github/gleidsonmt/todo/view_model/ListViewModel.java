@@ -113,8 +113,6 @@ public class ListViewModel extends ViewModel {
         return this.iconName;
     }
 
-
-
     public String getIconName() {
         return this.iconName.get();
     }

@@ -624,15 +624,38 @@ Panel {
     -fx-background-radius: 5px;
 }
 
-.text-field:focused {
+.inside-field:focused {
     -fx-border-color: -fx-accent;
 }
 
-.text-field:readonly {
+.inside-field:readonly {
     -fx-cursor: hand;
     -fx-border-color: transparent;
 }
 
-.text-field:readonly:hover {
+.inside-field:readonly:hover:focused,
+.inside-field:readonly:focused,
+.inside-field:readonly:hover {
+    -fx-cursor: default;
+    -fx-background-color: transparent;
+}
+
+.inside-field:focused:hover,
+.inside-field:focused {
+    -fx-cursor: text;
+    -fx-background-color: transparent;
+}
+
+.inside-field:hover {
     -fx-background-color: -light-gray-2;
 }
+
+.inside-field:hover {
+    -fx-cursor: hand;
+    -fx-background-color: -light-gray-2;
+}
+
+.inside-field {
+    -fx-border-color: transparent;
+}
+
