@@ -7,6 +7,8 @@ import io.github.gleidsonmt.todo.global.Presenter;
 import io.github.gleidsonmt.todo.model.List;
 import io.github.gleidsonmt.todo.utils.StringUtils;
 import io.github.gleidsonmt.todo.view.panel.menu.input_menu_items.CustomContextMenu;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -21,6 +23,8 @@ import java.util.Optional;
  */
 public class InputFieldItemTask extends InputFieldItem<List> {
 
+    private ObjectProperty<MenuItem> selected = new SimpleObjectProperty<>();
+
     public InputFieldItemTask() {
         super(Icon.HOME, "Select a list");
 
@@ -31,32 +35,24 @@ public class InputFieldItemTask extends InputFieldItem<List> {
         task.setOnSucceeded(_ -> {
             this.contextMenu = new CustomContextMenu<>(this);
 
-            ObservableList<MenuItem> options = FXCollections.observableArrayList();
+            ObservableList<MenuTaskItem> options = FXCollections.observableArrayList();
             task.getValue().forEach(list -> {
                 if (!list.isFixed() || list.getId() == 0) {
-                    MenuItem menuItem = new MenuItem(StringUtils.name(list.getName()));
-                    menuItem.setUserData(list);
+                    MenuTaskItem menuItem = new MenuTaskItem(list);
                     options.add(menuItem);
 
                     menuItem.setOnAction(_ -> {
-                        getSelected(contextMenu.getItems(), menuItem).ifPresent(el -> contextMenu.getItems().remove(el));
-                        contextMenu.getItems().remove(menuItem);
-                        value.set(list);
+                        value.set(menuItem.getList());
+                        contextMenu.getItems().setAll(options.filtered(el -> el.getList().getId() != menuItem.getList().getId()));
                     });
-
                 }
             });
 
-            this.contextMenu.getItems().setAll(options.filtered(el -> ( (List) el.getUserData()).getId() != 0));
+            this.contextMenu.getItems().setAll(options.filtered(el -> el.getList().getId() != 0));
             setValue(task.getValue().getFirst());
         });
 
-        this.addEventHandler(MouseEvent.MOUSE_CLICKED, _ -> {
-            this.contextMenu.show(this);
-        });
+        this.addEventHandler(MouseEvent.MOUSE_CLICKED, _ -> this.contextMenu.show(this));
     }
 
-    private Optional<MenuItem> getSelected(ObservableList<MenuItem> options, MenuItem menuItem) {
-        return options.stream().filter(el -> value.get().getId() == ( (List) el.getUserData()).getId() ).findAny();
-    }
 }
