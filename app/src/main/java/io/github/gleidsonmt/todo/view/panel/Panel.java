@@ -54,18 +54,17 @@ public class Panel extends Container {
     private final int borderLimitBottom = 110;
 
     // Since panel has absolute parts that intercalated, this border and
-    // padding properties will help to mantain the elements properly anchor.
+    // padding property will help to maintain the elements properly anchor.
     private final DoubleProperty borderTop = new SimpleDoubleProperty(80);
     private final DoubleProperty borderPadding = new SimpleDoubleProperty(50);
 
     // The title of the panel
     private final TextField title = new TextField("Title");
 
-    private ObjectProperty<ListViewModel> actualList = new SimpleObjectProperty<>();
+    private final ObjectProperty<ListViewModel> actualList = new SimpleObjectProperty<>();
     // The actual list in the editor at the momment.
 
     private final StringProperty iconName = new SimpleStringProperty();
-    private ObjectProperty<Node> icon = new SimpleObjectProperty<>(new SVGIcon());
 
     public Panel() {
         this.scroll = createScroll();
@@ -91,6 +90,7 @@ public class Panel extends Container {
             title.setText(newValue.getName());
         });
 
+        ObjectProperty<Node> icon = new SimpleObjectProperty<>(new SVGIcon());
         bar.getChildren().add(icon.get());
 
     }
@@ -103,16 +103,7 @@ public class Panel extends Container {
     public void setContent(ListRoot listRoot) {
         // remove and set all children for this list root
         this.container.getChildren().setAll(listRoot);
-
-        listRoot.actualListProperty().addListener((observable, oldValue, newValue) -> {
-            this.inputContainer.reset();
-        });
-
-        // This ensure that if the list selected is not a fixed list you only
-        // add the task a custom list not the tasks, tasks is a fixed list with
-        // no id.
-        // listRoot.actualListProperty().addListener((_, _, newValue) ->
-        // inputContainer.addTasksItem(newValue.isFixed()));
+        listRoot.actualListProperty().addListener((observable, oldValue, newValue) -> this.inputContainer.reset());
     }
 
     public ListRoot getListRoot() {
@@ -153,23 +144,25 @@ public class Panel extends Container {
 
         Button hamb = new Hamburger();
 
-        // this.addBreakpoint((event) -> {
-        // // body.setLeft(null);
-        // bar.getChildren().add(hamb);
-        // bar.getChildren().forEach(el -> {
-        // GridPane.setRowIndex(el, 1);
-        // });
-        // bar.addRow(0, hamb);
-        // // GridPane.setColumnIndex(hamb, 0);
-        // }, "<MD");
+        this.addBreakpoint((event) -> {
+            // body.setLeft(null);
+            if (getChildren().contains(hamb))
+                bar.getChildren().add(hamb);
+            bar.getChildren().forEach(el -> {
+                GridPane.setRowIndex(el, 1);
+            });
+            if (!bar.getChildren().contains(hamb))
+                bar.addRow(0, hamb);
+            // GridPane.setColumnIndex(hamb, 0);
+        }, "<MD");
 
-        // this.addBreakpoint((event) -> {
-        // // body.setLeft(sideNav);
-        // bar.getChildren().remove(hamb);
-        // bar.getChildren().forEach(el -> {
-        // GridPane.setRowIndex(el, 0);
-        // });
-        // }, ">MD");
+        this.addBreakpoint((event) -> {
+            // body.setLeft(sideNav);
+            bar.getChildren().remove(hamb);
+            bar.getChildren().forEach(el -> {
+                GridPane.setRowIndex(el, 0);
+            });
+        }, ">MD");
 
     }
 
@@ -208,7 +201,7 @@ public class Panel extends Container {
         iconName.addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 grid.getChildren().removeLast();
-                var icon = new ImageView(Assets.getIconNew(newValue + ".png", 32));
+                var icon = new ImageView(Assets.getIcon(newValue + ".png", 32));
                 grid.getChildren().add(icon);
                 GridPane.setColumnIndex(icon, 0);
                 GridPane.setColumnIndex(title, 1);
@@ -218,6 +211,7 @@ public class Panel extends Container {
             GridPane.setHgrow(title, Priority.ALWAYS);
         });
 
+        grid.setHgap(5);
         grid.add(title, 1, 0);
 
 //        svgIcon.setScale(1.8);
