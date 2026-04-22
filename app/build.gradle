@@ -44,7 +44,6 @@ dependencies {
     compileOnly("org.jetbrains:annotations:26.1.0")
     testCompileOnly("org.jetbrains:annotations:26.1.0")
 
-
 //    testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
 //    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 
@@ -79,8 +78,71 @@ java {
 //}
 
 application {
-    mainClass = 'io.github.gleidsonmt.todo.App'
+    mainClass = 'io.github.gleidsonmt.todo.Launcher'
     mainModule = 'io.github.gleidsonmt.todo'
+}
+// 1. Garantir que a task 'run' já existe e é do tipo JavaExec
+tasks.named('run', JavaExec) {
+    // Argumentos padrão (opcional)
+    args = ['default']
+}
+
+tasks.register('debug') {
+    group = 'application'
+
+    tasks.run.configure {
+        args = ['listenCss', 'nodeAnalyze', 'level-all']
+    }
+
+    dependsOn 'run'
+}
+
+tasks.register('runWithTools') {
+    group = 'initialize'
+    tasks.run.configure {
+        args = ['listenCss', 'nodeAnalyze']
+    }
+    dependsOn 'run'
+}
+
+tasks.register('listenCss') {
+    group = 'initialize'
+    tasks.run.configure {
+        args = ['listenCss']
+    }
+    dependsOn 'run'
+}
+
+tasks.register('analyzeNodes') {
+    group = 'initialize'
+    tasks.run.configure {
+        args = ['nodeAnalyze']
+    }
+    dependsOn 'run'
+}
+
+tasks.register('logger') {
+    group = 'application'
+    tasks.run.configure {
+        args = ['logger', 'all']
+    }
+    dependsOn 'run'
+}
+
+tasks.register('info') {
+    group = 'logger'
+    tasks.run.configure {
+        args = ['logger', 'level-info']
+    }
+    dependsOn 'run'
+}
+
+tasks.register('config') {
+    group = 'logger'
+    tasks.run.configure {
+        args = ['logger', 'config']
+    }
+    dependsOn 'run'
 }
 
 javafx {

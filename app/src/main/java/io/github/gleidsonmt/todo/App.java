@@ -29,24 +29,23 @@ import java.util.logging.Logger;
  */
 public class App extends Application {
 
-    private final LogFormatter formatter = new LogFormatter();
     private DatabaseConnection connection;
 
     @Override
     public void init() throws Exception {
-        ConsoleHandler handler = new ConsoleHandler();
 
-        handler.setFormatter(formatter);
+        ConsoleHandler handler = new ConsoleHandler();
+        LogFormatter formatter = new LogFormatter();
 
         Logger.getGlobal().addHandler(handler);
         Logger.getGlobal().setUseParentHandlers(false);
-        Logger.getGlobal().setLevel(Level.OFF);
-        handler.setLevel(Level.OFF);
 
-        // UI Notifications info
-        // Config Database Configuration
-        // JavaFx Actions
-        // Database Actions
+        handler.setFormatter(formatter);
+
+        var level = Global.getPreferences().get("level", "all").toUpperCase();
+
+        Logger.getGlobal().setLevel(Level.parse(level));
+        handler.setLevel(Level.parse(level));
     }
 
     @Override
@@ -59,7 +58,6 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         this.connection = DatabaseConnection.INSTANCE;
-        Logger.getGlobal().finest(() -> "Established connection... [" + (connection.connect() ? "OK" : "FAILED") + "]");
 
         UserPresenter presenter = (UserPresenter) Global.get(User.class);
         Optional<User> user = presenter.getLogged();
@@ -75,7 +73,11 @@ public class App extends Application {
         stage.setScene(scene);
         stage.show();
 
-        Tools.analyzeNodes(scene);
-        Tools.listenCss(scene);
+        if (Global.getPreferences().getBoolean("nodeAnalyze", false)) {
+            Tools.analyzeNodes(scene);
+        }
+        if (Global.getPreferences().getBoolean("listenCss", false)) {
+            Tools.listenCss(scene);
+        }
     }
 }

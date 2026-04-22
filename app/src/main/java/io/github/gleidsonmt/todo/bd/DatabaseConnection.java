@@ -43,14 +43,14 @@ public enum DatabaseConnection {
             InputStream file = App.class.getResourceAsStream("properties/db.properties");
 
             if (file == null) {
-                logger.severe("[ ERROR ] => [DatabaseConnection, method=Constructor] => File properties/db.properties not found.");
+                logger.severe("File properties/db.properties not found");
                 throw new RuntimeException("File properties/db.properties not found.");
             }
 
             properties.load(file);
 
             if (properties.isEmpty()) {
-                logger.severe("[ ERROR ] => [DatabaseConnection, method=Constructor] => File propertis/db.properties is empty.");
+                logger.severe("File propertis/db.properties is empty");
                 throw new RuntimeException("Loading database properties");
             }
 
@@ -66,13 +66,12 @@ public enum DatabaseConnection {
             this.url = "jdbc:mysql://" + host + "/" + database
                        + "?useUnicode=true&allowPublicKeyRetrieval=true&useSSL=false&characterEncoding=utf8&serverTimezone="
                        + timeZone;
-            logger.config("[ OK ] => [DatabaseConnection, method=Constructor] SUCCESSFULLY => Loaded database properties. ");
+            logger.config("Loaded database properties");
         } catch (IOException e) {
-            logger.severe("[ ERROR ] => [DatabaseConnection, method=Constructor]  ERROR => Some of the properties are missing or invalid.");
+            logger.severe("Some of the properties are missing or invalid");
             throw new RuntimeException(e);
         }
     }
-
 
 
     public boolean connect() {
@@ -81,21 +80,12 @@ public enum DatabaseConnection {
             Class.forName(driver).getDeclaredConstructor().newInstance();
             connection = DriverManager.getConnection(url, user, password);
             if (connection != null) {
-                logger.config("[ OK ] => [DatabaseConnection, method=connect] => Created connection with database. ");
+                logger.config("Created connection with database");
                 return true;
             }
         } catch (IllegalAccessException | InstantiationException | ClassNotFoundException | SQLException
                  | InvocationTargetException | NoSuchMethodException e) {
-            logger.severe(
-                    "[ ERROR ] => [DatabaseConnection, method=connect] => Some of the properties are missing or invalid.\n" +
-                    "DatabaseConnection {\n" +
-                    "   driver = '" + driver + "',\n" +
-                    "   host = '" + host + "',\n" +
-                    "   port = '" + port + "',\n" +
-                    "   user = '" + user + "',\n" +
-                    "   password = '" + user + "',\n" +
-                    "}\n"
-            );
+            logger.severe("Failed to connect with db. Some of the properties are missing or invalid.");
         }
         return false;
     }
@@ -122,7 +112,7 @@ public enum DatabaseConnection {
             this.result = this.statement.executeQuery(SQL);
             return this.result;
         } catch (SQLException ex) {
-            logger.severe("[ ERROR ] => [DatabaseConnection, method=executeQuery] => Error on executing query. " + SQL);
+            logger.severe("Error on executing query. { " + SQL + " }");
         }
         return null;
     }
@@ -141,7 +131,7 @@ public enum DatabaseConnection {
             this.statement.executeUpdate(SQL);
             return true;
         } catch (SQLException ex) {
-            logger.severe("[ ERROR ] => [DatabaseConnection, method=executeUpdate]  => Error on updating. SQL = " + SQL);
+            logger.severe("Error on updating. SQL { " + SQL + " }");
         }
         return false;
     }
@@ -156,10 +146,10 @@ public enum DatabaseConnection {
             }
             this.getConnection().close();
             connection.close();
-            logger.config("[ OK ] => [DatabaseConnection, method=close]  => Database connection has closed. ");
+            logger.config("Database connection has closed. ");
             return true;
         } catch (SQLException ex) {
-            logger.severe("[ ERROR ] => [DatabaseConnection, method=close]  => Error on closing database connection. ");
+            logger.severe("Error on closing database connection. ");
             return false;
         }
     }
