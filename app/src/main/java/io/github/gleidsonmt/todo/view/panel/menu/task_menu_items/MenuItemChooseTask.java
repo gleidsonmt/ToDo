@@ -7,6 +7,7 @@ import io.github.gleidsonmt.todo.global.Presenter;
 import io.github.gleidsonmt.todo.model.List;
 import io.github.gleidsonmt.todo.utils.I18n;
 import io.github.gleidsonmt.todo.utils.StringUtils;
+import io.github.gleidsonmt.todo.view.panel.input.MenuTaskItem;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -47,16 +48,9 @@ public class MenuItemChooseTask extends Menu {
 
 }
 
-class MenuList extends MenuItem {
-
+class MenuList extends MenuTaskItem {
     public MenuList(List list, TaskViewModel item) {
-//        setText(list.getName());
-        setText(StringUtils.name(list.getName()));
-        // setGraphic(new SVGIcon(list.getIcon()));
-
-        setOnAction(e -> {
-            item.setListId(list.getId());
-        });
+        super(list);
+        setOnAction(_ -> item.setListId(list.getId()));
     }
-
 }
