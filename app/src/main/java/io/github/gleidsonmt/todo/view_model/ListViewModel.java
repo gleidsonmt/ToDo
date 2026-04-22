@@ -53,7 +53,8 @@ public class ListViewModel extends ViewModel {
         this.numberOfTasks.set(list.getSize());
 
         if (fixed) {
-            this.keyName = StringUtils.kebabToCamel(list.getName());
+//            this.keyName = StringUtils.kebabToCamel(list.getName());
+            this.keyName = list.getName();
             this.setName(I18n.get("drawer.list." + this.keyName));
         } else {
             this.nameProperty().set(list.getName());
@@ -101,7 +102,7 @@ public class ListViewModel extends ViewModel {
 
     @Override
     public String getName() {
-        return !isFixed() ? this.nameProperty().get() : StringUtils.camelToKebab(keyName);
+        return !isFixed() ? this.nameProperty().get() : StringUtils.kebabToName(keyName);
     }
 
     public ListType getType() {

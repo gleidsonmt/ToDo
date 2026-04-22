@@ -9,6 +9,7 @@ import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import io.github.gleidsonmt.todo.model.List;
 import io.github.gleidsonmt.todo.utils.Assets;
 import io.github.gleidsonmt.todo.view.panel.input.InputField;
+import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.*;
 import javafx.geometry.Insets;
@@ -16,6 +17,7 @@ import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
@@ -57,9 +59,10 @@ public class Panel extends Container {
     private final DoubleProperty borderPadding = new SimpleDoubleProperty(50);
 
     // The title of the panel
-    private final Text title = new Text("Title");
+    private final TextField title = new TextField("Title");
+
+    private ObjectProperty<ListViewModel> actualList = new SimpleObjectProperty<>();
     // The actual list in the editor at the momment.
-    private final ObjectProperty<List> actualList = new SimpleObjectProperty<>();
 
     private final StringProperty iconName = new SimpleStringProperty();
     private ObjectProperty<Node> icon = new SimpleObjectProperty<>(new SVGIcon());
@@ -70,21 +73,35 @@ public class Panel extends Container {
         this.bar = createHeader();
         this.inputContainer = new InputField();
 
+        title.setEditable(false);
+        title.setOnMouseClicked(e -> title.requestFocus());
+
+        title.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (actualList.get().isFixed()) return;
+            title.setEditable(newValue);
+
+            if (!newValue) {
+                actualList.get().setName(title.getText());
+                actualList.get().update();
+            } else {
+                if (title.getSelectedText() == null) title.selectAll();
+            }
+        });
         configLayout();
 
-
+        actualListProperty().addListener((observable, oldValue, newValue) -> {
+            title.setText(newValue.getName());
+        });
 
 
 //        icon.addListener((_,_,val ) -> {
 //            if (val != null) {
 //                if (!bar.getChildren().contains(val))
-                    bar.getChildren().add(icon.get());
+        bar.getChildren().add(icon.get());
 //            } else {
 //                bar.getChildren().remove(val);
 //            }
 //        });
-
-
 
     }
 
@@ -109,7 +126,7 @@ public class Panel extends Container {
     }
 
     public ListRoot getListRoot() {
-        return (ListRoot) this.container.getChildren().get(0);
+        return (ListRoot) this.container.getChildren().getFirst();
     }
 
     private ScrollPane createScroll() {
@@ -199,19 +216,6 @@ public class Panel extends Container {
 
         title.setStyle("-fx-text-fill: -fx-accent; ");
 
-//        iconName.addListener((observable, oldValue, newValue) -> {
-//            if (newValue != null) {
-//                svgIcon = new ImageView(Assets.getIconNew(newValue + ".png", 32));
-//                if (!getChildren().contains(svgIcon)) {
-//                    grid.add(svgIcon, 0, 0);
-//                }
-//                GridPane.setColumnIndex(title, 1);
-//            } else {
-//                getChildren().remove(svgIcon);
-//                GridPane.setColumnIndex(title, 0);
-//            }
-//        });
-
         iconName.addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 grid.getChildren().removeLast();
@@ -222,6 +226,7 @@ public class Panel extends Container {
             } else {
                 GridPane.setColumnIndex(title, 0);
             }
+            GridPane.setHgrow(title, Priority.ALWAYS);
         });
 
         grid.add(title, 1, 0);
@@ -249,12 +254,12 @@ public class Panel extends Container {
         return this.title.textProperty();
     }
 
-    public ObjectProperty<List> actualListProperty() {
-        return actualList;
-    }
-
     public StringProperty titleIconNameProperty() {
         return this.iconName;
+    }
+
+    public ObjectProperty<ListViewModel> actualListProperty() {
+        return this.actualList;
     }
 
 }

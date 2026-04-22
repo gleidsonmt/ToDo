@@ -623,3 +623,16 @@ Panel {
     -fx-border-color: -fx-accent;
     -fx-background-radius: 5px;
 }
+
+.text-field:focused {
+    -fx-border-color: -fx-accent;
+}
+
+.text-field:readonly {
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+}
+
+.text-field:readonly:hover {
+    -fx-background-color: -light-gray-2;
+}

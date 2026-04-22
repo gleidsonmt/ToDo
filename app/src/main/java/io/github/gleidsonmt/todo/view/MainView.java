@@ -4,11 +4,15 @@ import io.github.gleidsonmt.glad.base.Layout;
 import io.github.gleidsonmt.glad.base.responsive.Container;
 import io.github.gleidsonmt.todo.model.ListType;
 import io.github.gleidsonmt.todo.model.User;
+import io.github.gleidsonmt.todo.utils.StringUtils;
+import io.github.gleidsonmt.todo.view.nav.DrawerItem;
 import io.github.gleidsonmt.todo.view.nav.SideNav;
 import io.github.gleidsonmt.todo.view.panel.ListRoot;
 import io.github.gleidsonmt.todo.view.panel.Panel;
 import io.github.gleidsonmt.todo.view.panel.events.TaskChangeEvent;
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
+import javafx.beans.binding.StringBinding;
 import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
 
@@ -76,7 +80,6 @@ public class MainView extends Container implements Layout {
 
         this.addEventHandler(TaskChangeEvent.COMPLETE, e -> {
             Logger.getGlobal().info(() -> "[TaskChangeEvent [FILTER], Type = " + e.getEventType() + " ] -> " + e.getModel());
-
             sideNav.get(e.getModel().getListId()).addNumberOfTasks(!e.getModel().isCompleted() ? 1 : -1).update();
 
             if (e.getModel().isMyDay()) {
@@ -123,18 +126,13 @@ public class MainView extends Container implements Layout {
 
     private void bind() {
         // the tile of the panel with the side nav actual item selected.
-        panel.titleProperty().bind(Bindings.selectString(sideNav.itemSelectedProperty(), "viewModel", "name"));
+
+        panel.actualListProperty().bind(sideNav.itemSelectedProperty().map(DrawerItem::getViewModel));
 
         panel.titleIconNameProperty().bind(Bindings.selectString(sideNav.itemSelectedProperty(), "viewModel", "iconName"));
-//        panel.titleIconProperty().bind(Bindings.select(sideNav.itemSelectedProperty(), "viewModel", "icon"));
 
         listRoot.actualListProperty().bind(Bindings.select(sideNav.itemSelectedProperty(), "viewModel"));
 
-        // listRoot.needsUpdateProperty().bind(Bindings.select(sideNav.itemSelectedProperty(),
-        // "update"));
-
-        // Bindings.select(sideNav.itemSelectedProperty(), "viewModel",
-        // "numberOfNotifications");
     }
 
     @Override

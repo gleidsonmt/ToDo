@@ -14,7 +14,7 @@ import io.github.gleidsonmt.todo.utils.I18n;
 public class MyDayOption extends Option {
 
     public MyDayOption() {
-        super(1, I18n.get("drawer.list.myDay"), Icon.SUN);
+        super(1, I18n.get("drawer.list.my_day"), Icon.SUN);
     }
 
 }

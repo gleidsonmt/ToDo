@@ -93,7 +93,7 @@ public class SideNav extends VBox {
 
     public ListViewModel get(ListType type) {
         Optional<ListViewModel> optional = group.getToggles().stream().map(e -> (DrawerItem) e)
-                .filter(el -> el.getViewModel().getType() == type).map(DrawerItem::getViewModel).findFirst();
+                .map(DrawerItem::getViewModel).filter(viewModel -> viewModel.getType() == type).findFirst();
 
         return optional.orElse(null);
     }

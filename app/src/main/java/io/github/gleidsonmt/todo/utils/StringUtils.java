@@ -42,6 +42,30 @@ public class StringUtils {
         return output.toString().toLowerCase();
     }
 
+    public static String kebabToName(String str) {
+        if (str == null || str.isEmpty()) {
+            return str;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        boolean capitalizeNext = false;
+
+        for (int i = 0; i < str.length(); i++) {
+            char c = str.charAt(i);
+            if (c == '_') {
+                capitalizeNext = true;
+            } else {
+                if (capitalizeNext) {
+                    sb.append(" ").append(Character.toUpperCase(c));
+                    capitalizeNext = false;
+                } else {
+                    sb.append(Character.toLowerCase(c));
+                }
+            }
+        }
+        return sb.substring(0, 1).toUpperCase() + sb.substring(1);
+    }
+
     public static String kebabToCamel(String str) {
         if (str == null || str.isEmpty()) {
             return str;
