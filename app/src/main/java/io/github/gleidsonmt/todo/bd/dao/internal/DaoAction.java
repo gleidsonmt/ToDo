@@ -5,5 +5,5 @@ package io.github.gleidsonmt.todo.bd.dao.internal;
  * Create on  17/01/2025
  */
 public enum DaoAction {
-    UPDATE, CREATE
+    UPDATE, CREATE, DELETE, GET, FETCH
 }
