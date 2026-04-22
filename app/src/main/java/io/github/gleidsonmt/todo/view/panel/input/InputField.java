@@ -25,7 +25,7 @@ public class InputField extends GridPane {
 
     private final TextField textInput;
 
-    private  SVGIcon icon = new SVGIcon(Icon.ADD);
+    private final SVGIcon icon = new SVGIcon(Icon.ADD);
     private  InputFieldOptions options = new InputFieldOptions();;
 
     public InputField() {
@@ -68,7 +68,6 @@ public class InputField extends GridPane {
         this.getChildren().addAll(options);
         textInput.clear();
         configLayout();
-
     }
 
     private void registerListeners() {

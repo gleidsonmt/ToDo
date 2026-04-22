@@ -2,22 +2,15 @@ package io.github.gleidsonmt.todo.view.panel.menu.input_menu_items;
 
 import io.github.gleidsonmt.todo.model.List;
 import io.github.gleidsonmt.todo.model.recurrence.Recurrence;
+import io.github.gleidsonmt.todo.utils.IconUtils;
 import io.github.gleidsonmt.todo.utils.StringUtils;
 import io.github.gleidsonmt.todo.view.panel.input.InputFieldItem;
 import javafx.application.Platform;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 import javafx.geometry.Side;
 import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.function.Predicate;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
@@ -45,6 +38,7 @@ public class CustomContextMenu<T> extends ContextMenu {
                 }
                 if (val instanceof List list) {
                     target.setText(StringUtils.name(list.getName()));
+                    target.setGraphic(IconUtils.getIcon(list));
                 }
             } else {
                 target.setText("");

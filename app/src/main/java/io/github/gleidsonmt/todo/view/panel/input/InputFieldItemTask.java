@@ -23,8 +23,6 @@ import java.util.Optional;
  */
 public class InputFieldItemTask extends InputFieldItem<List> {
 
-    private ObjectProperty<MenuItem> selected = new SimpleObjectProperty<>();
-
     public InputFieldItemTask() {
         super(Icon.HOME, "Select a list");
 
