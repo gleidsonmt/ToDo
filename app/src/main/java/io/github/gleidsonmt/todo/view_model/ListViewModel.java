@@ -102,7 +102,11 @@ public class ListViewModel extends ViewModel {
 
     @Override
     public String getName() {
-        return !isFixed() ? this.nameProperty().get() : StringUtils.kebabToName(keyName);
+        return !isFixed() ? this.nameProperty().get() : I18n.get("drawer.list." + this.keyName);
+    }
+
+    public String getKeyName() {
+        return keyName;
     }
 
     public ListType getType() {
