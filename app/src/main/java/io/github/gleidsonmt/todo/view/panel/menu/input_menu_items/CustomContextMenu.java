@@ -65,8 +65,8 @@ public class CustomContextMenu<T> extends ContextMenu {
         // but calling twice it placed right.
         // is it a bug? idk
 
-//        super.show(target, side, dx, dy);
-//        super.hide();
+        super.show(target, side, dx, dy);
+        super.hide();
 
         // second show places in the right position
         super.show(target, side, dx, dy);
