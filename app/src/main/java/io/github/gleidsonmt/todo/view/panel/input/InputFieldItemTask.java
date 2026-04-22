@@ -14,6 +14,8 @@ import javafx.concurrent.Task;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseEvent;
 
+import java.util.Objects;
+
 /**
  * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
  * Created On: Mar 02, 2026
@@ -31,7 +33,7 @@ public class InputFieldItemTask extends InputFieldItem<List> {
             this.contextMenu = new CustomContextMenu<>(this);
 
             task.getValue().forEach(list -> Platform.runLater(() -> {
-                if ((!list.isFixed() || list.getId() == 0)) {
+                if ((getValue() != null && !Objects.equals(getValue().getName(), list.getName())) && (!list.isFixed() || list.getId() == 0) ) {
                     MenuItem menuItem = new MenuItem(StringUtils.name(list.getName()));
                     menuItem.setOnAction(_ -> setValue(list));
 
