@@ -28,8 +28,9 @@ public class Launcher extends App {
     public static void main(String[] args) {
         for (String arg : args) {
             if (arg.startsWith("level")) Global.getPreferences().put("level", arg.substring("level-".length()));
-            Global.getPreferences().putBoolean("nodeAnalyze", arg.equals("nodeAnalyze"));
-            Global.getPreferences().putBoolean("listenCss", arg.equals("listenCss"));
+            if (arg.equals("nodeAnalyze") || arg.equals("listenCss")) {
+                Global.getPreferences().putBoolean(arg, true);
+            }
         }
         launch(args);
     }
