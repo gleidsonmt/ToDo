@@ -38,7 +38,20 @@ public class LogFormatter extends Formatter {
         }
 
         builder.append("\n");
+
+        builder.append("[ ").append(record.getLevel()).append("]").append(" ( ")
+                .append("class=")
+                .append(record.getSourceClassName().substring(record.getSourceClassName().lastIndexOf(".") + 1))
+                .append(", method=").append(record.getSourceMethodName()).append(" ) => ");
         builder.append(record.getMessage());
+
+        if (record.getLevel().equals(Level.CONFIG)) {
+            builder.append("... [ OK ]");
+        } else if (record.getLevel().equals(Level.SEVERE)) {
+            builder.append("... [ FAILED ]");
+        }
+
+        builder.append(" ").append(calcDate(record.getMillis()));
         builder.append(ANSI_WHITE);
 
         Object[] params = record.getParameters();
@@ -53,11 +66,8 @@ public class LogFormatter extends Formatter {
         }
 
         builder.append(ANSI_RESET);
-        System.out.print("\033[H\033[2J\n");
+        System.out.print("\033[H\033[2J");
         System.out.flush();
-        // builder.append("\033[H\033[2J");
-//        builder.append("\n");
-
         return builder.toString();
     }
 
@@ -79,7 +89,7 @@ public class LogFormatter extends Formatter {
                 startProcess.waitFor();
             }
         } catch (Exception e) {
-            System.out.println(e);
+            throw new RuntimeException(e);
         }
     }
 
