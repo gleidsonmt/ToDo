@@ -32,18 +32,38 @@ public class InputFieldItemTask extends InputFieldItem<List> {
         task.setOnSucceeded(_ -> {
             this.contextMenu = new CustomContextMenu<>(this);
 
-            task.getValue().forEach(list -> Platform.runLater(() -> {
-                if ((getValue() != null && !Objects.equals(getValue().getName(), list.getName())) && (!list.isFixed() || list.getId() == 0) ) {
+            ObservableList<MenuItem> options = FXCollections.observableArrayList();
+            task.getValue().forEach(list -> {
+                if (!list.isFixed()) {
                     MenuItem menuItem = new MenuItem(StringUtils.name(list.getName()));
-                    menuItem.setOnAction(_ -> setValue(list));
+                    options.add(menuItem);
 
-                    this.contextMenu.getItems().add(menuItem);
+                    menuItem.setOnAction(_ -> {
+                        setValue(list);
+                    });
+
+                    contextMenu.setOnHidden(e -> {
+                        System.out.println("getValue() = " + getValue());
+//                        contextMenu.getItems().remove(menuItem);
+                    });
                 }
-            }));
+
+//                if ((getValue() != null && !Objects.equals(getValue().getName(), list.getName()))
+//                    && (!list.isFixed() || list.getId() == 0) ) {
+//
+//                    MenuItem menuItem = new MenuItem(StringUtils.name(list.getName()));
+//                    menuItem.setOnAction(_ -> {
+//                        setValue(list);
+//                    });
+//                    this.contextMenu.getItems().add(menuItem);
+            });
+
+            this.contextMenu.getItems().setAll(options);
             setValue(task.getValue().getFirst());
         });
 
-        this.addEventHandler(MouseEvent.MOUSE_CLICKED, _ -> this.contextMenu.show(this));
-
+        this.addEventHandler(MouseEvent.MOUSE_CLICKED, _ -> {
+            this.contextMenu.show(this);
+        });
     }
 }

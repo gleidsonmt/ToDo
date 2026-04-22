@@ -25,18 +25,14 @@ public class InputField extends GridPane {
 
     private final TextField textInput;
 
-    private final SVGIcon icon = new SVGIcon(Icon.ADD);
-    private final InputFieldOptions options = new InputFieldOptions();;
+    private  SVGIcon icon = new SVGIcon(Icon.ADD);
+    private  InputFieldOptions options = new InputFieldOptions();;
 
     public InputField() {
         this.textInput = createTextField();
         init();
         configLayout();
         registerListeners();
-    }
-
-    public InputFieldOptions getOptions() {
-        return options;
     }
 
     private void init() {
@@ -64,6 +60,17 @@ public class InputField extends GridPane {
         GridPane.setVgrow(textInput, Priority.ALWAYS);
     }
 
+    public void reset() {
+        getColumnConstraints().clear();
+        getRowConstraints().clear();
+        this.getChildren().remove(options);
+        options = new InputFieldOptions();
+        this.getChildren().addAll(options);
+        textInput.clear();
+        configLayout();
+
+    }
+
     private void registerListeners() {
         textInput.textProperty().addListener((_, _, newValue) -> {
 
@@ -80,7 +87,7 @@ public class InputField extends GridPane {
         });
 
         textInput.focusedProperty()
-                .addListener((_, _, newValue) -> icon.setIcon(newValue ? Icon.CIRCLE : Icon.ADD));
+                .addListener((_, _, newValue) -> icon.setIcon(newValue ? Icon.CIRCLE : Icon.ADD_CIRCLE));
 
         this.parentProperty().addListener((_, _, newValue) -> {
             if (newValue != null) {
@@ -138,9 +145,5 @@ public class InputField extends GridPane {
         field.setPrefHeight(50);
         field.getStyleClass().addAll("h5", "inside-text-field");
         return field;
-    }
-
-    public TextField getTextInput() {
-        return textInput;
     }
 }

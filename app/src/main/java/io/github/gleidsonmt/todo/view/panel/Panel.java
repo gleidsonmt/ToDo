@@ -98,7 +98,7 @@ public class Panel extends Container {
         this.container.getChildren().setAll(listRoot);
 
         listRoot.actualListProperty().addListener((observable, oldValue, newValue) -> {
-            this.inputContainer.getTextInput().clear();
+            this.inputContainer.reset();
         });
 
         // This ensure that if the list selected is not a fixed list you only
