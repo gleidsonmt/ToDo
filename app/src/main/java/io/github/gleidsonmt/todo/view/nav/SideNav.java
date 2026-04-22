@@ -146,7 +146,6 @@ public class SideNav extends VBox {
     private DrawerItem createDrawerItem(ListViewModel viewModel) {
         DrawerItem drawerItem = new DrawerItem(viewModel);
         drawerItem.numberOfNotificationsProperty().bind(viewModel.numberOfTasksProperty());
-
         return drawerItem;
     }
 

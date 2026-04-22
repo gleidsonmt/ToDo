@@ -49,7 +49,7 @@ public class DrawerItem extends ToggleButton {
         if (viewModel.isFixed()) {
             this.icon.set(new SVGIcon(Icon.valueOf(viewModel.getIconName().toUpperCase())));
         } else if (viewModel.getIconName() != null && !viewModel.getIconName().isEmpty()) {
-            this.icon.set(new ImageView(Assets.getIconNew(viewModel.getIconName() + ".png")));
+            this.icon.set(new ImageView(Assets.getIcon(viewModel.getIconName() + ".png")));
         } else this.icon.set(new SVGIcon(Icon.CHECK_LIST));
 
         this.setGraphic(container);
@@ -73,7 +73,8 @@ public class DrawerItem extends ToggleButton {
         this.getStyleClass().addAll("custom-drawer-item");
         container.getStyleClass().addAll("list-container");
         title.getStyleClass().addAll("font-instagram-medium", "h5");
-        number.getStyleClass().addAll("sub", "h5", "bold", "font-instagram-medium");
+        number.getStyleClass().addAll( "h5", "bold");
+        number.setStyle("-fx-font-weight: bold; -fx-fill: -fx-accent;");
 
         iconSelector.setMaxSize(5, 30);
         iconSelector.getStyleClass().add("icon-selector");
@@ -94,7 +95,7 @@ public class DrawerItem extends ToggleButton {
         //
         GridPane.setHalignment(number, HPos.CENTER);
         //
-        container.setHgap(10);
+        container.setHgap(0);
         //
         ColumnConstraints colOne = new ColumnConstraints();
         colOne.setHalignment(HPos.CENTER);

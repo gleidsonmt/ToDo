@@ -18,7 +18,7 @@ public class IconUtils {
         if (list.isFixed()) {
             node = new SVGIcon(Icon.valueOf(list.getIconName().toUpperCase()));
         } else if (list.getIconName() != null && !list.getIconName().isEmpty()) {
-            node = new ImageView(Assets.getIconNew(list.getIconName() + ".png"));
+            node = new ImageView(Assets.getIcon(list.getIconName() + ".png"));
         } else node = new SVGIcon(Icon.CHECK_LIST);
         return node;
     }
