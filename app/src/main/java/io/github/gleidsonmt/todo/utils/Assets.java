@@ -1,17 +1,17 @@
 package io.github.gleidsonmt.todo.utils;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.*;
-
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ResourceList;
 import io.github.classgraph.ScanResult;
 import io.github.gleidsonmt.todo.App;
 import javafx.scene.image.Image;
-import io.github.classgraph.Resource;
 
-import java.io.InputStream;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
@@ -46,7 +46,7 @@ public class Assets {
             // Filtra e processa apenas imagens (opcional, dependendo da extensão)
             resources.filter(resource ->
                     (resource.getPath().endsWith(".png") ||
-                    resource.getPath().endsWith(".jpg"))
+                     resource.getPath().endsWith(".jpg"))
             ).forEach(resource -> {
                 Image image = new Image(resource.getURL().toExternalForm(), size, size, true, true);
                 images.add(image);
@@ -66,17 +66,9 @@ public class Assets {
                 true);
     }
 
+    @SuppressWarnings("unused")
     public static Image getImage(String name, int size) {
         return new Image(Objects.requireNonNull(App.class.getResource("img/" + name)).toExternalForm(), size, size,
                 true, true);
     }
-
-//    public static Image getIcon(String name) {
-//        return getIcon(name, 16);
-//    }
-//
-//    public static Image getIcon(String name, int size) {
-//        return new Image(Objects.requireNonNull(App.class.getResource("icons/" + name)).toExternalForm(), size, size,
-//                true, true);
-//    }
 }
