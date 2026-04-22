@@ -2,6 +2,8 @@ package io.github.gleidsonmt.todo.global;
 
 import io.github.gleidsonmt.todo.model.Model;
 
+import java.util.prefs.Preferences;
+
 /**
  * Description:
  *
@@ -13,6 +15,15 @@ import io.github.gleidsonmt.todo.model.Model;
 public class Global {
 
     private static Repository repository;
+    private static Preferences preferences;
+
+    public static Preferences getPreferences() {
+        if (preferences == null) {
+            preferences = Preferences.userNodeForPackage(Global.class);
+            System.getProperties().put("preferences", preferences);
+        }
+        return preferences;
+    }
 
     private static Repository getRepository() {
         if (repository == null) {
