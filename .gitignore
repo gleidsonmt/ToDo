@@ -9,3 +9,4 @@ gradle
 .vscode
 app/.gradle
 bin
+app/scenicView.properties
