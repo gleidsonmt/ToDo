@@ -1,16 +1,15 @@
 package io.github.gleidsonmt.todo.bd.dao.internal;
 
+import io.github.gleidsonmt.todo.model.Model;
+import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.NotNull;
-
-import io.github.gleidsonmt.todo.model.Model;
 
 /**
  * Description: This class use a model to create a query sql.
@@ -47,13 +46,49 @@ public class ModelSQLCreator<T extends Model> {
         this.table = clazz.getSimpleName().replace("Dao", "").toLowerCase();
     }
 
+    public String create(DaoAction action, long id) {
+        this.action = action;
+        if (action.equals(DaoAction.GET)) {
+            return prepareGet(id);
+        } else if (action.equals(DaoAction.DELETE)) {
+            return prepareDelete(id);
+        }
+        return null;
+    }
+
+    public String createFetch(String condition) {
+        this.action = DaoAction.FETCH;
+//        "select * from " + getTable() + " " + condition + ";"
+        return "select * from " + table + " " + condition + ";" ;
+    }
+
     public String create(DaoAction action, T model) {
         this.action = action;
         if (action.equals(DaoAction.CREATE)) {
             return prepareInsert(model);
-        } else {
+        } else  if (action.equals(DaoAction.UPDATE)) {
             return prepareUpdate(model);
+        } else if (action.equals(DaoAction.DELETE)) {
+            return prepareDelete(model);
         }
+        return null;
+    }
+
+    private String prepareFetch(String condition) {
+//        "select * from " + getTable() + " " + condition + ";");
+        return "select * from " + table + " "  + condition + ";";
+    }
+
+    private String prepareGet(long id) {
+        return "select * from " + table + " where id = " + id + ";";
+    }
+
+    private String prepareDelete(T model) {
+        return "delete from " + table + " where id = " + model.getId() + ";";
+    }
+
+    private String prepareDelete(long id) {
+        return "delete from " + table + " where id = " + id + ";";
     }
 
     DaoAction getAction() {
