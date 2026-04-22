@@ -19,20 +19,11 @@ import java.io.InputStream;
  */
 public class Assets {
 
-    public static List<String> getIcons() throws IOException, URISyntaxException {
-
-//        }
-        try (ScanResult scanResult = new ClassGraph().acceptPaths("io/github/gleidsonmt/todo/icons").scan()) {
-            // Retorna os caminhos relativos de tudo que está na pasta 'icons'
-            return scanResult.getAllResources().getPaths();
-        }
+    public static Image getIcon(String iconName) {
+        return getIcon(iconName, 20);
     }
 
-    public static Image getIconNew(String iconName) {
-        return getIconNew(iconName, 15);
-    }
-
-    public static Image getIconNew(String iconName, int size) {
+    public static Image getIcon(String iconName, int size) {
         try {
             Optional<Image> icon = getAllIcons(size).stream().filter(el -> el.getUrl().endsWith(iconName)).findFirst();
             return icon.orElse(null);
