@@ -37,6 +37,14 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
         modelSQLCreator = new ModelSQLCreator<>(getClass());
     }
 
+    private void logger(String message, String sql) {
+        logger.fine("[SQL Action, type=" + getAction() + " ] + " + message + "  SQL => { " + sql + " }");
+    }
+
+    private void logger(String sql) {
+        logger.fine("[SQL Action, type=" + getAction() + " ] SQL => { " + sql + " }");
+    }
+
     /**
      * This method creates an item using the model T.
      *
@@ -64,10 +72,10 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
             PreparedStatement preparedStatement = prepareStatement(sql);
             prepareElement(preparedStatement, model);
             preparedStatement.execute();
-            logger.fine("[SQL Action, Type = UPDATE]  SQL => " + sql);
+            logger(sql);
             return true;
         } catch (SQLException e) {
-            logger.severe("[SQL Action, Type = FETCH]  SQL => " + sql);
+            logger.severe("Error on updating SQL => { " + sql + " }");
             throw new RuntimeException(e);
         } finally {
             if (autoCloseable) close();
@@ -90,15 +98,32 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
             PreparedStatement preparedStatement = prepareStatement(sql);
             prepareElement(preparedStatement, model);
             preparedStatement.execute();
-            logger.fine("[SQL Action, Type = STORE]  SQL => " + sql);
+            logger(sql);
             return getLastId();
         } catch (SQLException e) {
-            logger.fine("[SQL Action, Type = ERROR]  SQL => " + sql);
+            logger.severe("Error on storing SQL => { " + sql + " }");
             throw new RuntimeException(e);
         } finally {
             if (autoCloseable)
                 close();
         }
+    }
+
+
+    /**
+     * Delete a row using id.
+     *
+     * @param id The id.
+     * @return if deleted action was successful.
+     */
+    public boolean delete(long id) {
+        connect();
+        String sql = modelSQLCreator.create(DaoAction.DELETE, id);
+        boolean execute = data.executeUpdate(sql);
+        logger(sql);
+        if (autoCloseable)
+            close();
+        return execute;
     }
 
     /**
@@ -110,24 +135,15 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
     @SuppressWarnings("null")
     @Override
     public boolean delete(T model) {
-        return delete(model.getId());
-    }
-
-    /**
-     * Delete a row using id.
-     *
-     * @param id The id.
-     * @return if deleted action was successful.
-     */
-    @Override
-    public boolean delete(long id) {
         connect();
-        String sql = "delete from " + getTable() + " where id = " + id + ";";
+        String sql = modelSQLCreator.create(DaoAction.DELETE, model);
         boolean execute = data.executeUpdate(sql);
+        logger(sql);
         if (autoCloseable)
             close();
         return execute;
     }
+
 
     /**
      * Get the item using its id.
@@ -138,7 +154,8 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
     @Override
     public Optional<T> get(long id) {
         connect();
-        ResultSet result = executeQuery("select * from " + getTable() + " where id = " + id + ";");
+//        ResultSet result = executeQuery("select * from " + getTable() + " where id = " + id + ";");
+        ResultSet result = executeQuery(modelSQLCreator.create(DaoAction.GET, id));
         try {
             if (result.next())
                 return Optional.of(createElement(result));
@@ -304,6 +321,7 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
                 data.connect();
             }
         } catch (SQLException e) {
+            logger.severe("Error on connecting to database");
             throw new RuntimeException(e);
         }
     }
@@ -358,8 +376,9 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
             @Override
             protected ObservableList<T> call() {
                 connect();
-                ResultSet result = executeQuery("select * from " + getTable() + " " + condition + ";");
-                logger.fine(() -> "[SQL Action, Type = FETCH]  SQL => select * from " + getTable() + " " + condition + ";");
+                var sql = modelSQLCreator.createFetch(condition);
+                ResultSet result = executeQuery(sql);
+                logger(sql);
                 try {
                     if (data.hasConnection()) {
                         while (result.next()) {
