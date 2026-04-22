@@ -43,6 +43,7 @@ public class LogFormatter extends Formatter {
                 .append("class=")
                 .append(record.getSourceClassName().substring(record.getSourceClassName().lastIndexOf(".") + 1))
                 .append(", method=").append(record.getSourceMethodName()).append(" ) => ");
+
         builder.append(record.getMessage());
 
         if (record.getLevel().equals(Level.CONFIG)) {

@@ -81,10 +81,9 @@ application {
     mainClass = 'io.github.gleidsonmt.todo.Launcher'
     mainModule = 'io.github.gleidsonmt.todo'
 }
-// 1. Garantir que a task 'run' já existe e é do tipo JavaExec
+
 tasks.named('run', JavaExec) {
-    // Argumentos padrão (opcional)
-    args = ['default']
+    args = ['level-off']
 }
 
 tasks.register('debug') {

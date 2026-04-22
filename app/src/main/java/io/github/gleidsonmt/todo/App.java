@@ -42,7 +42,7 @@ public class App extends Application {
 
         handler.setFormatter(formatter);
 
-        var level = Global.getPreferences().get("level", "all").toUpperCase();
+        var level = Global.getPreferences().get("level", "off").toUpperCase();
 
         Logger.getGlobal().setLevel(Level.parse(level));
         handler.setLevel(Level.parse(level));

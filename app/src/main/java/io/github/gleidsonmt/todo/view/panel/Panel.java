@@ -213,7 +213,6 @@ public class Panel extends Container {
 //        });
 
         iconName.addListener((observable, oldValue, newValue) -> {
-            System.out.println("iconName = " + iconName);
             if (newValue != null) {
                 grid.getChildren().removeLast();
                 var icon = new ImageView(Assets.getIconNew(newValue + ".png", 32));

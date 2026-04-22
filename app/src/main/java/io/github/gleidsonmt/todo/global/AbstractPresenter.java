@@ -21,8 +21,6 @@ public class AbstractPresenter<T extends Model> implements Presenter<T> {
 
     protected AbstractDao<T> dao;
 
-    private boolean isLoaded = false;
-
     public AbstractPresenter(AbstractDao<T> dao) {
         this.dao = dao;
     }
