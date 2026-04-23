@@ -8,6 +8,7 @@ import io.github.gleidsonmt.glad.controls.button.Button;
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import io.github.gleidsonmt.todo.model.List;
+import io.github.gleidsonmt.todo.model.ListType;
 import io.github.gleidsonmt.todo.utils.Assets;
 import io.github.gleidsonmt.todo.view.panel.input.InputField;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
@@ -95,6 +96,11 @@ public class Panel extends Container {
 
             if (newValue.getIconName() != null) {
                 if (newValue.isFixed()) {
+                    if (newValue.getType().equals(ListType.DAILY)) {
+                        textInfo(true);
+                    } else {
+                        textInfo(false);
+                    }
                     icon.set(new SVGIcon(Icon.valueOf(newValue.getIconName().toUpperCase()), 1.5));
                 } else {
                     icon.set(new ImageView(Assets.getIcon(newValue.getIconName() + ".png", 32)));
@@ -201,10 +207,21 @@ public class Panel extends Container {
         return regionLimit;
     }
 
-    private GridPane createHeader() {
-        GridPane grid = new GridPane();
+    private final Text info = new Text(DateTimeFormatter.ofPattern("EEEE, dd LLLL").format(LocalDate.now()));
 
-        Text info = new Text(DateTimeFormatter.ofPattern("EEEE, dd LLLL").format(LocalDate.now()));
+    private void textInfo(boolean active) {
+        if (active) {
+            GridPane.setColumnSpan(info, 2);
+            GridPane.setRowIndex(info, 1);
+            bar.getChildren().add(info);
+        } else {
+            bar.getChildren().remove(info);
+        }
+    }
+
+    private GridPane createHeader() {
+
+        GridPane grid = new GridPane();
 
         title.getStyleClass().addAll("text-accent", "h2", "bold");
 
@@ -233,7 +250,6 @@ public class Panel extends Container {
         grid.setMaxHeight(15);
         StackPane.setMargin(grid, new Insets(0, 20, 20, 20));
         StackPane.setAlignment(grid, Pos.TOP_LEFT);
-        GridPane.setColumnSpan(info, 2);
 
         // actualList.addListener((observable, oldValue, newValue) -> {
         // if (newValue.getType().equals(ListType.DAILY)) {
