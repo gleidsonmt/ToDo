@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 
 import io.github.gleidsonmt.glad.base.responsive.Container;
 import io.github.gleidsonmt.glad.controls.button.Button;
+import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import io.github.gleidsonmt.todo.model.List;
 import io.github.gleidsonmt.todo.utils.Assets;
@@ -62,9 +63,11 @@ public class Panel extends Container {
     private final TextField title = new TextField("Title");
 
     private final ObjectProperty<ListViewModel> actualList = new SimpleObjectProperty<>();
-    // The actual list in the editor at the momment.
+    // The actual list in the editor at the moment.
 
     private final StringProperty iconName = new SimpleStringProperty();
+    private final ObjectProperty<Node> icon = new SimpleObjectProperty<>();
+
 
     public Panel() {
         this.scroll = createScroll();
@@ -74,6 +77,7 @@ public class Panel extends Container {
 
         title.setOnMouseClicked(e -> title.requestFocus());
         title.getStyleClass().add("inside-field");
+
         title.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (actualList.get().isFixed()) return;
             if (!newValue) {
@@ -88,10 +92,18 @@ public class Panel extends Container {
         actualListProperty().addListener((observable, oldValue, newValue) -> {
             title.setEditable(!newValue.isFixed());
             title.setText(newValue.getName());
+
+            if (newValue.getIconName() != null) {
+                if (newValue.isFixed()) {
+                    icon.set(new SVGIcon(Icon.valueOf(newValue.getIconName().toUpperCase()), 1.5));
+                } else {
+                    icon.set(new ImageView(Assets.getIcon(newValue.getIconName() + ".png", 32)));
+                }
+            }
+
         });
 
-        ObjectProperty<Node> icon = new SimpleObjectProperty<>(new SVGIcon());
-        bar.getChildren().add(icon.get());
+//        bar.getChildren().add(icon.get());
 
     }
 
@@ -197,18 +209,20 @@ public class Panel extends Container {
         title.getStyleClass().addAll("text-accent", "h2", "bold");
 
         title.setStyle("-fx-text-fill: -fx-accent; ");
+        GridPane.setHgrow(title, Priority.ALWAYS);
 
-        iconName.addListener((observable, oldValue, newValue) -> {
+        icon.addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                grid.getChildren().removeLast();
-                var icon = new ImageView(Assets.getIcon(newValue + ".png", 32));
-                grid.getChildren().add(icon);
-                GridPane.setColumnIndex(icon, 0);
+                grid.getChildren().remove(oldValue);
+                if (!getChildren().contains(newValue)) {
+                    grid.getChildren().add(newValue);
+                }
+                GridPane.setColumnIndex(newValue, 0);
                 GridPane.setColumnIndex(title, 1);
             } else {
                 GridPane.setColumnIndex(title, 0);
+                grid.getChildren().removeLast();
             }
-            GridPane.setHgrow(title, Priority.ALWAYS);
         });
 
         grid.setHgap(5);
