@@ -46,6 +46,7 @@ public class App extends Application {
 
         Logger.getGlobal().setLevel(Level.parse(level));
         handler.setLevel(Level.parse(level));
+
     }
 
     @Override

@@ -21,13 +21,16 @@ public final class DaoList extends AbstractDao<List> {
 
     @Override
     protected void prepareElement(PreparedStatement prepare, List model) {
-        try {
+        try
+        {
+            System.out.println("model = " + model.getName());
+
             prepare.setString(1, model.getName());
             prepare.setBoolean(2, model.isFixed());
             prepare.setInt(3, model.getSize());
             prepare.setString(4, model.getIconName());
             // prepare.setBoolean(2, model.isFixed());
-        } catch (SQLException e) {
+        } catch(SQLException e){
             throw new RuntimeException(e);
         }
     }

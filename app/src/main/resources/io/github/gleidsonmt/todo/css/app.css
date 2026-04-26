@@ -647,15 +647,44 @@ Panel {
 }
 
 .inside-field:hover {
-    -fx-background-color: -light-gray-2;
-}
-
-.inside-field:hover {
     -fx-cursor: hand;
-    -fx-background-color: -light-gray-2;
+    -fx-background-color: -light-gray;
 }
 
 .inside-field {
     -fx-border-color: transparent;
 }
 
+.icon-grid {
+    -fx-background-color: -fx-background;
+    -fx-border-color: -medium-gray;
+    -fx-hgap: 15px;
+    -fx-vgap: 5px;
+    -fx-padding: 15px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+}
+.icon-grid .label:hover {
+    -fx-cursor: hand;
+}
+
+.icon-grid .label:hover .image-view {
+    -fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;
+    -fx-border-color: red;
+}
+
+.icon-label:disabled {
+    -fx-opacity: 1.0;
+}
+
+.icon-label {
+    -fx-content-display: graphic-only;
+    -fx-padding: 5px 6px 5px 6px ;
+    -fx-alignment: center;
+}
+.icon-label:hover {
+    -fx-background-color: -light-gray;
+    -fx-background-radius: 10px;
+    -fx-cursor: hand;
+}

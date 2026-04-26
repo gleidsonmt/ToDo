@@ -32,6 +32,14 @@ public class SideNav extends VBox {
         init();
         configLayout();
         bind();
+        registerListener();
+    }
+
+    private void registerListener() {
+        group.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+
+        });
+
     }
 
     private void init() {

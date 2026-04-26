@@ -1,38 +1,34 @@
 package io.github.gleidsonmt.todo.view.panel;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-
+import io.github.gleidsonmt.glad.base.Root;
 import io.github.gleidsonmt.glad.base.responsive.Container;
 import io.github.gleidsonmt.glad.controls.button.Button;
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
-import io.github.gleidsonmt.todo.model.List;
 import io.github.gleidsonmt.todo.model.ListType;
 import io.github.gleidsonmt.todo.utils.Assets;
+import io.github.gleidsonmt.todo.utils.IconUtils;
+import io.github.gleidsonmt.todo.view.nav.SideNav;
 import io.github.gleidsonmt.todo.view.panel.input.InputField;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
-import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
+import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Description: The main panel for the main view.
@@ -67,10 +63,11 @@ public class Panel extends Container {
     // The actual list in the editor at the moment.
 
     private final StringProperty iconName = new SimpleStringProperty();
+    private final Label label;
     private final ObjectProperty<Node> icon = new SimpleObjectProperty<>();
 
-
     public Panel() {
+        this.label = createLabelIcon();
         this.scroll = createScroll();
         this.container = createContainer();
         this.bar = createHeader();
@@ -78,6 +75,8 @@ public class Panel extends Container {
 
         title.setOnMouseClicked(e -> title.requestFocus());
         title.getStyleClass().add("inside-field");
+
+        label.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 
         title.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (actualList.get().isFixed()) return;
@@ -90,27 +89,56 @@ public class Panel extends Container {
         });
         configLayout();
 
-        actualListProperty().addListener((observable, oldValue, newValue) -> {
-            title.setEditable(!newValue.isFixed());
-            title.setText(newValue.getName());
 
-            if (newValue.getIconName() != null) {
-                if (newValue.isFixed()) {
-                    if (newValue.getType().equals(ListType.DAILY)) {
-                        textInfo(true);
-                    } else {
-                        textInfo(false);
-                    }
-                    icon.set(new SVGIcon(Icon.valueOf(newValue.getIconName().toUpperCase()), 1.5));
-                } else {
-                    icon.set(new ImageView(Assets.getIcon(newValue.getIconName() + ".png", 32)));
-                }
-            }
 
+        this.iconName.addListener((observable, oldValue, newValue) -> {
+            updateIcon(!title.isEditable(), newValue);
         });
 
-//        bar.getChildren().add(icon.get());
+        actualListProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == null) return;
+            label.setDisable(newValue.isFixed());
+            title.setEditable(!newValue.isFixed());
+            textInfo(newValue.getType().equals(ListType.DAILY));
+            title.setText(newValue.getName());
 
+        });
+    }
+
+    private void updateIcon(boolean svg, String iconName) {
+        if (svg) {
+            icon.set(new SVGIcon(Icon.valueOf(iconName.toUpperCase()), 1.5));
+        } else {
+            icon.set(new ImageView(Assets.getIcon(iconName + ".png", 32)));
+
+        }
+    }
+
+    private Label createLabelIcon() {
+        var label = new Label();
+        label.getStyleClass().add("icon-label");
+        label.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> showIconChoose());
+        return label;
+    }
+
+    private void showIconChoose() {
+        IconGrid grid = new IconGrid();
+        grid.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            ( (ImageView) icon.get() ).setImage(newValue);
+            actualList.get().setIconName(IconUtils.getIconName(newValue));
+            actualList.get().update();
+        });
+        Root root = (Root) getScene().getRoot();
+        root.flow()
+                .content(grid)
+                .width(200)
+                .pos(Pos.BOTTOM_LEFT)
+                .insets(new Insets(0, 0, 10, 100))
+                .show((Region) icon.get().getParent());
+
+        grid.setOnMouseExited(e -> {
+            root.flow().hide();
+        });
     }
 
     /**
@@ -211,8 +239,10 @@ public class Panel extends Container {
 
     private void textInfo(boolean active) {
         if (active) {
+            GridPane.setColumnIndex(info, 1);
             GridPane.setColumnSpan(info, 2);
             GridPane.setRowIndex(info, 1);
+            info.setTranslateX(15);
             bar.getChildren().add(info);
         } else {
             bar.getChildren().remove(info);
@@ -228,24 +258,10 @@ public class Panel extends Container {
         title.setStyle("-fx-text-fill: -fx-accent; ");
         GridPane.setHgrow(title, Priority.ALWAYS);
 
-        icon.addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                grid.getChildren().remove(oldValue);
-                if (!getChildren().contains(newValue)) {
-                    grid.getChildren().add(newValue);
-                }
-                GridPane.setColumnIndex(newValue, 0);
-                GridPane.setColumnIndex(title, 1);
-            } else {
-                GridPane.setColumnIndex(title, 0);
-                grid.getChildren().removeLast();
-            }
-        });
-
-        grid.setHgap(5);
+        grid.add(label, 0, 0);
         grid.add(title, 1, 0);
 
-//        svgIcon.setScale(1.8);
+        label.graphicProperty().bind(icon);
 
         grid.setMaxHeight(15);
         StackPane.setMargin(grid, new Insets(0, 20, 20, 20));

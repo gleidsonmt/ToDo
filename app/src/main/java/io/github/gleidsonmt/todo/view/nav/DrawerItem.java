@@ -28,17 +28,17 @@ import javafx.scene.layout.*;
  * Created On: Mar 20, 2026
  */
 public class DrawerItem extends ToggleButton {
-    // Testing
-    private final ObjectProperty<Node> icon;
     // Components
     private final Pane iconSelector = new Pane();
     private final TextField title = new TextField();
     private final Label number = new Label();
+    private final Label label = new Label();
     // Containers
     private final GridPane container = new GridPane();
     // Properties
     private final IntegerProperty numberOfNotifications = new SimpleIntegerProperty(0);
     private final BooleanProperty editable = new SimpleBooleanProperty(false);
+    private final ObjectProperty<Node> icon;
     // Models
     private final ListViewModel viewModel;
 
@@ -47,10 +47,11 @@ public class DrawerItem extends ToggleButton {
         this.icon = new SimpleObjectProperty<>();
 
         if (viewModel.isFixed()) {
-            this.icon.set(new SVGIcon(Icon.valueOf(viewModel.getIconName().toUpperCase())));
-        } else if (viewModel.getIconName() != null && !viewModel.getIconName().isEmpty()) {
-            this.icon.set(new ImageView(Assets.getIcon(viewModel.getIconName() + ".png")));
-        } else this.icon.set(new SVGIcon(Icon.CHECK_LIST));
+            icon.set(new SVGIcon(Icon.valueOf(viewModel.getIconName().toUpperCase())));
+        } else {
+            icon.set(new ImageView(Assets.getIcon(viewModel.getIconName().toLowerCase() + ".png")));
+        }
+
 
         this.setGraphic(container);
 
@@ -73,13 +74,15 @@ public class DrawerItem extends ToggleButton {
         this.getStyleClass().addAll("custom-drawer-item");
         container.getStyleClass().addAll("list-container");
         title.getStyleClass().addAll("font-instagram-medium", "h5");
-        number.getStyleClass().addAll( "h5", "bold");
+        number.getStyleClass().addAll("h5", "bold");
         number.setStyle("-fx-font-weight: bold; -fx-fill: -fx-accent;");
 
         iconSelector.setMaxSize(5, 30);
         iconSelector.getStyleClass().add("icon-selector");
 
-        container.getChildren().setAll(iconSelector, icon.get(), title, number);
+        label.getStyleClass().add("label-icon");
+
+        container.getChildren().setAll(iconSelector, label, title, number);
     }
 
     private void configLayout() {
@@ -88,8 +91,8 @@ public class DrawerItem extends ToggleButton {
 
         GridPane.setColumnIndex(iconSelector, 0);
         GridPane.setHalignment(iconSelector, HPos.LEFT);
-        GridPane.setColumnIndex(getIcon(), 1);
-        GridPane.setHalignment(getIcon(), HPos.CENTER);
+        GridPane.setColumnIndex(label, 1);
+        GridPane.setHalignment(label, HPos.CENTER);
         GridPane.setColumnIndex(title, 2);
         GridPane.setColumnIndex(number, 3);
         //
@@ -118,6 +121,7 @@ public class DrawerItem extends ToggleButton {
     }
 
     private void bind() {
+        label.graphicProperty().bind(icon);
         number.textProperty().bind(Bindings.convert(this.numberOfNotifications));
         number.visibleProperty().bind(this.numberOfNotifications.greaterThan(0));
         this.title.textProperty().bindBidirectional(viewModel.nameProperty());
@@ -146,6 +150,14 @@ public class DrawerItem extends ToggleButton {
                 viewModel.setName(this.title.getText());
                 this.setEditable(false);
                 this.getViewModel().update();
+            }
+        });
+
+        viewModel.iconNameProperty().addListener((_, _, newValue) -> {
+            if (getViewModel().isFixed()) {
+                icon.set(new SVGIcon(Icon.valueOf(newValue.toUpperCase()), 1.5));
+            } else {
+                icon.set(new ImageView(Assets.getIcon(newValue + ".png")));
             }
         });
     }

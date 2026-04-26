@@ -129,7 +129,9 @@ public class MainView extends Container implements Layout {
 
         panel.actualListProperty().bind(sideNav.itemSelectedProperty().map(DrawerItem::getViewModel));
 
-//        panel.titleIconNameProperty().bind(Bindings.selectString(sideNav.itemSelectedProperty(), "viewModel", "iconName"));
+        panel.titleIconNameProperty().bind(Bindings.selectString(sideNav.itemSelectedProperty(), "viewModel", "iconName"));
+
+//        panel.titleProperty().bind(Bindings.selectString(sideNav.itemSelectedProperty(), "viewModel", "name"));
 
         listRoot.actualListProperty().bind(Bindings.select(sideNav.itemSelectedProperty(), "viewModel"));
 

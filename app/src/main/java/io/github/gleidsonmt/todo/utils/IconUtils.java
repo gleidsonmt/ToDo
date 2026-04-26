@@ -3,7 +3,9 @@ package io.github.gleidsonmt.todo.utils;
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import io.github.gleidsonmt.todo.model.List;
+import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import javafx.scene.Node;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 /**
@@ -21,5 +23,20 @@ public class IconUtils {
             node = new ImageView(Assets.getIcon(list.getIconName() + ".png"));
         } else node = new SVGIcon(Icon.CHECK_LIST);
         return node;
+    }
+
+    public static Node getIcon(ListViewModel list) {
+        Node node;
+        if (list.isFixed()) {
+            node = new SVGIcon(Icon.valueOf(list.getIconName().toUpperCase()));
+        } else if (list.getIconName() != null && !list.getIconName().isEmpty()) {
+            node = new ImageView(Assets.getIcon(list.getIconName() + ".png"));
+        } else node = new SVGIcon(Icon.CHECK_LIST);
+        return node;
+    }
+
+    public static String getIconName(Image image) {
+        return image.getUrl().substring(image.getUrl().lastIndexOf("/") + 1).replaceAll("\\.(?:png|jpg)$", "");
+//        return new SVGIcon(Icon.valueOf(iconName.toUpperCase()));
     }
 }
