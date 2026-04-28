@@ -1,5 +1,8 @@
 package io.github.gleidsonmt.todo.utils;
 
+import com.dlsc.gemsfx.SVGImageView;
+import com.github.weisj.jsvg.SVGDocument;
+import com.github.weisj.jsvg.parser.SVGLoader;
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ResourceList;
 import io.github.classgraph.ScanResult;
@@ -8,6 +11,7 @@ import javafx.scene.image.Image;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -19,25 +23,14 @@ import java.util.Optional;
  */
 public class Assets {
 
-    public static Image getIcon(String iconName) {
-        return getIcon(iconName, 20);
-    }
+    private static final String path = "/io/github/gleidsonmt/todo";
 
-    public static Image getIcon(String iconName, int size) {
-        try {
-            Optional<Image> icon = getAllIcons(size).stream().filter(el -> el.getUrl().endsWith(iconName)).findFirst();
-            return icon.orElse(null);
-        } catch (IOException | URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static List<Image> getAllIcons(int size) throws IOException, URISyntaxException {
+    public static List<SVGImageView> getAllIcons(int size) {
         // Defina o caminho relativo à raiz do classpath
-        String path = "/io/github/gleidsonmt/todo/icons";
-        List<Image> images = new ArrayList<>();
+        String _path = path + "/svg";
+        List<SVGImageView> svgs = new ArrayList<>();
         try (ScanResult scanResult = new ClassGraph()
-                .acceptPaths(path) // Limita o scan apenas a essa pasta
+                .acceptPaths(_path) // Limita o scan apenas a essa pasta
                 .scan()) {
 
             // Obtém todos os recursos dentro do caminho especificado
@@ -45,16 +38,35 @@ public class Assets {
 
             // Filtra e processa apenas imagens (opcional, dependendo da extensão)
             resources.filter(resource ->
-                    (resource.getPath().endsWith(".png") ||
-                     resource.getPath().endsWith(".jpg"))
+                    resource.getPath().endsWith(".svg")
             ).forEach(resource -> {
-                Image image = new Image(resource.getURL().toExternalForm(), size, size, true, true);
-                images.add(image);
+                SVGImageView imageView = new SVGImageView(resource.getURL().toExternalForm());
+                imageView.setPreserveRatio(true);
+                imageView.setFitHeight(size);
+                imageView.setFitWidth(size);
+
+                imageView.setSmooth(true);
+                svgs.add(imageView);
                 // Para carregar o conteúdo:
                 // InputStream is = resource.open();
             });
         }
-        return images;
+        return svgs;
+    }
+
+    public static SVGImageView getIcon(String name) {
+        return getIcon(name, 32);
+    }
+
+    public static SVGImageView getIcon(String iconName, int size) {
+        URL resource = App.class.getResource("svg/" + iconName + ".svg");
+        SVGImageView imageView = new SVGImageView(Objects.requireNonNull(resource).toExternalForm());
+        imageView.setPreserveRatio(true);
+        imageView.setFitHeight(size);
+        imageView.setFitWidth(size);
+
+        imageView.setSmooth(true);
+        return imageView;
     }
 
     public static String getCss(String name) {

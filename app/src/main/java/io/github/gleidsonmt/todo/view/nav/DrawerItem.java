@@ -49,7 +49,8 @@ public class DrawerItem extends ToggleButton {
         if (viewModel.isFixed()) {
             icon.set(new SVGIcon(Icon.valueOf(viewModel.getIconName().toUpperCase())));
         } else {
-            icon.set(new ImageView(Assets.getIcon(viewModel.getIconName().toLowerCase() + ".png")));
+//            icon.set(new ImageView(Assets.getIcon(viewModel.getIconName().toLowerCase() + ".png")));
+            icon.set(Assets.getIcon(viewModel.getIconName().toLowerCase() , 22));
         }
 
 
@@ -157,7 +158,7 @@ public class DrawerItem extends ToggleButton {
             if (getViewModel().isFixed()) {
                 icon.set(new SVGIcon(Icon.valueOf(newValue.toUpperCase()), 1.5));
             } else {
-                icon.set(new ImageView(Assets.getIcon(newValue + ".png")));
+                icon.set(Assets.getIcon(newValue , 22));
             }
         });
     }
