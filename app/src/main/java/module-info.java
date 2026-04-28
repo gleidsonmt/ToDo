@@ -30,6 +30,7 @@ module io.github.gleidsonmt.todo {
     requires org.jspecify;
     requires io.github.classgraph;
     requires java.prefs;
+    requires mysql.connector.j;
 
     opens io.github.gleidsonmt.todo to javafx.graphics, javafx.fxml, java.sql;
     opens io.github.gleidsonmt.todo.view to javafx.graphics, javafx.fxml, java.sql;

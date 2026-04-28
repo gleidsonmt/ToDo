@@ -8,7 +8,6 @@ import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import io.github.gleidsonmt.todo.model.ListType;
 import io.github.gleidsonmt.todo.utils.Assets;
 import io.github.gleidsonmt.todo.utils.IconUtils;
-import io.github.gleidsonmt.todo.view.nav.SideNav;
 import io.github.gleidsonmt.todo.view.panel.input.InputField;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import javafx.beans.property.*;
@@ -21,7 +20,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.BoxBlur;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -89,8 +87,6 @@ public class Panel extends Container {
         });
         configLayout();
 
-
-
         this.iconName.addListener((observable, oldValue, newValue) -> {
             updateIcon(!title.isEditable(), newValue);
         });
@@ -109,8 +105,7 @@ public class Panel extends Container {
         if (svg) {
             icon.set(new SVGIcon(Icon.valueOf(iconName.toUpperCase()), 1.5));
         } else {
-            icon.set(new ImageView(Assets.getIcon(iconName + ".png", 32)));
-
+            icon.set(Assets.getIcon(iconName , 32));
         }
     }
 
@@ -124,7 +119,7 @@ public class Panel extends Container {
     private void showIconChoose() {
         IconGrid grid = new IconGrid();
         grid.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            ( (ImageView) icon.get() ).setImage(newValue);
+//            ( (SVGImageView) icon.get() ).setSvgUrl(IconUtils.getIconName(newValue));
             actualList.get().setIconName(IconUtils.getIconName(newValue));
             actualList.get().update();
         });
