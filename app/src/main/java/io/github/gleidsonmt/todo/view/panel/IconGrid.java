@@ -1,5 +1,7 @@
 package io.github.gleidsonmt.todo.view.panel;
 
+import com.dlsc.gemsfx.SVGImageView;
+import com.github.weisj.jsvg.SVGDocument;
 import io.github.gleidsonmt.todo.utils.Assets;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -20,26 +22,24 @@ import java.net.URISyntaxException;
  */
 public class IconGrid extends GridPane {
 
-    private final ObjectProperty<Image> selected = new SimpleObjectProperty<>();
+    private final ObjectProperty<SVGImageView> selected = new SimpleObjectProperty<>();
 
     int cols = 0;
     int rows = 0;
 
     public IconGrid() {
         getStyleClass().add("icon-grid");
-        try {
-
             // 6
-            Assets.getAllIcons(22).forEach(image -> {
-                Node iconView = new ImageView(image);
-                Label item = new Label(iconView.toString());
-                item.setGraphic(iconView);
+            Assets.getAllIcons(32).forEach(svgView -> {
+                Label item = new Label();
+                item.setGraphic(svgView);
+                svgView.setMouseTransparent(true);
                 item.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
                 getChildren().add(item);
                 GridPane.setColumnIndex(item, cols);
                 GridPane.setRowIndex(item, rows);
 
-                item.setOnMouseClicked(_ -> selected.set(image));
+                item.setOnMouseClicked(_ -> selected.set(svgView));
 
                 cols++;
                 if (cols == 6) {
@@ -47,16 +47,13 @@ public class IconGrid extends GridPane {
                     rows++;
                 }
             });
-        } catch (IOException | URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
     }
 
-    public Image getSelected() {
+    public SVGImageView getSelected() {
         return selected.get();
     }
 
-    public ObjectProperty<Image> selectedProperty() {
+    public ObjectProperty<SVGImageView> selectedProperty() {
         return selected;
     }
 }
