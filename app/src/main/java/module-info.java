@@ -31,6 +31,7 @@ module io.github.gleidsonmt.todo {
     requires io.github.classgraph;
     requires java.prefs;
     requires mysql.connector.j;
+    requires jdk.security.jgss;
 
     opens io.github.gleidsonmt.todo to javafx.graphics, javafx.fxml, java.sql;
     opens io.github.gleidsonmt.todo.view to javafx.graphics, javafx.fxml, java.sql;
@@ -49,5 +50,7 @@ module io.github.gleidsonmt.todo {
     exports io.github.gleidsonmt.todo.model.recurrence;
     opens io.github.gleidsonmt.todo.model.recurrence to javafx.base;
     exports io.github.gleidsonmt.todo.view_model.converter;
+    exports io.github.gleidsonmt.todo.bd.mysql;
+    opens io.github.gleidsonmt.todo.bd.mysql to java.sql, javafx.fxml, javafx.graphics;
 
 }

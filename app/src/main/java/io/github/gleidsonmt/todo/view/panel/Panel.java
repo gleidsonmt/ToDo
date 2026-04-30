@@ -77,6 +77,7 @@ public class Panel extends Container {
         label.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 
         title.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (actualList.get() == null) return;
             if (actualList.get().isFixed()) return;
             if (!newValue) {
                 actualList.get().setName(title.getText());

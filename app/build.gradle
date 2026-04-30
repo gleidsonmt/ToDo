@@ -24,6 +24,7 @@ repositories {
     maven {
         url "https://sandec.jfrog.io/artifactory/repo"
     }
+    maven { url 'https://jitpack.io' }
 }
 
 // ignore all other run projects
@@ -37,29 +38,39 @@ subprojects {
 }
 
 dependencies {
+    // --------------------- Tests ------------------------
+
     // Use JUnit Jupiter for testing.
     testImplementation libs.junit.jupiter
+    // This dependency is used by the application.
+    implementation libs.guava
+
+    // --------------------- Runtime ------------------------
 
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     compileOnly("org.jetbrains:annotations:26.1.0")
     testCompileOnly("org.jetbrains:annotations:26.1.0")
 
-//    testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
-//    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+    // --------------------- External librabries  ------------------------
+//    implementation 'com.github.hervegirod:fxsvgimage:1.7'
 
-    // This dependency is used by the application.
-    implementation libs.guava
+    // Add this for CSS stylesheet support
+//    implementation 'com.github.hervegirod:fxsvgimage:1.7:cssparser'
+
 
     implementation project(":glad")
     implementation 'io.github.classgraph:classgraph:4.8.165'
 
     implementation("org.yaml:snakeyaml:2.5")
 
-    implementation fileTree(dir: 'lib', include: ['*.jar'])
     implementation("com.mysql:mysql-connector-j:9.6.0")
 
 //    implementation 'com.dlsc.gemsfx:gemsfx:3.10.1'
     implementation 'com.dlsc.gemsfx:gemsfx:2.16.0'
+
+    // ------------------ Local libraries --------
+    implementation fileTree(dir: 'lib', include: ['*.jar'])
+
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -82,9 +93,22 @@ application {
     mainModule = 'io.github.gleidsonmt.todo'
 }
 
+
+
 tasks.named('run', JavaExec) {
     args = ['level-off']
 }
+
+//tasks.register('copyAssets', Copy) {
+//    from(layout.projectDirectory.dir('db'))
+////    into(layout.buildDirectory.dir('todo/db'))
+//    into(layout.buildDirectory.dir('jpackage/todo/db'))
+//}
+
+// Faz a cópia acontecer automaticamente antes de rodar o projeto
+//tasks.named('processResources') {
+//    dependsOn(tasks.named('copyAssets'))
+//}
 
 tasks.register('debug') {
     group = 'application'
@@ -139,7 +163,7 @@ tasks.register('info') {
 tasks.register('config') {
     group = 'logger'
     tasks.run.configure {
-        args = ['logger', 'config']
+        args = ['logger', 'level-config']
     }
     dependsOn 'run'
 }

@@ -1,21 +1,16 @@
 package io.github.gleidsonmt.todo.utils;
 
 import com.dlsc.gemsfx.SVGImageView;
-import com.github.weisj.jsvg.SVGDocument;
-import com.github.weisj.jsvg.parser.SVGLoader;
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ResourceList;
 import io.github.classgraph.ScanResult;
 import io.github.gleidsonmt.todo.App;
 import javafx.scene.image.Image;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
@@ -83,4 +78,6 @@ public class Assets {
         return new Image(Objects.requireNonNull(App.class.getResource("img/" + name)).toExternalForm(), size, size,
                 true, true);
     }
+
+
 }

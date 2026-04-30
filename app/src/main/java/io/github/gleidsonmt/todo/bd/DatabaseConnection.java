@@ -1,16 +1,13 @@
 package io.github.gleidsonmt.todo.bd;
 
-import io.github.gleidsonmt.todo.App;
+import io.github.gleidsonmt.todo.bd.mysql.Setup;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Contract;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
 import java.util.Properties;
 import java.util.TimeZone;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -37,45 +34,27 @@ public enum DatabaseConnection {
     private final Logger logger = Logger.getGlobal();
 
     DatabaseConnection() {
-        Properties properties = new Properties();
-        try {
-            // Loading properties
-            InputStream file = App.class.getResourceAsStream("properties/db.properties");
+        Properties properties = Setup.getDatabaseProperties();
 
-            if (file == null) {
-                logger.severe("File properties/db.properties not found");
-                throw new RuntimeException("File properties/db.properties not found.");
-            }
+        this.driver = properties.get("driver").toString();
+        String database = properties.get("database").toString();
+        port = Integer.parseInt(properties.get("port").toString()); // port-number
 
-            properties.load(file);
+        host = properties.get("host") + ":" + port; // ex. localhost:3306
+        this.user = properties.get("user").toString();
+        this.password = properties.get("password").toString();
 
-            if (properties.isEmpty()) {
-                logger.severe("File propertis/db.properties is empty");
-                throw new RuntimeException("Loading database properties");
-            }
+        String timeZone = String.valueOf(TimeZone.getDefault().toZoneId());
+        this.url = "jdbc:mysql://" + host + "/" + database
+                   + "?useUnicode=true&allowPublicKeyRetrieval=true&useSSL=false&characterEncoding=utf8&serverTimezone="
+                   + timeZone;
 
-            this.driver = properties.get("driver").toString();
-            String database = properties.get("database").toString();
-            port = Integer.parseInt(properties.get("port").toString()); // port-number
-
-            host = properties.get("host") + ":" + port; // ex. localhost:3306
-            this.user = properties.get("user").toString();
-            this.password = properties.get("password").toString();
-
-            String timeZone = String.valueOf(TimeZone.getDefault().toZoneId());
-            this.url = "jdbc:mysql://" + host + "/" + database
-                       + "?useUnicode=true&allowPublicKeyRetrieval=true&useSSL=false&characterEncoding=utf8&serverTimezone="
-                       + timeZone;
-            logger.config("Loaded database properties");
-        } catch (IOException e) {
-            logger.severe("Some of the properties are missing or invalid");
-            throw new RuntimeException(e);
-        }
     }
 
 
     public boolean connect() {
         try {
+            logger.config("Connecting to database...");
             System.setProperty("jdbc.Driver", driver);
             Class.forName(driver).getDeclaredConstructor().newInstance();
             connection = DriverManager.getConnection(url, user, password);
@@ -85,7 +64,12 @@ public enum DatabaseConnection {
             }
         } catch (IllegalAccessException | InstantiationException | ClassNotFoundException | SQLException
                  | InvocationTargetException | NoSuchMethodException e) {
-            logger.severe("Failed to connect with db. Some of the properties are missing or invalid.");
+
+            if (e instanceof SQLException) {
+                logger.warning("Failed to connect with db.");
+            } else {
+                Logger.getGlobal().severe("Error on connecting to database, some of the properties are missing or invalid:" + e.getMessage() );
+            }
         }
         return false;
     }

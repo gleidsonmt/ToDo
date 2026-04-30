@@ -6,17 +6,12 @@ import io.github.gleidsonmt.glad.theme.Font;
 import io.github.gleidsonmt.glad.theme.ThemeProvider;
 import io.github.gleidsonmt.todo.bd.DatabaseConnection;
 import io.github.gleidsonmt.todo.global.Global;
-import io.github.gleidsonmt.todo.global.UserPresenter;
 import io.github.gleidsonmt.todo.logger.LogFormatter;
-import io.github.gleidsonmt.todo.model.User;
 import io.github.gleidsonmt.todo.utils.Assets;
-import io.github.gleidsonmt.todo.view.MainView;
-import io.github.gleidsonmt.todo.view.login.HomeLayout;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.util.Optional;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,6 +25,7 @@ import java.util.logging.Logger;
 public class App extends Application {
 
     private DatabaseConnection connection;
+
 
     @Override
     public void init() throws Exception {
@@ -46,23 +42,26 @@ public class App extends Application {
 
         Logger.getGlobal().setLevel(Level.parse(level));
         handler.setLevel(Level.parse(level));
+//        Logger.getGlobal().setLevel(Level.FINEST);
+//        handler.setLevel(Level.FINEST);
+
 
     }
 
     @Override
     public void stop() {
-        Logger.getGlobal().info("Application is stopping...");
-        if (connection.hasConnection())
-            connection.close();
+        System.exit(0);
+//        Logger.getGlobal().info("Application is stopping...");
+//        if (connection.hasConnection())
+//            connection.close();
     }
 
     @Override
     public void start(Stage stage) throws Exception {
-        this.connection = DatabaseConnection.INSTANCE;
 
-        UserPresenter presenter = (UserPresenter) Global.get(User.class);
-        Optional<User> user = presenter.getLogged();
-        Root root = new Root(user.isPresent() ? new MainView(user.get()) : new HomeLayout());
+        LoaderView loaderView = new LoaderView();
+        Root root = new Root(loaderView);
+
         Scene scene = new Scene(root, 1200, 728);
         ThemeProvider.install(scene, Css.ALL, Font.INSTAGRAM);
         scene.getStylesheets().add(Assets.getCss("app.css"));
@@ -74,11 +73,12 @@ public class App extends Application {
         stage.setScene(scene);
         stage.show();
 
-        if (Global.getPreferences().getBoolean("nodeAnalyze", false)) {
-            Tools.analyzeNodes(scene);
-        }
-        if (Global.getPreferences().getBoolean("listenCss", false)) {
-            Tools.listenCss(scene);
-        }
+//        if (Global.getPreferences().getBoolean("nodeAnalyze", false)) {
+//            Tools.analyzeNodes(scene);
+//        }
+//        if (Global.getPreferences().getBoolean("listenCss", false)) {
+//            Tools.listenCss(scene);
+//        }
+
     }
 }

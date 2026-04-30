@@ -8,5 +8,6 @@ build
 gradle
 .vscode
 app/.gradle
+db
 bin
 app/scenicView.properties
