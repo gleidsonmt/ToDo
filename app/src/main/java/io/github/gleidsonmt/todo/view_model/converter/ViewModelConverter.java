@@ -14,9 +14,4 @@ public abstract class ViewModelConverter<T extends Model, E extends ViewModel> {
 
     public abstract T toModel(E model);
 
-
-//    public ToDoTask convert(TaskViewModel model) {
-//        return create(model.getId(), model.getName(), model.isCompleted(), model.isImportant(),
-//                model.isMyDay(), model.getDueDate(), model.getRemind(), model.getCreatedAt(), model.getListId());
-//    }
 }

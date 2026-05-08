@@ -13,6 +13,7 @@ import io.github.gleidsonmt.todo.view_model.ListViewModel;
  */
 public class ListViewModelConverter extends ViewModelConverter<List, ListViewModel> {
 
+    @Deprecated
     public List convert(ListViewModel model) {
 
         return create(model.getId(),
@@ -22,6 +23,7 @@ public class ListViewModelConverter extends ViewModelConverter<List, ListViewMod
                 model.getIconName());
     }
 
+    @Deprecated
     public List create(long id, String name, boolean fixed, int size, String iconName) {
         return new List(id, name, fixed, size, iconName);
     }
@@ -33,9 +35,14 @@ public class ListViewModelConverter extends ViewModelConverter<List, ListViewMod
 
     @Override
     public List toModel(ListViewModel model) {
+        var _name = "";
+        if (model.isFixed()) {
+            _name = model.getKeyName();
+        } else _name = model.getName();
+
         return new List(
                 model.getId(),
-                model.getName(),
+                _name,
                 model.isFixed(),
                 model.getNumberOfTasks(),
                 model.getIconName()

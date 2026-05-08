@@ -2,6 +2,7 @@ package io.github.gleidsonmt.todo.view_model.converter;
 
 import io.github.gleidsonmt.todo.model.ToDoTask;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
+import org.jspecify.annotations.NonNull;
 
 /**
  * Description:
@@ -19,7 +20,7 @@ public class TaskViewModelConverter extends ViewModelConverter<ToDoTask, TaskVie
     }
 
     @Override
-    public ToDoTask toModel(TaskViewModel model) {
+    public ToDoTask toModel(@NonNull TaskViewModel model) {
         return new ToDoTask(
                 model.getId(),
                 model.getName(),

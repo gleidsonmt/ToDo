@@ -23,8 +23,6 @@ public final class DaoList extends AbstractDao<List> {
     protected void prepareElement(PreparedStatement prepare, List model) {
         try
         {
-            System.out.println("model = " + model.getName());
-
             prepare.setString(1, model.getName());
             prepare.setBoolean(2, model.isFixed());
             prepare.setInt(3, model.getSize());

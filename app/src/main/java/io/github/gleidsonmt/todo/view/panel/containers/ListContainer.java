@@ -1,8 +1,5 @@
 package io.github.gleidsonmt.todo.view.panel.containers;
 
-import java.util.Comparator;
-
-import io.github.gleidsonmt.todo.model.ToDoTask;
 import io.github.gleidsonmt.todo.view.panel.items.TaskItem;
 import io.github.gleidsonmt.todo.view.panel.sections.Comparators;
 import io.github.gleidsonmt.todo.view.panel.sections.EmptySection;
@@ -15,7 +12,6 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -23,6 +19,8 @@ import javafx.event.EventHandler;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+
+import java.util.Comparator;
 
 /**
  * Description: The core of the list container.
@@ -50,7 +48,6 @@ public abstract class ListContainer extends VBox {
      * Constructor
      *
      * @param list The filtered list.
-     * @param data The core list.
      */
     // public ListContainer(List list, ObservableList<ToDoTask> data) {
     public ListContainer(ListViewModel list) {
@@ -81,7 +78,7 @@ public abstract class ListContainer extends VBox {
     private Comparator<TaskViewModel> switchComparator(Comparators comparator) {
         switch (comparator) {
             case ALPHABETICALLY -> {
-                return createAlphaticallyComporator();
+                return createAlphabeticallyComparator();
             }
             case IMPORTANCE -> {
                 return createImportanceComparator();
@@ -90,7 +87,7 @@ public abstract class ListContainer extends VBox {
         }
     }
 
-    private Comparator<TaskViewModel> createAlphaticallyComporator() {
+    private Comparator<TaskViewModel> createAlphabeticallyComparator() {
         return (TaskViewModel o1, TaskViewModel o2) -> o2.getName().compareToIgnoreCase(o1.getName());
     }
 
@@ -136,11 +133,11 @@ public abstract class ListContainer extends VBox {
     }
 
     /**
-     * Create UI component based on domain object.
-     * Store this object in db using view model.
+     * Create a UI component based on a domain object.
+     * Store this object in db using the view model.
      * Add the task with id settled to the data list.
      *
-     * @param task The object model to create an UI Component.
+     * @param viewModel The object model to create an UI Component.
      */
     public void add(TaskViewModel viewModel) {
         viewModel.save();
@@ -160,5 +157,4 @@ public abstract class ListContainer extends VBox {
     public IntegerProperty sizeProperty() {
         return this.size;
     }
-
 }

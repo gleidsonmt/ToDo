@@ -96,7 +96,7 @@ public class ListViewModel extends ViewModel {
 
     public void update() {
         // commit in db
-        var item = converter.convert(this);
+        var item = converter.toModel(this);
         presenter.update(item);
     }
 

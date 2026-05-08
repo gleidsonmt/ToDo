@@ -53,7 +53,6 @@ public class DrawerItem extends ToggleButton {
             icon.set(Assets.getIcon(viewModel.getIconName().toLowerCase() , 22));
         }
 
-
         this.setGraphic(container);
 
         init();

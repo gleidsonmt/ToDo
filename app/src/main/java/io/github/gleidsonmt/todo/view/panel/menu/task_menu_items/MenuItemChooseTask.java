@@ -37,7 +37,7 @@ public class MenuItemChooseTask extends Menu {
 
             task.getValue().forEach((list) -> {
                 // don't add the option the task is already in
-                if (list.getId() != item.getListId() && (!list.isFixed() || list.getId() == 0)) {
+                if (list.getId() != item.getListId() && (!list.isFixed() || list.getId() == 1)) {
                     // Platform.runLater(() -> {
                     getItems().add(new MenuList(list, item));
                     // });

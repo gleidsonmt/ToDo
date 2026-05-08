@@ -60,6 +60,8 @@ public class MainView extends Container implements Layout {
 
         this.addEventHandler(TaskChangeEvent.MOVED, e -> {
             Logger.getGlobal().info(() -> "[TaskChangeEvent [FILTER], Type = " + e.getEventType() + " ] -> " + e.getModel());
+            System.out.println("e.getActual() = " + e.getActual());
+            System.out.println("e.getPrevious() = " + e.getPrevious());
             if (e.getActual() != e.getPrevious()) {
                 sideNav.get(e.getActual()).addNumberOfTasks(1).update();
                 sideNav.get(e.getPrevious()).addNumberOfTasks(-1).update();
@@ -88,7 +90,6 @@ public class MainView extends Container implements Layout {
             if (e.getModel().isImportant()) {
                 sideNav.get(ListType.IMPORTANT).addNumberOfTasks(!e.getModel().isCompleted() ? 1 : -1).update();
             }
-
         });
     }
 

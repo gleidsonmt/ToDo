@@ -76,16 +76,16 @@ public class DoubleListContainer extends ListContainer {
         this.setSpacing(this.sizeProperty().get() == 0 ? 0 : 10);
 
         this.addEventFilter(TaskChangeEvent.MOVED, (e) -> {
-            logger.info(() -> "[TaskChangeEvent, Type = " + e.getEventType() + " ] -> " + e.getModel() + "");
+            logger.info(() -> "[TaskChangeEvent, Type = " + e.getEventType() + " ] -> " + e.getModel());
             if (e.getActual() != e.getPrevious()) {
-                if (!list.isFixed() || list.getId() == 0) {
+                if (!list.isFixed() || list.getId() == 1) {
                     data.remove(e.getModel());
                 }
             }
         });
 
         this.addEventHandler(TaskChangeEvent.MY_DAY_CHANGED, e -> {
-            logger.info(() -> "[TaskChangeEvent, Type = " + e.getEventType() + " ] -> " + e.getModel() + "");
+            logger.info(() -> "[TaskChangeEvent, Type = " + e.getEventType() + " ] -> " + e.getModel());
             if (getList().getType() == ListType.DAILY) {
                 if (!e.getModel().isMyDay()) {
                     data.remove(e.getModel());
