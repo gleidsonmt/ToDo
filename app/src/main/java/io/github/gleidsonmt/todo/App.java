@@ -75,14 +75,8 @@ public class App extends Application {
         stage.show();
 
         if (Launcher.mode == Mode.DEBUG) {
-            if (Global.getPreferences().getBoolean("nodeAnalyze", true)) {
-                Tools.analyzeNodes(scene);
-            }
-            if (Global.getPreferences().getBoolean("listenCss", false)) {
-                Tools.listenCss(scene);
-            }
+            Tools.analyzeNodes(scene);
+            Tools.listenCss(scene);
         }
-
-
     }
 }
