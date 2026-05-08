@@ -49,10 +49,6 @@ public class Assets {
         return svgs;
     }
 
-    public static SVGImageView getIcon(String name) {
-        return getIcon(name, 32);
-    }
-
     public static SVGImageView getIcon(String iconName, int size) {
         URL resource = App.class.getResource("svg/" + iconName + ".svg");
         SVGImageView imageView = new SVGImageView(Objects.requireNonNull(resource).toExternalForm());

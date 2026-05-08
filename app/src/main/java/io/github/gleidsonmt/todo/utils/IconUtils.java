@@ -4,10 +4,8 @@ import com.dlsc.gemsfx.SVGImageView;
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import io.github.gleidsonmt.todo.model.List;
-import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import javafx.scene.Node;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import org.jspecify.annotations.NonNull;
 
 /**
  *
@@ -16,31 +14,21 @@ import javafx.scene.image.ImageView;
  */
 public class IconUtils {
 
-    public static Node getIcon(List list) {
+    public static @NonNull Node getIcon(List list) {
+        return getIcon(list, 18);
+    }
+
+    public static @NonNull Node getIcon(@NonNull List list, int size) {
         Node node;
         if (list.isFixed()) {
             node = new SVGIcon(Icon.valueOf(list.getIconName().toUpperCase()));
         } else if (list.getIconName() != null && !list.getIconName().isEmpty()) {
-            node = Assets.getIcon(list.getIconName());
+            node = Assets.getIcon(list.getIconName(), size);
         } else node = new SVGIcon(Icon.CHECK_LIST);
         return node;
     }
 
-    public static Node getIcon(ListViewModel list) {
-        Node node;
-        if (list.isFixed()) {
-            node = new SVGIcon(Icon.valueOf(list.getIconName().toUpperCase()));
-        } else if (list.getIconName() != null && !list.getIconName().isEmpty()) {
-            node = Assets.getIcon(list.getIconName());
-        } else node = new SVGIcon(Icon.CHECK_LIST);
-        return node;
-    }
-
-    public static String getIconName(Image image) {
-        return image.getUrl().substring(image.getUrl().lastIndexOf("/") + 1).replaceAll("\\.(?:png|jpg)$", "");
-    }
-
-    public static String getIconName(SVGImageView image) {
+    public static @NonNull String getIconName(@NonNull SVGImageView image) {
         return image.getSvgUrl().substring(image.getSvgUrl().lastIndexOf("/") + 1).replaceAll("\\.(?:svg|jpg)$", "");
     }
 }
