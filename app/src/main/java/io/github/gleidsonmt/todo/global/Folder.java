@@ -29,6 +29,7 @@ import org.jetbrains.annotations.ApiStatus;
 @ApiStatus.Experimental
 public class Folder {
 
+
     private final File avatarFolder;
     private final String separator;
     private String defaultFolder;
@@ -45,10 +46,6 @@ public class Folder {
 
     public String getSeparator() {
         return separator;
-    }
-
-    public String getMysqlBaseDir() {
-        return mysqlBaseDir;
     }
 
     public Folder() {
@@ -97,17 +94,6 @@ public class Folder {
         return null;
     }
 
-    public Runnable createInitFile() {
-        return () -> {
-            Properties properties = Setup.getDatabaseProperties();
-            Path path = Paths.get(mysqlBaseDir + separator + "init.sql");
-            createFileScript(path,
-                    "ALTER USER '" + properties.get("user") + "'@'localhost' IDENTIFIED BY '" + properties.get("password") + "';",
-                    "FLUSH PRIVILEGES;",
-                    "CREATE DATABASE IF NOT EXISTS todo;"
-            );
-        };
-    }
 
     public Runnable createMySQLd() {
         return () -> {
@@ -149,9 +135,9 @@ public class Folder {
         try {
             // Cria e escreve o arquivo (substitui se já existir)
             Files.write(path, List.of(lines));
-            Logger.getGlobal().info("File create successfully: " + path.toAbsolutePath());
+            Logger.getGlobal().info("File create successfully: " + path.getFileName());
         } catch (IOException e) {
-            Logger.getGlobal().severe("Error on creating file: " + path.toAbsolutePath() + "\n" + e.getMessage());
+            Logger.getGlobal().severe("Error on creating file: " + path.getFileName() + "\n" + e.getMessage());
             throw new RuntimeException(e);
         }
     }

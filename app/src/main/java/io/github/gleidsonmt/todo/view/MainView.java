@@ -30,7 +30,7 @@ import java.util.logging.Logger;
 public class MainView extends Container implements Layout {
 
     // the logged user
-    private User user;
+//    private User user;
     // the content layout
     private final BorderPane body;
     // the navigation (drawwer or sidenav)
@@ -39,8 +39,8 @@ public class MainView extends Container implements Layout {
     private final Panel panel;
     private final ListRoot listRoot;
 
-    public MainView(User user) {
-        this.user = user;
+    public MainView() {
+//        this.user = user;
         this.panel = new Panel();
         this.sideNav = new SideNav();
         this.body = new BorderPane();

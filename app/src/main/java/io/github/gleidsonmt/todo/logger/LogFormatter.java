@@ -21,35 +21,43 @@ public class LogFormatter extends Formatter {
     public String format(LogRecord record) {
         StringBuilder builder = new StringBuilder();
 
+        builder.append(ANSI_WHITE);
+
         if (record.getLevel().equals(Level.CONFIG)) {
-            builder.append(ANSI_GREEN);
-        } else if (record.getLevel().equals(Level.FINE)) {
             builder.append(ANSI_PURPLE);
+        } else if (record.getLevel().equals(Level.FINE)) {
+            builder.append(ANSI_CYAN);
         } else if (record.getLevel().equals(Level.WARNING)) {
             builder.append(ANSI_YELLOW);
         } else if (record.getLevel().equals(Level.INFO)) {
-            builder.append(ANSI_CYAN);
+            builder.append(ANSI_BLUE);
         } else if (record.getLevel().equals(Level.SEVERE)) {
             builder.append(ANSI_RED);
         } else if (record.getLevel().equals(Level.FINEST)) {
-            builder.append(ANSI_BLUE);
+            builder.append(ANSI_WHITE);
+        } else if (record.getLevel().equals(Level.FINER)) {
+            builder.append(ANSI_GREEN);
         } else {
             throw new AssertionError();
         }
 
         builder.append("\n");
+        builder.append("[ ").append(record.getLevel()).append(" ]");
 
-        builder.append("[ ").append(record.getLevel()).append("]").append(" ( ")
-                .append("class=")
-                .append(record.getSourceClassName().substring(record.getSourceClassName().lastIndexOf(".") + 1))
-                .append(", method=").append(record.getSourceMethodName()).append(" ) => ");
+        if (record.getLevel() == Level.SEVERE) {
+            builder.append(" ( ")
+                    .append("class=")
+                    .append(record.getSourceClassName().substring(record.getSourceClassName().lastIndexOf(".") + 1))
+                    .append(", method=").append(record.getSourceMethodName()).append(" ) ");
+        }
+        builder.append(ANSI_WHITE).append(" => ");
 
         builder.append(record.getMessage());
 
         if (record.getLevel().equals(Level.CONFIG)) {
-            builder.append("... [ OK ]");
+            builder.append(ANSI_GREEN).append(" [ OK ]").append(ANSI_WHITE);
         } else if (record.getLevel().equals(Level.SEVERE)) {
-            builder.append("... [ FAILED ]");
+            builder.append(ANSI_RED).append(" [ FAILED ]").append(ANSI_WHITE);
         }
 
         builder.append(" ").append(calcDate(record.getMillis()));
@@ -68,7 +76,9 @@ public class LogFormatter extends Formatter {
 
         builder.append(ANSI_RESET);
         System.out.print("\033[H\033[2J");
+        System.out.print(ANSI_RESET);
         System.out.flush();
+
         return builder.toString();
     }
 

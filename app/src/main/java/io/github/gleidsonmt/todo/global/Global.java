@@ -20,7 +20,6 @@ public class Global {
     public static Preferences getPreferences() {
         if (preferences == null) {
             preferences = Preferences.userNodeForPackage(Global.class);
-            System.getProperties().put("preferences", preferences);
         }
         return preferences;
     }

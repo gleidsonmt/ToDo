@@ -17,6 +17,7 @@ public class MySQLScript {
         try {
             Files.deleteIfExists(path);
             Files.write(path, List.of(lines));
+
             Logger.getGlobal().info("File create successfully: " + path.toAbsolutePath());
         } catch (IOException e) {
             Logger.getGlobal().severe("Error on creating file: " + path.toAbsolutePath() + "\n" + e.getMessage());

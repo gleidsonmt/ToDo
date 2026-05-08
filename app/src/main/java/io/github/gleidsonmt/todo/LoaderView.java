@@ -5,7 +5,9 @@ import io.github.gleidsonmt.glad.base.Root;
 import io.github.gleidsonmt.glad.controls.loaders.CircleLoader;
 import io.github.gleidsonmt.glad.controls.loaders.Suspense3DCircle;
 import io.github.gleidsonmt.todo.bd.mysql.Setup;
+import io.github.gleidsonmt.todo.events.LoginEvent;
 import io.github.gleidsonmt.todo.view.MainView;
+import javafx.application.Platform;
 import javafx.beans.property.StringProperty;
 import javafx.scene.layout.StackPane;
 
@@ -16,26 +18,20 @@ import javafx.scene.layout.StackPane;
  */
 public class LoaderView extends StackPane implements Layout {
 
-    private CircleLoader circleLoader = new Suspense3DCircle();
-    private final Setup setup = new Setup();
-
     public LoaderView() {
+        CircleLoader circleLoader = new Suspense3DCircle();
         getChildren().add(circleLoader);
+        Setup setup = new Setup(this);
+        setup.start();
 
         circleLoader.legendProperty().bind(setup.messageProperty());
 
-        setup.setOnSucceeded(_ -> {
-            Root root = (Root) getParent();
-            root.setLayout(new MainView(setup.getValue()));
+        addEventHandler(LoginEvent.LOGIN, _ -> {
+            Platform.runLater(() -> {
+                Root root = (Root) getParent();
+                root.setLayout(new MainView());
+            });
         });
-        new Thread(setup).start();
-    }
 
-    public void updateLegend(String legend) {
-        circleLoader.setLegend(legend);
-    }
-
-    public StringProperty legendProperty() {
-        return circleLoader.legendProperty();
     }
 }

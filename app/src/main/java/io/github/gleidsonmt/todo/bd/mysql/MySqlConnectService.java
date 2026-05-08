@@ -1,44 +1,48 @@
 package io.github.gleidsonmt.todo.bd.mysql;
 
-import io.github.gleidsonmt.todo.bd.DatabaseConnection;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
 import javafx.util.Duration;
+
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 
 /**
  *
  * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
  * Created on  29/04/2026
  */
-public class MySqlConnectService extends ScheduledService<Void> {
+public class MySqlConnectService extends ScheduledService<Boolean> {
 
-    private boolean connected = false;
 
     public MySqlConnectService() {
         setPeriod(Duration.seconds(1));
     }
 
     @Override
-    protected Task<Void> createTask() {
+    protected Task<Boolean> createTask() {
         return new Task<>() {
             @Override
-            protected Void call() {
-                DatabaseConnection connection = DatabaseConnection.INSTANCE;
-                if (!connection.hasConnection()) {
-                    connection.connect();
-                    connected = false;
-                    updateMessage("Trying to connect to database...");
+            protected Boolean call() {
+                if (isPortOpen()) {
+                    return true;
                 } else {
-                    connected = true;
-                    setPeriod(Duration.seconds(20));
-                    updateMessage("Connected to database.");
+                    return false;
                 }
-                return null;
             }
         };
     }
 
-    public boolean isConnected() {
-        return connected;
+
+    private boolean isPortOpen() {
+        try (Socket socket = new Socket()) {
+            // Tenta conectar com um timeout de 1 segundo
+            socket.connect(new InetSocketAddress("localhost", 3308), 1000);
+            return true;
+        } catch (IOException e) {
+            return false; // Porta fechada ou banco offline
+        }
     }
+
 }

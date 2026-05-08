@@ -17,6 +17,7 @@ import java.util.prefs.Preferences;
  */
 public class Launcher extends App {
 
+    public static Mode mode;
 
     public Launcher() {
 //        JavaFx actions INFO
@@ -27,10 +28,9 @@ public class Launcher extends App {
 
     public static void main(String[] args) {
         for (String arg : args) {
-            if (arg.startsWith("level")) Global.getPreferences().put("level", arg.substring("level-".length()));
-            if (arg.equals("nodeAnalyze") || arg.equals("listenCss")) {
-                Global.getPreferences().putBoolean(arg, true);
-            }
+            if (arg.equals("debug") ) mode = Mode.DEBUG;
+            else if (arg.equals("log")) mode = Mode.LOG;
+            else mode = Mode.DEFAULT;
         }
         launch(args);
     }

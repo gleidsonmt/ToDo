@@ -1,12 +1,11 @@
 package io.github.gleidsonmt.todo.bd;
 
-import io.github.gleidsonmt.todo.bd.mysql.Setup;
+import io.github.gleidsonmt.todo.bd.mysql.MySQLProperties;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Contract;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
-import java.util.Properties;
 import java.util.TimeZone;
 import java.util.logging.Logger;
 
@@ -15,7 +14,7 @@ import java.util.logging.Logger;
  * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
  * Created on  20/04/2026
  */
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused"})
 public enum DatabaseConnection {
 
     INSTANCE;
@@ -34,27 +33,27 @@ public enum DatabaseConnection {
     private final Logger logger = Logger.getGlobal();
 
     DatabaseConnection() {
-        Properties properties = Setup.getDatabaseProperties();
+        MySQLProperties properties = MySQLProperties.INSTANCE;
+        properties.read();
 
-        this.driver = properties.get("driver").toString();
-        String database = properties.get("database").toString();
-        port = Integer.parseInt(properties.get("port").toString()); // port-number
+        this.driver = properties.get("driver");
+        String database = properties.get("database");
+        port = Integer.parseInt(properties.get("port")); // port-number
 
         host = properties.get("host") + ":" + port; // ex. localhost:3306
-        this.user = properties.get("user").toString();
-        this.password = properties.get("password").toString();
+        this.user = properties.get("user");
+        this.password = properties.get("password");
 
         String timeZone = String.valueOf(TimeZone.getDefault().toZoneId());
         this.url = "jdbc:mysql://" + host + "/" + database
                    + "?useUnicode=true&allowPublicKeyRetrieval=true&useSSL=false&characterEncoding=utf8&serverTimezone="
                    + timeZone;
-
     }
 
 
     public boolean connect() {
         try {
-            logger.config("Connecting to database...");
+            logger.config("Connecting to database..." + user);
             System.setProperty("jdbc.Driver", driver);
             Class.forName(driver).getDeclaredConstructor().newInstance();
             connection = DriverManager.getConnection(url, user, password);
@@ -66,7 +65,8 @@ public enum DatabaseConnection {
                  | InvocationTargetException | NoSuchMethodException e) {
 
             if (e instanceof SQLException) {
-                logger.warning("Failed to connect with db.");
+                logger.warning("Failed to connect with db." + ((SQLException) e).getMessage());
+                e.printStackTrace();
             } else {
                 Logger.getGlobal().severe("Error on connecting to database, some of the properties are missing or invalid:" + e.getMessage() );
             }

@@ -1,18 +1,21 @@
 package io.github.gleidsonmt.todo.bd.mysql;
 
-import io.github.gleidsonmt.todo.App;
-import io.github.gleidsonmt.todo.bd.DatabaseConnection;
-import io.github.gleidsonmt.todo.global.Global;
-import io.github.gleidsonmt.todo.global.UserPresenter;
+import io.github.gleidsonmt.todo.events.LoginEvent;
+import io.github.gleidsonmt.todo.logger.AnsiColors;
 import io.github.gleidsonmt.todo.model.User;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.concurrent.Task;
+import javafx.event.Event;
+import javafx.scene.Node;
+import org.jspecify.annotations.NonNull;
 
-import java.io.File;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Optional;
-import java.util.Properties;
+import java.io.InputStreamReader;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
 
 /**
@@ -20,93 +23,79 @@ import java.util.logging.Logger;
  * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
  * Created on  27/04/2026
  */
-public class Setup extends Task<User> {
+public class Setup {
 
 
-    private static final String APP_DIR = System.getProperty("user.home") + File.separator + "todo";
-    private static final String DB_CONFIG_FILE = APP_DIR + File.separator + "my.ini";
-    private static final String CONFIG_FILE = APP_DIR + File.separator + "config.properties";
+    public StringProperty message = new SimpleStringProperty();
 
-    private Logger logger = Logger.getGlobal();
+    private final Node destiny;
 
-    private User user;
 
-    public static Properties getDatabaseProperties() {
-
-        Properties properties = new Properties();
-        try {
-            // Loading properties
-            InputStream file = App.class.getResourceAsStream("properties/db.properties");
-
-            if (file == null) {
-                Logger.getGlobal().severe("File properties/db.properties not found");
-                throw new RuntimeException("File properties/db.properties not found.");
-            }
-
-            properties.load(file);
-
-            if (properties.isEmpty()) {
-                Logger.getGlobal().severe("File propertis/db.properties is empty");
-                throw new RuntimeException("Loading database properties");
-            }
-            return properties;
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    public Setup(Node destiny) {
+        this.destiny = destiny;
     }
 
-    @Override
-    protected User call() {
+    public User start() {
 
-        MySQLManagerService mySqlManager = new MySQLManagerService();
-        mySqlManager.setOnFailed(e -> {
-            System.out.println("Failed" + e.getSource().getException());
-        });
+        MySQLFolder folder = new MySQLFolder();
 
-        mySqlManager.setOnSucceeded(e -> {
-//            messageProperty().unbind();
-            MySQLStartService startService = new MySQLStartService();
-            startService.start();
-//
-            startService.setOnFailed(ex -> {
-                System.out.println("ex = " + ex);
-            });
-            ;
-//
-            startService.setOnSucceeded(e2 -> {
-                MySqlConnectService connect = new MySqlConnectService();
-                connect.setOnRunning(x -> {
-                    if (DatabaseConnection.INSTANCE.hasConnection()) {
+        CompletableFuture.supplyAsync(() -> {
+                    // TAREFA 1 (Background)
+                    MySQLMangerAssets mySqlManager = new MySQLMangerAssets();
+                    message.bind(mySqlManager.messageProperty());
+                    mySqlManager.run();
 
-                        UserPresenter presenter = (UserPresenter) Global.get(User.class);
-                        Optional<User> optional = presenter.getLogged();
-                        if (optional.isPresent()) {
-                            user = optional.get();
-//                            return user.get();
-                            Platform.runLater(() -> {
-//                                Event.fireEvent(HomeView, LoginEvent.ALL);
-                            });
+                    return mySqlManager;
+                })
+                .thenApply(result -> {
+                    try {
+                        message.unbind();
+                        if (result.get()) {
+                            message.set("Montando Banco de Dados..");
+                            MySQLMountServer mySQLMountServer = new MySQLMountServer(folder);
+                            mySQLMountServer.run();
                         }
-                        System.out.println("user = " + user);
-//                        Root root = new Root(user.isPresent() ? new MainView(user.get()) : new HomeLayout());
+                        Logger.getGlobal().config("Starting MySQL Server = " + result);
+                        MySQLStartServer startService = new MySQLStartServer(folder);
+                        startService.run();
+                        return startService;
+                    } catch (InterruptedException | ExecutionException e) {
+                        throw new RuntimeException(e);
                     }
+                })
+
+                .thenAccept(result -> {
+                    try {
+                        Logger.getGlobal().info("Starting MySQL Connect = " + result.get());
+                        message.set("Conectando ao Banco de Dados...");
+
+                            try (BufferedReader reader = new BufferedReader(new InputStreamReader(result.get().getInputStream()))) {
+                                String line;
+                                while ((line = reader.readLine()) != null) {
+                                    if (line.contains("mysqld.exe: ready for connections.")) {
+                                        Logger.getGlobal().info("MySQL Server is ready");
+                                        Event.fireEvent(destiny, new LoginEvent(LoginEvent.LOGIN));
+                                    }
+                                }
+                            } catch (IOException | ExecutionException | InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+
+                    } catch (ExecutionException | InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                })
+                .exceptionally(ex -> {
+                    // Tratamento de erro para qualquer uma das etapas
+                    Logger.getGlobal().severe("Error starting MySQL: " + ex.getMessage());
+                    return null;
                 });
-                connect.start();
 
-//
-            });
-
-
-        });
-        mySqlManager.start();
-
-        Platform.runLater(() -> {
-//            messageProperty().bind(mySqlManager.messageProperty());
-
-        });
         return null;
     }
 
-
+    public StringProperty messageProperty() {
+        return message;
+    }
 }

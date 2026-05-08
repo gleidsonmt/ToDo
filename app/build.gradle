@@ -93,80 +93,62 @@ application {
     mainModule = 'io.github.gleidsonmt.todo'
 }
 
-
-
 tasks.named('run', JavaExec) {
     args = ['level-off']
 }
 
-//tasks.register('copyAssets', Copy) {
-//    from(layout.projectDirectory.dir('db'))
-////    into(layout.buildDirectory.dir('todo/db'))
-//    into(layout.buildDirectory.dir('jpackage/todo/db'))
-//}
-
-// Faz a cópia acontecer automaticamente antes de rodar o projeto
-//tasks.named('processResources') {
-//    dependsOn(tasks.named('copyAssets'))
-//}
-
 tasks.register('debug') {
     group = 'application'
-
     tasks.run.configure {
-        args = ['listenCss', 'nodeAnalyze', 'level-all']
-    }
-
-    dependsOn 'run'
-}
-
-tasks.register('runWithTools') {
-    group = 'initialize'
-    tasks.run.configure {
-        args = ['listenCss', 'nodeAnalyze']
+        args = ['debug']
     }
     dependsOn 'run'
 }
 
-tasks.register('listenCss') {
-    group = 'initialize'
-    tasks.run.configure {
-        args = ['listenCss']
-    }
-    dependsOn 'run'
-}
-
-tasks.register('analyzeNodes') {
-    group = 'initialize'
-    tasks.run.configure {
-        args = ['nodeAnalyze']
-    }
-    dependsOn 'run'
-}
-
-tasks.register('logger') {
+tasks.register('log') {
     group = 'application'
     tasks.run.configure {
-        args = ['logger', 'all']
+        args = ['log']
     }
+    // SEVERE / ERROR: Critical failures that stop a task or the entire application
+    // WARNING / WARN: Potential issues that might need attention later.
+    // INFO: General progress messages, like "Application started".
+    // CONFIG: that may be associated with particular configurations.
+    // For example, CONFIG message might include the CPU type,
+    // the graphics depth, the GUI look-and-feel, etc.
+    // DEBUG / FINE: Detailed info for developers to see what the code is doing during development.
+    // FINER: FINER indicates a fairly detailed tracing message. By default logging calls for entering, returning, or throwing an exception are traced at this level.
+    // TRACE / FINEST: Extremely detailed step-by-step information.
+
+    // [severe, red]
+    // [warning, yellow]
+    // [info, blue]
+    // [config, purple]
+    // [green, cyan]
     dependsOn 'run'
 }
 
-tasks.register('info') {
-    group = 'logger'
-    tasks.run.configure {
-        args = ['logger', 'level-info']
-    }
-    dependsOn 'run'
+// Supondo que sua tarefa de cópia se chame 'copyFiles'
+// e a do jlink se chame 'jlink'
+tasks.named('jlink') {
+    finalizedBy 'copyDBFilesToImage'
 }
 
-tasks.register('config') {
-    group = 'logger'
-    tasks.run.configure {
-        args = ['logger', 'level-config']
-    }
-    dependsOn 'run'
+tasks.register('copyDBFilesToImage', Copy) {
+    from 'db'
+    into 'build/image/bin/db'
+    dependsOn 'jlink'
 }
+
+tasks.named('jpackageImage') {
+    // 1. Garante que a cópia aconteça ANTES do jpackageImage
+    dependsOn 'copyDBFilesToImage'
+
+    // 2. Registra a saída da sua tarefa de cópia como uma entrada do jpackageImage
+    // Isso faz com que, se os arquivos do DB mudarem, o jpackageImage rode novamente
+    inputs.files(tasks.named('copyDBFilesToImage'))
+}
+
 
 javafx {
     version = "23.0.2"
@@ -179,9 +161,10 @@ tasks.named('test') {
 }
 
 jlink {
+    // Loading a custom file in build.gradle
     options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
     launcher {
-        name = 'app'
+        name = 'todo'
     }
     jpackage {
 
@@ -199,9 +182,3 @@ jlink {
         addExtraDependencies("javafx")
     }
 }
-
-//jar {
-//    manifest {
-//        'Main-Class' = 'io.github.gleidsonmt.todo.App'
-//    }
-//}

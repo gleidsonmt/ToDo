@@ -9,6 +9,7 @@ import io.github.gleidsonmt.todo.global.Global;
 import io.github.gleidsonmt.todo.logger.LogFormatter;
 import io.github.gleidsonmt.todo.utils.Assets;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -24,9 +25,6 @@ import java.util.logging.Logger;
  */
 public class App extends Application {
 
-    private DatabaseConnection connection;
-
-
     @Override
     public void init() throws Exception {
 
@@ -38,22 +36,25 @@ public class App extends Application {
 
         handler.setFormatter(formatter);
 
-        var level = Global.getPreferences().get("level", "off").toUpperCase();
 
-        Logger.getGlobal().setLevel(Level.parse(level));
-        handler.setLevel(Level.parse(level));
-//        Logger.getGlobal().setLevel(Level.FINEST);
-//        handler.setLevel(Level.FINEST);
-
+        if (Launcher.mode == Mode.LOG) {
+            Logger.getGlobal().setLevel(Level.ALL);
+            handler.setLevel(Level.ALL);
+        }
 
     }
 
     @Override
     public void stop() {
-        System.exit(0);
-//        Logger.getGlobal().info("Application is stopping...");
-//        if (connection.hasConnection())
-//            connection.close();
+
+        DatabaseConnection.INSTANCE.close();
+
+        var test = ProcessHandle.allProcesses()
+                .filter(processHandle -> processHandle.info().command().filter(cmd -> cmd.contains("mysqld")).isPresent()).findAny();
+        test.ifPresent(processHandle -> processHandle.descendants().forEach(el -> System.out.println(el.info().command().orElse(""))));
+        test.ifPresent(processHandle -> processHandle.descendants().forEach(ProcessHandle::destroy));
+        Logger.getGlobal().info("Application is closed...");
+        Platform.exit();
     }
 
     @Override
@@ -73,12 +74,15 @@ public class App extends Application {
         stage.setScene(scene);
         stage.show();
 
-//        if (Global.getPreferences().getBoolean("nodeAnalyze", false)) {
-//            Tools.analyzeNodes(scene);
-//        }
-//        if (Global.getPreferences().getBoolean("listenCss", false)) {
-//            Tools.listenCss(scene);
-//        }
+        if (Launcher.mode == Mode.DEBUG) {
+            if (Global.getPreferences().getBoolean("nodeAnalyze", true)) {
+                Tools.analyzeNodes(scene);
+            }
+            if (Global.getPreferences().getBoolean("listenCss", false)) {
+                Tools.listenCss(scene);
+            }
+        }
+
 
     }
 }

@@ -1,5 +1,7 @@
 package io.github.gleidsonmt.todo.bd.mysql;
 
+import io.github.gleidsonmt.todo.logger.AnsiColors;
+import javafx.concurrent.Task;
 import org.jspecify.annotations.NonNull;
 
 import java.io.BufferedReader;
@@ -10,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.logging.Logger;
 
 import static java.io.File.separator;
 
@@ -18,38 +21,47 @@ import static java.io.File.separator;
  * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
  * Created on  29/04/2026
  */
-public class MySQLConsoleCommand {
+public class MySQLMountServer extends Task<Process> {
 
-    private static final String APP_DIR = System.getProperty("user.home") + separator + "app";
-    private static final String DEFAULT_DIR = System.getProperty("user.dir");
-    private static final String MYSQL_DIR = APP_DIR + separator + "db" + separator + "mysql-8.0.16-winx64";
+    private final MySQLFolder folder;
 
-    public void mountServer() {
-        Path mysqld = Paths.get(MYSQL_DIR, "bin", "mysqld.exe");
-        Path ini = Paths.get(MYSQL_DIR, "my.ini");
+    public MySQLMountServer(MySQLFolder folder) {
+        this.folder = folder;
+    }
 
-        Path path = Path.of(MYSQL_DIR, "data");
+    @Override
+    protected Process call() {
+        Path mysqld = Paths.get(folder.getDBFolder(), "bin", "mysqld.exe");
+        Path iniFile = Paths.get(folder.getDBFolder(), "my.ini");
 
-        File file = new File(path.toAbsolutePath().toString());
-        cleanData(file);
-
+        clean();
 
         if (!Files.exists(mysqld)) {
-            throw new IllegalStateException("mysqld.exe não encontrado em: " + mysqld);
+            Logger.getGlobal().severe("mysqld.exe not found.");
+            throw new IllegalStateException("mysqld.exe  not found " + mysqld);
         }
-        if (!Files.exists(ini)) {
-            throw new IllegalStateException("my.ini não encontrado em: " + ini);
+        if (!Files.exists(iniFile)) {
+            Logger.getGlobal().severe("my.ini not found.");
+            throw new IllegalStateException("my.ini not found: " + iniFile);
         }
 
-        execute(
+       return execute(
                 mysqld.toString(),
-                "--defaults-file=" + ini,
+                "--defaults-file=" + iniFile,
                 "--initialize-insecure",
                 "--console"
         );
     }
 
-    public void cleanData(@NonNull File directory) {
+    public void clean() {
+
+        Path path = Path.of(folder.getDBFolder(), "data");
+
+        File file = new File(path.toAbsolutePath().toString());
+        cleanData(file);
+    }
+
+    private void cleanData(@NonNull File directory) {
         if (directory.exists()) {
             File[] arquivos = directory.listFiles();
             if (arquivos != null) {
@@ -62,30 +74,30 @@ public class MySQLConsoleCommand {
         }
     }
 
-    public void execute(String... commands) {
+    public Process execute(String... commands) {
         ProcessBuilder pb = new ProcessBuilder(List.of(commands));
 
-        pb.directory(new File(MYSQL_DIR));
+        pb.directory(new File(folder.getDBFolder()));
         pb.redirectErrorStream(true);
-//
+//        pb.inheritIO();
+
         try {
             Process p = pb.start();
-            pb.inheritIO();
+            StringBuilder sb = new StringBuilder();
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    System.out.println("[mysqld] " + line);
+                    Logger.getGlobal().info(line);
                 }
             }
-
             int exitCode = p.waitFor();
             if (exitCode != 0) {
-                throw new RuntimeException("Erro ao executar comando MySQL. ExitCode=" + exitCode);
+                throw new RuntimeException("Error on execute MySQL command . ExitCode=" + exitCode);
             }
-
+            return p;
         } catch (IOException | InterruptedException e) {
             Thread.currentThread().interrupt();
-            throw new RuntimeException("Erro ao executar mysqld", e);
+            throw new RuntimeException("Error on execute mysqld", e);
         }
     }
 }

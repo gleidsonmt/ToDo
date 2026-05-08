@@ -11,9 +11,9 @@ import javafx.event.EventType;
  */
 public class LoginEvent extends Event {
 
-    public static final EventType<TaskChangeEvent> ALL = new EventType<>(Event.ANY, "LOGIN_EVENT");
-    public static final EventType<TaskChangeEvent> LOGIN = new EventType<>(ALL, "LOGIN");
-    public static final EventType<TaskChangeEvent> LOGOUT = new EventType<>(ALL, "LOGOUT");
+    public static final EventType<LoginEvent> LOGIN_EVENT = new EventType<>(Event.ANY, "LOGIN_EVENT");
+    public static final EventType<LoginEvent> LOGIN = new EventType<>(LOGIN_EVENT, "LOGIN");
+    public static final EventType<LoginEvent> LOGOUT = new EventType<>(LOGIN_EVENT, "LOGOUT");
 
     public LoginEvent(EventType<? extends Event> eventType) {
         super(eventType);

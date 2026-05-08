@@ -12,7 +12,10 @@ import java.util.logging.Logger;
  * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
  * Created on  30/04/2026
  */
-public class MySQLProperties extends Properties  {
+public enum MySQLProperties   {
+    INSTANCE;
+
+    private final Properties properties = new Properties();
 
     public void read() {
         try {
@@ -24,9 +27,9 @@ public class MySQLProperties extends Properties  {
                 throw new RuntimeException("File properties/db.properties not found.");
             }
 
-            load(file);
+            properties.load(file);
 
-            if (isEmpty()) {
+            if (properties.isEmpty()) {
                 Logger.getGlobal().severe("File propertis/db.properties is empty");
                 throw new RuntimeException("Loading database properties");
             }
@@ -37,7 +40,7 @@ public class MySQLProperties extends Properties  {
     }
 
     public String get(String key) {
-        return getProperty(key);
+        return properties.getProperty(key);
     }
 
     public String getUser() {

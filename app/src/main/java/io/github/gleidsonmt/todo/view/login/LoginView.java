@@ -65,7 +65,7 @@ public class LoginView extends StackPane {
             // if (form.persist()) {
             Logger.getGlobal().info("User logged in successfully!");
             Root root = (Root) getScene().getRoot();
-            root.setLayout(new MainView(form.get()));
+//            root.setLayout(new MainView(form.get()));
             // }
             // }
         });

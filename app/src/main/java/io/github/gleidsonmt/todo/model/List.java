@@ -1,6 +1,5 @@
 package io.github.gleidsonmt.todo.model;
 
-import io.github.gleidsonmt.todo.bd.dao.internal.Ignore;
 
 /**
  *
@@ -11,21 +10,9 @@ import io.github.gleidsonmt.todo.bd.dao.internal.Ignore;
  */
 public class List extends Entity {
 
-    // @Ignore
-    // private final SimpleListProperty<ToDoTask> items;
-    // @Ignore
-    // private ObjectProperty<Icon> icon;
-    // @Ignore
-    // private final SimpleListProperty<List> lists;
-
     private final String iconName;
-    private final int size; // 2
-    private final boolean fixed; // 3
-
-    @Ignore
-    private String i18nKey;
-
-    // all above needs refactoring
+    private final int size;
+    private final boolean fixed;
 
     public List(long id, String name, boolean fixed, int size, String iconName) {
         super(id, name);
@@ -40,10 +27,6 @@ public class List extends Entity {
 
     public int getSize() {
         return this.size;
-    }
-
-    public String getI18nKey() {
-        return this.i18nKey;
     }
 
     public String getIconName() {
