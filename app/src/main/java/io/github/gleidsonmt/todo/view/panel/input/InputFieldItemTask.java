@@ -35,7 +35,7 @@ public class InputFieldItemTask extends InputFieldItem<List> {
 
             ObservableList<MenuTaskItem> options = FXCollections.observableArrayList();
             task.getValue().forEach(list -> {
-                if (!list.isFixed() || list.getId() == 0) {
+                if (!list.isFixed() || list.getId() == 1) {
                     MenuTaskItem menuItem = new MenuTaskItem(list);
                     options.add(menuItem);
 
@@ -46,7 +46,7 @@ public class InputFieldItemTask extends InputFieldItem<List> {
                 }
             });
 
-            this.contextMenu.getItems().setAll(options.filtered(el -> el.getList().getId() != 0));
+            this.contextMenu.getItems().setAll(options.filtered(el -> el.getList().getId() != 1));
             setValue(task.getValue().getFirst());
         });
 
