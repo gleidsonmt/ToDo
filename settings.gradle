@@ -12,3 +12,5 @@ plugins {
 
 rootProject.name = 'todo'
 include('app', 'glad')
+
+

@@ -29,10 +29,6 @@ public class MySQLFolder {
     private final String MYSQL_DIR = APP_DIR + File.separator + "db";
 
     public MySQLFolder() {
-//        System.out.println("APP_DIR = " + APP_DIR);
-//        System.out.println("PROJECT_DIR = " + PROJECT_DIR);
-//        System.out.println("MYSQL_DIR = " + MYSQL_DIR);
-//        System.out.println("MYSQL_DIR_ORIGIN = " + MYSQL_DIR_ORIGIN);
     }
 
     public String APP_DIR() {

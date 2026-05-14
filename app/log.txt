@@ -1,0 +1,2 @@
+Criando arquivo de log..
+Validando arquivos..

@@ -121,13 +121,16 @@ public class InputField extends GridPane {
                     viewModel.setImportant(false);
                     viewModel.setMyDay(false);
 
+                    viewModel.setRemind(options.getRemind());
+                    viewModel.setDueDate(options.getDueDate());
+
 //                    viewModel.setListId(panel.getListRoot().getActualList().getId());
 
                     // set the list
                     if (!panel.getListRoot().getActualList().isFixed()) {
                         viewModel.setListId(panel.getListRoot().getActualList().getId());
                     } else {
-                        viewModel.setListId(options.getTasks().getValue().getId());
+                        viewModel.setListId(options.getTask().getId());
                     }
                     System.out.println(viewModel);
                     viewModel.save();

@@ -377,6 +377,7 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
             protected ObservableList<T> call() {
                 connect();
                 var sql = modelSQLCreator.createFetch(condition);
+                System.out.println("sql = " + sql);
                 ResultSet result = executeQuery(sql);
                 logger(sql);
                 try {

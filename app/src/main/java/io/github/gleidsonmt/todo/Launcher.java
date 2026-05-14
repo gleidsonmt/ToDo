@@ -12,19 +12,12 @@ import java.util.prefs.Preferences;
 
 /**
  *
- * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
+ * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
  * Created on  21/04/2026
  */
 public class Launcher extends App {
 
     public static Mode mode;
-
-    public Launcher() {
-//        JavaFx actions INFO
-//        Database actions CONFIG
-//        finer criação de diretórios, configuacaoes da aplicação final
-//        UI actions finest
-    }
 
     public static void main(String[] args) {
         for (String arg : args) {

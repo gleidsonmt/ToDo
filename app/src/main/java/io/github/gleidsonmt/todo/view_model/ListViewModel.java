@@ -1,18 +1,15 @@
 package io.github.gleidsonmt.todo.view_model;
 
-import io.github.gleidsonmt.glad.controls.icon.Icon;
-import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import io.github.gleidsonmt.todo.global.Global;
 import io.github.gleidsonmt.todo.global.ListPresenter;
 import io.github.gleidsonmt.todo.model.List;
 import io.github.gleidsonmt.todo.model.ListType;
-import io.github.gleidsonmt.todo.utils.Assets;
 import io.github.gleidsonmt.todo.utils.I18n;
-import io.github.gleidsonmt.todo.utils.StringUtils;
 import io.github.gleidsonmt.todo.view_model.converter.ListViewModelConverter;
-import javafx.beans.property.*;
-import javafx.scene.Node;
-import javafx.scene.image.ImageView;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 /**
  * Description:
@@ -24,25 +21,16 @@ import javafx.scene.image.ImageView;
  */
 public class ListViewModel extends ViewModel {
 
-    private boolean fixed;
-    private ListType type;
+    private final boolean fixed;
+    private final ListType type;
 
-    private ListViewModelConverter converter;
-    private ListPresenter presenter;
+    private final ListViewModelConverter converter;
+    private final ListPresenter presenter;
 
-    private IntegerProperty numberOfTasks = new SimpleIntegerProperty(0);
-    private StringProperty iconName;
-
+    private final IntegerProperty numberOfTasks = new SimpleIntegerProperty(0);
+    private final StringProperty iconName;
 
     private String keyName;
-
-//    public ListViewModel(String name) {
-//        this(new List(name));
-//    }
-
-//    public ListViewModel(List list) {
-//        this(list, Icon.CHECK_LIST, list.isFixed());
-//    }
 
     public ListViewModel(List list) {
         this.converter = new ListViewModelConverter();
@@ -53,7 +41,6 @@ public class ListViewModel extends ViewModel {
         this.numberOfTasks.set(list.getSize());
 
         if (fixed) {
-//            this.keyName = StringUtils.kebabToCamel(list.getName());
             this.keyName = list.getName();
             this.setName(I18n.get("drawer.list." + this.keyName));
         } else {
@@ -84,13 +71,13 @@ public class ListViewModel extends ViewModel {
     }
 
     public ListViewModel save() {
-        var converted = converter.convert(this);
+        var converted = converter.toModel(this);
         this.setId(presenter.store(converted));
         return this;
     }
 
     public void delete() {
-        var item = converter.convert(this);
+        var item = converter.toModel(this);
         presenter.delete(item);
     }
 

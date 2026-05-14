@@ -34,7 +34,10 @@ public class MySQLMountServer extends Task<Process> {
         Path mysqld = Paths.get(folder.getDBFolder(), "bin", "mysqld.exe");
         Path iniFile = Paths.get(folder.getDBFolder(), "my.ini");
 
-        clean();
+        if (!clean()) {
+            Logger.getGlobal().severe("Error on clean data.");
+            throw new IllegalStateException("Error on clean data.");
+        }
 
         if (!Files.exists(mysqld)) {
             Logger.getGlobal().severe("mysqld.exe not found.");
@@ -53,25 +56,26 @@ public class MySQLMountServer extends Task<Process> {
         );
     }
 
-    public void clean() {
+    public boolean clean() {
 
         Path path = Path.of(folder.getDBFolder(), "data");
 
         File file = new File(path.toAbsolutePath().toString());
-        cleanData(file);
+        return cleanData(file);
     }
 
-    private void cleanData(@NonNull File directory) {
+    private boolean cleanData(@NonNull File directory) {
         if (directory.exists()) {
             File[] arquivos = directory.listFiles();
             if (arquivos != null) {
                 for (File f : arquivos) {
                     if (f.isDirectory()) cleanData(f);
-                    else f.delete();
+                    else return f.delete();
                 }
             }
-            directory.delete(); // Agora que está vazia, ela morre
+            return directory.delete(); // Agora que está vazia, ela morre
         }
+        return true;
     }
 
     public Process execute(String... commands) {
@@ -83,11 +87,11 @@ public class MySQLMountServer extends Task<Process> {
 
         try {
             Process p = pb.start();
-            StringBuilder sb = new StringBuilder();
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     Logger.getGlobal().info(line);
+
                 }
             }
             int exitCode = p.waitFor();

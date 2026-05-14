@@ -1,6 +1,8 @@
 package io.github.gleidsonmt.todo.global;
 
 import io.github.gleidsonmt.todo.model.Model;
+import javafx.application.HostServices;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.prefs.Preferences;
 
@@ -14,8 +16,15 @@ import java.util.prefs.Preferences;
  */
 public class Global {
 
-    private static Repository repository;
+    private static io.github.gleidsonmt.todo.global.Repository repository;
     private static Preferences preferences;
+
+    public static HostServices hostServices;
+
+    public static void openLink(String link) {
+        System.out.println("hostServices = " + link);
+        hostServices.showDocument(link);
+    }
 
     public static Preferences getPreferences() {
         if (preferences == null) {
@@ -24,6 +33,12 @@ public class Global {
         return preferences;
     }
 
+    public static boolean isRunningOnExecutable() {
+        String processName = ProcessHandle.current().info().command().orElse("");
+        return processName.endsWith(".exe") && !processName.contains("java.exe");
+    }
+
+    @ApiStatus.Experimental
     private static Repository getRepository() {
         if (repository == null) {
             repository = new Repository();

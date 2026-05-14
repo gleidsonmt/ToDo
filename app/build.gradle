@@ -17,6 +17,25 @@ plugins {
 }
 
 version '0.0.1'
+//
+//sourceSets {
+//    main {
+//        java {
+//            srcDirs = ['src/main/java']
+//        }
+//        resources {
+//            srcDirs = ['src/main/resources']
+//        }
+//    }
+//    test {
+//        java {
+//            srcDirs = ['src/test/java']
+//        }
+//        resources {
+//            srcDirs = ['src/test/resources']
+//        }
+//    }
+//}
 
 repositories {
     // Use Maven Central for resolving dependencies.
@@ -59,6 +78,8 @@ dependencies {
 
 
     implementation project(":glad")
+    implementation project(":app")
+
     implementation 'io.github.classgraph:classgraph:4.8.165'
 
     implementation("org.yaml:snakeyaml:2.5")
@@ -67,6 +88,8 @@ dependencies {
 
 //    implementation 'com.dlsc.gemsfx:gemsfx:3.10.1'
     implementation 'com.dlsc.gemsfx:gemsfx:2.16.0'
+
+    implementation("com.dustinredmond.fxtrayicon:FXTrayIcon:4.2.3")
 
     // ------------------ Local libraries --------
     implementation fileTree(dir: 'lib', include: ['*.jar'])
@@ -138,6 +161,11 @@ tasks.register('copyDBFilesToImage', Copy) {
     from 'db'
     into 'build/image/bin/db'
     dependsOn 'jlink'
+
+    // Só executa se o diretório de destino NÃO existir
+    onlyIf {
+        !file('build/image/bin/db').exists()
+    }
 }
 
 tasks.named('jpackageImage') {
@@ -164,7 +192,7 @@ jlink {
     // Loading a custom file in build.gradle
     options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
     launcher {
-        name = 'todo'
+        name = 'JavaFx ToDo'
     }
     jpackage {
 
@@ -174,9 +202,12 @@ jlink {
         installerType = 'exe'
         appVersion = version
         installerOptions = [
-                '--description', "A todo made in JavaFx UI Toolkit.",
-                '--copyright', 'Copyright © 2026 GLEIDSON NEVES DA SILVEIRA'
-                , '--icon', 'logo_128.ico'
+                '--description', "ToDo app made in JavaFx UI Toolkit.",
+                '--copyright', 'Copyright © 2026 GLEIDSON NEVES DA SILVEIRA',
+                '--vendor', 'Gleidson Neves',
+                '--icon', 'logo_128.ico',
+//                '--win-console',
+                '--win-shortcut'
         ]
 
         addExtraDependencies("javafx")

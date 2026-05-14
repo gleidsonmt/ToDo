@@ -4,6 +4,9 @@ import io.github.gleidsonmt.todo.bd.dao.DaoRecurrence;
 import io.github.gleidsonmt.todo.bd.dao.DaoTask;
 import io.github.gleidsonmt.todo.model.ToDoTask;
 import io.github.gleidsonmt.todo.model.recurrence.Recurrence;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 
 import java.util.Optional;
 
@@ -30,6 +33,11 @@ public class TaskPresenter extends AbstractPresenter<ToDoTask> {
 
     public Optional<Recurrence> getRecurrence(long id) {
         return daoRecurrence.getWhere("task_id = " + id );
+    }
+
+    public Task<ObservableList<ToDoTask>> selectAllBefore() {
+        return dao.fetchWhere(FXCollections.observableArrayList(), "WHERE completed = 0 AND DATE(remind) <= CURRENT_DATE AND TIME(remind) <= CURRENT_TIME");
+//        select * from task WHERE DATE(remind) <= CURRENT_DATE AND TIME(remind) <= CURRENT_TIME;
     }
 
     @Override

@@ -688,3 +688,7 @@ Panel {
     -fx-background-radius: 10px;
     -fx-cursor: hand;
 }
+
+TextFlow {
+    -fx-text-alignment: center;
+}

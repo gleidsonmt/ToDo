@@ -1,6 +1,8 @@
 package io.github.gleidsonmt.todo.bd.mysql;
 
 import io.github.gleidsonmt.todo.App;
+import org.jetbrains.annotations.Contract;
+import org.jspecify.annotations.NonNull;
 
 import java.io.*;
 import java.net.URISyntaxException;
@@ -39,7 +41,6 @@ public class MySQLFile {
     private String readScript() {
         var asset = App.class.getResourceAsStream("sql/bd_script.sql");
 
-
         if (asset == null) {
             return "";
         }
@@ -75,7 +76,8 @@ public class MySQLFile {
         );
     }
 
-    private String resolveMySql(String string) {
+    @Contract(pure = true)
+    private @NonNull String resolveMySql(String string) {
         return string.replace("\\", "/");
     }
 }

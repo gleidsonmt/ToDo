@@ -43,7 +43,7 @@ public class MySQLStartServer extends Task<Process> {
         pb.redirectErrorStream(true);
 //        pb.inheritIO();
 //
-        Process process = null;
+        Process process;
         try {
             process = pb.start();
             return process;

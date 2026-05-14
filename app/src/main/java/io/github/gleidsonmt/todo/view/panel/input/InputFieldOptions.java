@@ -32,12 +32,16 @@ public class InputFieldOptions extends HBox {
         getChildren().addAll(tasks, dueDate, remind, repeat);
     }
 
-    public InputFieldItem<LocalDate> getDueDate() {
-        return dueDate;
+    public LocalDate getDueDate() {
+        return dueDate.getValue();
     }
 
-    public InputFieldItem<List> getTasks() {
-        return tasks;
+    public LocalDateTime getRemind() {
+        return remind.getValue();
+    }
+
+    public List getTask() {
+        return tasks.getValue();
     }
 
     public List getList() {
