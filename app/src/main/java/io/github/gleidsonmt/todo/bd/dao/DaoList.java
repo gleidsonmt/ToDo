@@ -15,8 +15,9 @@ public final class DaoList extends AbstractDao<List> {
 
     @Override
     public List createElement(ResultSet result) throws SQLException {
-        return new List(result.getInt("list.id"), result.getString("list.name"), result.getBoolean("list.fixed"),
-                result.getInt("size"), result.getString("list.icon_name"));
+        return new List(result.getInt("id"), result.getString("name"), result.getBoolean("fixed"),
+
+                result.getInt("size"), result.getString("icon_name"));
     }
 
     @Override

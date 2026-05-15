@@ -17,25 +17,6 @@ plugins {
 }
 
 version '0.0.1'
-//
-//sourceSets {
-//    main {
-//        java {
-//            srcDirs = ['src/main/java']
-//        }
-//        resources {
-//            srcDirs = ['src/main/resources']
-//        }
-//    }
-//    test {
-//        java {
-//            srcDirs = ['src/test/java']
-//        }
-//        resources {
-//            srcDirs = ['src/test/resources']
-//        }
-//    }
-//}
 
 repositories {
     // Use Maven Central for resolving dependencies.
@@ -78,7 +59,6 @@ dependencies {
 
 
     implementation project(":glad")
-    implementation project(":app")
 
     implementation 'io.github.classgraph:classgraph:4.8.165'
 
@@ -90,6 +70,8 @@ dependencies {
     implementation 'com.dlsc.gemsfx:gemsfx:2.16.0'
 
     implementation("com.dustinredmond.fxtrayicon:FXTrayIcon:4.2.3")
+
+    implementation 'org.xerial:sqlite-jdbc:3.45.3.0' // Use the latest version
 
     // ------------------ Local libraries --------
     implementation fileTree(dir: 'lib', include: ['*.jar'])
@@ -153,30 +135,29 @@ tasks.register('log') {
 
 // Supondo que sua tarefa de cópia se chame 'copyFiles'
 // e a do jlink se chame 'jlink'
-tasks.named('jlink') {
-    finalizedBy 'copyDBFilesToImage'
-}
+//tasks.named('jlink') {
+//    finalizedBy 'copyDBFilesToImage'
+//}
 
-tasks.register('copyDBFilesToImage', Copy) {
-    from 'db'
-    into 'build/image/bin/db'
-    dependsOn 'jlink'
+//tasks.register('copyDBFilesToImage', Copy) {
+//    from 'db'
+//    into 'build/image/bin/db'
+//    dependsOn 'jlink'
+//
+//    // Só executa se o diretório de destino NÃO existir
+//    onlyIf {
+//        !file('build/image/bin/db').exists()
+//    }
+//}
 
-    // Só executa se o diretório de destino NÃO existir
-    onlyIf {
-        !file('build/image/bin/db').exists()
-    }
-}
-
-tasks.named('jpackageImage') {
-    // 1. Garante que a cópia aconteça ANTES do jpackageImage
-    dependsOn 'copyDBFilesToImage'
-
-    // 2. Registra a saída da sua tarefa de cópia como uma entrada do jpackageImage
-    // Isso faz com que, se os arquivos do DB mudarem, o jpackageImage rode novamente
-    inputs.files(tasks.named('copyDBFilesToImage'))
-}
-
+//tasks.named('jpackageImage') {
+//    // 1. Garante que a cópia aconteça ANTES do jpackageImage
+//    dependsOn 'copyDBFilesToImage'
+//
+//    // 2. Registra a saída da sua tarefa de cópia como uma entrada do jpackageImage
+//    // Isso faz com que, se os arquivos do DB mudarem, o jpackageImage rode novamente
+//    inputs.files(tasks.named('copyDBFilesToImage'))
+//}
 
 javafx {
     version = "23.0.2"

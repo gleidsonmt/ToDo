@@ -20,6 +20,8 @@ public final class DaoTask extends AbstractDao<ToDoTask> {
     @Override
     protected ToDoTask createElement(@NotNull ResultSet result) throws SQLException {
 
+        System.out.println("result = " + result.getString("task.name"));
+
         return new ToDoTask(result.getInt("task.id"), result.getString("task.name"),
                 result.getBoolean("task.completed"), result.getBoolean("task.important"),
                 result.getBoolean("task.my_day"),

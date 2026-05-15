@@ -1,6 +1,7 @@
 package io.github.gleidsonmt.todo.bd.dao.internal;
 
 import io.github.gleidsonmt.todo.bd.DatabaseConnection;
+import io.github.gleidsonmt.todo.bd.sqlite.SQLiteConnection;
 import io.github.gleidsonmt.todo.model.Model;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -25,7 +26,7 @@ import java.util.logging.Logger;
 public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T> {
 
     // Mono state to grant only one connection per time
-    protected static DatabaseConnection data = DatabaseConnection.INSTANCE;
+    protected static SQLiteConnection data = SQLiteConnection.INSTANCE;
     // Some operations can be done and closed differently from transactions.
     protected static boolean autoCloseable = true;
 
@@ -154,8 +155,8 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
     @Override
     public Optional<T> get(long id) {
         connect();
-//        ResultSet result = executeQuery("select * from " + getTable() + " where id = " + id + ";");
         ResultSet result = executeQuery(modelSQLCreator.create(DaoAction.GET, id));
+        System.out.println("result = " + result);
         try {
             if (result.next())
                 return Optional.of(createElement(result));
@@ -318,7 +319,7 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
     protected void connect() {
         try {
             if (!data.hasConnection() || data.getConnection().isClosed()) {
-                data.connect();
+                data.getConnection();
             }
         } catch (SQLException e) {
             logger.severe("Error on connecting to database");

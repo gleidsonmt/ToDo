@@ -7,6 +7,7 @@ import io.github.classgraph.ScanResult;
 import io.github.gleidsonmt.todo.App;
 import javafx.scene.image.Image;
 
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +48,14 @@ public class Assets {
             });
         }
         return svgs;
+    }
+
+    public static InputStream getResourceAsStream(String path) {
+        return App.class.getResourceAsStream(path);
+    }
+
+    public static URL getResource(String path) {
+        return App.class.getResource(path);
     }
 
     public static SVGImageView getIcon(String iconName, int size) {

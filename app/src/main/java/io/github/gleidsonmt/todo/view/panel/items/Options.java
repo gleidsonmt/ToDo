@@ -39,7 +39,7 @@ public class Options extends FlowPane {
         this.setHgap(5);
 
         TaskPresenter taskPresenter = (TaskPresenter) Global.get(ToDoTask.class);
-        Optional<Recurrence> recurrence = taskPresenter.getRecurrence(item.getViewModel().getId());
+//        Optional<Recurrence> recurrence = taskPresenter.getRecurrence(item.getViewModel().getId());
 
         MyDayOption myDayOption = new MyDayOption();
         BooleanProperty hasMyDayOption = new SimpleBooleanProperty();
@@ -78,9 +78,9 @@ public class Options extends FlowPane {
             remindOption.setName(DateUtils.format(item.getViewModel().getRemind().toLocalDate()));
         }
 
-        if (recurrence.isPresent()) {
-            dueDateOption.setNeedRepeatIcon(true);
-        }
+//        if (recurrence.isPresent()) {
+//            dueDateOption.setNeedRepeatIcon(true);
+//        }
 
         item.getViewModel().listIdProperty().addListener((_, _, val) -> {
             ListPresenter presenter = (ListPresenter) Global.get(List.class);

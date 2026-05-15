@@ -20,20 +20,20 @@ import java.util.Optional;
  */
 public class TaskPresenter extends AbstractPresenter<ToDoTask> {
 
-    private final DaoRecurrence daoRecurrence;
+//    private final DaoRecurrence daoRecurrence;
 
     public TaskPresenter() {
         super(new DaoTask());
-        this.daoRecurrence = new DaoRecurrence();
+//        this.daoRecurrence = new DaoRecurrence();
     }
 
-    public long storeRecurrence(Recurrence recurrence) {
-        return daoRecurrence.store(recurrence);
-    }
+//    public long storeRecurrence(Recurrence recurrence) {
+//        return daoRecurrence.store(recurrence);
+//    }
 
-    public Optional<Recurrence> getRecurrence(long id) {
-        return daoRecurrence.getWhere("task_id = " + id );
-    }
+//    public Optional<Recurrence> getRecurrence(long id) {
+//        return daoRecurrence.getWhere("task_id = " + id );
+//    }
 
     public Task<ObservableList<ToDoTask>> selectAllBefore() {
         return dao.fetchWhere(FXCollections.observableArrayList(), "WHERE completed = 0 AND DATE(remind) <= CURRENT_DATE AND TIME(remind) <= CURRENT_TIME");

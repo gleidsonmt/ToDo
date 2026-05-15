@@ -34,6 +34,7 @@ module io.github.gleidsonmt.todo {
     requires jdk.security.jgss;
     requires jdk.compiler;
     requires com.dustinredmond.fxtrayicon;
+    requires org.xerial.sqlitejdbc;
 
     opens io.github.gleidsonmt.todo to javafx.graphics, javafx.fxml, java.sql;
     opens io.github.gleidsonmt.todo.view to javafx.graphics, javafx.fxml, java.sql;
