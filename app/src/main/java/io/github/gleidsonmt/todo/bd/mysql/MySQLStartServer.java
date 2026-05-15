@@ -16,6 +16,7 @@ import static java.io.File.separator;
  * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
  * Created on  29/04/2026
  */
+@Deprecated
 public class MySQLStartServer extends Task<Process> {
 
     private final MySQLFolder folder;

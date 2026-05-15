@@ -10,6 +10,7 @@ import java.util.logging.Logger;
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
  * Created on  29/04/2026
  */
+@Deprecated
 public class MySQLAssets  {
 
     private boolean exists = false;

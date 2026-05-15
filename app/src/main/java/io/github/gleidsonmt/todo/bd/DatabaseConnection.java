@@ -15,6 +15,7 @@ import java.util.logging.Logger;
  * Created on  20/04/2026
  */
 @SuppressWarnings({"unused"})
+@Deprecated
 public enum DatabaseConnection {
 
     INSTANCE;

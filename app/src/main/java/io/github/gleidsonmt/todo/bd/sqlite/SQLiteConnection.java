@@ -29,7 +29,9 @@ public enum SQLiteConnection {
     private Statement statement;
     private ResultSet result;
 
-    public Connection getConnection() throws SQLException {
+
+
+    public void connect() throws SQLException {
         File dbFile = new File(DB_FILE_PATH);
         System.out.println("dbFile = " + dbFile.delete());
 
@@ -45,8 +47,6 @@ public enum SQLiteConnection {
             System.out.println("Banco de dados não encontrado. Iniciando configuração inicial...");
             createDatabase(connection);
         }
-
-        return connection;
     }
 
     private void createDatabase(Connection conn) throws SQLException {
@@ -143,5 +143,9 @@ public enum SQLiteConnection {
             Logger.getGlobal().severe("Error on closing database connection. ");
             return false;
         }
+    }
+
+    public Connection getConnection() {
+        return connection;
     }
 }

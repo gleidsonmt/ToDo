@@ -20,6 +20,7 @@ import java.util.stream.Stream;
  * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
  * Created on  29/04/2026
  */
+@Deprecated
 public class MySQLFolder {
 
     private final String APP_DIR = System.getProperty("user.home") + File.separator + "todo" + File.separator + "app";

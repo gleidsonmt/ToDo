@@ -55,5 +55,7 @@ module io.github.gleidsonmt.todo {
     exports io.github.gleidsonmt.todo.view_model.converter;
     exports io.github.gleidsonmt.todo.bd.mysql;
     opens io.github.gleidsonmt.todo.bd.mysql to java.sql, javafx.fxml, javafx.graphics;
+    exports io.github.gleidsonmt.todo.bd;
+    opens io.github.gleidsonmt.todo.bd to java.sql, javafx.fxml, javafx.graphics;
 
 }

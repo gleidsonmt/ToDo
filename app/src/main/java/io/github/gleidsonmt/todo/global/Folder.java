@@ -16,7 +16,6 @@ import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
-import io.github.gleidsonmt.todo.bd.mysql.Setup;
 import io.github.gleidsonmt.todo.bd.DatabaseConnection;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;

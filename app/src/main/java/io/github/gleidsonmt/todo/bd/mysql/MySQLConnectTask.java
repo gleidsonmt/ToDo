@@ -8,6 +8,7 @@ import javafx.concurrent.Task;
  * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
  * Created on  30/04/2026
  */
+@Deprecated
 public class MySQLConnectTask extends Task<Boolean> {
 
     @Override

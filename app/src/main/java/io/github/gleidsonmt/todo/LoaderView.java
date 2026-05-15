@@ -7,7 +7,7 @@ import io.github.gleidsonmt.glad.base.dialog.alert.AlertType;
 import io.github.gleidsonmt.glad.controls.button.Button;
 import io.github.gleidsonmt.glad.controls.loaders.CircleLoader;
 import io.github.gleidsonmt.glad.controls.loaders.Suspense3DCircle;
-import io.github.gleidsonmt.todo.bd.mysql.Setup;
+import io.github.gleidsonmt.todo.bd.Setup;
 import io.github.gleidsonmt.todo.events.DialogEvent;
 import io.github.gleidsonmt.todo.events.LoginEvent;
 import io.github.gleidsonmt.todo.global.Global;
@@ -17,15 +17,13 @@ import io.github.gleidsonmt.todo.utils.Assets;
 import io.github.gleidsonmt.todo.utils.I18n;
 import io.github.gleidsonmt.todo.view.MainView;
 import io.github.gleidsonmt.todo.view.panel.menu.input_menu_items.DateUtils;
-import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
-import javafx.stage.Stage;import java.util.logging.Logger;
+import javafx.stage.Stage;
 
 /**
  *

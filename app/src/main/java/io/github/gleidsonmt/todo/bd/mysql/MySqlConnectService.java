@@ -13,6 +13,7 @@ import java.net.Socket;
  * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
  * Created on  29/04/2026
  */
+@Deprecated
 public class MySqlConnectService extends ScheduledService<Boolean> {
 
 

@@ -14,6 +14,7 @@ import java.util.List;
  * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
  * Created on  03/05/2026
  */
+@Deprecated
 public class MySQLStartServiceTest extends Service<Process> {
 
     private MySQLFolder folder;
