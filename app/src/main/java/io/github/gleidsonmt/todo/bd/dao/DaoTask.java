@@ -5,6 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.logging.Logger;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -20,20 +25,34 @@ public final class DaoTask extends AbstractDao<ToDoTask> {
     @Override
     protected ToDoTask createElement(@NotNull ResultSet result) throws SQLException {
 
-        System.out.println("result = " + result.getString("task.name"));
 
-        return new ToDoTask(result.getInt("task.id"), result.getString("task.name"),
-                result.getBoolean("task.completed"), result.getBoolean("task.important"),
-                result.getBoolean("task.my_day"),
-                result.getDate("task.due_date") != null ? result.getDate("task.due_date").toLocalDate() : null,
-                result.getTimestamp("task.remind") != null ? result.getTimestamp("task.remind").toLocalDateTime()
-                        : null,
-                result.getDate("task.created_at").toLocalDate(), result.getInt("task.list_id"));
+
+
+        return new ToDoTask(
+                result.getInt("id"),
+                result.getString("name"),
+                result.getBoolean("completed"),
+                result.getBoolean("important"),
+                result.getBoolean("my_day"),
+                result.getString("due_date") != null ? LocalDate.parse(result.getString("due_date")) : null,
+                result.getString("remind") != null ? LocalDateTime.parse(result.getString("remind")) : null,
+                result.getString("created_at") != null ? LocalDate.parse(result.getString("created_at")) : null,
+                result.getInt("list_id")
+//                result.getDate("due_date") != null ? result.getDate("due_date").toLocalDate() : null
+        );
+//        return new ToDoTask(result.getInt("task.id"), result.getString("task.name"),
+//                result.getBoolean("task.completed"), result.getBoolean("task.important"),
+//                result.getBoolean("task.my_day"),
+//                result.getDate("task.due_date") != null ? result.getDate("task.due_date").toLocalDate() : null,
+//                result.getTimestamp("task.remind") != null ? result.getTimestamp("task.remind").toLocalDateTime()
+//                        : null,
+//                result.getDate("task.created_at").toLocalDate(), result.getInt("task.list_id"));
     }
 
     @Override
     protected void prepareElement(@NotNull PreparedStatement prepare, @NotNull ToDoTask model) {
         try {
+
             prepare.setString(1, model.getName());
             prepare.setBoolean(2, model.isCompleted());
             prepare.setBoolean(3, model.isImportant());
@@ -42,18 +61,17 @@ public final class DaoTask extends AbstractDao<ToDoTask> {
             if (model.getDueDate() == null) {
                 prepare.setNull(5, 0);
             } else {
-                prepare.setDate(5, Date.valueOf(model.getDueDate()));
+                prepare.setString(5, model.getDueDate().toString());
             }
 
             if (model.getRemind() == null) {
                 prepare.setNull(6, 0);
             } else {
-                prepare.setTimestamp(6, Timestamp.valueOf(model.getRemind()));
+                prepare.setString(6, model.getRemind().toString());
             }
 
-            prepare.setDate(7, Date.valueOf(model.getCreatedAt()));
+            prepare.setString(7, model.getCreatedAt().toString());
 
-            // prepare.setNull(8, (int) model.getListId());
             prepare.setLong(8, model.getListId());
 
         } catch (SQLException e) {

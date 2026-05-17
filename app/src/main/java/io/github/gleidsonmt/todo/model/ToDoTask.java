@@ -31,6 +31,14 @@ public class ToDoTask extends Entity {
         this(0, name, false, false, false, LocalDate.now(), LocalDateTime.now(), LocalDate.now(),  0);
     }
 
+    public ToDoTask(long id, String name) {
+        this(id, name, false, false, false, LocalDate.now(), LocalDateTime.now(), LocalDate.now(),  0);
+    }
+
+    public ToDoTask(long id, String name, LocalDate dueDate) {
+        this(id, name, false, false, false, dueDate, LocalDateTime.now(), LocalDate.now(),  0);
+    }
+
     public ToDoTask(long id, String name, boolean completed, boolean important, boolean myDay, LocalDate dueDate,
                     LocalDateTime remind, LocalDate createdAt, long listID) {
         super(id, name);

@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.DayOfWeek;
+import java.util.*;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
@@ -14,41 +15,37 @@ import java.time.DayOfWeek;
 public final class Weekly extends Recurrence {
 
     @Ignore
-    private boolean onlyDaysOfWeek = false;
+    private boolean onlyDaysOfWeek;
 
     public Weekly() {
         this(false);
     }
 
     public Weekly(boolean onlyDaysOfWeek) {
-        this(0, 1, 0, onlyDaysOfWeek, RecurrenceType.WEEKLY);
-    }
-
-    public Weekly(long id, int times, long taskID, RecurrenceType type, DayOfWeek... daysOfWeek) {
-        this(id, times, taskID, false, type, daysOfWeek);
-    }
-
-    public Weekly(long id, int times, long taskID, boolean onlyDaysOfWeek, RecurrenceType type, DayOfWeek... daysOfWeek) {
-        super(id, times, taskID, type);
+        super(0, 1, 0, onlyDaysOfWeek ? RecurrenceType.WEEKDAYS : RecurrenceType.WEEKLY,
+                onlyDaysOfWeek ?
+                        new TreeSet<>(List.of(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.FRIDAY)) :
+                        new TreeSet<>(List.of(DayOfWeek.values()))
+        );
         this.onlyDaysOfWeek = onlyDaysOfWeek;
-        if (onlyDaysOfWeek) {
-            this.daysOfWeek = FXCollections.observableArrayList(getOnlyDaysOfWeek());
-        } else {
-            this.daysOfWeek = FXCollections.observableArrayList(daysOfWeek);
-        }
     }
 
-    @Override
-    public RecurrenceType getType() {
-        if (onlyDaysOfWeek) {
-            return RecurrenceType.WEEKDAYS;
-        } else {
-            return super.getType();
-        }
+    public Weekly(long id, int times, long taskID, boolean onlyDaysOfWeek, Set<DayOfWeek> daysOfWeek) {
+        super(id, times, taskID, onlyDaysOfWeek ? RecurrenceType.WEEKDAYS : RecurrenceType.WEEKLY, daysOfWeek);
+        System.out.println("daysOfWeek = " + daysOfWeek);
     }
 
-    private DayOfWeek[] getOnlyDaysOfWeek() {
-        return new DayOfWeek[]{DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.FRIDAY};
+//    @Override
+//    public RecurrenceType getType() {
+////        if (onlyDaysOfWeek) {
+////            return RecurrenceType.WEEKDAYS;
+////        } else {
+////            return super.getType();
+////        }
+//    }
+
+    private Set<DayOfWeek> getOnlyDaysOfWeek() {
+        return new HashSet<>(List.of(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.FRIDAY));
     }
 
     public void setOnlyDaysOfWeek(boolean bol) {

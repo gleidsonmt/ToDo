@@ -140,7 +140,6 @@ public abstract class ListContainer extends VBox {
      * @param viewModel The object model to create an UI Component.
      */
     public void add(TaskViewModel viewModel) {
-        viewModel.save();
         data.add(viewModel);
     }
 

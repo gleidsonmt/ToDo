@@ -1,6 +1,10 @@
 package io.github.gleidsonmt.todo.model.recurrence;
 
 import java.time.DayOfWeek;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
@@ -12,8 +16,12 @@ public final class Monthly extends Recurrence {
         this(1);
     }
 
-    public Monthly(int interval) {
-        super(0, interval, 0, RecurrenceType.MONTHLY, DayOfWeek.values());
+    public Monthly(int gap) {
+        super(0, gap, 0, RecurrenceType.MONTHLY);
+    }
+
+    public Monthly(long id, int gap, int taskId, Set<DayOfWeek> dayOfWeeks) {
+        super(id, gap, taskId, RecurrenceType.MONTHLY,  dayOfWeeks);
     }
 
     @Override

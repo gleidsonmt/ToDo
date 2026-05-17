@@ -16,7 +16,7 @@ plugins {
     id 'application'
 }
 
-version '0.0.1'
+version '0.0.2'
 
 repositories {
     // Use Maven Central for resolving dependencies.
@@ -25,16 +25,6 @@ repositories {
         url "https://sandec.jfrog.io/artifactory/repo"
     }
     maven { url 'https://jitpack.io' }
-}
-
-// ignore all other run projects
-// needs to be refactoring in the future
-subprojects {
-    tasks.configureEach { task ->
-        if (task.name.contains("run")) {
-            task.enabled = false
-        }
-    }
 }
 
 dependencies {
@@ -52,11 +42,6 @@ dependencies {
     testCompileOnly("org.jetbrains:annotations:26.1.0")
 
     // --------------------- External librabries  ------------------------
-//    implementation 'com.github.hervegirod:fxsvgimage:1.7'
-
-    // Add this for CSS stylesheet support
-//    implementation 'com.github.hervegirod:fxsvgimage:1.7:cssparser'
-
 
     implementation project(":glad")
 
@@ -73,9 +58,8 @@ dependencies {
 
     implementation 'org.xerial:sqlite-jdbc:3.45.3.0' // Use the latest version
 
-    // ------------------ Local libraries --------
+    // ------------------ Local libraries ---------------
     implementation fileTree(dir: 'lib', include: ['*.jar'])
-
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -115,49 +99,8 @@ tasks.register('log') {
     tasks.run.configure {
         args = ['log']
     }
-    // SEVERE / ERROR: Critical failures that stop a task or the entire application
-    // WARNING / WARN: Potential issues that might need attention later.
-    // INFO: General progress messages, like "Application started".
-    // CONFIG: that may be associated with particular configurations.
-    // For example, CONFIG message might include the CPU type,
-    // the graphics depth, the GUI look-and-feel, etc.
-    // DEBUG / FINE: Detailed info for developers to see what the code is doing during development.
-    // FINER: FINER indicates a fairly detailed tracing message. By default logging calls for entering, returning, or throwing an exception are traced at this level.
-    // TRACE / FINEST: Extremely detailed step-by-step information.
-
-    // [severe, red]
-    // [warning, yellow]
-    // [info, blue]
-    // [config, purple]
-    // [green, cyan]
     dependsOn 'run'
 }
-
-// Supondo que sua tarefa de cópia se chame 'copyFiles'
-// e a do jlink se chame 'jlink'
-//tasks.named('jlink') {
-//    finalizedBy 'copyDBFilesToImage'
-//}
-
-//tasks.register('copyDBFilesToImage', Copy) {
-//    from 'db'
-//    into 'build/image/bin/db'
-//    dependsOn 'jlink'
-//
-//    // Só executa se o diretório de destino NÃO existir
-//    onlyIf {
-//        !file('build/image/bin/db').exists()
-//    }
-//}
-
-//tasks.named('jpackageImage') {
-//    // 1. Garante que a cópia aconteça ANTES do jpackageImage
-//    dependsOn 'copyDBFilesToImage'
-//
-//    // 2. Registra a saída da sua tarefa de cópia como uma entrada do jpackageImage
-//    // Isso faz com que, se os arquivos do DB mudarem, o jpackageImage rode novamente
-//    inputs.files(tasks.named('copyDBFilesToImage'))
-//}
 
 javafx {
     version = "23.0.2"

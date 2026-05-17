@@ -7,6 +7,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.util.*;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
@@ -15,16 +17,20 @@ import java.time.DayOfWeek;
 public abstract class Recurrence extends Model {
 
     private long taskID;
-    protected ObservableList<DayOfWeek> daysOfWeek;
+    protected Set<DayOfWeek> daysOfWeek;
     protected RecurrenceType type;
     private final IntegerProperty gap;
 
-    public Recurrence(long id, int gap, long taskId, RecurrenceType type, DayOfWeek... dayOfWeek) {
+    public Recurrence(long id, int gap, long taskId, RecurrenceType type) {
+        this(id, gap, taskId, type, new TreeSet<>(List.of(DayOfWeek.values())));
+    }
+
+    public Recurrence(long id, int gap, long taskId, RecurrenceType type, Set<DayOfWeek> dayOfWeek) {
         super(id);
         taskID = taskId;
         this.gap = new SimpleIntegerProperty(gap);
         this.type = type;
-        this.daysOfWeek = FXCollections.observableArrayList(dayOfWeek);
+        this.daysOfWeek = dayOfWeek;
     }
 
     public long getTaskID() {
@@ -47,7 +53,7 @@ public abstract class Recurrence extends Model {
         return type;
     }
 
-    public ObservableList<DayOfWeek> getDaysOfWeek() {
+    public Set<DayOfWeek> getDaysOfWeek() {
         return daysOfWeek;
     }
 

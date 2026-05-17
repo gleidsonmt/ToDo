@@ -11,8 +11,8 @@ import javafx.scene.shape.Rectangle;
  * Create on  12/12/2024
  */
 public class GridIconDaily extends GridIcon {
-    public GridIconDaily() {
 
+    public GridIconDaily() {
         Rectangle recOne = createRectangle();
         Rectangle recTwo = createRectangle();
         Rectangle recThree = createRectangle();
@@ -20,7 +20,6 @@ public class GridIconDaily extends GridIcon {
         Rectangle recFive = createRectangle();
         Rectangle recSix = createRectangle();
         Rectangle recSeven = createRectangle();
-
 
         this.getChildren().setAll(recOne, recTwo, recThree, recFour, recFive, recSix, recSeven);
 
@@ -37,6 +36,4 @@ public class GridIconDaily extends GridIcon {
         this.setMaxWidth(Region.USE_PREF_SIZE);
         this.setMaxHeight(Region.USE_PREF_SIZE);
     }
-
-
 }

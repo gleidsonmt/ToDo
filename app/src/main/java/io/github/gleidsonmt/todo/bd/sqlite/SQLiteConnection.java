@@ -29,11 +29,13 @@ public enum SQLiteConnection {
     private Statement statement;
     private ResultSet result;
 
-
+    SQLiteConnection() {
+//        File dbFile = new File(DB_FILE_PATH);
+//        System.out.println("dbFile = " + dbFile.delete());
+    }
 
     public void connect() throws SQLException {
         File dbFile = new File(DB_FILE_PATH);
-        System.out.println("dbFile = " + dbFile.delete());
 
         boolean isFirstRun = !dbFile.exists();
 
@@ -71,11 +73,9 @@ public enum SQLiteConnection {
 
         try (Statement stmt = conn.createStatement()) {
             for (String command : commands) {
-                System.out.println("command = " + command);
                 String sql = command.trim();
 
                 if (!sql.isEmpty()) {
-                    System.out.println("sql = " + sql);
                     stmt.execute(sql);
                 }
             }

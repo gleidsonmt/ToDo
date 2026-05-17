@@ -1,7 +1,9 @@
 package io.github.gleidsonmt.todo.view.panel.events;
 
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
+import javafx.beans.NamedArg;
 import javafx.event.Event;
+import javafx.event.EventTarget;
 import javafx.event.EventType;
 
 /**
@@ -39,6 +41,15 @@ public class TaskChangeEvent extends Event {
 
     public TaskChangeEvent(EventType<? extends Event> eventType, TaskViewModel model) {
         super(eventType);
+        this.idActual = model.getId();
+        this.idPrevious = model.getListId();
+        this.model = model;
+    }
+
+    public TaskChangeEvent(final @NamedArg("source") Object source,
+                           final @NamedArg("target") EventTarget target,
+                           EventType<? extends Event> eventType, TaskViewModel model) {
+        super(source, target, eventType);
         this.idActual = model.getId();
         this.idPrevious = model.getListId();
         this.model = model;

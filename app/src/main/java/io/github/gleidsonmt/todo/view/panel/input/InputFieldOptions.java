@@ -40,6 +40,10 @@ public class InputFieldOptions extends HBox {
         return remind.getValue();
     }
 
+    public Recurrence getRecurrence() {
+        return repeat.getValue();
+    }
+
     public List getTask() {
         return tasks.getValue();
     }

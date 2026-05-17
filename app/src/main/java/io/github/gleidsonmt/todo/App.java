@@ -11,6 +11,7 @@ import io.github.gleidsonmt.todo.global.Global;
 import io.github.gleidsonmt.todo.logger.LogFormatter;
 import io.github.gleidsonmt.todo.utils.Assets;
 import io.github.gleidsonmt.todo.utils.I18n;
+import io.github.gleidsonmt.todo.view.MainView;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;

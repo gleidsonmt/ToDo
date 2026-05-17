@@ -16,12 +16,22 @@ INSERT INTO `list` (id, name, icon_name, fixed, size) VALUES (6, 'Exercise',  's
 CREATE TABLE task (
       id INTEGER PRIMARY KEY,
       name VARCHAR,
-      completed SMALLINT,
-      important SMALLINT,
-      my_day SMALLINT,
-      due_date DATE,
+      completed TINYINT DEFAULT 0,
+      important TINYINT DEFAULT 0,
+      my_day TINYINT DEFAULT 0,
+      due_date TEXT,
       remind TEXT,
-      created_at DATE,
+      created_at TEXT,
       list_id INTEGER,
       FOREIGN KEY (list_id) REFERENCES list(id)
+);
+
+CREATE TABLE recurrence
+(
+    id INTEGER PRIMARY KEY,
+    gap INTEGER DEFAULT 1,
+    days_of_week INTEGER NOT NULL CHECK (days_of_week BETWEEN 0 AND 127),
+    type TEXT NOT NULL CHECK (type IN ('DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY', 'WEEKDAYS', 'CUSTOM')),
+    task_id INTEGER NOT NULL,
+    FOREIGN KEY (task_id) REFERENCES task(id)
 );

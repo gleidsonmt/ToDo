@@ -49,6 +49,7 @@ public class MainView extends Container implements Layout {
         init();
 
         this.addEventHandler(TaskChangeEvent.ADD, e -> {
+            System.out.println("event handler");
             Logger.getGlobal().info(() -> "[TaskChangeEvent [FILTER], Type = " + e.getEventType() + " ] -> " + e.getModel());
             sideNav.get(e.getModel().getListId()).addNumberOfTasks(1).update();
         });

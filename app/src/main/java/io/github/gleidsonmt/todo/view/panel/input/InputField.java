@@ -2,11 +2,10 @@ package io.github.gleidsonmt.todo.view.panel.input;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
-import io.github.gleidsonmt.todo.view.nav.SideNav;
+import io.github.gleidsonmt.todo.model.recurrence.Recurrence;
 import io.github.gleidsonmt.todo.view.panel.Panel;
 import io.github.gleidsonmt.todo.view.panel.events.TaskChangeEvent;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
-import javafx.beans.property.StringProperty;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -30,7 +29,7 @@ public class InputField extends GridPane {
     private final TextField textInput;
 
     private final SVGIcon icon = new SVGIcon(Icon.ADD);
-    private  InputFieldOptions options = new InputFieldOptions();;
+    private  InputFieldOptions options = new InputFieldOptions();
 
     public InputField() {
         this.textInput = createTextField();
@@ -112,19 +111,13 @@ public class InputField extends GridPane {
                     if (textInput.getText().isEmpty())
                         return;
 
-
                     // Create another using the prepared here.
                     TaskViewModel viewModel = new TaskViewModel();
-                    viewModel.setCreatedAt(LocalDate.now());
                     viewModel.setName(textInput.getText());
-                    viewModel.setCompleted(false);
-                    viewModel.setImportant(false);
-                    viewModel.setMyDay(false);
-
+                    viewModel.setCreatedAt(LocalDate.now());
+//
                     viewModel.setRemind(options.getRemind());
                     viewModel.setDueDate(options.getDueDate());
-
-//                    viewModel.setListId(panel.getListRoot().getActualList().getId());
 
                     // set the list
                     if (!panel.getListRoot().getActualList().isFixed()) {
@@ -132,16 +125,18 @@ public class InputField extends GridPane {
                     } else {
                         viewModel.setListId(options.getTask().getId());
                     }
-                    System.out.println(viewModel);
                     viewModel.save();
 
-                    panel.getListRoot().getContainer().fireEvent(new TaskChangeEvent(TaskChangeEvent.ADD, viewModel));
+                    TaskChangeEvent e = new TaskChangeEvent(TaskChangeEvent.ADD, viewModel);
+                    panel.getListRoot().fireEvent(e);
+                    // add on the list UI
+                    panel.getListRoot().getContainer().add(viewModel);
 //
-//                    Recurrence recurrence = repeat.getValue();
-//                    if (recurrence == null) return;
-//
-//                    recurrence.setTaskID(viewModel.getId());
-//                    viewModel.storeRecurrence(recurrence);
+                    Recurrence recurrence = options.getRecurrence();
+                    if (recurrence == null) return;
+
+                    recurrence.setTaskID(viewModel.getId());
+                    viewModel.storeRecurrence(recurrence);
 
                 }
             }

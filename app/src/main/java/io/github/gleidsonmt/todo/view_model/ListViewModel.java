@@ -11,6 +11,8 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+import java.util.logging.Logger;
+
 /**
  * Description:
  *
@@ -117,6 +119,8 @@ public class ListViewModel extends ViewModel {
     }
 
     public ListViewModel addNumberOfTasks(int val) {
+        System.out.println("val = " + val);
+        Logger.getGlobal().info("val = " + val);
         this.numberOfTasks.set(getNumberOfTasks() + val);
         return this;
     }

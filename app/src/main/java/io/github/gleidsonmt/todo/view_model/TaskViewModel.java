@@ -66,9 +66,9 @@ public class TaskViewModel extends ViewModel {
         this.setId(presenter.store(converted));
     }
 
-//    public void storeRecurrence(Recurrence rec) {
-//        presenter.storeRecurrence(rec);
-//    }
+    public void storeRecurrence(Recurrence rec) {
+        presenter.storeRecurrence(rec);
+    }
 
     public void update() {
         // commit in db

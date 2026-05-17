@@ -1,6 +1,8 @@
 package io.github.gleidsonmt.todo.model.recurrence;
 
 import java.time.DayOfWeek;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
@@ -13,7 +15,11 @@ public final class Yearly extends Recurrence {
     }
 
     public Yearly(int gap) {
-        super(0, gap, 0,RecurrenceType.YEARLY, DayOfWeek.values());
+        super(0, gap, 0,RecurrenceType.YEARLY);
+    }
+
+    public Yearly(long id, int gap, int taskId, Set<DayOfWeek> dayOfWeeks) {
+        super(id, gap, taskId, RecurrenceType.YEARLY,  dayOfWeeks);
     }
 
     @Override

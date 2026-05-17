@@ -30,7 +30,6 @@ module io.github.gleidsonmt.todo {
     requires org.jspecify;
     requires io.github.classgraph;
     requires java.prefs;
-    requires mysql.connector.j;
     requires jdk.security.jgss;
     requires jdk.compiler;
     requires com.dustinredmond.fxtrayicon;

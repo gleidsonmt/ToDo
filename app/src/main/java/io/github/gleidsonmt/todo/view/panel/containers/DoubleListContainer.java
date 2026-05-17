@@ -56,7 +56,6 @@ public class DoubleListContainer extends ListContainer {
                 data.add(new TaskViewModel(el));
             });
 
-            // data = task.getValue();
             sectionIncomplete.setList(data.filtered(el -> !el.isCompleted()));
             sectionCompleted.setList(data.filtered(TaskViewModel::isCompleted));
 
@@ -105,33 +104,27 @@ public class DoubleListContainer extends ListContainer {
         this.addEventFilter(TaskChangeEvent.DELETE_TASK, e -> {
             logger.info(() -> "[TaskChangeEvent, Type = " + e.getEventType() + " ] -> " + e.getModel());
             getData().remove(e.getModel());
-            // chamar confirmacao
             e.getModel().delete();
         });
 
-        this.addEventFilter(TaskChangeEvent.ADD, e -> {
-            logger.info(() -> "[TaskChangeEvent, Type = " + e.getEventType() + " ] -> " + e.getModel());
-            getData().add(e.getModel());
-        });
-
-        data.addListener((ListChangeListener<TaskViewModel>) c -> {
-            if (c.next()) {
-                if (c.wasUpdated()) {
-                    c.getList().subList(c.getFrom(), c.getTo()).forEach(viewModel -> {
-                        if (viewModel == null)
-                            return;
-//                        viewModel.update();
-//                        list.update();
-                    });
-                }
-//                if (c.wasAdded() ) {
-//                    list.addNumberOfTasks(c.getAddedSize());
+//        data.addListener((ListChangeListener<TaskViewModel>) c -> {
+//            if (c.next()) {
+//                if (c.wasUpdated()) {
+//                    c.getList().subList(c.getFrom(), c.getTo()).forEach(viewModel -> {
+//                        if (viewModel == null)
+//                            return;
+////                        viewModel.update();
+////                        list.update();
+//                    });
 //                }
-//                if (c.wasRemoved() ) {
-//                    System.out.println("removed");
-//                    list.addNumberOfTasks(-c.getRemovedSize());
-//                }
-            }
-        });
+////                if (c.wasAdded() ) {
+////                    list.addNumberOfTasks(c.getAddedSize());
+////                }
+////                if (c.wasRemoved() ) {
+////                    System.out.println("removed");
+////                    list.addNumberOfTasks(-c.getRemovedSize());
+////                }
+//            }
+//        });
     }
 }

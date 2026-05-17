@@ -31,58 +31,58 @@ public class Setup {
     }
 
     public User start() {
-
         CompletableFuture.supplyAsync(() -> {
 
-            PrintStream out;
-            try {
-                out = new PrintStream(new FileOutputStream("log.txt"));
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-            System.setOut(out);
-            System.setErr(out);
+                    try {
 
-            updateMessage("Criando arquivo de log..");
+                        Logger.getGlobal().info("Starting Loader..");
+                        SQLiteConnection database = SQLiteConnection.INSTANCE;
+                        database.connect();
+                        Logger.getGlobal().info("Iniciando o banco de dados...");
+                        updateMessage("Iniciando o banco de dados..." + (database.hasConnection() ? " [ OK ] " : " [ FAILED ]"));
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                    return null;
+                }).thenApply(_ -> {
+                    if (Global.isRunningOnExecutable()) {
+                        updateMessage("Criando arquivo de log..");
 
-            try {
-                Logger.getGlobal().info("Starting Loader..");
-                SQLiteConnection database = SQLiteConnection.INSTANCE;
-                database.connect();
-                Logger.getGlobal().info("Iniciando o banco de dados...");
-                updateMessage("Iniciando o banco de dados..." + (database.hasConnection() ? " [ OK ] " : " [ FAILED ]"));
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-            return null;
-        }).thenApply(_ -> {
-            if (Global.isRunningOnExecutable()) {
+                        PrintStream out;
+                        try {
+                            out = new PrintStream(new FileOutputStream("log.txt"));
+                        } catch (FileNotFoundException e) {
+                            throw new RuntimeException(e);
+                        }
+                        System.setOut(out);
+                        System.setErr(out);
 
-                updateMessage("Criando registro no windows..");
-                String path = getExecutable().toString();
+                        updateMessage("Criando registro no windows..");
+                        String path = getExecutable().toString();
 
-                String regCommand = "reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\" /v \"JavaFx ToDo\" /t REG_SZ /d \"\\\""
-                                    + path + "\\\" --background\" /f";
-                updateMessage("Executando comando: " + regCommand);
+                        String regCommand = "reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\" /v \"JavaFx ToDo\" /t REG_SZ /d \"\\\""
+                                            + path + "\\\" --background\" /f";
+                        updateMessage("Executando comando: " + regCommand);
 
-                try {
-                    ProcessBuilder pb = new ProcessBuilder("cmd", "/c", regCommand);
-                    Process pro = pb.start();
-                    pro.waitFor();
-                    updateMessage("Registro no windows.. " + (pro.exitValue() == 0 ? " [ OK ] " : " [ FAILED ]"));
-                } catch (IOException e) {
-                    fireError("Erro!", "Erro ao registrar serviço. \n", e);
-                    return false;
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            return null;
-        }).thenAccept(_ -> Event.fireEvent(destiny, new LoginEvent(LoginEvent.LOGIN))).exceptionally(e -> {
-                    fireError("Error!", "Error on setting app.", (Exception) e);
-                    throw new RuntimeException(e);
-                }
-        );
+                        try {
+                            ProcessBuilder pb = new ProcessBuilder("cmd", "/c", regCommand);
+                            Process pro = pb.start();
+                            pro.waitFor();
+                            updateMessage("Registro no windows.. " + (pro.exitValue() == 0 ? " [ OK ] " : " [ FAILED ]"));
+                        } catch (IOException e) {
+                            fireError("Erro!", "Erro ao registrar serviço. \n", e);
+                            return false;
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                    return null;
+                }).thenAccept(_ -> Event.fireEvent(destiny, new LoginEvent(LoginEvent.LOGIN)))
+                .exceptionally(e -> {
+                            fireError("Error!", "Error on setting app.", (Exception) e);
+                            throw new RuntimeException(e);
+                        }
+                );
         return null;
     }
 

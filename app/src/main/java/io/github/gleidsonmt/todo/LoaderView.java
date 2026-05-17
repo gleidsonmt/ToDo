@@ -8,6 +8,7 @@ import io.github.gleidsonmt.glad.controls.button.Button;
 import io.github.gleidsonmt.glad.controls.loaders.CircleLoader;
 import io.github.gleidsonmt.glad.controls.loaders.Suspense3DCircle;
 import io.github.gleidsonmt.todo.bd.Setup;
+import io.github.gleidsonmt.todo.bd.sqlite.SQLiteConnection;
 import io.github.gleidsonmt.todo.events.DialogEvent;
 import io.github.gleidsonmt.todo.events.LoginEvent;
 import io.github.gleidsonmt.todo.global.Global;
@@ -42,10 +43,8 @@ public class LoaderView extends StackPane implements Layout {
 
         addEventHandler(LoginEvent.LOGIN, _ -> {
             Platform.runLater(() -> {
-                Root root = (Root) getParent();
+                Root root = (Root) getScene().getRoot();
                 root.setLayout(new MainView());
-
-                System.out.println("starting as well");
             });
 
             var stage = (Stage) getParent().getScene().getWindow();
@@ -61,7 +60,6 @@ public class LoaderView extends StackPane implements Layout {
             Platform.runLater(timerAlertService::start);
 
             timerAlertService.setOnSucceeded(e -> {
-                System.out.println("timerAlertService.getValue() = " + timerAlertService.getValue());
                 ObservableList<ToDoTask> tasks = timerAlertService.getValue();
                 tasks.forEach(task -> {
                     trayIcon.showInfoMessage(task.getName(), DateUtils.format(task.getRemind()));
@@ -76,7 +74,6 @@ public class LoaderView extends StackPane implements Layout {
                 Root root = (Root) getParent();
 
                 Hyperlink link = new Hyperlink("Get Information");
-
 
                 link.setOnAction(event -> {
                     Global.openLink("https://github.com/gleidsonmt/ToDo");

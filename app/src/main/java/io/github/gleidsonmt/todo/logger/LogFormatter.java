@@ -16,6 +16,22 @@ import static io.github.gleidsonmt.todo.logger.AnsiColors.*;
  */
 public class LogFormatter extends Formatter {
 
+    // SEVERE / ERROR: Critical failures that stop a task or the entire application
+    // WARNING / WARN: Potential issues that might need attention later.
+    // INFO: General progress messages, like "Application started".
+    // CONFIG: that may be associated with particular configurations.
+    // For example, CONFIG message might include the CPU type,
+    // the graphics depth, the GUI look-and-feel, etc.
+    // DEBUG / FINE: Detailed info for developers to see what the code is doing during development.
+    // FINER: FINER indicates a fairly detailed tracing message. By default logging calls for entering, returning, or throwing an exception are traced at this level.
+    // TRACE / FINEST: Extremely detailed step-by-step information.
+
+    // [severe, red]
+    // [warning, yellow]
+    // [info, blue]
+    // [config, purple]
+    // [green, cyan]
+
     // format is called for every console log message
     @Override
     public String format(LogRecord record) {

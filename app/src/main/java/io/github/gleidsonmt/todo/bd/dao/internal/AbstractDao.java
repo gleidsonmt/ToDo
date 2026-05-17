@@ -93,12 +93,18 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
     @Override
     public long store(T model) {
         connect();
+
         String sql = "";
         try {
+
             sql = modelSQLCreator.create(DaoAction.CREATE, model);
-            PreparedStatement preparedStatement = prepareStatement(sql);
-            prepareElement(preparedStatement, model);
-            preparedStatement.execute();
+            Logger.getGlobal().info("store = " + sql);
+
+            try (PreparedStatement preparedStatement = prepareStatement(sql)) {
+                prepareElement(preparedStatement, model);
+                preparedStatement.execute();
+            }
+
             logger(sql);
             return getLastId();
         } catch (SQLException e) {
@@ -156,7 +162,6 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
     public Optional<T> get(long id) {
         connect();
         ResultSet result = executeQuery(modelSQLCreator.create(DaoAction.GET, id));
-        System.out.println("result = " + result);
         try {
             if (result.next())
                 return Optional.of(createElement(result));
@@ -258,7 +263,7 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
     protected long getLastId() {
         ResultSet rs;
         try {
-            rs = prepareStatement("SELECT LAST_INSERT_ID()").executeQuery();
+            rs = prepareStatement("SELECT last_insert_rowid()").executeQuery();
             rs.next();
             return rs.getLong(1);
         } catch (SQLException e) {
@@ -319,7 +324,7 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
     protected void connect() {
         try {
             if (!data.hasConnection() || data.getConnection().isClosed()) {
-                data.getConnection();
+                data.connect();
             }
         } catch (SQLException e) {
             logger.severe("Error on connecting to database");
@@ -378,7 +383,6 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
             protected ObservableList<T> call() {
                 connect();
                 var sql = modelSQLCreator.createFetch(condition);
-                System.out.println("sql = " + sql);
                 ResultSet result = executeQuery(sql);
                 logger(sql);
                 try {
@@ -389,7 +393,8 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
                         }
                     }
                 } catch (SQLException e) {
-                    logger.severe(() -> "[SQL Action, Type = ERROR]  SQL => select * from " + getTable() + " " + condition + ";");
+                    logger.severe(() -> "[SQL Action, Type = ERROR]  SQL => select * from " + getTable() + " " + condition + ";" + " -- " + e.getMessage());
+                    e.printStackTrace();
                     throw new RuntimeException(e);
                 }
                 return items;
