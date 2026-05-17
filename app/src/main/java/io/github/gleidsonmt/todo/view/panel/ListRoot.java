@@ -65,6 +65,7 @@ public class ListRoot extends VBox {
         container.sizeProperty().addListener((_, _, val) -> {
             update(val.intValue() == 0);
         });
+
         update(container.sizeProperty().get() == 0);
     }
 

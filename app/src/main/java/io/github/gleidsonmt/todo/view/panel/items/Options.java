@@ -30,7 +30,6 @@ public class Options extends FlowPane {
     private final BooleanProperty has = new SimpleBooleanProperty();
     private final TaskOption taskOption = new TaskOption();
     private final DueDateOption dueDateOption = new DueDateOption();
-
     private final RemindOption remindOption;
 
     public Options(TaskItem item) {
@@ -40,6 +39,8 @@ public class Options extends FlowPane {
 
         TaskPresenter taskPresenter = (TaskPresenter) Global.get(ToDoTask.class);
         Optional<Recurrence> recurrence = taskPresenter.getRecurrence(item.getViewModel().getId());
+
+        System.out.println("recurrence = " + recurrence);
 
         MyDayOption myDayOption = new MyDayOption();
         BooleanProperty hasMyDayOption = new SimpleBooleanProperty();

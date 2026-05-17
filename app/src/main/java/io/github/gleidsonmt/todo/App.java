@@ -116,7 +116,8 @@ public class App extends Application {
         }
         stage.show();
 
-
+        System.out.println("Launcher.mode = " + Launcher.mode);
+        
         if (Launcher.mode == Mode.DEBUG) {
             Tools.analyzeNodes(scene);
             Tools.listenCss(scene);

@@ -4,6 +4,7 @@ import io.github.gleidsonmt.todo.model.recurrence.Recurrence;
 import io.github.gleidsonmt.todo.model.recurrence.RecurrenceType;
 import io.github.gleidsonmt.todo.utils.StringUtils;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -14,6 +15,10 @@ import java.time.format.DateTimeFormatter;
  * Create on  09/04/2026
  */
 public class DateUtils {
+
+    public static boolean isWeekend(LocalDate date) {
+        return date.getDayOfWeek().equals(DayOfWeek.SUNDAY) || date.getDayOfWeek().equals(DayOfWeek.SATURDAY);
+    }
 
     public static String formatDay(LocalDate localDate) {
         return DateTimeFormatter

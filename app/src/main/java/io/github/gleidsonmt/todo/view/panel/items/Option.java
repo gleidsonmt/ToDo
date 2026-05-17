@@ -137,7 +137,6 @@ public class Option extends GridPane {
     }
 
     public void setNeedRepeatIcon(boolean repeatIcon) {
-
         if (repeatIcon) {
             this.repeatIcon = new SVGIcon(Icon.SYNC);
             this.repeatIcon.setScale(0.7);
@@ -151,7 +150,6 @@ public class Option extends GridPane {
         } else {
             minLayout();
         }
-
     }
 
     @Override

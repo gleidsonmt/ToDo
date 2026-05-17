@@ -44,6 +44,7 @@ dependencies {
     implementation("io.github.classgraph:classgraph:4.8.165")
     implementation("com.dustinredmond.fxtrayicon:FXTrayIcon:4.2.3")
     implementation("org.xerial:sqlite-jdbc:3.45.3.0") // Use the latest version
+    implementation("org.slf4j:slf4j-simple:2.0.13")
 
     // ------------------ Local libraries --------
     implementation(fileTree(mapOf("dir" to "lib", "include" to listOf("*.jar"))))
@@ -75,12 +76,11 @@ application {
 }
 
 javafx {
-    version = "23.0.2"
+    version = "25.0.3"
     modules("javafx.controls", "javafx.web", "javafx.fxml", "javafx.graphics", "javafx.swing")
 }
 
 jlink {
-
     // Loading a custom file in build.gradle
     options = listOf("--strip-debug", "--compress", "2", "--no-header-files", "--no-man-pages")
     launcher {
@@ -102,23 +102,28 @@ jlink {
     addExtraDependencies("javafx")
 }
 
+val requestedTasks = gradle.startParameter.taskNames
+
+val runMode = when {
+    requestedTasks.any { it == "debug" || it.endsWith(":debug") } -> "debug"
+    requestedTasks.any { it == "log" || it.endsWith(":log") } -> "log"
+    else -> "level-off"
+}
+
+
 tasks.named<JavaExec>("run") {
-    args = listOf("level-off")
+    args(runMode)
 }
 
 tasks.register("debug") {
     group = "application"
-    tasks.run.configure {
-        args = listOf("debug")
-    }
+    description = "Runs the application in debug mode."
     dependsOn("run")
 }
 
 tasks.register("log") {
     group = "application"
-    tasks.run.configure {
-        args = listOf("log")
-    }
+
     dependsOn("run")
 }
 

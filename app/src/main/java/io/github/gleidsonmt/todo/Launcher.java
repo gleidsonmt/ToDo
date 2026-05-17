@@ -17,12 +17,15 @@ import java.util.prefs.Preferences;
  */
 public class Launcher extends App {
 
-    public static Mode mode;
+    public static Mode mode = Mode.DEFAULT;
 
     public static void main(String[] args) {
         for (String arg : args) {
-            if (arg.equals("debug") ) mode = Mode.DEBUG;
-            else if (arg.equals("log")) mode = Mode.LOG;
+            if ("debug".equalsIgnoreCase(arg)) {
+                mode = Mode.DEBUG;
+            } else if ("log".equalsIgnoreCase(arg)) {
+                mode = Mode.LOG;
+            }
             else mode = Mode.DEFAULT;
         }
         launch(args);

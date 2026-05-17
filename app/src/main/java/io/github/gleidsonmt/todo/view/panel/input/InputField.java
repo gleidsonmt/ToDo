@@ -127,16 +127,19 @@ public class InputField extends GridPane {
                     }
                     viewModel.save();
 
-                    TaskChangeEvent e = new TaskChangeEvent(TaskChangeEvent.ADD, viewModel);
-                    panel.getListRoot().fireEvent(e);
                     // add on the list UI
-                    panel.getListRoot().getContainer().add(viewModel);
 //
                     Recurrence recurrence = options.getRecurrence();
-                    if (recurrence == null) return;
 
-                    recurrence.setTaskID(viewModel.getId());
-                    viewModel.storeRecurrence(recurrence);
+                    if (recurrence != null) {
+                        recurrence.setTaskID(viewModel.getId());
+                        viewModel.storeRecurrence(recurrence);
+                    }
+
+                    TaskChangeEvent e = new TaskChangeEvent(TaskChangeEvent.ADD, viewModel);
+                    panel.getListRoot().fireEvent(e);
+
+                    panel.getListRoot().getContainer().add(viewModel);
 
                 }
             }

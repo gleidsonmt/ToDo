@@ -8,6 +8,7 @@ import io.github.gleidsonmt.todo.view.panel.menu.TaskItemContextMenu;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import javafx.beans.property.*;
+import javafx.css.PseudoClass;
 import javafx.geometry.VPos;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -49,6 +50,8 @@ public class TaskItem extends GridToggle {
     private final TaskViewModel viewModel;
     private final ListViewModel listViewModel;
 
+    private static final PseudoClass DETAILS = PseudoClass.getPseudoClass("details");
+
     public TaskItem(@NonNull TaskViewModel viewModel, ListViewModel listViewModel) {
         this.viewModel = viewModel;
         this.listViewModel = listViewModel;
@@ -81,6 +84,8 @@ public class TaskItem extends GridToggle {
         this.getChildren().addAll(circleIcon, text, favorite);
         this.setPrefWidth(Double.MAX_VALUE);
         this.setHgap(5);
+
+        pseudoClassStateChanged(DETAILS, needDetails.get());
 
         if (needDetails.get()) {
             detailsLayout();
@@ -120,12 +125,14 @@ public class TaskItem extends GridToggle {
 
         this.text.getStyleClass().add(completedProperty().get() ? "strike" : "");
 
+
         needDetails.addListener((_, _, newVal) -> {
-            if (!newVal) {
-                minLayout();
-            } else {
-                detailsLayout();
-            }
+//            this.pseudoClassStateChanged(PseudoClass.getPseudoClass("details"), !newVal);
+//            if (!newVal) {
+//                minLayout();
+//            } else {
+//                detailsLayout();
+//            }
         });
 
         this.favoriteProperty().addListener((_, _, _) -> {
@@ -149,8 +156,6 @@ public class TaskItem extends GridToggle {
     private boolean inScene() {
         return getScene() != null;
     }
-
-
 
     public void minLayout() {
         this.getChildren().remove(options);
@@ -207,16 +212,6 @@ public class TaskItem extends GridToggle {
 
     public long getListId() {
         return this.viewModel.getListId();
-    }
-
-    @Experimental
-    public CompleteAction onCompletedChange() {
-        return completed;
-    }
-
-    @Experimental
-    public ImportantAction onImportantChange() {
-        return importantAction;
     }
 
     public TaskViewModel getViewModel() {
