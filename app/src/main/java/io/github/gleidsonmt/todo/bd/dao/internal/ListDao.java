@@ -7,7 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 
 /**
- * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Create on 17/01/2025
  */
 public interface ListDao<T extends Model> {

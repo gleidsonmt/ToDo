@@ -20,7 +20,7 @@ import javafx.scene.layout.VBox;
 import java.util.Optional;
 
 /**
- * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Created On: Mar 20, 2026
  */
 public class SideNav extends VBox {

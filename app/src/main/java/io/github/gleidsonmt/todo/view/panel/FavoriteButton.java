@@ -8,7 +8,7 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.ToggleButton;
 
 /**
- * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br> <br>
  * Created On: Feb 26, 2026
  */
 public class FavoriteButton extends ToggleButton {

@@ -12,7 +12,7 @@ import javafx.event.EventHandler;
  * Description: Change the state of an task item.
  * This in specif puts the task as an task to do in my day list.
  *
- * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Created On: Mar 06, 2026
  *
  */

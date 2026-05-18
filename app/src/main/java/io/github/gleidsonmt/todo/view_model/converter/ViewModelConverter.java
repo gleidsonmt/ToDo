@@ -7,7 +7,7 @@ import io.github.gleidsonmt.todo.view_model.ViewModel;
 
 /**
  *
- * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Created on  16/04/2026
  */
 public abstract class ViewModelConverter<T extends Model, E extends ViewModel> {

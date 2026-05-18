@@ -12,7 +12,7 @@ import javafx.scene.text.TextAlignment;
 /**
  * Description: Creates a single Pane with an image to show the user there's no task to see.
  *
- * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br> <br>
  * Created On: Feb 26, 2026
  */
 public class EmptyContainer extends StackPane {

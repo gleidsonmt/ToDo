@@ -17,7 +17,7 @@ import javafx.scene.control.MenuItem;
 
 /**
  *
- * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br> <br>
  * Created on  16/04/2026
  */
 public class TaskOptions {

@@ -11,7 +11,7 @@ import java.time.DayOfWeek;
 import java.util.*;
 
 /**
- * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Create on  13/12/2024
  */
 public final class Weekly extends Recurrence {

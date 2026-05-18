@@ -10,7 +10,7 @@ import javafx.collections.ObservableList;
 /**
  * Description:
  *
- * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Created On: Feb 25, 2026
  * <p>
  * Version History: Initial version

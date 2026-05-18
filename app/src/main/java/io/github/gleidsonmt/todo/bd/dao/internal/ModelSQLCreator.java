@@ -35,7 +35,7 @@ import java.util.regex.Pattern;
  * insert into person(id, name) values(?, ?);
  * Those sql are used for the base class {@link AbstractDao}
  *
- * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Create on 17/01/2025
  */
 public class ModelSQLCreator<T extends Model> {

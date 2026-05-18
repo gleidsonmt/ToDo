@@ -14,7 +14,7 @@ import org.jspecify.annotations.NonNull;
 /**
  * Description: Uses the size provided by a height property to create fake lines.
  *
- * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Created on  17/05/2026
  */
 public class BackgroundLines extends VBox {

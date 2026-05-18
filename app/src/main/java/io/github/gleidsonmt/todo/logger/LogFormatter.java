@@ -13,7 +13,7 @@ import java.util.logging.LogRecord;
 import static io.github.gleidsonmt.todo.logger.AnsiColors.*;
 
 /**
- * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Create on 18/01/2025
  */
 public class LogFormatter extends Formatter {

@@ -14,7 +14,7 @@ import javafx.scene.layout.VBox;
 import java.time.LocalDate;
 
 /**
- * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Create on  10/04/2026
  */
 public class CalendarPane extends VBox {

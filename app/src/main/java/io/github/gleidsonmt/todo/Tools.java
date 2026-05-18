@@ -14,7 +14,7 @@ import java.net.URLClassLoader;
 /**
  * Used only in runtime as tool to help development.
  *
- * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Create on  27/08/2025
  */
 public final class Tools {

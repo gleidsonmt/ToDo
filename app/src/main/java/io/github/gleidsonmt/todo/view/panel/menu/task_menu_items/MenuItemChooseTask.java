@@ -21,7 +21,7 @@ import javafx.scene.control.MenuItem;
  * Description: It's a menu in task item that moves the task from a list to
  * another.
  *
- * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Created On: Mar 18, 2026
  *
  */

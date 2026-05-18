@@ -24,7 +24,7 @@ import javafx.scene.image.Image;
 import org.jetbrains.annotations.ApiStatus;
 
 /**
- * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Create on 19/11/2024
  */
 @ApiStatus.Experimental

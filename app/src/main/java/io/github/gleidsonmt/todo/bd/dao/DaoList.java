@@ -10,7 +10,7 @@ import io.github.gleidsonmt.todo.bd.dao.internal.AbstractDao;
 import io.github.gleidsonmt.todo.model.List;
 
 /**
- * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Create on 04/03/2024
  */
 public final class DaoList extends AbstractDao<List> {
