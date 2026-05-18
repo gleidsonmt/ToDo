@@ -32,7 +32,7 @@ import java.util.prefs.Preferences;
 /**
  * Description:
  *
- * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Created On: Feb 22, 2026
  */
 public class App extends Application {
@@ -40,7 +40,6 @@ public class App extends Application {
     // Chaves para identificar os valores no registro/arquivo
     private static final String WIDTH_KEY = "window_width";
     private static final String HEIGHT_KEY = "window_height";
-
 
     // Valores padrão caso seja a primeira vez que o app abre
     private static final double DEFAULT_WIDTH = 1200;
@@ -63,13 +62,12 @@ public class App extends Application {
             handler.setLevel(Level.ALL);
         }
 
-
     }
 
     @Override
     public void stop() {
 
-        DatabaseConnection.INSTANCE.close();
+        SQLiteConnection.INSTANCE.close();
 
         var test = ProcessHandle.allProcesses()
                 .filter(processHandle -> processHandle.info().command().filter(cmd -> cmd.contains("mysqld")).isPresent()).findAny();
