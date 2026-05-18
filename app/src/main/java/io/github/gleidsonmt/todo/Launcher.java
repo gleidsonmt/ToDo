@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo;
 
 import io.github.gleidsonmt.todo.global.Global;
@@ -12,7 +14,7 @@ import java.util.prefs.Preferences;
 
 /**
  *
- * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
  * Created on  21/04/2026
  */
 public class Launcher extends App {

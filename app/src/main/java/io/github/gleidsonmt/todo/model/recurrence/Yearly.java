@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo.model.recurrence;
 
 import java.time.DayOfWeek;
@@ -5,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
  * Create on  13/12/2024
  */
 public final class Yearly extends Recurrence {

@@ -8,12 +8,11 @@ import javafx.beans.binding.Bindings;
 import javafx.collections.ListChangeListener;
 import javafx.collections.transformation.FilteredList;
 
-/**
- * Description:
- *
- * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
- * Created On: Feb 26, 2026
- */
+/// Description:
+///
+/// @author Gleidson Neves da Silveira | [gleidisonmt@gmail.com](mailto:gleidisonmt@gmail.com)
+///
+/// Created On: Feb 26, 2026
 public class AnimatedSection extends SingleSection {
 
     private final SectionTitle title;

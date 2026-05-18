@@ -1,5 +1,8 @@
+
+
 package io.github.gleidsonmt.todo.view.panel.containers;
 
+import io.github.gleidsonmt.todo.model.ToDoTask;
 import io.github.gleidsonmt.todo.view.panel.items.TaskItem;
 import io.github.gleidsonmt.todo.view.panel.sections.Comparators;
 import io.github.gleidsonmt.todo.view.panel.sections.EmptySection;
@@ -25,7 +28,7 @@ import java.util.Comparator;
 /**
  * Description: The core of the list container.
  *
- * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Created On: Feb 26, 2026
  * <p>
  * Version History: Initial version
@@ -112,7 +115,7 @@ public abstract class ListContainer extends VBox {
         return this.list;
     }
 
-    public abstract void load();
+    public abstract  Task<ObservableList<ToDoTask>>  load();
 
     protected void loadTasks(EventHandler<ActionEvent> event) {
         new Thread(new Task<Object>() {

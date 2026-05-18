@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo.model;
 
 import javafx.beans.property.BooleanProperty;
@@ -6,7 +8,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
 /**
- * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
  * Create on 01/11/2024
  */
 public class Preferences extends Model {

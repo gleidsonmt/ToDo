@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo.bd.dao;
 
 import io.github.gleidsonmt.todo.bd.dao.internal.AbstractDao;
@@ -13,7 +15,7 @@ import java.util.Set;
 
 /**
  *
- * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Created on  12/04/2026
  */
 public final class DaoRecurrence extends AbstractDao<Recurrence> {

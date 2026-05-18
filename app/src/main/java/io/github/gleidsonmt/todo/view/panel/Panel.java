@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo.view.panel;
 
 import io.github.gleidsonmt.glad.base.Root;
@@ -8,8 +10,11 @@ import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import io.github.gleidsonmt.todo.model.ListType;
 import io.github.gleidsonmt.todo.utils.Assets;
 import io.github.gleidsonmt.todo.utils.IconUtils;
+import io.github.gleidsonmt.todo.view.panel.containers.BackgroundLines;
 import io.github.gleidsonmt.todo.view.panel.input.InputField;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
+import javafx.application.Platform;
+import javafx.beans.binding.DoubleBinding;
 import javafx.beans.property.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -33,7 +38,7 @@ import java.time.format.DateTimeFormatter;
  * every change of the lists will be tigger here.
  * the place where you see the tasks and update them.
  *
- * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
  * Created On: Feb 26, 2026
  * <p>
  * Version History: Initial version
@@ -47,11 +52,10 @@ public class Panel extends Container {
 
     private final InputField inputContainer;
 
-    private final int borderLimitBottom = 110;
-
     // Since panel has absolute parts that intercalated, this border and
     // padding property will help to maintain the elements properly anchor.
     private final DoubleProperty borderTop = new SimpleDoubleProperty(80);
+    private final DoubleProperty borderBottom = new SimpleDoubleProperty(110);
     private final DoubleProperty borderPadding = new SimpleDoubleProperty(50);
 
     // The title of the panel
@@ -63,6 +67,9 @@ public class Panel extends Container {
     private final StringProperty iconName = new SimpleStringProperty();
     private final Label label;
     private final ObjectProperty<Node> icon = new SimpleObjectProperty<>();
+
+    private Pane regionLimitTop;
+    private Pane regionLimitBottom;
 
     public Panel() {
         this.label = createLabelIcon();
@@ -106,7 +113,7 @@ public class Panel extends Container {
         if (svg) {
             icon.set(new SVGIcon(Icon.valueOf(iconName.toUpperCase()), 1.5));
         } else {
-            icon.set(Assets.getIcon(iconName , 32));
+            icon.set(Assets.getIcon(iconName, 32));
         }
     }
 
@@ -132,9 +139,7 @@ public class Panel extends Container {
                 .insets(new Insets(0, 0, 10, 100))
                 .show((Region) icon.get().getParent());
 
-        grid.setOnMouseExited(e -> {
-            root.flow().hide();
-        });
+        grid.setOnMouseExited(e -> root.flow().hide());
     }
 
     /**
@@ -146,6 +151,40 @@ public class Panel extends Container {
         // remove and set all children for this list root
         this.container.getChildren().setAll(listRoot);
         listRoot.actualListProperty().addListener((observable, oldValue, newValue) -> this.inputContainer.reset());
+
+        createBackgroundLines();
+    }
+
+    public void createLines(boolean val) {
+        System.out.println("val = " + val);
+//        createBackgroundLines();
+//        if (val) {
+//            createBackgroundLines();
+//        } else {
+//            getChildren().remove(backgroundLines);
+//        }
+    }
+
+    public void removeBackgroundLines() {
+        getChildren().removeIf(el -> el instanceof BackgroundLines);
+        scroll.setFitToHeight(true);
+    }
+
+    public void createBackgroundLines() {
+        scroll.setFitToHeight(false);
+        DoubleProperty heightProperty = new SimpleDoubleProperty();
+        DoubleBinding heightBinding =
+                // Gets the panel height and subtract the top border and bottom limits.
+                this.heightProperty()
+                .subtract(borderTop)
+                .subtract(borderBottom);
+
+        heightProperty.bind(heightBinding);
+        var insets = new Insets(borderTop.get(), borderPadding.get(), borderBottom.get(), borderPadding.get());
+        BackgroundLines backgroundLines = new BackgroundLines(heightProperty, insets);
+
+        getChildren().addFirst( backgroundLines);
+        Platform.requestNextPulse();
     }
 
     public ListRoot getListRoot() {
@@ -155,20 +194,20 @@ public class Panel extends Container {
     private ScrollPane createScroll() {
         var scrollPane = new ScrollPane();
         scrollPane.setFitToWidth(true);
-        scrollPane.setFitToHeight(true); // change
+        scrollPane.setFitToHeight(false); // change
         return scrollPane;
     }
 
     private VBox createContainer() {
         var _container = new VBox();
-        _container.setPadding(new Insets(borderTop.get(), 50, borderLimitBottom, 50));
+        _container.setPadding(new Insets(borderTop.get(), borderPadding.get(), borderBottom.get(), borderPadding.get()));
         _container.setSpacing(10);
 
         this.borderTop.addListener((observable, oldValue, newValue) -> _container.setPadding(
-                new Insets(newValue.doubleValue(), borderPadding.get(), borderLimitBottom, borderPadding.get())));
+                new Insets(newValue.doubleValue(), borderPadding.get(), borderBottom.get(), borderPadding.get())));
 
         this.borderPadding.addListener((observable, oldValue, newValue) -> _container.setPadding(
-                new Insets(borderTop.get(), newValue.doubleValue(), borderLimitBottom, newValue.doubleValue())));
+                new Insets(borderTop.get(), newValue.doubleValue(), borderBottom.get(), newValue.doubleValue())));
 
         return _container;
     }
@@ -179,10 +218,11 @@ public class Panel extends Container {
         this.scroll.setContent(this.container);
         VBox.setVgrow(this.container, Priority.ALWAYS);
 
-        Pane regionLimitTop = createRegionLimit(VPos.TOP, borderTop.get());
-        Pane regionLimitBottom = createRegionLimit(VPos.BOTTOM, borderLimitBottom);
+        regionLimitTop = createRegionLimit(VPos.TOP, borderTop.get());
+        regionLimitBottom = createRegionLimit(VPos.BOTTOM, borderBottom.get());
 
         this.getChildren().setAll(scroll, regionLimitTop, regionLimitBottom, bar, inputContainer);
+
 
         Button hamb = new Hamburger();
 

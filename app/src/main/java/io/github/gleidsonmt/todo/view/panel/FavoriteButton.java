@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo.view.panel;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
@@ -6,7 +8,7 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.ToggleButton;
 
 /**
- * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Created On: Feb 26, 2026
  */
 public class FavoriteButton extends ToggleButton {

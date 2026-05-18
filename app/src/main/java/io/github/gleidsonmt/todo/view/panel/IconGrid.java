@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo.view.panel;
 
 import com.dlsc.gemsfx.SVGImageView;
@@ -17,7 +19,7 @@ import java.net.URISyntaxException;
 
 /**
  *
- * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Created on  23/04/2026
  */
 public class IconGrid extends GridPane {

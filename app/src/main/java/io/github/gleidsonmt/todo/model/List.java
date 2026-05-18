@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo.model;
 
 
@@ -5,7 +7,7 @@ package io.github.gleidsonmt.todo.model;
  *
  * Description: The base model class for lists.
  *
- * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
  * Create on: 2026-02-03
  */
 public class List extends Entity {

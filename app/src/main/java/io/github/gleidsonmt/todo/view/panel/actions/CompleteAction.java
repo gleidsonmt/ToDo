@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo.view.panel.actions;
 
 import java.util.EventListener;
@@ -7,7 +9,7 @@ import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 /**
  * Description:
  *
- * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Created On: Feb 27, 2026
  */
 @Deprecated(forRemoval = true)

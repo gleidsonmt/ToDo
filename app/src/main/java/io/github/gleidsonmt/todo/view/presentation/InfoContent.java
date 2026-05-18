@@ -1,13 +1,13 @@
+
+
 package io.github.gleidsonmt.todo.view.presentation;
 
-/**
- * Description:
- *
- * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
- * Created On: Feb 23, 2026
- * <p>
- * Version History: Initial version
- */
+/// Description:
+///
+/// @author Gleidson Neves da Silveira | gleidisonmt@gmail.com <br>
+/// Created On: Feb 23, 2026
+///
+/// Version History: Initial version
 public class InfoContent {
 
     private String title;

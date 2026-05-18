@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo.view.panel.containers;
 
 import io.github.gleidsonmt.todo.global.Global;
@@ -20,7 +22,7 @@ import java.util.logging.Logger;
 /**
  * Description:
  *
- * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Created On: Feb 26, 2026
  * <p>
  * Version History: Initial version
@@ -44,7 +46,7 @@ public class DoubleListContainer extends ListContainer {
     }
 
     @Override
-    public void load() {
+    public Task<ObservableList<ToDoTask>> load() {
         TaskPresenter taskPresenter = (TaskPresenter) Global.get(ToDoTask.class);
         Task<ObservableList<ToDoTask>> task = taskPresenter.fetch(40, 0, query);
 
@@ -61,6 +63,7 @@ public class DoubleListContainer extends ListContainer {
 
             bind();
         });
+        return task;
     }
 
     private void bind() {

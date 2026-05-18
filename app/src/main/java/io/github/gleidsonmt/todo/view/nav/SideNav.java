@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo.view.nav;
 
 import io.github.gleidsonmt.todo.global.Global;
@@ -18,7 +20,7 @@ import javafx.scene.layout.VBox;
 import java.util.Optional;
 
 /**
- * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
  * Created On: Mar 20, 2026
  */
 public class SideNav extends VBox {

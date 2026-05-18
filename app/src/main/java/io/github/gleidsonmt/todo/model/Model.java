@@ -1,9 +1,11 @@
+
+
 package io.github.gleidsonmt.todo.model;
 
 /**
  * Description:
  *
- * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Created On: Feb 22, 2026
  * <p>
  * Version History: Initial version

@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo.events;
 
 import io.github.gleidsonmt.glad.base.Root;
@@ -12,7 +14,7 @@ import javafx.scene.input.MouseEvent;
 
 /**
  *
- * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Created on  11/05/2026
  */
 public class DialogEvent extends Event {

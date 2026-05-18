@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo.view_model;
 
 import java.time.LocalDate;
@@ -19,7 +21,7 @@ import javafx.beans.property.SimpleObjectProperty;
 /**
  * Description:
  *
- * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
  * Created On: Mar 09, 2026
  * <p>
  * Version History: Initial version

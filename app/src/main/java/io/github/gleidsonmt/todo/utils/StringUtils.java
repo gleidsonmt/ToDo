@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo.utils;
 
 import java.util.regex.Matcher;
@@ -8,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Description:
  *
- * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
  * Created On: Mar 16, 2026
  * <p>
  * Version History: Initial version

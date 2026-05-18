@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo.services;
 
 import io.github.gleidsonmt.todo.global.Global;
@@ -10,7 +12,7 @@ import javafx.util.Duration;
 
 /**
  *
- * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Created on  12/05/2026
  */
 public class TimerAlertService extends ScheduledService<ObservableList<ToDoTask>> {

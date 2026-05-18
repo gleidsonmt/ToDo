@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo.global;
 
 import java.awt.image.BufferedImage;
@@ -22,7 +24,7 @@ import javafx.scene.image.Image;
 import org.jetbrains.annotations.ApiStatus;
 
 /**
- * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
  * Create on 19/11/2024
  */
 @ApiStatus.Experimental

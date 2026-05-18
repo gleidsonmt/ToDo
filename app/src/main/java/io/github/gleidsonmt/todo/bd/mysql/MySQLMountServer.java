@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo.bd.mysql;
 
 import io.github.gleidsonmt.todo.logger.AnsiColors;
@@ -18,7 +20,7 @@ import static java.io.File.separator;
 
 /**
  *
- * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Created on  29/04/2026
  */
 @Deprecated

@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo.view.panel.containers;
 
 import io.github.gleidsonmt.todo.model.List;
@@ -12,11 +14,12 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 
 /**
  * Description:
  *
- * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Created On: Feb 27, 2026
  * <p>
  * Version History: Initial version
@@ -112,9 +115,10 @@ public class MultipleListContainer extends ListContainer {
     }
 
     @Override
-    public void load() {
+    public Task<ObservableList<ToDoTask>> load() {
         // loadTasks(_ -> list.getLists().forEach(this::loadLists));
         // list.getLists().forEach(this::loadLists);
+        return null;
     }
 
     private void loadLists(List list) {

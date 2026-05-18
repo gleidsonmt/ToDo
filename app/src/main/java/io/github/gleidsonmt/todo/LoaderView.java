@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo;
 
 import com.dustinredmond.fxtrayicon.FXTrayIcon;
@@ -28,7 +30,7 @@ import javafx.stage.Stage;
 
 /**
  *
- * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
  * Created on  28/04/2026
  */
 public class LoaderView extends StackPane implements Layout {

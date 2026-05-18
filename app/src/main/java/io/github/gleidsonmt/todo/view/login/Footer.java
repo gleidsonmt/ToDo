@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo.view.login;
 
 import javafx.event.ActionEvent;
@@ -16,7 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 /**
- * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
  * Create on 27/10/2024
  */
 public class Footer extends VBox {

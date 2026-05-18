@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo.view.panel.items;
 
 import javafx.beans.property.BooleanProperty;
@@ -16,7 +18,7 @@ import javafx.scene.layout.GridPane;
  * Grid toggles was created because it's almost impossible to achieve a toogle
  * button that grows its height as the content increases.
  *
- * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
  * Created On: Mar 30, 2026
  * <p>
  * Version History: Initial version

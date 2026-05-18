@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo.view.panel.input;
 
 import io.github.gleidsonmt.todo.model.List;
@@ -16,7 +18,7 @@ import java.time.LocalDateTime;
 
 /**
  *
- * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Created on  21/04/2026
  */
 public class InputFieldOptions extends HBox {

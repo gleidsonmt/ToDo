@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo.bd.dao;
 
 import java.security.MessageDigest;
@@ -14,7 +16,7 @@ import io.github.gleidsonmt.todo.bd.dao.internal.DaoAction;
 import io.github.gleidsonmt.todo.model.User;
 
 /**
- * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
  * Create on 04/03/2024
  */
 public final class DaoUser extends AbstractDao<User> {

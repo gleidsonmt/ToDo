@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo.view.login.signup;
 
 import javafx.geometry.Pos;
@@ -5,7 +7,7 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.HBox;
 
 /**
- * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
  * Create on 27/10/2024
  */
 public class StatusLabel extends HBox {

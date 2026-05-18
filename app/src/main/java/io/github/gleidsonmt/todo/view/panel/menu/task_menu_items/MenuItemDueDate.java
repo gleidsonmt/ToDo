@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo.view.panel.menu.task_menu_items;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
@@ -7,7 +9,7 @@ import javafx.scene.control.MenuItem;
 /**
  * Description:
  *
- * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
  * Created On: Mar 08, 2026
  * <p>
  * Version History: Initial version

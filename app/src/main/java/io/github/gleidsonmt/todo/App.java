@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo;
 
 import com.dustinredmond.fxtrayicon.FXTrayIcon;
@@ -30,7 +32,7 @@ import java.util.prefs.Preferences;
 /**
  * Description:
  *
- * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
  * Created On: Feb 22, 2026
  */
 public class App extends Application {

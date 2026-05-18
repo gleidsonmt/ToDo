@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo.view.panel.sections;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
@@ -19,7 +21,7 @@ import javafx.util.Duration;
 /**
  * Description:
  *
- * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
  * Created On: Mar 26, 2026
  */
 public class SectionTitle extends GridPane {

@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo.view.panel.containers;
 
 import javafx.geometry.Insets;
@@ -8,12 +10,10 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.TextAlignment;
 
 /**
- * Description:
+ * Description: Creates a single Pane with an image to show the user there's no task to see.
  *
- * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Created On: Feb 26, 2026
- * <p>
- * Version History: Initial version
  */
 public class EmptyContainer extends StackPane {
 

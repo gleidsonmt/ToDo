@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo.bd.mysql;
 
 import io.github.gleidsonmt.todo.App;
@@ -9,7 +11,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Created on  30/04/2026
  */
 @Deprecated

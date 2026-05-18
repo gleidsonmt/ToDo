@@ -1,9 +1,11 @@
+
+
 package io.github.gleidsonmt.todo.view.panel.sections;
 
 /**
  * Description:
  *
- * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
  * Created On: Mar 25, 2026
  */
 public enum Comparators {

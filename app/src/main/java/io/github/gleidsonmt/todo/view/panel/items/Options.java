@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo.view.panel.items;
 
 import java.time.LocalDate;
@@ -22,7 +24,7 @@ import javafx.scene.layout.FlowPane;
 /**
  * Description:
  *
- * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
  * Created On: Mar 28, 2026
  */
 public class Options extends FlowPane {
@@ -34,13 +36,11 @@ public class Options extends FlowPane {
 
     public Options(TaskItem item) {
 
-        this.setMinHeight(10);
+        this.setMinHeight(20);
         this.setHgap(5);
 
         TaskPresenter taskPresenter = (TaskPresenter) Global.get(ToDoTask.class);
         Optional<Recurrence> recurrence = taskPresenter.getRecurrence(item.getViewModel().getId());
-
-        System.out.println("recurrence = " + recurrence);
 
         MyDayOption myDayOption = new MyDayOption();
         BooleanProperty hasMyDayOption = new SimpleBooleanProperty();

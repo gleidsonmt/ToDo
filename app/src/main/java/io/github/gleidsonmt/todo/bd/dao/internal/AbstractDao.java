@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo.bd.dao.internal;
 
 import io.github.gleidsonmt.todo.bd.DatabaseConnection;
@@ -19,7 +21,7 @@ import java.util.logging.Logger;
  * This class abstracts the common actions in a database.
  * Provides a connection to database, set and get elements from a database.
  *
- * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
  * Create on 04/03/2024
  */
 @SuppressWarnings("unused")

@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo.events;
 
 import io.github.gleidsonmt.todo.view.panel.events.TaskChangeEvent;
@@ -6,7 +8,7 @@ import javafx.event.EventType;
 
 /**
  *
- * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Created on  30/04/2026
  */
 public class LoginEvent extends Event {

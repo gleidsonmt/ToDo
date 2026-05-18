@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo.utils;
 
 import com.dlsc.gemsfx.SVGImageView;
@@ -14,7 +16,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
  * Create on 19/02/2025
  */
 public class Assets {

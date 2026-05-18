@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo.view.panel.input;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
@@ -9,7 +11,7 @@ import java.time.LocalDateTime;
 
 /**
  *
- * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Created on  21/04/2026
  */
 public class InputFieldRemind extends InputFieldItem<LocalDateTime> {

@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo.utils;
 
 import com.dlsc.gemsfx.SVGImageView;
@@ -9,7 +11,7 @@ import org.jspecify.annotations.NonNull;
 
 /**
  *
- * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Created on  22/04/2026
  */
 public class IconUtils {

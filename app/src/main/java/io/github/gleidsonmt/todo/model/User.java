@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo.model;
 
 import io.github.gleidsonmt.todo.bd.dao.internal.Ignore;
@@ -11,7 +13,7 @@ import javafx.beans.property.StringProperty;
 import javafx.scene.image.Image;
 
 /**
- * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
  * Create on 16/10/2024
  */
 @SuppressWarnings("unused")

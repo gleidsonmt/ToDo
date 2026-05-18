@@ -1,7 +1,9 @@
+
+
 package io.github.gleidsonmt.todo.view.aside;
 
 /**
- * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
  * Create on 12/12/2024
  */
 public enum RecurrenceType {

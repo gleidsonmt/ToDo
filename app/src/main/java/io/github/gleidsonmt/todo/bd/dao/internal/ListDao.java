@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo.bd.dao.internal;
 
 import io.github.gleidsonmt.todo.model.Model;
@@ -5,7 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 
 /**
- * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
  * Create on 17/01/2025
  */
 public interface ListDao<T extends Model> {

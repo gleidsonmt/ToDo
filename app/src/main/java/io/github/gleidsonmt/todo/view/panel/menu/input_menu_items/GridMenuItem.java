@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo.view.panel.menu.input_menu_items;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
@@ -12,7 +14,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.text.Text;
 
 /**
- * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
  * Create on  09/04/2026
  */
 public class GridMenuItem extends MenuItem {

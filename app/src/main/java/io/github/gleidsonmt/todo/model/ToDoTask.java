@@ -5,14 +5,13 @@ import java.time.LocalDateTime;
 
 import io.github.gleidsonmt.todo.bd.dao.internal.Ignore;
 
-/**
- * Description:
- *
- * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
- * Created On: Feb 25, 2026
- * <p>
- * Version History: Initial version
- */
+/// Description:
+///
+/// @author Gleidson Neves da Silveira | [gleidisonmt@gmail.com](mailto:gleidisonmt@gmail.com) <br>
+///
+/// Created On: Feb 25, 2026
+///
+/// Version History: Initial version
 public class ToDoTask extends Entity {
 
     // sql = insert into task(name, list_id, important, completed, due_date,

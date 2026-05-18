@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo.model.recurrence;
 
 import io.github.gleidsonmt.todo.model.Model;
@@ -11,7 +13,7 @@ import java.time.LocalDate;
 import java.util.*;
 
 /**
- * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
  * Create on  11/04/2026
  */
 public abstract class Recurrence extends Model {

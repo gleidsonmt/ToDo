@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo.view.panel.menu.grid_icons;
 
 import javafx.geometry.HPos;
@@ -7,7 +9,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.shape.Rectangle;
 
 /**
- * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
  * Create on  12/12/2024
  */
 public class GridIconWeekDays extends GridIcon {

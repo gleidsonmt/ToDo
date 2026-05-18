@@ -1,10 +1,12 @@
+
+
 package io.github.gleidsonmt.todo.logger;
 
 import org.jetbrains.annotations.Contract;
 
 /**
  *
- * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Created on  19/04/2026
  */
 public enum AnsiColors {

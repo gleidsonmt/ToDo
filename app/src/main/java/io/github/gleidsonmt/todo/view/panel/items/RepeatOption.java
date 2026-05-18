@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo.view.panel.items;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
@@ -7,7 +9,7 @@ import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.materialdesign.MaterialDesign;
 
 /**
- * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
  * Create on  11/04/2026
  */
 public class RepeatOption extends Option {

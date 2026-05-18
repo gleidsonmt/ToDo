@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo.view.panel.menu.input_menu_items.custom_panels;
 
 import io.github.gleidsonmt.todo.model.recurrence.Daily;
@@ -19,7 +21,7 @@ import javafx.util.StringConverter;
 
 /**
  *
- * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Created on  13/04/2026
  */
 public class RecurrenceBox extends GridPane {

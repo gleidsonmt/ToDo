@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo.view.login;
 
 import io.github.gleidsonmt.glad.controls.button.IconButton;
@@ -13,7 +15,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
 /**
- * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
  * Create on 27/10/2024
  */
 public class Header extends GridPane {

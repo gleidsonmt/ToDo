@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo.utils;
 
 import java.text.MessageFormat;
@@ -16,7 +18,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
 /**
- * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
  * Create on 02/01/2025
  */
 public class I18n {

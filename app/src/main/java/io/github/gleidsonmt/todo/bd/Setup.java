@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo.bd;
 
 import io.github.gleidsonmt.todo.bd.sqlite.SQLiteConnection;
@@ -18,7 +20,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Gleidson Neves da Silveira | <gleidisonmt@gmail.com>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Created on  27/04/2026
  */
 public class Setup {

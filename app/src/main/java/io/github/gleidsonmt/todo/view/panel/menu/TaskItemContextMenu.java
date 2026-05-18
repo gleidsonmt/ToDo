@@ -1,3 +1,5 @@
+
+
 package io.github.gleidsonmt.todo.view.panel.menu;
 
 import java.time.LocalDate;
@@ -13,7 +15,7 @@ import javafx.scene.control.SeparatorMenuItem;
 /**
  * Description:
  *
- * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
  * Created On: Mar 06, 2026
  * <p>
  * Version History: Initial version
