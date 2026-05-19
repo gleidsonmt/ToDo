@@ -64,8 +64,12 @@ public class CustomContextMenu<T> extends ContextMenu {
         super.show(target, side, dx, dy);
         super.hide();
 
+        System.out.println("target = " + target.isCenter());
+        System.out.println("target = " + target.getWidth());
+        System.out.println("target = " + this.getWidth());
+
         // second show places in the right position
-        super.show(target, side, dx, dy);
+        super.show(target, side, target.isCenter() ? -((this.getWidth() / 2) - (target.getWidth() / 2)) : dx, dy);
         Platform.requestNextPulse(); // makes sure the is on the right position
     }
 }

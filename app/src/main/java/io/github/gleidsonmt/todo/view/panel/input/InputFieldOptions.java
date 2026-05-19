@@ -62,8 +62,10 @@ public class InputFieldOptions extends HBox {
 
         pseudoClassStateChanged(PseudoClass.getPseudoClass("small"), val);
 
-        getChildren().stream().filter(el -> el instanceof InputFieldItem).forEach(el ->
-             ((InputFieldItem<?>) el).setContentDisplay(val ? ContentDisplay.GRAPHIC_ONLY : ContentDisplay.LEFT)
+        getChildren().stream().filter(el -> el instanceof InputFieldItem).forEach(el -> {
+                    ((InputFieldItem<?>) el).setContentDisplay(val ? ContentDisplay.GRAPHIC_ONLY : ContentDisplay.LEFT);
+                    ((InputFieldItem<?>) el).setCenter(val ? true : false);
+                }
         );
     }
 

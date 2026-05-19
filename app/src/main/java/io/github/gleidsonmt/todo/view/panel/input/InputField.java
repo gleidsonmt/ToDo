@@ -57,19 +57,6 @@ public class InputField extends GridPane {
     }
 
     private void configLayout() {
-//        StackPane.setMargin(this, new Insets(0, 15, 0, 0));
-//        StackPane.setAlignment(this, Pos.BOTTOM_CENTER);
-//        StackPane.setMargin(this, new Insets(50, 50, 50, 50));
-
-//        wideLayout();
-        smallLayout();
-
-
-    }
-
-    private void init() {
-        this.setId("input-container");
-        this.setMaxWidth(Region.USE_PREF_SIZE);
         this.setPrefHeight(50);
         this.setMaxHeight(50);
         this.getChildren().addAll(icon, textInput);
@@ -78,8 +65,12 @@ public class InputField extends GridPane {
         StackPane.setMargin(this, new Insets(50, 50, 50, 50));
     }
 
-    private void smallLayout() {
+    private void init() {
+        this.setId("input-container");
+        this.setMaxWidth(Region.USE_PREF_SIZE);
+    }
 
+    private void smallLayout() {
         getColumnConstraints().clear();
         getRowConstraints().clear();
 
@@ -94,14 +85,11 @@ public class InputField extends GridPane {
         setMaxHeight(boxHeight);
 
         GridPane.setHgrow(textInput, Priority.ALWAYS);
-//        ColumnConstraints col1 = new ColumnConstraints();
-//        col1.setMinWidth(30);
-//        this.getColumnConstraints().add(col1);
+
         GridPane.setVgrow(textInput, Priority.ALWAYS);
         GridPane.setColumnSpan(options, REMAINING);
         GridPane.setHalignment(options, HPos.CENTER);
         options.setAlignment(Pos.CENTER);
-
     }
 
     private void wideLayout() {

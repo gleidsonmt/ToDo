@@ -32,10 +32,9 @@ import javafx.scene.input.MouseEvent;
  */
 public class InputFieldItem<T> extends Label {
 
-
     protected CustomContextMenu<T> contextMenu;
-
     protected ObjectProperty<T> value;
+    protected boolean center;
 
     public InputFieldItem(Icon icon) {
         this(icon, null);
@@ -74,5 +73,13 @@ public class InputFieldItem<T> extends Label {
 
     public ObjectProperty<T> valueProperty() {
         return value;
+    }
+
+    public void setCenter(boolean val) {
+        this.center = val;
+    }
+
+    public boolean isCenter() {
+        return this.center;
     }
 }
