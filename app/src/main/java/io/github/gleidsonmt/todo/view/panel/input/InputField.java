@@ -8,9 +8,14 @@ import io.github.gleidsonmt.todo.model.recurrence.Recurrence;
 import io.github.gleidsonmt.todo.view.panel.Panel;
 import io.github.gleidsonmt.todo.view.panel.events.TaskChangeEvent;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.css.PseudoClass;
 import javafx.event.EventHandler;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -33,11 +38,33 @@ public class InputField extends GridPane {
     private final SVGIcon icon = new SVGIcon(Icon.ADD);
     private  InputFieldOptions options = new InputFieldOptions();
 
+    private double boxHeight = 50;
+
     public InputField() {
         this.textInput = createTextField();
         init();
         configLayout();
         registerListeners();
+        
+        widthProperty().addListener((_, _, val) -> {
+            System.out.println("val = " + val);
+            if (val.doubleValue() <= 480) {
+                smallLayout();
+            } else {
+                wideLayout();
+            }
+        });
+    }
+
+    private void configLayout() {
+//        StackPane.setMargin(this, new Insets(0, 15, 0, 0));
+//        StackPane.setAlignment(this, Pos.BOTTOM_CENTER);
+//        StackPane.setMargin(this, new Insets(50, 50, 50, 50));
+
+//        wideLayout();
+        smallLayout();
+
+
     }
 
     private void init() {
@@ -46,17 +73,50 @@ public class InputField extends GridPane {
         this.setPrefHeight(50);
         this.setMaxHeight(50);
         this.getChildren().addAll(icon, textInput);
+
+        StackPane.setAlignment(this, Pos.BOTTOM_CENTER);
+        StackPane.setMargin(this, new Insets(50, 50, 50, 50));
     }
 
-    private void configLayout() {
-        StackPane.setMargin(this, new Insets(0, 15, 0, 0));
+    private void smallLayout() {
+
+        getColumnConstraints().clear();
+        getRowConstraints().clear();
+
+        options.smallLayout(true);
+
+        GridPane.setColumnIndex(icon, 0);
+        GridPane.setColumnIndex(textInput, 1);
+        GridPane.setColumnIndex(options, 0);
+        GridPane.setRowIndex(options, 1);
+
+        boxHeight = 120;
+        setMaxHeight(boxHeight);
+
+        GridPane.setHgrow(textInput, Priority.ALWAYS);
+//        ColumnConstraints col1 = new ColumnConstraints();
+//        col1.setMinWidth(30);
+//        this.getColumnConstraints().add(col1);
+        GridPane.setVgrow(textInput, Priority.ALWAYS);
+        GridPane.setColumnSpan(options, REMAINING);
+        GridPane.setHalignment(options, HPos.CENTER);
+        options.setAlignment(Pos.CENTER);
+
+    }
+
+    private void wideLayout() {
+        getColumnConstraints().clear();
+        getRowConstraints().clear();
+
+        options.smallLayout(false);
 
         GridPane.setColumnIndex(icon, 0);
         GridPane.setColumnIndex(textInput, 1);
         GridPane.setColumnIndex(options, 2);
+        GridPane.setRowIndex(options, 0);
 
-        StackPane.setAlignment(this, Pos.BOTTOM_CENTER);
-        StackPane.setMargin(this, new Insets(50, 50, 50, 50));
+        boxHeight = 50;
+        setMaxHeight(boxHeight);
 
         GridPane.setHgrow(textInput, Priority.ALWAYS);
         ColumnConstraints col1 = new ColumnConstraints();
@@ -73,6 +133,7 @@ public class InputField extends GridPane {
         this.getChildren().addAll(options);
         textInput.clear();
         configLayout();
+
     }
 
     private void registerListeners() {
@@ -82,12 +143,12 @@ public class InputField extends GridPane {
 
             options.needsTaskItem(((Panel) getParent()).getListRoot().getActualList().isFixed());
 
-            if (!newValue.isEmpty()) {
-                if (!getChildren().contains(options))
-                    getChildren().add(options);
-            } else {
-                getChildren().remove(options);
-            }
+//            if (!newValue.isEmpty()) {
+//                if (!getChildren().contains(options))
+//                    getChildren().add(options);
+//            } else {
+//                getChildren().remove(options);
+//            }
         });
 
         textInput.focusedProperty()
@@ -95,7 +156,7 @@ public class InputField extends GridPane {
 
         this.parentProperty().addListener((_, _, newValue) -> {
             if (newValue != null) {
-                prefWidthProperty().bind(((Region) newValue).widthProperty().subtract(50));
+                prefWidthProperty().bind(((Region) newValue).widthProperty().subtract(boxHeight));
             }
         });
 

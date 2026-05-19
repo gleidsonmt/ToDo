@@ -9,7 +9,9 @@ import io.github.gleidsonmt.todo.view.panel.menu.input_menu_items.DateUtils;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
+import javafx.css.PseudoClass;
 import javafx.scene.Node;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.layout.HBox;
 
 import java.time.DayOfWeek;
@@ -54,6 +56,15 @@ public class InputFieldOptions extends HBox {
                 dueDate.setText(DateUtils.format(date));
             }
         });
+    }
+
+    public void smallLayout(boolean val) {
+
+        pseudoClassStateChanged(PseudoClass.getPseudoClass("small"), val);
+
+        getChildren().stream().filter(el -> el instanceof InputFieldItem).forEach(el ->
+             ((InputFieldItem<?>) el).setContentDisplay(val ? ContentDisplay.GRAPHIC_ONLY : ContentDisplay.LEFT)
+        );
     }
 
     public LocalDate getDueDate() {

@@ -98,6 +98,8 @@ public class Options extends FlowPane {
         item.getViewModel().remindProperty().addListener((_, _, val) -> {
             remindOption.setName(DateUtils.format(val.toLocalDate()));
         });
+
+
     }
 
     private void updateDueDate(LocalDate date) {

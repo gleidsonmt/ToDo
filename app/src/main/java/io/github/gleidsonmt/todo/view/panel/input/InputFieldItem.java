@@ -14,7 +14,10 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
+import javafx.css.PseudoClass;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
@@ -29,6 +32,7 @@ import javafx.scene.input.MouseEvent;
  */
 public class InputFieldItem<T> extends Label {
 
+
     protected CustomContextMenu<T> contextMenu;
 
     protected ObjectProperty<T> value;
@@ -40,7 +44,6 @@ public class InputFieldItem<T> extends Label {
     public InputFieldItem(Icon icon, String toolTipText) {
 
         this.value = new SimpleObjectProperty<>();
-
         setTooltip(new Tooltip(toolTipText));
         setGraphic(new SVGIcon(icon));
         setText(null);
@@ -49,6 +52,14 @@ public class InputFieldItem<T> extends Label {
         this.addEventFilter(MouseEvent.MOUSE_CLICKED, _ -> {
             ((Root) getScene().getRoot())
                     .flow().hide();
+        });
+
+        value.addListener(new ChangeListener<T>() {
+            @Override
+            public void changed(ObservableValue<? extends T> observable, T oldValue, T newValue) {
+                    if (icon.equals(Icon.HOME)) return;
+                    pseudoClassStateChanged(PseudoClass.getPseudoClass("selected"), newValue != null);
+            }
         });
         // setWrapText(true);
     }
