@@ -8,14 +8,10 @@ import io.github.gleidsonmt.todo.model.recurrence.Recurrence;
 import io.github.gleidsonmt.todo.view.panel.Panel;
 import io.github.gleidsonmt.todo.view.panel.events.TaskChangeEvent;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.css.PseudoClass;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -24,20 +20,20 @@ import javafx.scene.layout.*;
 import java.time.LocalDate;
 
 /**
- * Description:
+ * Description: The main input field in the panel.
+ * This component is used to create a new task.
+ * Creates a big field box with a graphic and a text input field, next to options to that task.
+ * The options variety to remind, add a due date or recurrence date, and the task name.
  *
  * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br> <br>
  * Created On: Mar 02, 2026
- * <p>
- * Version History: Initial version
  */
 public class InputField extends GridPane {
 
     private final TextField textInput;
 
     private final SVGIcon icon = new SVGIcon(Icon.ADD);
-    private  InputFieldOptions options = new InputFieldOptions();
-
+    private final InputFieldOptions options = new InputFieldOptions();
     private double boxHeight = 50;
 
     public InputField() {
@@ -45,13 +41,7 @@ public class InputField extends GridPane {
         init();
         configLayout();
         registerListeners();
-        
-        widthProperty().addListener((_, _, val) -> {
-            System.out.println("val = " + val);
-            if (val.doubleValue() <= 480) smallLayout();
-            else if(val.doubleValue() <= 730) mediumLayout();
-            else wideLayout();
-        });
+
     }
 
     private void configLayout() {
@@ -67,36 +57,29 @@ public class InputField extends GridPane {
         this.setId("input-container");
         this.setMaxWidth(Region.USE_PREF_SIZE);
     }
-    
-    private void mediumLayout() {
-        System.out.println(" medium layout ");
-        getRowConstraints().clear();
-        getColumnConstraints().clear();
 
+    private void mediumLayout() {
         options.smallLayout(false);
         options.mediumLayout(true);
-
-        GridPane.setColumnIndex(icon, 0);
-        GridPane.setColumnIndex(textInput, 1);
-        GridPane.setColumnIndex(options, 2);
-        GridPane.setRowIndex(options, 0);
-
-        boxHeight = 50;
-        setMaxHeight(boxHeight);
-
-        GridPane.setHgrow(textInput, Priority.ALWAYS);
-        ColumnConstraints col1 = new ColumnConstraints();
-        col1.setMinWidth(30);
-        this.getColumnConstraints().add(col1);
-        GridPane.setVgrow(textInput, Priority.ALWAYS);
+        singleBoxLayout();
     }
 
     private void smallLayout() {
-        getColumnConstraints().clear();
-        getRowConstraints().clear();
-
         options.smallLayout(true);
 
+        if (!getChildren().contains(options)) {
+            singleBoxLayout();
+        } else multiBoxLayout();
+
+    }
+
+    private void wideLayout() {
+        options.smallLayout(false);
+        options.mediumLayout(false);
+        singleBoxLayout();
+    }
+
+    private void multiBoxLayout() {
         GridPane.setColumnIndex(icon, 0);
         GridPane.setColumnIndex(textInput, 1);
         GridPane.setColumnIndex(options, 0);
@@ -113,12 +96,9 @@ public class InputField extends GridPane {
         options.setAlignment(Pos.CENTER);
     }
 
-    private void wideLayout() {
+    private void singleBoxLayout() {
         getColumnConstraints().clear();
         getRowConstraints().clear();
-
-        options.smallLayout(false);
-        options.mediumLayout(false);
 
         GridPane.setColumnIndex(icon, 0);
         GridPane.setColumnIndex(textInput, 1);
@@ -136,18 +116,21 @@ public class InputField extends GridPane {
     }
 
     public void reset() {
-//        getColumnConstraints().clear();
-//        getRowConstraints().clear();
-//        this.getChildren().remove(options);
-//        options = new InputFieldOptions();
-////        this.getChildren().addAll(options);
+        options.reset();
         textInput.clear();
-//        configLayout();
+    }
 
+    private void updateLayout(double width) {
+        if (width <= 480) smallLayout();
+        else if (width <= 730) mediumLayout();
+        else wideLayout();
     }
 
     private void registerListeners() {
+        widthProperty().addListener((_, _, val) -> updateLayout(val.doubleValue()));
+
         textInput.textProperty().addListener((_, _, val) -> {
+            System.out.println("getWidth() = " + getWidth());
 
             ((Panel) getParent()).getListRoot().getActualList().getId();
 
@@ -156,9 +139,14 @@ public class InputField extends GridPane {
             if (!val.isEmpty()) {
                 if (!getChildren().contains(options))
                     getChildren().add(options);
+
             } else {
                 getChildren().remove(options);
             }
+
+            updateLayout(getWidth());
+
+
         });
 
         textInput.focusedProperty()

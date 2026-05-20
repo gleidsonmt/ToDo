@@ -59,20 +59,16 @@ public class InputFieldOptions extends HBox {
     }
 
     public void mediumLayout(boolean val) {
-
         pseudoClassStateChanged(PseudoClass.getPseudoClass("medium"), val);
-
-        getChildren().stream().filter(el -> el instanceof InputFieldItem).forEach(el -> {
-                    ((InputFieldItem<?>) el).setContentDisplay(val ? ContentDisplay.GRAPHIC_ONLY : ContentDisplay.LEFT);
-                    ((InputFieldItem<?>) el).setCenter(val ? true : false);
-                }
-        );
+        minIcons(val);
     }
 
     public void smallLayout(boolean val) {
-
         pseudoClassStateChanged(PseudoClass.getPseudoClass("small"), val);
+        minIcons(val);
+    }
 
+    private void minIcons(boolean val) {
         getChildren().stream().filter(el -> el instanceof InputFieldItem).forEach(el -> {
                     ((InputFieldItem<?>) el).setContentDisplay(val ? ContentDisplay.GRAPHIC_ONLY : ContentDisplay.LEFT);
                     ((InputFieldItem<?>) el).setCenter(val ? true : false);
@@ -107,5 +103,9 @@ public class InputFieldOptions extends HBox {
         } else {
             getChildren().remove(tasks);
         }
+    }
+
+    public void reset() {
+
     }
 }
