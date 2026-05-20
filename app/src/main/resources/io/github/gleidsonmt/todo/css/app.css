@@ -726,15 +726,18 @@ InputFieldOptions:small .input-field-item:first-child {
     -fx-fill: -fx-accent;
 }
 
-InputFieldOptions:small .input-field-item:selected {
+InputFieldOptions:medium .input-field-item:selected,
+InputFieldOptions:small:medium .input-field-item:selected {
     -fx-fill: -fx-accent;
     -fx-background-radius: 10px;
     -fx-spacing: 10px;
 }
+InputFieldOptions:medium .input-field-item:selected,
 InputFieldOptions:small .input-field-item:selected {
     -fx-background-color: derive(-fx-accent, 30%);
 }
 
+InputFieldOptions:medium .input-field-item:selected > .icon-container > .icon,
 InputFieldOptions:small .input-field-item:selected > .icon-container > .icon {
     -fx-fill: white;
 }

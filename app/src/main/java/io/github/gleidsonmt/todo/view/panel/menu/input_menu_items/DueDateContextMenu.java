@@ -46,7 +46,7 @@ public class DueDateContextMenu extends CustomContextMenu<LocalDate> {
             root.flow()
                     .content(container)
                     .width(300)
-                    .pos(Pos.TOP_LEFT)
+                    .pos(target.isCenter() ? Pos.TOP_CENTER : Pos.TOP_LEFT)
                     .show(target);
 
             container.setOnSave(_ -> {

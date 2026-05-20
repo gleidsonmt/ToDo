@@ -48,11 +48,9 @@ public class InputField extends GridPane {
         
         widthProperty().addListener((_, _, val) -> {
             System.out.println("val = " + val);
-            if (val.doubleValue() <= 480) {
-                smallLayout();
-            } else {
-                wideLayout();
-            }
+            if (val.doubleValue() <= 480) smallLayout();
+            else if(val.doubleValue() <= 730) mediumLayout();
+            else wideLayout();
         });
     }
 
@@ -68,6 +66,29 @@ public class InputField extends GridPane {
     private void init() {
         this.setId("input-container");
         this.setMaxWidth(Region.USE_PREF_SIZE);
+    }
+    
+    private void mediumLayout() {
+        System.out.println(" medium layout ");
+        getRowConstraints().clear();
+        getColumnConstraints().clear();
+
+        options.smallLayout(false);
+        options.mediumLayout(true);
+
+        GridPane.setColumnIndex(icon, 0);
+        GridPane.setColumnIndex(textInput, 1);
+        GridPane.setColumnIndex(options, 2);
+        GridPane.setRowIndex(options, 0);
+
+        boxHeight = 50;
+        setMaxHeight(boxHeight);
+
+        GridPane.setHgrow(textInput, Priority.ALWAYS);
+        ColumnConstraints col1 = new ColumnConstraints();
+        col1.setMinWidth(30);
+        this.getColumnConstraints().add(col1);
+        GridPane.setVgrow(textInput, Priority.ALWAYS);
     }
 
     private void smallLayout() {
@@ -97,6 +118,7 @@ public class InputField extends GridPane {
         getRowConstraints().clear();
 
         options.smallLayout(false);
+        options.mediumLayout(false);
 
         GridPane.setColumnIndex(icon, 0);
         GridPane.setColumnIndex(textInput, 1);
@@ -114,29 +136,29 @@ public class InputField extends GridPane {
     }
 
     public void reset() {
-        getColumnConstraints().clear();
-        getRowConstraints().clear();
-        this.getChildren().remove(options);
-        options = new InputFieldOptions();
-        this.getChildren().addAll(options);
+//        getColumnConstraints().clear();
+//        getRowConstraints().clear();
+//        this.getChildren().remove(options);
+//        options = new InputFieldOptions();
+////        this.getChildren().addAll(options);
         textInput.clear();
-        configLayout();
+//        configLayout();
 
     }
 
     private void registerListeners() {
-        textInput.textProperty().addListener((_, _, newValue) -> {
+        textInput.textProperty().addListener((_, _, val) -> {
 
             ((Panel) getParent()).getListRoot().getActualList().getId();
 
             options.needsTaskItem(((Panel) getParent()).getListRoot().getActualList().isFixed());
 
-//            if (!newValue.isEmpty()) {
-//                if (!getChildren().contains(options))
-//                    getChildren().add(options);
-//            } else {
-//                getChildren().remove(options);
-//            }
+            if (!val.isEmpty()) {
+                if (!getChildren().contains(options))
+                    getChildren().add(options);
+            } else {
+                getChildren().remove(options);
+            }
         });
 
         textInput.focusedProperty()

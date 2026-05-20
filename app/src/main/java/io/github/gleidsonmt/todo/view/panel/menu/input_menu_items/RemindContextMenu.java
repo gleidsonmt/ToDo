@@ -48,7 +48,7 @@ public class RemindContextMenu extends CustomContextMenu<LocalDateTime> {
             root.flow()
                     .content(container)
                     .width(280)
-                    .pos(Pos.TOP_LEFT)
+                    .pos(target.isCenter() ? Pos.TOP_CENTER : Pos.TOP_LEFT)
                     .show(target);
 
             container.setOnSave(_ -> {

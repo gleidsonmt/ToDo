@@ -64,7 +64,8 @@ public class RepeatContextMenu extends CustomContextMenu<Recurrence> {
                     .flow()
                     .width(300)
                     .content(container)
-                    .pos(Pos.TOP_LEFT)
+                    .pos(target.isCenter() ? Pos.TOP_CENTER : Pos.TOP_LEFT)
+
                     .show(target);
         });
     }

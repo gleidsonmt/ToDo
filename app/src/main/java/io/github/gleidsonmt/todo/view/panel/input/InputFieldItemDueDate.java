@@ -18,8 +18,6 @@ import java.time.LocalDate;
  */
 public class InputFieldItemDueDate extends InputFieldItem<LocalDate> {
 
-
-
     public InputFieldItemDueDate() {
         super(Icon.CALENDAR_MONTH, "Add a due date");
         setId("input-field-due-date");

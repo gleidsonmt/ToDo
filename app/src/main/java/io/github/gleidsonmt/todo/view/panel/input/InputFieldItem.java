@@ -60,7 +60,15 @@ public class InputFieldItem<T> extends Label {
                     pseudoClassStateChanged(PseudoClass.getPseudoClass("selected"), newValue != null);
             }
         });
-        // setWrapText(true);
+
+//         setWrapText(true);
+        widthProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                System.out.println("getPrefWidth() = " + getPrefWidth());
+                System.out.println("newValue = " + newValue);
+            }
+        });
     }
 
     public void setValue(T value) {
