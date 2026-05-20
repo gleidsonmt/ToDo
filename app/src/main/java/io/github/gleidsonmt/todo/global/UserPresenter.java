@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import io.github.gleidsonmt.todo.bd.dao.DaoUser;
 import io.github.gleidsonmt.todo.model.User;
+import io.github.gleidsonmt.todo.model.Usernew;
 
 /**
  * Description:
@@ -15,19 +16,19 @@ import io.github.gleidsonmt.todo.model.User;
  * <p>
  * Version History: Initial version
  */
-public class UserPresenter extends AbstractPresenter<User> {
+public class UserPresenter extends AbstractPresenter<Usernew> {
 
     public UserPresenter() {
         super(new DaoUser());
     }
 
-    public Optional<User> getLogged() {
+    public Optional<Usernew> getLogged() {
         return dao.findWhere("logged = true");
     }
 
     @Override
-    public Class<User> getModelClass() {
-        return User.class;
+    public Class<Usernew> getModelClass() {
+        return Usernew.class;
     }
 
 }

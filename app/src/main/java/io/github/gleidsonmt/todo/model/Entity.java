@@ -19,4 +19,12 @@ public class Entity extends Model {
         return name;
     }
 
+
+    @Override
+    public String toString() {
+        return "{\"Entity\":"
+               + "\"id\":\"" + getId() + "\""
+               + ", \"name\":\"" + name + "\""
+               + "}";
+    }
 }

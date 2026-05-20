@@ -85,12 +85,14 @@ public class HomeLayout extends Container implements Layout {
      * @return if the user is logged.
      */
     private boolean isLogged() {
-        user = this.daoUser.getBy("logged = 1");
-        return user.isPresent();
+//        user = this.daoUser.getBy("logged = 1");
+//        return user.isPresent();\
+        return false;
     }
 
     public boolean hasUser() {
-        user = this.daoUser.getFirst();
-        return user.isPresent();
+        return false;
+//        user = this.daoUser.getFirst();
+//        return user.isPresent();
     }
 }

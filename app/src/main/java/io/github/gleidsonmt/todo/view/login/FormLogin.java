@@ -113,16 +113,16 @@ public class FormLogin extends VBox implements Form<User> {
     public boolean persist() {
         // this.dao.login(user);
 
-        Optional<User> optional = dao.getByName(userNameField.getText());
-
-        Logger.getGlobal().info(() -> "User found: " + optional);
-        if (optional.isPresent()) {
-            User found = optional.get();
-            if (found.getPassword().equals(passField.getText())) {
-                Logger.getGlobal().info(() -> "User logged: " + found);
-                return true;
-            }
-        }
+//        Optional<User> optional = dao.getByName(userNameField.getText());
+//
+//        Logger.getGlobal().info(() -> "User found: " + optional);
+//        if (optional.isPresent()) {
+//            User found = optional.get();
+//            if (found.getPassword().equals(passField.getText())) {
+//                Logger.getGlobal().info(() -> "User logged: " + found);
+//                return true;
+//            }
+//        }
         return false;
     }
 
