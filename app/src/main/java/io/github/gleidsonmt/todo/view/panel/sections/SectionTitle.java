@@ -21,7 +21,7 @@ import javafx.util.Duration;
 /**
  * Description:
  *
- * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Created On: Mar 26, 2026
  */
 public class SectionTitle extends GridPane {

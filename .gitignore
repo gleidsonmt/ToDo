@@ -3,6 +3,7 @@
 .idea
 log.txt
 todo.db
+annotions.txt
 
 
 # Ignore Gradle build output directory

@@ -13,7 +13,7 @@ import javafx.beans.property.StringProperty;
 import javafx.scene.image.Image;
 
 /**
- * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Create on 16/10/2024
  */
 @SuppressWarnings("unused")

@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 /**
- * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Create on  09/04/2026
  */
 public class RemindContextMenu extends CustomContextMenu<LocalDateTime> {
@@ -48,7 +48,7 @@ public class RemindContextMenu extends CustomContextMenu<LocalDateTime> {
             root.flow()
                     .content(container)
                     .width(280)
-                    .pos(Pos.TOP_LEFT)
+                    .pos(target.isCenter() ? Pos.TOP_CENTER : Pos.TOP_LEFT)
                     .show(target);
 
             container.setOnSave(_ -> {

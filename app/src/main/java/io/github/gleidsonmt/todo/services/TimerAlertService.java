@@ -12,7 +12,7 @@ import javafx.util.Duration;
 
 /**
  *
- * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br> <br>
  * Created on  12/05/2026
  */
 public class TimerAlertService extends ScheduledService<ObservableList<ToDoTask>> {

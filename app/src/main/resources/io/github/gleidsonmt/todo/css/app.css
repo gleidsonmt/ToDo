@@ -1,6 +1,4 @@
 
-
-
 .key-button {
     -fx-background-color: derive(-mint, 80%);
 }
@@ -154,8 +152,21 @@ Panel {
 #input-container #input-task {
 }
 
+#input-container {
+    -fx-border-color: -light-gray-2;
+    -fx-transition: -fx-border-color 2s ease-in;
+
+    -fx-scale-x: 1.0;
+    -fx-scale-y: 1.0;
+
+    /* Configura a transição para ambas as propriedades de escala */
+    -fx-transition: -fx-scale-x 0.2s ease-out,
+    -fx-scale-y 0.2s ease-in-out;
+}
 #input-container:hover {
     -fx-border-color: linear-gradient(to right, -mint, derive(-fx-accent, 50%));
+    -fx-scale-x: 1.01;
+    -fx-scale-y: 1.01;
 }
 
 #input-container {
@@ -165,9 +176,6 @@ Panel {
     -fx-border-radius: 5px;
 }
 
-#input-container .icon-container .icon {
-    -fx-fill: -fx-accent;
-}
 
 #input-container .linear-icon .icon {
     -fx-fill: linear-gradient(to left, #33b5e5, #48cfad);
@@ -183,6 +191,7 @@ Panel {
     -fx-cursor: hand;
     -fx-background-color: -light-gray;
 }
+
 
 .sub {
     -fx-padding: 5px;
@@ -607,7 +616,7 @@ Panel {
 .toggle-week-day {
     -fx-border-color: -medium-gray;
     -fx-background-color: -fx-background;
-    -fx-border-radius: 2px;
+    -fx-border-radius: 5px;
     -fx-pref-height: 20px;
     -fx-pref-width: 50px;
     -fx-alignment: center;
@@ -698,4 +707,45 @@ Panel {
 
 TextFlow {
     -fx-text-alignment: center;
+}
+
+InputFieldOptions:small {
+    -fx-spacing: 5px;
+    -fx-border-width: 2px 0px 0px 0px;
+    -fx-border-color: -medium-gray;
+    -fx-padding: 3px;
+}
+
+InputFieldOptions:small .input-field-item:first-child {
+    -fx-border-color: -medium-gray;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+}
+
+.input-field-item .icon-container .icon {
+    -fx-fill: -fx-accent;
+}
+
+InputFieldOptions:medium .input-field-item:selected,
+InputFieldOptions:small:medium .input-field-item:selected {
+    -fx-fill: -fx-accent;
+    -fx-background-radius: 10px;
+    -fx-spacing: 10px;
+}
+InputFieldOptions:medium .input-field-item:selected,
+InputFieldOptions:small .input-field-item:selected {
+    -fx-background-color: derive(-fx-accent, 30%);
+}
+
+InputFieldOptions:medium .input-field-item:selected > .icon-container > .icon,
+InputFieldOptions:small .input-field-item:selected > .icon-container > .icon {
+    -fx-fill: white;
+}
+
+.context-menu .icon-container .icon {
+    -fx-fill: -fx-accent;
+}
+
+InputFieldOptions:medium {
+    -fx-spacing: 10px;
 }

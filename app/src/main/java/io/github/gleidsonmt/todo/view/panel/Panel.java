@@ -38,7 +38,7 @@ import java.time.format.DateTimeFormatter;
  * every change of the lists will be tigger here.
  * the place where you see the tasks and update them.
  *
- * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Created On: Feb 26, 2026
  * <p>
  * Version History: Initial version

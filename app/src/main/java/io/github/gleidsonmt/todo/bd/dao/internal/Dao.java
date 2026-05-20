@@ -12,7 +12,7 @@ import io.github.gleidsonmt.todo.model.Model;
 /**
  * Description: The base class for dao action models.
  *
- * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br> <br>
  * Created On: Feb 22, 2026
  */
 @ApiStatus.Internal

@@ -30,7 +30,6 @@ dependencies {
 
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     compileOnly("org.jetbrains:annotations:26.1.0")
-    testCompileOnly("org.jetbrains:annotations:26.1.0")
 
     // ----------------------- Projects ------------------------------
 

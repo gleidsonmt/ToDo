@@ -30,7 +30,7 @@ import javafx.scene.layout.VBox;
 /**
  * Description:
  *
- * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br> <br>
  * Created On: Feb 24, 2026
  * <p>
  * Version History: Initial version

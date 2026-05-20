@@ -30,7 +30,7 @@ import javafx.stage.Stage;
 
 /**
  *
- * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Created on  28/04/2026
  */
 public class LoaderView extends StackPane implements Layout {

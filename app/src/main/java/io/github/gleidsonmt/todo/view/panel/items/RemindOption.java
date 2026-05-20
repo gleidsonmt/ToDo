@@ -6,7 +6,7 @@ import io.github.gleidsonmt.glad.controls.icon.Icon;
 
 /**
  *
- * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br> <br>
  * Created on  15/04/2026
  */
 public class RemindOption extends Option {

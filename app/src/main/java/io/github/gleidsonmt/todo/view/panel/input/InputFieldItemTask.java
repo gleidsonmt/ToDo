@@ -20,7 +20,7 @@ import javafx.scene.input.MouseEvent;
 import java.util.Optional;
 
 /**
- * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br> <br>
  * Created On: Mar 02, 2026
  */
 public class InputFieldItemTask extends InputFieldItem<List> {

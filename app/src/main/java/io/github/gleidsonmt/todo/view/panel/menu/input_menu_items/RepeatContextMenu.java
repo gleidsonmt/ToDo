@@ -18,7 +18,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 
 /**
- * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Create on  11/04/2026
  */
 public class RepeatContextMenu extends CustomContextMenu<Recurrence> {
@@ -64,7 +64,8 @@ public class RepeatContextMenu extends CustomContextMenu<Recurrence> {
                     .flow()
                     .width(300)
                     .content(container)
-                    .pos(Pos.TOP_LEFT)
+                    .pos(target.isCenter() ? Pos.TOP_CENTER : Pos.TOP_LEFT)
+
                     .show(target);
         });
     }

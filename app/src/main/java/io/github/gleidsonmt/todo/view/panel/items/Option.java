@@ -16,7 +16,7 @@ import org.kordamp.ikonli.javafx.FontIcon;
 /**
  * Description:
  *
- * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Created On: Mar 28, 2026
  * <p>
  * Version History: Initial version

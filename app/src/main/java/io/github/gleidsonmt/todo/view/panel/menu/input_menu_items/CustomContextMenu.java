@@ -15,7 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
- * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Create on  09/04/2026
  */
 public class CustomContextMenu<T> extends ContextMenu {
@@ -65,7 +65,7 @@ public class CustomContextMenu<T> extends ContextMenu {
         super.hide();
 
         // second show places in the right position
-        super.show(target, side, dx, dy);
+        super.show(target, side, target.isCenter() ? -((this.getWidth() / 2) - (target.getWidth() / 2)) : dx, dy);
         Platform.requestNextPulse(); // makes sure the is on the right position
     }
 }

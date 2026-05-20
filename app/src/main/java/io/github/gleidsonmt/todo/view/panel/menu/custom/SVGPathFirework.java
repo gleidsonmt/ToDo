@@ -5,7 +5,7 @@ package io.github.gleidsonmt.todo.view.panel.menu.custom;
 import javafx.scene.shape.SVGPath;
 
 /**
- * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Create on  12/12/2024
  */
 public class SVGPathFirework extends SVGPath {

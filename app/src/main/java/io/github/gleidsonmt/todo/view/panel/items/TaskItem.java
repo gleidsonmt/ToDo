@@ -3,8 +3,6 @@
 package io.github.gleidsonmt.todo.view.panel.items;
 
 import io.github.gleidsonmt.todo.view.panel.FavoriteButton;
-import io.github.gleidsonmt.todo.view.panel.actions.CompleteAction;
-import io.github.gleidsonmt.todo.view.panel.actions.ImportantAction;
 import io.github.gleidsonmt.todo.view.panel.events.TaskChangeEvent;
 import io.github.gleidsonmt.todo.view.panel.menu.TaskItemContextMenu;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
@@ -26,7 +24,7 @@ import java.time.LocalDate;
 /**
  * Description: UI component. Represents a task in the panel.
  *
- * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br> <br>
  * Created On: Feb 26, 2026
  * <p>
  * Version History: Initial version
@@ -43,9 +41,6 @@ public class TaskItem extends GridToggle {
     private LongProperty listID;
 
     private BooleanProperty needDetails = new SimpleBooleanProperty();
-
-    private CompleteAction completed;
-    private ImportantAction importantAction;
 
     private Options options;
 
@@ -188,16 +183,6 @@ public class TaskItem extends GridToggle {
 
         GridPane.setHgrow(text, Priority.ALWAYS);
         GridPane.setHgrow(options, Priority.ALWAYS);
-    }
-
-    @Experimental
-    public void setOnCompletedChange(CompleteAction completeAction) {
-        this.completed = completeAction;
-    }
-
-    @Experimental
-    public void setOnImportantChange(ImportantAction action) {
-        this.importantAction = action;
     }
 
     public BooleanProperty favoriteProperty() {

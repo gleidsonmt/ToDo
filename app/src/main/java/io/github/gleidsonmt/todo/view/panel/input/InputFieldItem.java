@@ -14,7 +14,10 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
+import javafx.css.PseudoClass;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
@@ -22,7 +25,7 @@ import javafx.scene.input.MouseEvent;
 /**
  * Description:
  *
- * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br> <br>
  * Created On: Mar 02, 2026
  * <p>
  * Version History: Initial version
@@ -30,8 +33,8 @@ import javafx.scene.input.MouseEvent;
 public class InputFieldItem<T> extends Label {
 
     protected CustomContextMenu<T> contextMenu;
-
     protected ObjectProperty<T> value;
+    protected boolean center;
 
     public InputFieldItem(Icon icon) {
         this(icon, null);
@@ -40,7 +43,6 @@ public class InputFieldItem<T> extends Label {
     public InputFieldItem(Icon icon, String toolTipText) {
 
         this.value = new SimpleObjectProperty<>();
-
         setTooltip(new Tooltip(toolTipText));
         setGraphic(new SVGIcon(icon));
         setText(null);
@@ -50,7 +52,23 @@ public class InputFieldItem<T> extends Label {
             ((Root) getScene().getRoot())
                     .flow().hide();
         });
-        // setWrapText(true);
+
+        value.addListener(new ChangeListener<T>() {
+            @Override
+            public void changed(ObservableValue<? extends T> observable, T oldValue, T newValue) {
+                    if (icon.equals(Icon.HOME)) return;
+                    pseudoClassStateChanged(PseudoClass.getPseudoClass("selected"), newValue != null);
+            }
+        });
+
+//         setWrapText(true);
+        widthProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                System.out.println("getPrefWidth() = " + getPrefWidth());
+                System.out.println("newValue = " + newValue);
+            }
+        });
     }
 
     public void setValue(T value) {
@@ -63,5 +81,13 @@ public class InputFieldItem<T> extends Label {
 
     public ObjectProperty<T> valueProperty() {
         return value;
+    }
+
+    public void setCenter(boolean val) {
+        this.center = val;
+    }
+
+    public boolean isCenter() {
+        return this.center;
     }
 }

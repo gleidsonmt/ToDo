@@ -18,7 +18,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 
 /**
- * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a>
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Create on  09/04/2026
  */
 public class DueDateContextMenu extends CustomContextMenu<LocalDate> {
@@ -46,7 +46,7 @@ public class DueDateContextMenu extends CustomContextMenu<LocalDate> {
             root.flow()
                     .content(container)
                     .width(300)
-                    .pos(Pos.TOP_LEFT)
+                    .pos(target.isCenter() ? Pos.TOP_CENTER : Pos.TOP_LEFT)
                     .show(target);
 
             container.setOnSave(_ -> {
