@@ -24,7 +24,6 @@ public class Global {
     public static HostServices hostServices;
 
     public static void openLink(String link) {
-        System.out.println("hostServices = " + link);
         hostServices.showDocument(link);
     }
 

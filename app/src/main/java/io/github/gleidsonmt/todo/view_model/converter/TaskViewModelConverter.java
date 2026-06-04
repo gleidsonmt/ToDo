@@ -22,7 +22,7 @@ public class TaskViewModelConverter extends ViewModelConverter<ToDoTask, TaskVie
     }
 
     @Override
-    public ToDoTask toModel(@NonNull TaskViewModel model) {
+    public ToDoTask toEntity(@NonNull TaskViewModel model) {
         return new ToDoTask(
                 model.getId(),
                 model.getName(),

@@ -11,9 +11,8 @@ import io.github.gleidsonmt.todo.view_model.ViewModel;
  * Created on  16/04/2026
  */
 public abstract class ViewModelConverter<T extends Model, E extends ViewModel> {
+    public abstract T toEntity(E model);
 
     public abstract E toViewModel(T model);
-
-    public abstract T toModel(E model);
 
 }

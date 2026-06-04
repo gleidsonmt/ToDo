@@ -2,11 +2,8 @@
 
 package io.github.gleidsonmt.todo.view.login;
 
-import java.util.logging.Logger;
-
-import io.github.gleidsonmt.glad.base.Root;
 import io.github.gleidsonmt.glad.controls.icon.Icon;
-import io.github.gleidsonmt.todo.view.MainView;
+import io.github.gleidsonmt.todo.view.login.signup.SignupView;
 import javafx.geometry.Insets;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
@@ -24,6 +21,7 @@ public class LoginView extends StackPane {
 
     private final Header header;
     private final Footer footer;
+    private final LoginForm form;
 
     public LoginView() {
         this(true);
@@ -47,29 +45,30 @@ public class LoginView extends StackPane {
         footer.setInfoText("Don't have an account?");
         body.getChildren().add(this.footer);
 
-        FormLogin form = createForm();
+        form = createForm();
+
+        footer.setLinkAction(_ -> ((HomeLayout)getScene().lookup("#home-layout")).setLeft(new SignupView()));
 
         body.getChildren().add(form);
-        GridPane.setVgrow(form, Priority.ALWAYS);
         GridPane.setMargin(form, new Insets(10));
         //
         GridPane.setRowIndex(this.header, 0);
         GridPane.setRowIndex(form, 1);
         GridPane.setRowIndex(this.footer, 2);
+        GridPane.setMargin(footer, new Insets(10));
         //
         GridPane.setHgrow(header, Priority.ALWAYS);
     }
 
-    private FormLogin createForm() {
-        FormLogin form = new FormLogin();
+    private void find() {
+    }
+
+    private LoginForm createForm() {
+        LoginForm form = new LoginForm();
         footer.setButtonAction(e -> {
-            // if (form.validate()) {
-            // if (form.persist()) {
-            Logger.getGlobal().info("User logged in successfully!");
-            Root root = (Root) getScene().getRoot();
-//            root.setLayout(new MainView(form.get()));
-            // }
-            // }
+            if (form.validate()) {
+               form.persist();
+            }
         });
         return form;
     }

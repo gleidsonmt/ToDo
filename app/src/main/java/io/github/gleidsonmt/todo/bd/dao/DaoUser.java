@@ -2,19 +2,17 @@
 
 package io.github.gleidsonmt.todo.bd.dao;
 
+import io.github.gleidsonmt.todo.bd.dao.internal.AbstractDao;
+import io.github.gleidsonmt.todo.model.Usernew;
+import org.jetbrains.annotations.NotNull;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import io.github.gleidsonmt.todo.model.Usernew;
-import org.jetbrains.annotations.NotNull;
-
-import io.github.gleidsonmt.todo.bd.dao.internal.AbstractDao;
-import io.github.gleidsonmt.todo.bd.dao.internal.DaoAction;
-import io.github.gleidsonmt.todo.model.User;
+import java.util.logging.Logger;
 
 /**
  * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
@@ -27,14 +25,9 @@ public final class DaoUser extends AbstractDao<Usernew> {
 
         Usernew item = new Usernew(result.getLong("id"), result.getString("name"));
         item.setUsername(result.getString("username"));
-//        item.setSalt(result.getBytes("salt"));
-//        item.setLogged(result.getBoolean("logged"));
-//        item.setRemember(result.getBoolean("remember"));
-//        item.setPassword(result.getString("password"));
-//        item.setImageUrl(result.getString("image_url"));
-
-        // item.setAvatar(item.getImageUrl());
-
+        item.setSalt(result.getBytes("salt"));
+        item.setPassword(result.getString("password"));
+        item.setImageUrl(result.getString("image_url"));
         return item;
     }
 
@@ -44,43 +37,27 @@ public final class DaoUser extends AbstractDao<Usernew> {
         String pass;
         byte[] salt;
 
-        System.out.println("getAction() = " + getAction());
-
-//        if (getAction() == DaoAction.CREATE && model.isNeedChangePass()) {
-//        if (getAction() == DaoAction.CREATE) {
-//            pass = model.getPassword();
-//            salt = model.getSalt();
-//        } else {
-            salt = createSalt();
-            pass = createSecurePassword(model.getPassword(), salt);
-//        }
-        // insert into user(name, salt, username, password) values(?, ?, ?, ?);
+        salt = createSalt();
+        pass = createSecurePassword(model.getPassword(), salt);
 
         try {
             prepare.setString(1, model.getName());
-//            prepare.setString(2, model.getImageUrl());
             prepare.setString(2, model.getUsername());
             prepare.setString(3, pass);
             prepare.setBytes(4, salt);
-//            prepare.setBoolean(4, model.isRemember());
-//            prepare.setBoolean(5, model.isLogged());
-//            prepare.setString(6, model.getUsername());
-//            prepare.setString(7, pass);
+            prepare.setString(5, model.getImageUrl());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     public boolean validatePassword(@NotNull Usernew user, String compare) {
-//        String one = user.getPassword();
-//        String two = createSecurePassword(compare, user.getSalt());
-//
-//        return one.equals(two);
-        return false;
+        String one = user.getPassword();
+        String two = createSecurePassword(compare, user.getSalt());
+        return one.equals(two);
     }
 
-    protected String createSecurePassword(@NotNull String password, byte[] salt) {
-
+    private String createSecurePassword(@NotNull String password, byte[] salt) {
         String generatedPassword = null;
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -92,7 +69,7 @@ public final class DaoUser extends AbstractDao<Usernew> {
             }
             generatedPassword = sb.toString();
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            Logger.getGlobal().severe("Error on creating password: " + e.getMessage());
         }
         return generatedPassword;
 

@@ -75,19 +75,19 @@ public class ListViewModel extends ViewModel {
     }
 
     public ListViewModel save() {
-        var converted = converter.toModel(this);
+        var converted = converter.toEntity(this);
         this.setId(presenter.store(converted));
         return this;
     }
 
     public void delete() {
-        var item = converter.toModel(this);
+        var item = converter.toEntity(this);
         presenter.delete(item);
     }
 
     public void update() {
         // commit in db
-        var item = converter.toModel(this);
+        var item = converter.toEntity(this);
         presenter.update(item);
     }
 

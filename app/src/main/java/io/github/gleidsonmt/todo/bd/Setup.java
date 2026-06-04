@@ -2,11 +2,13 @@
 
 package io.github.gleidsonmt.todo.bd;
 
+import io.github.gleidsonmt.glad.base.Root;
 import io.github.gleidsonmt.todo.bd.sqlite.SQLiteConnection;
 import io.github.gleidsonmt.todo.events.DialogEvent;
-import io.github.gleidsonmt.todo.events.LoginEvent;
 import io.github.gleidsonmt.todo.global.Global;
 import io.github.gleidsonmt.todo.model.User;
+import io.github.gleidsonmt.todo.view.MainView;
+import io.github.gleidsonmt.todo.view.login.HomeLayout;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -79,7 +81,13 @@ public class Setup {
                         }
                     }
                     return null;
-                }).thenAccept(_ -> Event.fireEvent(destiny, new LoginEvent(LoginEvent.LOGIN)))
+                }).thenAccept(_ -> {
+                    Platform.runLater(() -> {
+                        Root root = (Root) destiny.getScene().getRoot();
+//                        root.setContent(new HomeLayout());
+                        root.setContent(new MainView(null));
+                    });
+                })
                 .exceptionally(e -> {
                             fireError("Error!", "Error on setting app.", (Exception) e);
                             throw new RuntimeException(e);

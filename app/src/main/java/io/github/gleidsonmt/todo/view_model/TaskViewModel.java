@@ -63,9 +63,10 @@ public class TaskViewModel extends ViewModel {
 
     }
 
-    public void save() {
-        var converted = converter.toModel(this);
+    public TaskViewModel save() {
+        var converted = converter.toEntity(this);
         this.setId(presenter.store(converted));
+        return this;
     }
 
     public void storeRecurrence(Recurrence rec) {
@@ -74,12 +75,12 @@ public class TaskViewModel extends ViewModel {
 
     public void update() {
         // commit in db
-        var item = converter.toModel(this);
+        var item = converter.toEntity(this);
         presenter.update(item);
     }
 
     public void delete() {
-        var item = converter.toModel(this);
+        var item = converter.toEntity(this);
         presenter.delete(item);
     }
 

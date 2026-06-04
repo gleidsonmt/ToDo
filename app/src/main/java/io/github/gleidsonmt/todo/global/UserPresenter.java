@@ -16,6 +16,7 @@ import io.github.gleidsonmt.todo.model.Usernew;
  * <p>
  * Version History: Initial version
  */
+@Deprecated
 public class UserPresenter extends AbstractPresenter<Usernew> {
 
     public UserPresenter() {

@@ -41,6 +41,7 @@ public class App extends Application {
         ConsoleHandler handler = new ConsoleHandler();
         LogFormatter formatter = new LogFormatter();
 
+
         Logger.getGlobal().addHandler(handler);
         Logger.getGlobal().setUseParentHandlers(false);
 
@@ -107,8 +108,7 @@ public class App extends Application {
         }
         stage.show();
 
-        System.out.println("Launcher.mode = " + Launcher.mode);
-        
+
         if (Launcher.mode == Mode.DEBUG) {
             Tools.analyzeNodes(scene);
             Tools.listenCss(scene);

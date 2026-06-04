@@ -28,6 +28,7 @@ import org.jetbrains.annotations.ApiStatus;
  * Create on 19/11/2024
  */
 @ApiStatus.Experimental
+@Deprecated(forRemoval = true)
 public class Folder {
 
 

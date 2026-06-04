@@ -95,7 +95,7 @@ public class LogFormatter extends Formatter {
         builder.append(ANSI_RESET);
 //        System.out.print("\033[H\033[2J");
 //        System.out.print(ANSI_RESET);
-//        System.out.flush();
+        System.out.flush();
 
         return builder.toString();
     }

@@ -5,8 +5,7 @@ package io.github.gleidsonmt.todo.view.nav;
 import io.github.gleidsonmt.glad.controls.avatar.AvatarView;
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
-import io.github.gleidsonmt.todo.global.Folder;
-import io.github.gleidsonmt.todo.model.User;
+import io.github.gleidsonmt.todo.model.Usernew;
 import io.github.gleidsonmt.todo.utils.Assets;
 import javafx.geometry.Insets;
 import javafx.geometry.Side;
@@ -20,6 +19,11 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.logging.Logger;
 
 /**
  * Description:
@@ -37,18 +41,38 @@ public class Header extends GridPane {
 
     private final ContextMenu options;
 
-    public Header(User user) {
+    public Header(Usernew user) {
+        setMinHeight(60);
         this.email = createEmailComponent(user.getUsername());
         this.name = createNameComponent(user.getName());
         this.options = createOptions(user);
         this.avatarView = new AvatarView();
-        Folder folder = new Folder();
-        Image img = folder.getAvatar(user.getImageUrl());
-
+//        Folder folder = new Folder();
+        Image img = getAvatar(user.getImageUrl());
+//        Image img = folder.getAvatar(user.getImageUrl());
+//
         this.avatarView
-                .setImage(img == null || user.getImageUrl().isBlank() ? Assets.getImage("default_avatar.jpg") : img);
+                .setImage(img == null ? Assets.getImage("default_avatar.jpg") : img);
+//                .setImage(img == null || user.getImageUrl().isBlank() ? Assets.getImage("default_avatar.jpg") : img);
 
         init();
+    }
+
+    private Image getAvatar(String url) {
+        File folder = new File("avatars");
+        if (folder.exists()) {
+            if (folder.mkdir()) {
+                Logger.getGlobal().severe("Error on creating avatar folder");
+                return null;
+            }
+        }
+
+        File file = new File("avatars" + File.separator + url);
+        try {
+            return new Image(new FileInputStream(file));
+        } catch (FileNotFoundException e) {
+            return null;
+        }
     }
 
     private void init() {
@@ -104,7 +128,7 @@ public class Header extends GridPane {
         return text;
     }
 
-    private ContextMenu createOptions(User user) {
+    private ContextMenu createOptions(Usernew user) {
 
         ContextMenu options = new ContextMenu();
 
@@ -113,6 +137,7 @@ public class Header extends GridPane {
         menuSettings.setGraphic(new SVGIcon(Icon.SETTINGS));
 
         menuSettings.setOnAction(e -> {
+            // Adicionar novo evento de view change
             // Root root = (Root) this.getScene().getRoot();
             // root.setLayout(new SettingsView(user));
         });
@@ -127,7 +152,7 @@ public class Header extends GridPane {
         this.setOnMouseClicked(e -> {
             if (options.isShowing())
                 return;
-            options.show(this, Side.BOTTOM, 0, e.getY() - 20);
+            options.show(this, Side.BOTTOM, getWidth() / 4, e.getY() - 20);
         });
         return options;
     }

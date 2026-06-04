@@ -184,7 +184,7 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
         connect();
         ResultSet result = executeQuery("select * from " + getTable() + ";");
         try {
-            if (result.first())
+            if (result.next())
                 return Optional.of(createElement(result));
             else
                 return Optional.empty();
@@ -341,6 +341,8 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
 
     public Optional<T> findWhere(String condition) {
         connect();
+        System.out.println("condition = " + condition);
+        System.out.println( "select * from " + getTable() + " where " + condition + ";");
         ResultSet result = executeQuery("select * from " + getTable() + " where " + condition + ";");
         try {
             if (result.next())

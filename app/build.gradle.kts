@@ -6,6 +6,7 @@ plugins {
     id("org.openjfx.javafxplugin") version "0.1.0"
     id("org.javamodularity.moduleplugin") version "2.0.0"
     id("org.beryx.jlink") version "3.1.1"
+    id("com.palantir.git-version") version "3.1.0"
 }
 
 val project = Properties().apply {
@@ -13,7 +14,15 @@ val project = Properties().apply {
 }
 
 group = "io.github.gleidsonmt"
-version = project["VERSION"] as String
+
+// Get the version from git tags
+val versionDetails: groovy.lang.Closure<com.palantir.gradle.gitversion.VersionDetails> by extra
+val details = versionDetails()
+version = onlyNumberAndDots(details.lastTag)
+
+fun onlyNumberAndDots(value: String): String {
+    return value.replace(Regex("[^0-9.]"), "")
+}
 
 repositories {
     mavenCentral()
@@ -54,7 +63,6 @@ dependencies {
 
     // Use JUnit Jupiter for testing.
     testImplementation(libs.junit.jupiter)
-    // This dependency is used by the application.
     implementation(libs.guava)
 }
 
@@ -72,6 +80,7 @@ tasks.withType<JavaCompile> {
 }
 
 application {
+//    mainClass = "io.github.gleidsonmt.todo.AppLoginTest"
     mainClass = "io.github.gleidsonmt.todo.Launcher"
     mainModule = "io.github.gleidsonmt.todo"
 }
@@ -124,7 +133,6 @@ tasks.register("debug") {
 
 tasks.register("log") {
     group = "application"
-
     dependsOn("run")
 }
 

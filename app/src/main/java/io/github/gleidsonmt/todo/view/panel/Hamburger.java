@@ -1,19 +1,16 @@
-
-
 package io.github.gleidsonmt.todo.view.panel;
 
 import io.github.gleidsonmt.glad.base.Anchor;
-import io.github.gleidsonmt.glad.base.Layout;
 import io.github.gleidsonmt.glad.base.Root;
 import io.github.gleidsonmt.glad.base.dialog.WrapperEffect;
 import io.github.gleidsonmt.glad.controls.button.Button;
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
-import javafx.animation.TranslateTransition;
+import io.github.gleidsonmt.todo.view.MainView;
 import javafx.geometry.Pos;
 import javafx.scene.control.ContentDisplay;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
-import javafx.util.Duration;
 
 /**
  * Description:
@@ -39,19 +36,13 @@ public class Hamburger extends Button {
         this.setOnAction(e -> {
             Root root = (Root) getScene().getRoot();
 
-            Layout layout = root.getLayout();
+            MainView layout = (MainView) root.getContent();
 
-            root.behavior().dialog().effect(WrapperEffect.GRAY).anchor(Anchor.LEFT).pos(Pos.CENTER_LEFT)
-                    .content((Region) root.getLayout().getLeft()).width(300).show();
-
-            TranslateTransition transition = new TranslateTransition(Duration.millis(200),
-                    (Region) root.getLayout().getLeft().getParent());
-
-            transition.setFromX(-300);
-            transition.setToX(0);
-            transition.play();
+            root.behavior().drawer()
+                    .with("gray")
+                    .content(layout.getNav())
+                    .show();
 
         });
     }
-
 }

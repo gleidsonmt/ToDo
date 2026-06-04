@@ -36,7 +36,7 @@ public class ListViewModelConverter extends ViewModelConverter<List, ListViewMod
     }
 
     @Override
-    public List toModel(ListViewModel model) {
+    public List toEntity(ListViewModel model) {
         var _name = "";
         if (model.isFixed()) {
             _name = model.getKeyName();

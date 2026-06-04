@@ -19,6 +19,7 @@ import javafx.concurrent.Task;
  * <p>
  * Version History: Initial version
  */
+@Deprecated
 public class AbstractPresenter<T extends Model> implements Presenter<T> {
 
     protected AbstractDao<T> dao;

@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
@@ -21,9 +23,6 @@ import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.effect.ColorAdjust;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
@@ -111,6 +110,8 @@ public class Presentation extends StackPane {
         region.getStyleClass().add("ativo");
         region.setPrefSize(800, USE_PREF_SIZE);
 
+        region.setBackground(new Background(new BackgroundFill(Color.web("#ef5350"), new CornerRadii(0), Insets.EMPTY)));
+
         ColorAdjust colorAdjust = new ColorAdjust();
 
         region.setEffect(colorAdjust);
@@ -136,7 +137,7 @@ public class Presentation extends StackPane {
             }
 
             timeline.setCycleCount(Timeline.INDEFINITE);
-            // timeline.setAutoReverse(true);
+//             timeline.setAutoReverse(true);
             timeline.play();
 
         });

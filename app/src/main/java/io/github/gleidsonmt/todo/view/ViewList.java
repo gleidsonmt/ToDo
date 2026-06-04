@@ -2,7 +2,7 @@
 
 package io.github.gleidsonmt.todo.view;
 
-import io.github.gleidsonmt.glad.base.View;
+import io.github.gleidsonmt.glad.base.drawer.View;
 import io.github.gleidsonmt.todo.model.List;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;

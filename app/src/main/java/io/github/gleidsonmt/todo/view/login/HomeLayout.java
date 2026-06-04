@@ -5,10 +5,17 @@ package io.github.gleidsonmt.todo.view.login;
 import java.util.Optional;
 
 import io.github.gleidsonmt.glad.base.Layout;
+import io.github.gleidsonmt.glad.base.Root;
 import io.github.gleidsonmt.glad.base.responsive.Container;
 import io.github.gleidsonmt.todo.bd.dao.DaoUser;
+import io.github.gleidsonmt.todo.events.LoginEvent;
 import io.github.gleidsonmt.todo.model.User;
+import io.github.gleidsonmt.todo.view.MainView;
+import io.github.gleidsonmt.todo.view.login.signup.SignupView;
 import io.github.gleidsonmt.todo.view.presentation.Presentation;
+import javafx.geometry.Orientation;
+import javafx.scene.Node;
+import javafx.scene.control.Separator;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 
@@ -27,11 +34,23 @@ public class HomeLayout extends Container implements Layout {
     private HBox body;
 
     public HomeLayout() {
+        setId("home-layout");
         this.daoUser = new DaoUser();
         this.body = new HBox();
         updateLayout();
         getChildren().setAll(body);
 
+        addEventHandler(LoginEvent.LOGIN, e -> {
+            Root root = (Root) getScene().getRoot();
+
+//            root.setLayout(new MainView(e.getUser()));
+        });
+    }
+
+    @Override
+    public void setLeft(Node node) {
+        body.getChildren().set(1, node);
+        HBox.setHgrow(node, Priority.ALWAYS);
     }
 
     /**
@@ -58,14 +77,14 @@ public class HomeLayout extends Container implements Layout {
         // } else {
         // System.out.println("user = " + user);
         // // // Si
-        // body.getChildren().setAll(new Presentation(), new
-        // Separator(Orientation.VERTICAL), new SignupView());
+//         body.getChildren().setAll(new Presentation(), new
+//                 Separator(Orientation.VERTICAL), new SignupView());
         // HBox.setHgrow(body.getChildren().get(0), Priority.ALWAYS);
         // HBox.setHgrow(body.getChildren().get(1), Priority.NEVER);
         // HBox.setHgrow(body.getChildren().get(2), Priority.ALWAYS);
         // }
         // }
-        var content = new LoginView();
+        var content = new SignupView();
         var presentation = new Presentation();
         addBreakpoint(e -> {
             body.getChildren().setAll(content);
@@ -74,9 +93,10 @@ public class HomeLayout extends Container implements Layout {
         addBreakpoint(e -> {
             body.getChildren().setAll(presentation, content);
         }, ">md");
-
+//
         HBox.setHgrow(content, Priority.ALWAYS);
         HBox.setHgrow(presentation, Priority.ALWAYS);
+
     }
 
     /**

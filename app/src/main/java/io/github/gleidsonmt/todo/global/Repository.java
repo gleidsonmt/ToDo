@@ -15,6 +15,7 @@ import javafx.collections.ObservableList;
  * <p>
  * Version History: Initial version
  */
+@Deprecated
 public class Repository {
 
     private final List<Presenter<?>> repos;

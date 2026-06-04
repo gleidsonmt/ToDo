@@ -50,5 +50,6 @@ CREATE TABLE user
     name     VARCHAR,
     username VARCHAR UNIQUE,
     password TEXT,
+    image_url TEXT,
     salt BLOB
 );

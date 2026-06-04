@@ -14,7 +14,10 @@ import io.github.gleidsonmt.todo.bd.sqlite.SQLiteConnection;
 import io.github.gleidsonmt.todo.events.DialogEvent;
 import io.github.gleidsonmt.todo.events.LoginEvent;
 import io.github.gleidsonmt.todo.global.Global;
+import io.github.gleidsonmt.todo.global.TaskPresenter;
+import io.github.gleidsonmt.todo.global.UserPresenter;
 import io.github.gleidsonmt.todo.model.ToDoTask;
+import io.github.gleidsonmt.todo.model.Usernew;
 import io.github.gleidsonmt.todo.services.TimerAlertService;
 import io.github.gleidsonmt.todo.utils.Assets;
 import io.github.gleidsonmt.todo.utils.I18n;
@@ -45,8 +48,9 @@ public class LoaderView extends StackPane implements Layout {
 
         addEventHandler(LoginEvent.LOGIN, _ -> {
             Platform.runLater(() -> {
-                Root root = (Root) getScene().getRoot();
-                root.setLayout(new MainView());
+//                UserPresenter presenter = (UserPresenter) Global.get(Usernew.class);
+//                Root root = (Root) getScene().getRoot();
+//                root.setLayout(new MainView(presenter.get(1).get()));
             });
 
             var stage = (Stage) getParent().getScene().getWindow();

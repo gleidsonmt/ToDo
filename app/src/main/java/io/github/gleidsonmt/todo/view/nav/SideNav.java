@@ -6,6 +6,7 @@ import io.github.gleidsonmt.todo.global.Global;
 import io.github.gleidsonmt.todo.global.ListPresenter;
 import io.github.gleidsonmt.todo.model.List;
 import io.github.gleidsonmt.todo.model.ListType;
+import io.github.gleidsonmt.todo.view_model.UserViewModel;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import javafx.beans.property.ObjectProperty;
@@ -28,9 +29,11 @@ public class SideNav extends VBox {
     private ToggleGroup group;
     private ObjectProperty<DrawerItem> selected;
     private VBox smartListsContainer;
+//    private Header header;
     private VBox container;
 
-    public SideNav() {
+    public SideNav(UserViewModel user) {
+//        this.header = new Header(null);
         init();
         configLayout();
         bind();

@@ -15,7 +15,7 @@ import javafx.beans.property.StringProperty;
  * <p>
  * Version History: Initial version
  */
-public class ViewModel {
+public abstract class ViewModel {
 
     private final StringProperty name = new SimpleStringProperty();
     private final LongProperty id = new SimpleLongProperty();
@@ -47,5 +47,15 @@ public class ViewModel {
     public LongProperty idProperty() {
         return this.id;
     }
+
+
+    @Override
+    public String toString() {
+        return "{\"ViewModel\":{"
+               + "\"id\":" + id.get()
+               + ", \"name\":" + name.get()
+               + "}}";
+    }
+
 
 }
