@@ -319,12 +319,28 @@ Panel {
 }
 
 .calendar-view .header {
+
 }
+
+.calendar-view .body-grid-pane {
+    -fx-background-color: white;
+}
+
 
 .calendar-view .previous-month-button,
 .calendar-view .next-month-button {
     -fx-padding: 15px;
     -fx-background-radius: 10px;
+    -fx-border-color: -medium-gray;
+    -fx-border-radius: 5px;
+}
+
+.calendar-view .previous-month-button {
+    -fx-rotate: 90;
+}
+
+.calendar-view .next-month-button {
+    -fx-rotate: -90;
 }
 
 .calendar-view .dropdown {
@@ -348,14 +364,37 @@ Panel {
 }
 
 .calendar-view .date-cell {
-    -fx-background-radius: 10px;
+    -fx-background-color: white;
 }
 
 .calendar-view .date-cell:hover {
     -fx-cursor: hand;
     -fx-background-color: -light-gray-2;
     -fx-border-color: -medium-gray;
-    -fx-border-radius: 10px;
+}
+
+.calendar-view .date-cell {
+    -fx-background-radius: 5px;
+    -fx-border-color: -light-gray-2;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+.calendar-view .today {
+    -fx-cursor: hand;
+    -fx-background-color: white;
+    -fx-border-color: -fx-accent;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+.calendar-view .selected {
+    -fx-cursor: hand;
+    -fx-background-color: -fx-accent;
+    -fx-border-color: transparent;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-font-weight: bold;
 }
 
 .calendar-view .date-cell:hover .text {
@@ -374,26 +413,65 @@ Panel {
     -fx-effect: none;
 }
 
+.year-view {
+    -fx-effect: none;
+}
+
 .year-view .left-button .arrow,
 .year-view .right-button .arrow {
     -fx-padding: 7px 4px 7px 4px;
 }
 
-.year-view .right-button,
 .year-view .left-button {
-    -fx-padding: 10px;
+    -fx-rotate: 180;
 }
 
+.year-view .right-button,
+.year-view .left-button {
+    -fx-padding: 15px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+.year-view .selected .text {
+    -fx-fill: -fx-accent;
+}
 .year-view .selected {
     -fx-background-radius: 10px;
 }
 
 .year-view .selected .selection-indicator {
+    -fx-background-color: -fx-accent;
+}
+
+.year-view .header {
+    -fx-effect: none;
+}
+
+.year-view {
+    -fx-border-color: white;
+}
+.year-view .grid-pane {
+    -fx-effect: none;
     -fx-background-color: white;
+    -fx-border-color: white;
+}
+
+.year-view .year-box {
+    -fx-effect: none;
+    -fx-background-color: white;
+    -fx-border-color: -light-gray-2;
+    -fx-border-radius: 5px;
+    -fx-min-width: 50px;
+}
+
+.year-view .year-box:hover {
+    -fx-background-color: -light-gray-2;
+    -fx-background-radius: 5px;
 }
 
 .calendar-view .year-month-view {
-    -fx-background-color: red;
+    -fx-background-color: white;
     -fx-padding: -1px;
 }
 
@@ -404,6 +482,10 @@ Panel {
 
 .calendar-view .month-box .selection-indicator {
     -fx-background-color: -fx-accent;
+}
+
+.calendar-view .month-box:hover .month-label .text  {
+    -fx-fill: -fx-accent;
 }
 
 .calendar-view {
