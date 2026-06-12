@@ -62,22 +62,10 @@ public class Setup {
                         System.setErr(out);
 
                         updateMessage("Criando registro no windows..");
-                        String path = getExecutable().toString();
-
-                        String regCommand = "reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\" /v \"JavaFx ToDo\" /t REG_SZ /d \"\\\""
-                                            + path + "\\\" --background\" /f";
-                        updateMessage("Executando comando: " + regCommand);
-
-                        try {
-                            ProcessBuilder pb = new ProcessBuilder("cmd", "/c", regCommand);
-                            Process pro = pb.start();
-                            pro.waitFor();
-                            updateMessage("Registro no windows.. " + (pro.exitValue() == 0 ? " [ OK ] " : " [ FAILED ]"));
-                        } catch (IOException e) {
-                            fireError("Erro!", "Erro ao registrar serviço. \n", e);
-                            return false;
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
+                        var install = Global.installWindowsRegister();
+                        updateMessage("Registro no windows.. " + (install ? " [ OK ] " : " [ FAILED ]"));
+                        if (!install) {
+                            fireError("Erro!", "Erro ao registrar serviço no windows.", new RuntimeException("Error on registry service."));
                         }
                     }
                     return null;

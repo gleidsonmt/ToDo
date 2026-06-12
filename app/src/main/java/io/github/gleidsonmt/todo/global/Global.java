@@ -6,6 +6,8 @@ import io.github.gleidsonmt.todo.model.Model;
 import javafx.application.HostServices;
 import org.jetbrains.annotations.ApiStatus;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.prefs.Preferences;
 
 /**
@@ -39,7 +41,36 @@ public class Global {
         return processName.endsWith(".exe") && !processName.contains("java.exe");
     }
 
+    private static String getPath() {
+        return new File(new File(System.getProperty("user.dir")), "JavaFx ToDo.exe").toString();
+    }
+
+    private static boolean installOrRemoveWindowsRegister(boolean add) {
+        String regCommand = "reg " + (add ? "add" : "delete") + "\"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\" /v \"JavaFx ToDo\" /t REG_SZ /d \"\\\""
+                            + getPath() + "\\\" --background\" /f";
+
+        try {
+            ProcessBuilder pb = new ProcessBuilder("cmd", "/c", regCommand);
+            Process pro = pb.start();
+            pro.waitFor();
+            return true;
+        } catch (IOException e) {
+            return false;
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static boolean installWindowsRegister() {
+        return installOrRemoveWindowsRegister(true);
+    }
+
+    public static boolean removeWindowsRegister() {
+        return installOrRemoveWindowsRegister(false);
+    }
+
     @ApiStatus.Experimental
+    @Deprecated
     private static Repository getRepository() {
         if (repository == null) {
             repository = new Repository();

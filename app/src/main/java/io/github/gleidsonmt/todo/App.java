@@ -1,5 +1,3 @@
-
-
 package io.github.gleidsonmt.todo;
 
 import io.github.gleidsonmt.glad.base.Root;
@@ -65,6 +63,9 @@ public class App extends Application {
                 .filter(processHandle -> processHandle.info().command().filter(cmd -> cmd.contains("mysqld")).isPresent()).findAny();
         test.ifPresent(processHandle -> processHandle.descendants().forEach(el -> System.out.println(el.info().command().orElse(""))));
         test.ifPresent(processHandle -> processHandle.descendants().forEach(ProcessHandle::destroy));
+
+        Global.removeWindowsRegister();
+
         Logger.getGlobal().info("Application is closed...");
     }
 
@@ -110,8 +111,8 @@ public class App extends Application {
 
 
         if (Launcher.mode == Mode.DEBUG) {
-            Tools.analyzeNodes(scene);
-            Tools.listenCss(scene);
+            HotTools.analyzeNodes(scene);
+            HotTools.listenCss(scene);
         }
     }
 }

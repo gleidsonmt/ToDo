@@ -80,8 +80,8 @@ tasks.withType<JavaCompile> {
 }
 
 application {
-//    mainClass = "io.github.gleidsonmt.todo.AppLoginTest"
-    mainClass = "io.github.gleidsonmt.todo.Launcher"
+    mainClass = "io.github.gleidsonmt.todo.AppLoginTest"
+//    mainClass = "io.github.gleidsonmt.todo.Launcher"
     mainModule = "io.github.gleidsonmt.todo"
 }
 
@@ -119,7 +119,6 @@ val runMode = when {
     requestedTasks.any { it == "log" || it.endsWith(":log") } -> "log"
     else -> "level-off"
 }
-
 
 tasks.named<JavaExec>("run") {
     args(runMode)

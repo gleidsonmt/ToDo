@@ -12,7 +12,6 @@ import io.github.gleidsonmt.todo.view.login.signup.SignupView;
 import io.github.gleidsonmt.todo.view.nav.Header;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -59,8 +58,8 @@ public class AppLoginTest extends Application {
 
         scene.getStylesheets().add(Assets.getCss("app.css"));
 
-        Tools.analyzeNodes(scene);
-        Tools.listenCss(scene);
+        HotTools.analyzeNodes(scene);
+        HotTools.listenCss(scene);
     }
 
     public static void main(String[] args) {
