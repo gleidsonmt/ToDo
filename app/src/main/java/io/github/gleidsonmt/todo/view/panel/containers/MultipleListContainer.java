@@ -2,7 +2,7 @@
 
 package io.github.gleidsonmt.todo.view.panel.containers;
 
-import io.github.gleidsonmt.todo.model.List;
+import io.github.gleidsonmt.todo.model.ListOld;
 import io.github.gleidsonmt.todo.model.ListType;
 import io.github.gleidsonmt.todo.model.ToDoTask;
 import io.github.gleidsonmt.todo.view.panel.items.TaskItem;
@@ -121,7 +121,7 @@ public class MultipleListContainer extends ListContainer {
         return null;
     }
 
-    private void loadLists(List list) {
+    private void loadLists(ListOld list) {
 
         // AnimatedSection section = new AnimatedSection();
 

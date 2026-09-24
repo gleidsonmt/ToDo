@@ -17,7 +17,7 @@ import io.github.gleidsonmt.todo.model.Usernew;
  * Version History: Initial version
  */
 @Deprecated
-public class UserPresenter extends AbstractPresenter<Usernew> {
+public class UserPresenter extends AbstractPresenter<User> {
 
     public UserPresenter() {
         super(new DaoUser());
@@ -28,8 +28,8 @@ public class UserPresenter extends AbstractPresenter<Usernew> {
     }
 
     @Override
-    public Class<Usernew> getModelClass() {
-        return Usernew.class;
+    public Class<User> getModelClass() {
+        return User.class;
     }
 
 }

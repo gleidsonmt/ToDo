@@ -22,9 +22,18 @@ public class Usernew extends Entity {
     private byte[] salt;
     private String password;
     private String username;
+    private boolean logged;
 
     public Usernew(long id, String name) {
         super(id, name);
+    }
+
+    public boolean isLogged() {
+        return logged;
+    }
+
+    public void setLogged(boolean logged) {
+        this.logged = logged;
     }
 
     public String getUsername() {
@@ -59,39 +68,39 @@ public class Usernew extends Entity {
         this.imageUrl = imageUrl;
     }
 
-    public static java.util.List<SVGImageView> getAllIcons() {
-        // Defina o caminho relativo à raiz do classpath
-        String _path = new File("avatars").getAbsolutePath();
-        System.out.println("Path = " + _path);
-        List<SVGImageView> svgs = new ArrayList<>();
-        try (ScanResult scanResult = new ClassGraph()
-                .acceptPaths(_path) // Limita o scan apenas a essa pasta
-                .scan()) {
+//    public static java.util.List<SVGImageView> getAllIcons() {
+//        // Defina o caminho relativo à raiz do classpath
+//        String _path = new File("avatars").getAbsolutePath();
+//        System.out.println("Path = " + _path);
+//        List<SVGImageView> svgs = new ArrayList<>();
+//        try (ScanResult scanResult = new ClassGraph()
+//                .acceptPaths(_path) // Limita o scan apenas a essa pasta
+//                .scan()) {
+//
+//            // Obtém todos os recursos dentro do caminho especificado
+//            ResourceList resources = scanResult.getAllResources();
+//
+//            // Filtra e processa apenas imagens (opcional, dependendo da extensão)
+//            resources.filter(resource ->
+//                    resource.getPath().endsWith(".jpg")
+//            ).forEach(resource -> {
+//                System.out.println("resource = " + resource);
+//                // Para carregar o conteúdo:
+//                // InputStream is = resource.open();
+//            });
+//        }
+//        return svgs;
+//    }
 
-            // Obtém todos os recursos dentro do caminho especificado
-            ResourceList resources = scanResult.getAllResources();
-
-            // Filtra e processa apenas imagens (opcional, dependendo da extensão)
-            resources.filter(resource ->
-                    resource.getPath().endsWith(".jpg")
-            ).forEach(resource -> {
-                System.out.println("resource = " + resource);
-                // Para carregar o conteúdo:
-                // InputStream is = resource.open();
-            });
-        }
-        return svgs;
-    }
 
 
-
-    @Override
-    public String toString() {
-        return "{\"Usernew\":"
-               + super.toString()
-               + ", \"username\":\"" + username + "\""
-               + ", \"password\":\"" + password + "\""
-               + ", \"salt\":\"" + salt + "\""
-               + "}";
-    }
+//    @Override
+//    public String toString() {
+//        return "{\"Usernew\":"
+//               + super.toString()
+//               + ", \"username\":\"" + username + "\""
+//               + ", \"password\":\"" + password + "\""
+//               + ", \"salt\":\"" + salt + "\""
+//               + "}";
+//    }
 }

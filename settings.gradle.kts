@@ -13,4 +13,6 @@ plugins {
 }
 
 rootProject.name = "todo"
-include("app", "glad")
+includeBuild("C:\\projects\\desktop\\dashboardfx\\glad")
+include("app")
+//include("app", "glad")

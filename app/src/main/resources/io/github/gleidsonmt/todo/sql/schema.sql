@@ -51,5 +51,6 @@ CREATE TABLE user
     username VARCHAR UNIQUE,
     password TEXT,
     image_url TEXT,
+    logged BOOLEAN DEFAULT 0,
     salt BLOB
 );

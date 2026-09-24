@@ -4,6 +4,7 @@ package io.github.gleidsonmt.todo.global;
 
 import io.github.gleidsonmt.todo.bd.dao.internal.Dao;
 import io.github.gleidsonmt.todo.model.Model;
+import io.github.gleidsonmt.todo.model.Modle;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 
@@ -15,7 +16,7 @@ import javafx.concurrent.Task;
  * <p>
  * Version History: Initial version
  */
-public interface Presenter<T extends Model> extends Dao<T> {
+public interface Presenter<T extends Modle> extends Dao<T> {
 
     Task<ObservableList<T>> fetch();
 

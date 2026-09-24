@@ -40,7 +40,7 @@ public class AppLoginTest extends Application {
 
         LoginView  loginView = new LoginView();
         SignupView signupView = new SignupView();
-        HomeLayout homeLayout = new HomeLayout();
+        HomeLayout homeLayout = new HomeLayout(null);
 
         VBox drawer = new VBox();
 

@@ -2,15 +2,11 @@
 
 package io.github.gleidsonmt.todo.view.panel.input;
 
-import io.github.gleidsonmt.todo.model.List;
+import io.github.gleidsonmt.todo.model.ListOld;
 import io.github.gleidsonmt.todo.model.recurrence.Recurrence;
 import io.github.gleidsonmt.todo.model.recurrence.RecurrenceType;
 import io.github.gleidsonmt.todo.view.panel.menu.input_menu_items.DateUtils;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
 import javafx.css.PseudoClass;
-import javafx.scene.Node;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.layout.HBox;
 
@@ -25,7 +21,7 @@ import java.time.LocalDateTime;
  */
 public class InputFieldOptions extends HBox {
 
-    private final InputFieldItem<List> tasks;
+    private final InputFieldItem<ListOld> tasks;
     private final InputFieldItem<LocalDate> dueDate;
     private final InputFieldItem<LocalDateTime> remind;
     private final InputFieldItem<Recurrence> repeat;
@@ -88,11 +84,11 @@ public class InputFieldOptions extends HBox {
         return repeat.getValue();
     }
 
-    public List getTask() {
+    public ListOld getTask() {
         return tasks.getValue();
     }
 
-    public List getList() {
+    public ListOld getList() {
         return tasks.getValue();
     }
 

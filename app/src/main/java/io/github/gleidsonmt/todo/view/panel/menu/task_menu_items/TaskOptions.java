@@ -4,12 +4,10 @@ package io.github.gleidsonmt.todo.view.panel.menu.task_menu_items;
 
 import io.github.gleidsonmt.todo.global.Global;
 import io.github.gleidsonmt.todo.global.Presenter;
-import io.github.gleidsonmt.todo.model.List;
+import io.github.gleidsonmt.todo.model.ListOld;
 import io.github.gleidsonmt.todo.utils.StringUtils;
-import io.github.gleidsonmt.todo.view.panel.Panel;
 import io.github.gleidsonmt.todo.view.panel.menu.input_menu_items.CustomContextMenu;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
-import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -30,9 +28,9 @@ public class TaskOptions {
         this.contextMenu = contextMenu;
     }
 
-    public Task<ObservableList<List>> fetch() {
-        Presenter<List> presenter = Global.get(List.class);
-        Task<ObservableList<List>> task = presenter.fetch(FXCollections.observableArrayList());
+    public Task<ObservableList<ListOld>> fetch() {
+        Presenter<ListOld> presenter = Global.get(ListOld.class);
+        Task<ObservableList<ListOld>> task = presenter.fetch(FXCollections.observableArrayList());
         new Thread(task).start();
 
         task.setOnSucceeded(_ -> {
@@ -55,7 +53,7 @@ public class TaskOptions {
         return items;
     }
 
-    private MenuItem createMenuList(List list) {
+    private MenuItem createMenuList(ListOld list) {
         MenuItem menuItem = new MenuItem();
         menuItem.setText(StringUtils.name(list.getName()));
         return menuItem;

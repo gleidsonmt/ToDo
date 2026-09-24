@@ -3,9 +3,7 @@
 package io.github.gleidsonmt.todo.global;
 
 import io.github.gleidsonmt.todo.bd.dao.DaoList;
-import io.github.gleidsonmt.todo.model.List;
-
-import java.util.Objects;
+import io.github.gleidsonmt.todo.model.ListOld;
 
 /**
  * Description:
@@ -15,14 +13,14 @@ import java.util.Objects;
  * <p>
  * Version History: Initial version
  */
-public class ListPresenter extends AbstractPresenter<List> {
+public class ListPresenter extends AbstractPresenter<ListOld> {
 
     public ListPresenter() {
         super(new DaoList());
     }
 
     @Override
-    public Class<List> getModelClass() {
-        return List.class;
+    public Class<ListOld> getModelClass() {
+        return ListOld.class;
     }
 }

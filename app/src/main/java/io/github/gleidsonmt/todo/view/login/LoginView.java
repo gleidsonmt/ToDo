@@ -60,9 +60,6 @@ public class LoginView extends StackPane {
         GridPane.setHgrow(header, Priority.ALWAYS);
     }
 
-    private void find() {
-    }
-
     private LoginForm createForm() {
         LoginForm form = new LoginForm();
         footer.setButtonAction(e -> {

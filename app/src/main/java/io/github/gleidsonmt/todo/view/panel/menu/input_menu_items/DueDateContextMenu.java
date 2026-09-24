@@ -4,14 +4,9 @@ package io.github.gleidsonmt.todo.view.panel.menu.input_menu_items;
 
 import io.github.gleidsonmt.glad.base.Root;
 import io.github.gleidsonmt.glad.controls.icon.Icon;
-import io.github.gleidsonmt.todo.model.List;
 import io.github.gleidsonmt.todo.view.panel.input.InputFieldItem;
 import io.github.gleidsonmt.todo.view.panel.menu.input_menu_items.custom_panels.CalendarPane;
-import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 import javafx.geometry.Pos;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 
 import java.time.DayOfWeek;

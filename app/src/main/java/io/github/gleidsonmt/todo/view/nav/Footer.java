@@ -4,7 +4,7 @@ package io.github.gleidsonmt.todo.view.nav;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
-import io.github.gleidsonmt.todo.model.List;
+import io.github.gleidsonmt.todo.model.ListOld;
 import io.github.gleidsonmt.todo.utils.I18n;
 import io.github.gleidsonmt.todo.utils.StringUtils;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
@@ -83,7 +83,7 @@ public class Footer extends GridPane {
             name = "Untitled " + (actualVal + 1);
         }
 
-        model = new ListViewModel(new List(0, name, false, 0, null));
+        model = new ListViewModel(new ListOld(0, name, false, 0, null));
 
         nav.addAndSelect(model.save());
     }

@@ -9,6 +9,7 @@ import io.github.gleidsonmt.todo.global.Global;
 import io.github.gleidsonmt.todo.logger.LogFormatter;
 import io.github.gleidsonmt.todo.utils.Assets;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -39,7 +40,6 @@ public class App extends Application {
         ConsoleHandler handler = new ConsoleHandler();
         LogFormatter formatter = new LogFormatter();
 
-
         Logger.getGlobal().addHandler(handler);
         Logger.getGlobal().setUseParentHandlers(false);
 
@@ -51,7 +51,6 @@ public class App extends Application {
             Logger.getGlobal().setLevel(Level.ALL);
             handler.setLevel(Level.ALL);
         }
-
     }
 
     @Override
@@ -71,16 +70,16 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-//        Platform.setImplicitExit(false);
+        Platform.setImplicitExit(false);
 
         Preferences prefs = Preferences.userNodeForPackage(App.class);
-        double width = prefs.getDouble(WIDTH_KEY, DEFAULT_WIDTH);
-        double height = prefs.getDouble(HEIGHT_KEY, DEFAULT_HEIGHT);
+//        double width = prefs.getDouble(WIDTH_KEY, DEFAULT_WIDTH);
+//        double height = prefs.getDouble(HEIGHT_KEY, DEFAULT_HEIGHT);
 
         LoaderView loaderView = new LoaderView();
         Root root = new Root(loaderView);
 
-        Scene scene = new Scene(root, width, height);
+        Scene scene = new MainScene(root,600, 700);
         ThemeProvider.install(scene, Css.ALL, Font.INSTAGRAM);
         scene.getStylesheets().add(Assets.getCss("app.css"));
 
@@ -93,6 +92,7 @@ public class App extends Application {
         });
 
         stage.setMaximized(prefs.getBoolean("MAXIMIZED", false));
+        stage.setFullScreen(false);
 
         stage.setMinWidth(400);
         stage.setMinHeight(600);

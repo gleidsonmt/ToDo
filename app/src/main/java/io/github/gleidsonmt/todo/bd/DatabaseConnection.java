@@ -1,5 +1,3 @@
-
-
 package io.github.gleidsonmt.todo.bd;
 
 import io.github.gleidsonmt.todo.bd.mysql.MySQLProperties;

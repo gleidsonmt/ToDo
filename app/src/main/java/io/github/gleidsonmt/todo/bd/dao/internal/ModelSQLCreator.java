@@ -3,6 +3,7 @@
 package io.github.gleidsonmt.todo.bd.dao.internal;
 
 import io.github.gleidsonmt.todo.model.Model;
+import io.github.gleidsonmt.todo.model.Modle;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
@@ -38,7 +39,7 @@ import java.util.regex.Pattern;
  * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Create on 17/01/2025
  */
-public class ModelSQLCreator<T extends Model> {
+public class ModelSQLCreator<T extends Modle> {
 
     private final String table;
     private DaoAction action;
@@ -86,7 +87,7 @@ public class ModelSQLCreator<T extends Model> {
     }
 
     private String prepareDelete(T model) {
-        return "delete from " + table + " where id = " + model.getId() + ";";
+        return "delete from " + table + " where id = " + model.id() + ";";
     }
 
     private String prepareDelete(long id) {
@@ -152,7 +153,7 @@ public class ModelSQLCreator<T extends Model> {
             }
         }
 
-        sql.append(" where id = ").append(model.getId()).append(";");
+        sql.append(" where id = ").append(model.id()).append(";");
 
         return sql.toString();
     }

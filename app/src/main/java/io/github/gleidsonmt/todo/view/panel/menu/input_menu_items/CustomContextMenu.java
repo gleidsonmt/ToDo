@@ -2,7 +2,7 @@
 
 package io.github.gleidsonmt.todo.view.panel.menu.input_menu_items;
 
-import io.github.gleidsonmt.todo.model.List;
+import io.github.gleidsonmt.todo.model.ListOld;
 import io.github.gleidsonmt.todo.model.recurrence.Recurrence;
 import io.github.gleidsonmt.todo.utils.IconUtils;
 import io.github.gleidsonmt.todo.utils.StringUtils;
@@ -38,7 +38,7 @@ public class CustomContextMenu<T> extends ContextMenu {
                 if (val instanceof Recurrence recurrence) {
                     target.setText(DateUtils.format(recurrence));
                 }
-                if (val instanceof List list) {
+                if (val instanceof ListOld list) {
                     target.setText(StringUtils.name(list.getName()));
                     target.setGraphic(IconUtils.getIcon(list));
                 }

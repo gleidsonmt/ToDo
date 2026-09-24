@@ -5,6 +5,7 @@ package io.github.gleidsonmt.todo.bd.dao.internal;
 import io.github.gleidsonmt.todo.bd.DatabaseConnection;
 import io.github.gleidsonmt.todo.bd.sqlite.SQLiteConnection;
 import io.github.gleidsonmt.todo.model.Model;
+import io.github.gleidsonmt.todo.model.Modle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -25,7 +26,7 @@ import java.util.logging.Logger;
  * Create on 04/03/2024
  */
 @SuppressWarnings("unused")
-public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T> {
+public abstract class AbstractDao<T extends Modle> implements Dao<T>, ListDao<T> {
 
     // Mono state to grant only one connection per time
     protected static SQLiteConnection data = SQLiteConnection.INSTANCE;
@@ -341,8 +342,6 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
 
     public Optional<T> findWhere(String condition) {
         connect();
-        System.out.println("condition = " + condition);
-        System.out.println( "select * from " + getTable() + " where " + condition + ";");
         ResultSet result = executeQuery("select * from " + getTable() + " where " + condition + ";");
         try {
             if (result.next())

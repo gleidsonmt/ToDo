@@ -4,12 +4,12 @@ package io.github.gleidsonmt.todo.view.login;
 
 import java.util.Optional;
 
-import io.github.gleidsonmt.glad.base.Layout;
 import io.github.gleidsonmt.glad.base.Root;
 import io.github.gleidsonmt.glad.base.responsive.Container;
 import io.github.gleidsonmt.todo.bd.dao.DaoUser;
 import io.github.gleidsonmt.todo.events.LoginEvent;
 import io.github.gleidsonmt.todo.model.User;
+import io.github.gleidsonmt.todo.model.Usernew;
 import io.github.gleidsonmt.todo.view.MainView;
 import io.github.gleidsonmt.todo.view.login.signup.SignupView;
 import io.github.gleidsonmt.todo.view.presentation.Presentation;
@@ -18,6 +18,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
 
 /**
  * Description:
@@ -27,29 +28,25 @@ import javafx.scene.layout.Priority;
  * <p>
  * Version History: Initial version
  */
-public class HomeLayout extends Container implements Layout {
+public class HomeLayout extends Container {
     // Data Access Object -> User
     private DaoUser daoUser;
-    private Optional<User> user;
+    private User user;
     private HBox body;
 
-    public HomeLayout() {
+    public HomeLayout(User user) {
         setId("home-layout");
         this.daoUser = new DaoUser();
         this.body = new HBox();
-        updateLayout();
         getChildren().setAll(body);
+        this.user = user;
+        updateLayout();
 
-        addEventHandler(LoginEvent.LOGIN, e -> {
-            Root root = (Root) getScene().getRoot();
-
-//            root.setLayout(new MainView(e.getUser()));
-        });
     }
 
-    @Override
     public void setLeft(Node node) {
-        body.getChildren().set(1, node);
+        body.getChildren().set(body.getChildren().size() > 1 ? 1 : 0, node);
+
         HBox.setHgrow(node, Priority.ALWAYS);
     }
 
@@ -57,16 +54,9 @@ public class HomeLayout extends Container implements Layout {
      * Update layout based on user is logged or not.
      */
     private void updateLayout() {
-        // if (!hasUser()) {
+        System.out.println("user = " + user);
 
-        // } else if (!isLogged()) {
-        // // Welcome view
-        // body.getChildren().setAll(new Presentation(), new LoginView());
-        // } else {
-        // // Si
-        // body.getChildren().setAll(new Presentation(), new SignupView());
-        // }
-        // body.getChildren().setAll(new Presentation(), new SignupView());
+//        body.getChildren().setAll(new Presentation(), new SignupView());
 
         // if (isLogged()) {
         // System.out.println("user = " + user);
@@ -84,11 +74,14 @@ public class HomeLayout extends Container implements Layout {
         // HBox.setHgrow(body.getChildren().get(2), Priority.ALWAYS);
         // }
         // }
-        var content = new SignupView();
+        StackPane content = user == null ? new LoginView() : new SignupView();
         var presentation = new Presentation();
+
+//        body.getChildren().setAll(presentation, content);
+
         addBreakpoint(e -> {
             body.getChildren().setAll(content);
-        }, "md");
+        }, "sm md");
 
         addBreakpoint(e -> {
             body.getChildren().setAll(presentation, content);

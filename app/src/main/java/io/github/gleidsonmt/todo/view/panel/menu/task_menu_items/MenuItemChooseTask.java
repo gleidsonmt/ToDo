@@ -6,16 +6,14 @@ import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import io.github.gleidsonmt.todo.global.Global;
 import io.github.gleidsonmt.todo.global.Presenter;
-import io.github.gleidsonmt.todo.model.List;
+import io.github.gleidsonmt.todo.model.ListOld;
 import io.github.gleidsonmt.todo.utils.I18n;
-import io.github.gleidsonmt.todo.utils.StringUtils;
 import io.github.gleidsonmt.todo.view.panel.input.MenuTaskItem;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.scene.control.Menu;
-import javafx.scene.control.MenuItem;
 
 /**
  * Description: It's a menu in task item that moves the task from a list to
@@ -31,8 +29,8 @@ public class MenuItemChooseTask extends Menu {
         setText(I18n.get("menu.moveTo"));
         setGraphic(new SVGIcon(Icon.FLEX_DIRECTION));
 
-        Presenter<List> presenter = Global.get(List.class);
-        Task<ObservableList<List>> task = presenter.fetch(FXCollections.observableArrayList());
+        Presenter<ListOld> presenter = Global.get(ListOld.class);
+        Task<ObservableList<ListOld>> task = presenter.fetch(FXCollections.observableArrayList());
         new Thread(task).start();
 
         task.setOnSucceeded(_ -> {
@@ -51,7 +49,7 @@ public class MenuItemChooseTask extends Menu {
 }
 
 class MenuList extends MenuTaskItem {
-    public MenuList(List list, TaskViewModel item) {
+    public MenuList(ListOld list, TaskViewModel item) {
         super(list);
         setOnAction(_ -> item.setListId(list.getId()));
     }

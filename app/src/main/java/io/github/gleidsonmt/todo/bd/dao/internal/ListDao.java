@@ -3,6 +3,7 @@
 package io.github.gleidsonmt.todo.bd.dao.internal;
 
 import io.github.gleidsonmt.todo.model.Model;
+import io.github.gleidsonmt.todo.model.Modle;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 
@@ -10,7 +11,7 @@ import javafx.concurrent.Task;
  * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Create on 17/01/2025
  */
-public interface ListDao<T extends Model> {
+public interface ListDao<T extends Modle> {
 
     /**
      * A javafx task that fills out a list.

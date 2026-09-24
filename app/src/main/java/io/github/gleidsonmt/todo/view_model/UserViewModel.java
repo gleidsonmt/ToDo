@@ -9,6 +9,7 @@
 
 package io.github.gleidsonmt.todo.view_model;
 
+import io.github.gleidsonmt.todo.model.User;
 import io.github.gleidsonmt.todo.model.Usernew;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;

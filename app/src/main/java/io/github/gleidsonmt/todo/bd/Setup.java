@@ -3,10 +3,13 @@
 package io.github.gleidsonmt.todo.bd;
 
 import io.github.gleidsonmt.glad.base.Root;
+import io.github.gleidsonmt.todo.bd.dao.DaoUser;
 import io.github.gleidsonmt.todo.bd.sqlite.SQLiteConnection;
 import io.github.gleidsonmt.todo.events.DialogEvent;
+import io.github.gleidsonmt.todo.events.LoginEvent;
 import io.github.gleidsonmt.todo.global.Global;
 import io.github.gleidsonmt.todo.model.User;
+import io.github.gleidsonmt.todo.model.Usernew;
 import io.github.gleidsonmt.todo.view.MainView;
 import io.github.gleidsonmt.todo.view.login.HomeLayout;
 import javafx.application.Platform;
@@ -17,6 +20,7 @@ import javafx.scene.Node;
 
 import java.io.*;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
 
@@ -36,9 +40,7 @@ public class Setup {
 
     public User start() {
         CompletableFuture.supplyAsync(() -> {
-
                     try {
-
                         Logger.getGlobal().info("Starting Loader..");
                         SQLiteConnection database = SQLiteConnection.INSTANCE;
                         database.connect();
@@ -71,9 +73,17 @@ public class Setup {
                     return null;
                 }).thenAccept(_ -> {
                     Platform.runLater(() -> {
-                        Root root = (Root) destiny.getScene().getRoot();
+                        DaoUser daoUser = new DaoUser();
+                        Optional<User>  optional = daoUser.findWhere("logged = 1");
+                        if (optional.isPresent()) {
+                            Event.fireEvent(destiny.getScene(), new LoginEvent(LoginEvent.LOGIN_SUCCESS, optional.get()));
+                        } else {
+                            Event.fireEvent(destiny.getScene(), new LoginEvent(LoginEvent.LOGIN_FAILED, null));
+                        }
+//                        daoUser.getLo
+
 //                        root.setContent(new HomeLayout());
-                        root.setContent(new MainView(null));
+//                        root.setContent(new MainView(null));
                     });
                 })
                 .exceptionally(e -> {

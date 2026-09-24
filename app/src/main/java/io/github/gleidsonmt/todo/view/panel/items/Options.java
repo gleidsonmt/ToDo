@@ -3,7 +3,6 @@
 package io.github.gleidsonmt.todo.view.panel.items;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -11,7 +10,7 @@ import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.todo.global.Global;
 import io.github.gleidsonmt.todo.global.ListPresenter;
 import io.github.gleidsonmt.todo.global.TaskPresenter;
-import io.github.gleidsonmt.todo.model.List;
+import io.github.gleidsonmt.todo.model.ListOld;
 import io.github.gleidsonmt.todo.model.ToDoTask;
 import io.github.gleidsonmt.todo.model.recurrence.Recurrence;
 import io.github.gleidsonmt.todo.utils.StringUtils;
@@ -84,7 +83,7 @@ public class Options extends FlowPane {
         }
 
         item.getViewModel().listIdProperty().addListener((_, _, val) -> {
-            ListPresenter presenter = (ListPresenter) Global.get(List.class);
+            ListPresenter presenter = (ListPresenter) Global.get(ListOld.class);
             var newVal = presenter.get(val.longValue());
             newVal.ifPresent(list -> taskOption.setName(StringUtils.name(list.getName())));
         });

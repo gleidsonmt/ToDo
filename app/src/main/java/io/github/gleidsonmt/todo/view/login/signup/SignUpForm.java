@@ -10,12 +10,11 @@ import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import io.github.gleidsonmt.glad.controls.text_box.PasswordBox;
 import io.github.gleidsonmt.glad.controls.text_box.TextBox;
-import io.github.gleidsonmt.todo.events.DialogEvent;
 import io.github.gleidsonmt.todo.events.LoginEvent;
+import io.github.gleidsonmt.todo.utils.Mask;
 import io.github.gleidsonmt.todo.view_model.UserConverter;
 import io.github.gleidsonmt.todo.view_model.UserModel;
 import io.github.gleidsonmt.todo.view_model.UserViewModel;
-import io.github.gleidsonmt.todo.utils.Mask;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -24,7 +23,6 @@ import javafx.beans.binding.BooleanBinding;
 import javafx.event.Event;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.GridPane;
@@ -68,10 +66,9 @@ public class SignUpForm extends AbstractForm<UserViewModel> {
         createNameSection();
         createEmailSection();
         createPassSection();
-        setVgap(2);
+//        setVgap(2);
         render();
         getFields().stream().filter(el -> el instanceof Node).map(el -> (Node) el).forEach(el -> {
-            marginBottom(el);
             ((FormField) el).validProperty().addListener((_, _, val) -> {
                 if (val) {
                     steps++;
@@ -82,68 +79,68 @@ public class SignUpForm extends AbstractForm<UserViewModel> {
                 }
             });
         });
-        add(statusLabel, 0, 6);
+        add(statusLabel, 0, 4);
         bindToViewModel();
+        setGridLinesVisible(true);
     }
 
     private void bindToViewModel() {
-        getModel().nameProperty().bind(nameField.getEditor().textProperty());
-        getModel().usernameProperty().bind(emailField.getEditor().textProperty());
-        getModel().passwordProperty().bind(passField.getEditor().textProperty());
+        getModel().nameProperty().bind(nameField.textProperty());
+        getModel().usernameProperty().bind(emailField.textProperty());
+        getModel().passwordProperty().bind(passField.textProperty());
     }
 
     private void createNameSection() {
-        nameField.setPromptText("Your perfil name");
+        nameField.getEditor().setPromptText("Your perfil name");
         nameField.setIcon(new SVGIcon(Icon.FACE));
-        var labelName = new Label("Perfil name");
-        labelName.setLabelFor(nameField);
-        addLabel(labelName, 0, 0);
-        addField(nameField, 0, 1);
+        nameField.setLabel("Perfil name");
+//        var labelName = new Label("Perfil name");
+//        labelName.setLabelFor(nameField);
+//        addLabel(labelName, 0, 0);
+        addField(nameField, 0, 0);
 
         nameField.validProperty().bind(nameField.getEditor().lengthProperty().greaterThan(3));
-        nameField.setHelperText("At least 4 characters long.");
-        nameField.setMinHeight(50);
+        nameField.setErrorText("At least 4 characters long.");
+//        nameField.setMinHeight(50);
 
-    }
-
-    private void marginBottom(Node node) {
-        GridPane.setMargin(node, new Insets(0, 0, 15, 0));
     }
 
     private void createEmailSection() {
-        emailField.setPromptText("Your email");
+        emailField.getEditor().setPromptText("Your email");
         emailField.setIcon(new SVGIcon(Icon.MAIL));
-        var labelName = new Label("Email");
-        labelName.setLabelFor(emailField);
+        emailField.setLabel("Email");
+//        var labelName = new Label("Email");
+//        labelName.setLabelFor(emailField);
 
-        emailField.setHelperText("It needs to look like this example@email.com");
-        emailField.setPromptText("Your email");
+        emailField.setErrorText("It needs to look like this example@email.com");
+        emailField.getEditor().setPromptText("Your email");
 
-        addLabel(labelName, 0, 2);
-        addField(emailField, 0, 3);
+//        addLabel(labelName, 0, 2);
+        addField(emailField, 0, 1);
 
         BooleanBinding isEmail = Bindings.createBooleanBinding(() -> Mask.isEmail(emailField.getEditor()),
-                emailField.getEditor().textProperty());
+                emailField.textProperty());
 
         emailField.validProperty().bind(emailField.getEditor().lengthProperty().greaterThan(4).and(isEmail));
 
     }
 
     private void createPassSection() {
-        var labelName = new Label("Password");
-        labelName.setLabelFor(emailField);
+//        var labelName = new Label("Password");
+//        labelName.setLabelFor(emailField);
 
         passField.setIcon(new SVGIcon(Icon.VPN_KEY_FILLED));
-        passField.setHelperText("At least 4 characters");
+        passField.setErrorText("At least 4 characters");
+        passField.setLabel("Password");
 //        passField.getStyleClass().add("input-form");
-        passField.setPromptText("Your password");
-        passField.setAction(true);
+        passField.getEditor().setPromptText("Your password");
+        passField.setActionable(true);
 
-        passField.setHelperText("At least 4 characters");
+        passField.setErrorText("At least 4 characters");
         passField.validProperty().bind(passField.getEditor().lengthProperty().greaterThan(3));
 
-        addLabel(labelName, 0, 4);
-        addField(passField, 0, 5);
+//        addLabel(labelName, 0, 4);
+        addField(passField, 0, 3);
     }
 
     private void animateOn(ProgressBar progressBar) {
@@ -165,9 +162,9 @@ public class SignUpForm extends AbstractForm<UserViewModel> {
     @Override
     public void persist() {
 
-//        UserModel model = new UserModel();
+        UserModel model = new UserModel();
 
-        if (getModel().save()) {
+        if (model.save(getModel())) {
             Event.fireEvent(getScene().getRoot(), new LoginEvent(LoginEvent.LOGIN, new UserConverter().toEntity(getModel())));
         } else {
             var text = new Text("A user with this email has already been registered.\n Try another one.");

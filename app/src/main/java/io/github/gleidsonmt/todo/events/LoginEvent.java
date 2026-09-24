@@ -2,6 +2,7 @@
 
 package io.github.gleidsonmt.todo.events;
 
+import io.github.gleidsonmt.todo.model.User;
 import io.github.gleidsonmt.todo.model.Usernew;
 import io.github.gleidsonmt.todo.view_model.UserViewModel;
 import javafx.event.Event;
@@ -16,16 +17,18 @@ public class LoginEvent extends Event {
 
     public static final EventType<LoginEvent> LOGIN_EVENT = new EventType<>(Event.ANY, "LOGIN_EVENT");
     public static final EventType<LoginEvent> LOGIN = new EventType<>(LOGIN_EVENT, "LOGIN");
+    public static final EventType<LoginEvent> LOGIN_FAILED = new EventType<>(LOGIN_EVENT, "LOGIN_FAILED");
+    public static final EventType<LoginEvent> LOGIN_SUCCESS = new EventType<>(LOGIN_EVENT, "LOGIN_SUCCESS");
     public static final EventType<LoginEvent> LOGOUT = new EventType<>(LOGIN_EVENT, "LOGOUT");
 
-    private Usernew user;
+    private User user;
 
-    public LoginEvent(EventType<? extends Event> eventType, Usernew user) {
+    public LoginEvent(EventType<? extends Event> eventType, User user) {
         super(eventType);
         this.user = user;
     }
 
-    public Usernew getUser() {
+    public User getUser() {
         return user;
     }
 }

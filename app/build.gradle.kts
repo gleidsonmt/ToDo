@@ -42,7 +42,8 @@ dependencies {
 
     // ----------------------- Projects ------------------------------
 
-    implementation(project(":glad"))
+//    implementation(project(":glad"))
+    implementation("io.github.gleidsonmt:glad")
 
     // -------------------- UI component libraries -----------------------
 
@@ -80,8 +81,8 @@ tasks.withType<JavaCompile> {
 }
 
 application {
-    mainClass = "io.github.gleidsonmt.todo.AppLoginTest"
-//    mainClass = "io.github.gleidsonmt.todo.Launcher"
+//    mainClass = "io.github.gleidsonmt.todo.AppLoginTest"
+    mainClass = "io.github.gleidsonmt.todo.Launcher"
     mainModule = "io.github.gleidsonmt.todo"
 }
 

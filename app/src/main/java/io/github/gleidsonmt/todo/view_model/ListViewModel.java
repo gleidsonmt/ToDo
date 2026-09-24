@@ -4,7 +4,7 @@ package io.github.gleidsonmt.todo.view_model;
 
 import io.github.gleidsonmt.todo.global.Global;
 import io.github.gleidsonmt.todo.global.ListPresenter;
-import io.github.gleidsonmt.todo.model.List;
+import io.github.gleidsonmt.todo.model.ListOld;
 import io.github.gleidsonmt.todo.model.ListType;
 import io.github.gleidsonmt.todo.utils.I18n;
 import io.github.gleidsonmt.todo.view_model.converter.ListViewModelConverter;
@@ -36,7 +36,7 @@ public class ListViewModel extends ViewModel {
 
     private String keyName;
 
-    public ListViewModel(List list) {
+    public ListViewModel(ListOld list) {
         this.converter = new ListViewModelConverter();
         this.fixed = list.isFixed();
         this.setId(list.getId());
@@ -53,7 +53,7 @@ public class ListViewModel extends ViewModel {
 
         this.iconName = new SimpleStringProperty(list.getIconName());
 
-        presenter = (ListPresenter) Global.get(List.class);
+        presenter = (ListPresenter) Global.get(ListOld.class);
         init();
     }
 

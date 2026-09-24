@@ -5,15 +5,21 @@ package io.github.gleidsonmt.todo.view.login;
 import java.util.Optional;
 
 import io.github.gleidsonmt.glad.controls.form.AbstractForm;
+import io.github.gleidsonmt.glad.controls.icon.Icon;
+import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import io.github.gleidsonmt.glad.controls.text_box.PasswordBox;
 import io.github.gleidsonmt.glad.controls.text_box.TextBox;
 import io.github.gleidsonmt.todo.bd.dao.DaoUser;
+import io.github.gleidsonmt.todo.events.LoginEvent;
 import io.github.gleidsonmt.todo.view_model.UserViewModel;
 import io.github.gleidsonmt.todo.model.Usernew;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.*;
+import javafx.event.Event;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 
 /**
@@ -31,13 +37,13 @@ public class LoginForm extends AbstractForm<UserViewModel> {
 
     public LoginForm() {
         super(new UserViewModel());
+        setVgap(10);
 
 //        // userNameField.setAction(true);
 //        userNameField.setPromptText("Input your username");
 //        userNameField.setIcon(new SVGIcon(Icon.ACCOUNT_CIRCLE));
 //        userNameField.setMinHeight(50);
 ////        userNameField.setHelperText("Please provide a username");
-//
 //
 //        // user.nameProperty().bind(userNameField.getEditor().textProperty());
 //
@@ -68,7 +74,6 @@ public class LoginForm extends AbstractForm<UserViewModel> {
 //        forgotPass.setText("Forgot password?");
 //
 //        rememberBox.getChildren().addAll(rememberCheck, forgotPass);
-//
 //        rememberBox.setPadding(new Insets(10));
 //
 //        GridPane.setConstraints(rememberCheck, 0, 0, 1, 1, HPos.LEFT, VPos.CENTER, Priority.SOMETIMES, Priority.ALWAYS);
@@ -83,22 +88,26 @@ public class LoginForm extends AbstractForm<UserViewModel> {
         createInputFields();
     }
 
-
     private final PasswordBox passwordField = new PasswordBox();
 
     private void createNameFieldSection() {
-        var labelName = new Label("Username");
-        labelName.setLabelFor(nameField);
-        nameField.setAction(true);
-        nameField.setPromptText("Your username");
+//        var labelName = new Label("Username");
+//        labelName.setLabelFor(nameField);
+        nameField.setActionable(true);
+        nameField.getEditor().setPromptText("Your username");
+        nameField.setLabel("Username");
+        nameField.setIcon(new SVGIcon(Icon.ACCOUNT));
+//        nameField.setMax(50);
 
         BooleanProperty wrongName = new SimpleBooleanProperty(false);
 
         BooleanBinding greaterThan = nameField.getEditor().lengthProperty().greaterThan(4);
+        nameField.setErrorText("Username must be at least 4 characters long.");
+//        nameField.setErrorText("Please provide a correct user name.");
+        greaterThan.addListener((_, _, val) -> nameField.setErrorText(!val ? "Username must be at least 4 characters long." : "Please provide a correct username."));
 
-        greaterThan.addListener((_, _, val) -> nameField.setHelperText(!val ? "Username must be at least 4 characters long." : "Please provide a correct username."));
-
-        nameField.getEditor().focusedProperty().addListener((_, _, val) -> {
+        nameField.focusWithinProperty().addListener((_, _, val) -> {
+            System.out.println("val = " + val);
             if (!val) {
                 wrongName.set(findUser(nameField.getText()) == null);
             } else {
@@ -106,26 +115,30 @@ public class LoginForm extends AbstractForm<UserViewModel> {
             }
         });
         nameField.validProperty().bind(greaterThan.and(wrongName.not()));
-        nameField.setHelperText("Username must be at least 4 characters long.");
 
-        addLabel(labelName, 0, 0);
-        addField(nameField, 0, 1);
+//        addLabel(labelName, 0, 0);
+        addField(nameField, 0, 0);
+
+
     }
 
     private void createPasswordSection() {
         BooleanProperty wrongPassword = new SimpleBooleanProperty(false);
 
-        var labelPass = new Label("Password");
-        passwordField.setPromptText("Your password");
+//        var labelPass = new Label("Password");
+        passwordField.getEditor().setPromptText("Your password");
+        passwordField.setLabel("Password");
+        passwordField.setIcon(new SVGIcon(Icon.LOCK));
 
-        labelPass.setLabelFor(passwordField);
+//        labelPass.setLabelFor(passwordField);
         BooleanBinding greaterThan = passwordField.getEditor().lengthProperty().greaterThan(4);
-        passwordField.setAction(true);
+        passwordField.setActionable(true);
 
         passwordField.validProperty().bind(greaterThan.and(wrongPassword.not()));
-        passwordField.setHelperText("At least 4 characters long.");
-        greaterThan.addListener((_, _, val) -> passwordField.setHelperText(!val ? "At least 4 characters long." : "Incorrect password."));
-        passwordField.getEditor().focusedProperty().addListener((_, _, val) -> {
+//        passwordField.setSuggested("At least 4 characters long.");
+        passwordField.setErrorText("Incorrect password.");
+        greaterThan.addListener((_, _, val) -> passwordField.setErrorText(!val ? "At least 4 characters long." : "Incorrect password."));
+        passwordField.focusedProperty().addListener((_, _, val) -> {
             if (!val && greaterThan.get()) {
                 wrongPassword.set(!verifyPassword());
             } else {
@@ -133,15 +146,23 @@ public class LoginForm extends AbstractForm<UserViewModel> {
             }
         });
 
-        addLabel(labelPass, 0, 2);
-        addField(passwordField, 0, 3);
+//        addLabel(labelPass, 0, 2);
+        addField(passwordField, 0, 1);
+//
+//        RowConstraints row1 = new RowConstraints();
+//        RowConstraints row2 = new RowConstraints();
+//        row1.setFillHeight(true);
+//        row2.setFillHeight(true);
+//        getRowConstraints().addAll(row1);
+
+        VBox.setMargin(passwordField, new Insets(0,0,200,0));
     }
 
     private void createInputFields() {
         createNameFieldSection();
         createPasswordSection();
         VBox.setVgrow(this, Priority.ALWAYS);
-        setVgap(15);
+//        setVgap(5);
         render();
     }
 
@@ -162,8 +183,11 @@ public class LoginForm extends AbstractForm<UserViewModel> {
 
     @Override
     public void persist() {
-        System.out.println(" = " );
 //        UserViewModel model = new UserViewModel(findUser(nameField.getText()));
-//        Event.fireEvent(getScene().getRoot(), new LoginEvent(LoginEvent.LOGIN, model));
+//        UserViewModel model = new UserViewModel();
+        findUser(nameField.getText());
+
+        System.out.println("getScene() = " + findUser(nameField.getText()));
+        Event.fireEvent(getScene(), new LoginEvent(LoginEvent.LOGIN, findUser(nameField.getText())));
     }
 }

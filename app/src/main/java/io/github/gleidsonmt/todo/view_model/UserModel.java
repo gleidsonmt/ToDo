@@ -1,16 +1,6 @@
-/*
- * *
- *  * Description:
- *  *
- *  * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
- *  * Create on ${DATE}
- *
- */
-
 package io.github.gleidsonmt.todo.view_model;
 
 import io.github.gleidsonmt.todo.bd.dao.DaoUser;
-import io.github.gleidsonmt.todo.model.Usernew;
 
 /**
  * Description:
@@ -28,12 +18,17 @@ public class UserModel {
         this.converter = new UserConverter();
     }
 
-    public void save(UserViewModel user) {
+    public boolean save(UserViewModel user) {
         var converted = converter.toEntity(user);
         user.setId(dao.store(converted));
+        return false;
     }
 
     public boolean hasUsername(String val) {
         return this.dao.findWhere("username = \"" + val + "\"" ).isPresent();
+    }
+
+    public UserConverter getConverter() {
+        return converter;
     }
 }

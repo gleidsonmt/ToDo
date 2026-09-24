@@ -4,7 +4,7 @@ package io.github.gleidsonmt.todo.view.nav;
 
 import io.github.gleidsonmt.todo.global.Global;
 import io.github.gleidsonmt.todo.global.ListPresenter;
-import io.github.gleidsonmt.todo.model.List;
+import io.github.gleidsonmt.todo.model.ListOld;
 import io.github.gleidsonmt.todo.model.ListType;
 import io.github.gleidsonmt.todo.view_model.UserViewModel;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
@@ -65,8 +65,8 @@ public class SideNav extends VBox {
     }
 
     public void load() {
-        ListPresenter presenter = (ListPresenter) Global.get(List.class);
-        Task<ObservableList<List>> task = presenter.fetch();
+        ListPresenter presenter = (ListPresenter) Global.get(ListOld.class);
+        Task<ObservableList<ListOld>> task = presenter.fetch();
 
         new Thread(task).start();
 
@@ -128,7 +128,7 @@ public class SideNav extends VBox {
     }
 
     @Deprecated
-    public ListViewModel add(List model) {
+    public ListViewModel add(ListOld model) {
         return createItem(model);
     }
 
@@ -151,7 +151,7 @@ public class SideNav extends VBox {
         optional.ifPresent(e -> container.getChildren().remove(e));
     }
 
-    private ListViewModel createItem(List list) {
+    private ListViewModel createItem(ListOld list) {
         ListViewModel viewModel = new ListViewModel(list);
         return createItem(viewModel);
     }

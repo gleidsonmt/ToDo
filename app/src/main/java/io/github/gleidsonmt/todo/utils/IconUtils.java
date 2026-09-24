@@ -5,7 +5,7 @@ package io.github.gleidsonmt.todo.utils;
 import com.dlsc.gemsfx.SVGImageView;
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
-import io.github.gleidsonmt.todo.model.List;
+import io.github.gleidsonmt.todo.model.ListOld;
 import javafx.scene.Node;
 import org.jspecify.annotations.NonNull;
 
@@ -16,11 +16,11 @@ import org.jspecify.annotations.NonNull;
  */
 public class IconUtils {
 
-    public static @NonNull Node getIcon(List list) {
+    public static @NonNull Node getIcon(ListOld list) {
         return getIcon(list, 18);
     }
 
-    public static @NonNull Node getIcon(@NonNull List list, int size) {
+    public static @NonNull Node getIcon(@NonNull ListOld list, int size) {
         Node node;
         if (list.isFixed()) {
             node = new SVGIcon(Icon.valueOf(list.getIconName().toUpperCase()));

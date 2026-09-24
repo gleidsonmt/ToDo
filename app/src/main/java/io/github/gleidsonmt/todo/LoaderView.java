@@ -41,6 +41,7 @@ public class LoaderView extends StackPane implements Layout {
     public LoaderView() {
         CircleLoader circleLoader = new Suspense3DCircle();
         getChildren().add(circleLoader);
+
         Setup setup = new Setup(this);
         setup.start();
 
