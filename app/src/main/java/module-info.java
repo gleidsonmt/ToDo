@@ -7,6 +7,9 @@ module io.github.gleidsonmt.todo {
     requires org.yaml.snakeyaml;
     requires java.sql;
 
+
+    requires org.mapstruct;
+
     // Requer o módulo das anotações apenas durante a compilação
     requires static transitive org.jetbrains.annotations;
 
@@ -36,9 +39,8 @@ module io.github.gleidsonmt.todo {
     requires org.xerial.sqlitejdbc;
     requires org.apache.commons.lang3;
 
-    opens io.github.gleidsonmt.todo to javafx.graphics, javafx.fxml, java.sql;
     opens io.github.gleidsonmt.todo.view to javafx.graphics, javafx.fxml, java.sql;
-    opens io.github.gleidsonmt.todo.view.presentation to org.yaml.snakeyaml, javafx.graphics, javafx.fxml, java.sql;
+    opens io.github.gleidsonmt.todo.view.login.presentation to org.yaml.snakeyaml, javafx.graphics, javafx.fxml, java.sql;
 
     opens io.github.gleidsonmt.todo.model to javafx.base;
 
@@ -50,7 +52,6 @@ module io.github.gleidsonmt.todo {
     exports io.github.gleidsonmt.todo.view.panel;
     exports io.github.gleidsonmt.todo.view.panel.items;
     exports io.github.gleidsonmt.todo.view.panel.containers;
-    exports io.github.gleidsonmt.todo.model.recurrence;
     opens io.github.gleidsonmt.todo.model.recurrence to javafx.base;
     exports io.github.gleidsonmt.todo.view_model.converter;
     exports io.github.gleidsonmt.todo.bd.mysql;
@@ -58,5 +59,11 @@ module io.github.gleidsonmt.todo {
     exports io.github.gleidsonmt.todo.bd;
     opens io.github.gleidsonmt.todo.bd to java.sql, javafx.fxml, javafx.graphics;
     opens io.github.gleidsonmt.todo.view_model to javafx.base;
+    opens io.github.gleidsonmt.todo.view_model.converter to javafx.base;
+    exports io.github.gleidsonmt.todo.view.panel.items.options;
+    opens io.github.gleidsonmt.todo.view_model.map to javafx.base;
+    exports io.github.gleidsonmt.todo.view_model.map;
+    //    java.lang.reflect.InaccessibleObjectException: Unable to make private void io.github.gleidsonmt.todo.LoginFlowTest.start(javafx.stage.Stage) accessible: module io.github.gleidsonmt.todo does not "opens io.github.gleidsonmt.todo" to module org.testfx.junit5
+
 
 }

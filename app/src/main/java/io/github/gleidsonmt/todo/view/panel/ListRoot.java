@@ -11,11 +11,11 @@ import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+
+import java.time.LocalDate;
 
 /**
  * Description:
@@ -62,11 +62,12 @@ public class ListRoot extends VBox {
      */
     public void updateContainer(ListViewModel list) {
         var query = "";
+//        return dao.fetchWhere(FXCollections.observableArrayList(), "WHERE completed = 0 AND DATE(remind) <= CURRENT_DATE AND TIME(remind) <= CURRENT_TIME");
 
         query = switch (list.getType()) {
-            case DAILY -> "my_day = 1";
+            case DAILY -> "my_day = 1 and DATE(due_date) == '" + LocalDate.now() + "'";
             case IMPORTANT -> "important = 1";
-            case TASKS -> "list_id = 0";
+            case TASKS -> "list_id = 1";
             default -> "list_id = " + list.getId();
         };
 
@@ -87,8 +88,10 @@ public class ListRoot extends VBox {
      * @param empty If it neeeds update the list root node.
      */
     private void update(boolean empty) {
+        if (getScene() == null) return;
         this.getChildren().setAll(empty ? emptyContainer : container);
         var panel = (Panel) getScene().lookup("#panel");
+
         if (!empty) panel.createBackgroundLines();
         else panel.removeBackgroundLines();
     }

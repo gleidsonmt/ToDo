@@ -3,12 +3,17 @@
 package io.github.gleidsonmt.todo.view;
 
 import io.github.gleidsonmt.glad.base.Root;
+import io.github.gleidsonmt.glad.theme.Css;
+import io.github.gleidsonmt.glad.theme.ThemeProvider;
 import io.github.gleidsonmt.todo.model.ListType;
+import io.github.gleidsonmt.todo.model.User;
+import io.github.gleidsonmt.todo.view.aside.Aside;
 import io.github.gleidsonmt.todo.view.nav.DrawerItem;
 import io.github.gleidsonmt.todo.view.nav.SideNav;
 import io.github.gleidsonmt.todo.view.panel.ListRoot;
 import io.github.gleidsonmt.todo.view.panel.Panel;
 import io.github.gleidsonmt.todo.view.panel.events.TaskChangeEvent;
+import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import io.github.gleidsonmt.todo.view_model.UserViewModel;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -34,57 +39,63 @@ public class MainView extends BorderPane {
     // the content layout
 //    private final BorderPane body;
     // the navigation (drawwer or sidenav)
+
     private final SideNav sideNav;
 
     private final Panel panel;
     private final ListRoot listRoot;
 
     public MainView(UserViewModel user) {
-//        this.user = user;
+        if (!user.isLogged()) {
+            user.setLogged(true);
+            user.update();
+        }
+
         this.panel = new Panel();
         this.sideNav = new SideNav(user);
         this.listRoot = new ListRoot();
         init();
 
+
         this.addEventHandler(TaskChangeEvent.ADD, e -> {
             Logger.getGlobal().info(() -> "[TaskChangeEvent [FILTER], Type = " + e.getEventType() + " ] -> " + e.getModel());
-            sideNav.get(e.getModel().getListId()).addNumberOfTasks(1).update();
+            sideNav.get(e.getModel().getListID()).updateSize(1);
         });
 
         this.addEventHandler(TaskChangeEvent.DELETE_TASK, e -> {
             Logger.getGlobal().info(() -> "[TaskChangeEvent [FILTER], Type = " + e.getEventType() + " ] -> " + e.getModel());
-            sideNav.get(e.getModel().getListId()).addNumberOfTasks(-1).update();
+            sideNav.get(e.getModel().getListID()).updateSize(-1);
         });
 
         this.addEventHandler(TaskChangeEvent.MOVED, e -> {
             Logger.getGlobal().info(() -> "[TaskChangeEvent [FILTER], Type = " + e.getEventType() + " ] -> " + e.getModel());
             if (e.getActual() != e.getPrevious()) {
-                sideNav.get(e.getActual()).addNumberOfTasks(1).update();
-                sideNav.get(e.getPrevious()).addNumberOfTasks(-1).update();
+                sideNav.get(e.getActual()).updateSize(1);
+                sideNav.get(e.getPrevious()).updateSize(-1);
             }
         });
 
         this.addEventHandler(TaskChangeEvent.MY_DAY_CHANGED, e -> {
             Logger.getGlobal().info(() -> "[TaskChangeEvent [FILTER], Type = " + e.getEventType() + " ] -> " + e.getModel());
             if (e.getModel().isCompleted()) return;
-            sideNav.get(ListType.DAILY).addNumberOfTasks(e.getModel().isMyDay() ? 1 : -1).update();
+            sideNav.get(ListType.DAILY).updateSize(e.getModel().isMyDay() ? 1 : -1);
         });
 
         this.addEventHandler(TaskChangeEvent.FAVORITE_CHANGED, e -> {
             Logger.getGlobal().info(() -> "[TaskChangeEvent [FILTER], Type = " + e.getEventType() + " ] -> " + e.getModel());
             if (e.getModel().isCompleted()) return;
-            sideNav.get(ListType.IMPORTANT).addNumberOfTasks(e.getModel().isImportant() ? 1 : -1).update();
+            sideNav.get(ListType.IMPORTANT).updateSize(e.getModel().isImportant() ? 1 : -1);
         });
 
         this.addEventHandler(TaskChangeEvent.COMPLETE, e -> {
             Logger.getGlobal().info(() -> "[TaskChangeEvent [FILTER], Type = " + e.getEventType() + " ] -> " + e.getModel());
-            sideNav.get(e.getModel().getListId()).addNumberOfTasks(!e.getModel().isCompleted() ? 1 : -1).update();
+            sideNav.get(e.getModel().getListID()).updateSize(!e.getModel().isCompleted() ? 1 : -1);
 
             if (e.getModel().isMyDay()) {
-                sideNav.get(ListType.DAILY).addNumberOfTasks(!e.getModel().isCompleted() ? 1 : -1).update();
+                sideNav.get(ListType.DAILY).updateSize(!e.getModel().isCompleted() ? 1 : -1);
             }
             if (e.getModel().isImportant()) {
-                sideNav.get(ListType.IMPORTANT).addNumberOfTasks(!e.getModel().isCompleted() ? 1 : -1).update();
+                sideNav.get(ListType.IMPORTANT).updateSize(!e.getModel().isCompleted() ? 1 : -1);
             }
         });
     }
@@ -93,6 +104,8 @@ public class MainView extends BorderPane {
 
         setLeft(this.sideNav);
         setCenter(this.panel);
+        setRight(new Aside(new TaskViewModel()));
+
         panel.setContent(listRoot);
 
         bind();
@@ -100,6 +113,7 @@ public class MainView extends BorderPane {
         this.sideNav.load();
 
         Platform.runLater(() -> {
+
             var root = (Root) getScene().getRoot();
 
             root.addBreakpoint((_) -> {
@@ -121,14 +135,7 @@ public class MainView extends BorderPane {
         // the tile of the panel with the side nav actual item selected.
 
         panel.actualListProperty().bind(sideNav.itemSelectedProperty().map(DrawerItem::getViewModel));
-
-        panel.titleIconNameProperty().bind(Bindings.selectString(sideNav.itemSelectedProperty(), "viewModel", "iconName"));
-
-//        panel.titleProperty().bind(Bindings.selectString(sideNav.itemSelectedProperty(), "viewModel", "name"));
-
+        panel.titleIconNameProperty().bind(Bindings.selectString(sideNav.itemSelectedProperty(), "viewModel", "icon"));
         listRoot.actualListProperty().bind(Bindings.select(sideNav.itemSelectedProperty(), "viewModel"));
-
     }
-
-
 }

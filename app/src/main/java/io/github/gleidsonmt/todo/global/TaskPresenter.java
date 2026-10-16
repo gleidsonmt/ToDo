@@ -4,8 +4,12 @@ package io.github.gleidsonmt.todo.global;
 
 //import io.github.gleidsonmt.todo.bd.dao.DaoRecurrence;
 //import io.github.gleidsonmt.todo.bd.dao.DaoTask;
+import io.github.gleidsonmt.todo.bd.dao.DaoRecurrence;
+import io.github.gleidsonmt.todo.bd.dao.DaoTask;
 import io.github.gleidsonmt.todo.model.ToDoTask;
+import io.github.gleidsonmt.todo.model.ToDoTaskOld;
 import io.github.gleidsonmt.todo.model.recurrence.Recurrence;
+import io.github.gleidsonmt.todo.model.recurrence.RecurrenceOld;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;

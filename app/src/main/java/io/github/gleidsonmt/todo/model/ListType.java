@@ -10,13 +10,16 @@ public enum ListType {
     DEFAULT, ALL, COMPLETED, TASKS, IMPORTANT, DAILY, PLANED;
 
     public static ListType convert(String convert) {
-
-        if (convert.equals("myDay") || convert.equals("my_day")) {
+        if (convert.equals("drawer.list.myDay") || convert.equals("drawer.list.my_day")) {
             return ListType.DAILY;
         }
 
-        if (convert.equals("important")) {
+        if (convert.equals("drawer.list.important")) {
             return ListType.IMPORTANT;
+        }
+
+        if (convert.equals("drawer.list.tasks")) {
+            return ListType.TASKS;
         }
 
         return DEFAULT;

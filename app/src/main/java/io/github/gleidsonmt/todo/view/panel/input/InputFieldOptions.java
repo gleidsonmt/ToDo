@@ -2,11 +2,13 @@
 
 package io.github.gleidsonmt.todo.view.panel.input;
 
-import io.github.gleidsonmt.todo.model.ListOld;
-import io.github.gleidsonmt.todo.model.recurrence.Recurrence;
+import io.github.gleidsonmt.todo.model.List;
+import io.github.gleidsonmt.todo.model.RecurrenceViewModel;
 import io.github.gleidsonmt.todo.model.recurrence.RecurrenceType;
-import io.github.gleidsonmt.todo.view.panel.menu.input_menu_items.DateUtils;
+import io.github.gleidsonmt.todo.utils.StringUtils;
+import io.github.gleidsonmt.todo.view.panel.input.menu.input_menu_items.DateUtils;
 import javafx.css.PseudoClass;
+import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.layout.HBox;
 
@@ -21,10 +23,10 @@ import java.time.LocalDateTime;
  */
 public class InputFieldOptions extends HBox {
 
-    private final InputFieldItem<ListOld> tasks;
+    private final InputFieldItem<List> tasks;
     private final InputFieldItem<LocalDate> dueDate;
     private final InputFieldItem<LocalDateTime> remind;
-    private final InputFieldItem<Recurrence> repeat;
+    private final InputFieldItem<RecurrenceViewModel> repeat;
 
     public InputFieldOptions() {
         tasks = new InputFieldItemTask();
@@ -43,6 +45,9 @@ public class InputFieldOptions extends HBox {
         repeat.valueProperty().addListener((_, _, newValue) -> {
             var date = LocalDate.now();
             if (newValue != null) {
+                // Prevent error
+                // suposse you add a task on saturday but you only want to do a task on weeekdays
+                // so the task doesn't need to appear in the task list today but the next week day
                 if (newValue.getType() == RecurrenceType.WEEKDAYS) {
                     if (DateUtils.isWeekend(date)) {
                         date = date.getDayOfWeek().equals(DayOfWeek.SUNDAY) ? date.plusDays(1) : date.plusDays(2);
@@ -67,7 +72,7 @@ public class InputFieldOptions extends HBox {
     private void minIcons(boolean val) {
         getChildren().stream().filter(el -> el instanceof InputFieldItem).forEach(el -> {
                     ((InputFieldItem<?>) el).setContentDisplay(val ? ContentDisplay.GRAPHIC_ONLY : ContentDisplay.LEFT);
-                    ((InputFieldItem<?>) el).setCenter(val ? true : false);
+                    ((InputFieldItem<?>) el).setCenter(val);
                 }
         );
     }
@@ -80,15 +85,15 @@ public class InputFieldOptions extends HBox {
         return remind.getValue();
     }
 
-    public Recurrence getRecurrence() {
+    public RecurrenceViewModel getRecurrence() {
         return repeat.getValue();
     }
 
-    public ListOld getTask() {
+    public List getTask() {
         return tasks.getValue();
     }
 
-    public ListOld getList() {
+    public List getList() {
         return tasks.getValue();
     }
 
@@ -99,9 +104,5 @@ public class InputFieldOptions extends HBox {
         } else {
             getChildren().remove(tasks);
         }
-    }
-
-    public void reset() {
-
     }
 }

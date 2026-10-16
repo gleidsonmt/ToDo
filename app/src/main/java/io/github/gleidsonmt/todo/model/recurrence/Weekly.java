@@ -3,7 +3,6 @@
 package io.github.gleidsonmt.todo.model.recurrence;
 
 import io.github.gleidsonmt.todo.bd.dao.internal.Ignore;
-import javafx.collections.FXCollections;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -14,7 +13,8 @@ import java.util.*;
  * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Create on  13/12/2024
  */
-public final class Weekly extends Recurrence {
+@Deprecated(forRemoval = true)
+public final class Weekly extends RecurrenceOld {
 
     @Ignore
     private boolean onlyDaysOfWeek;

@@ -2,11 +2,15 @@
 
 package io.github.gleidsonmt.todo.view.nav;
 
+import io.github.gleidsonmt.glad.base.Root;
 import io.github.gleidsonmt.glad.controls.avatar.AvatarView;
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
-import io.github.gleidsonmt.todo.model.Usernew;
 import io.github.gleidsonmt.todo.utils.Assets;
+import io.github.gleidsonmt.todo.utils.I18n;
+import io.github.gleidsonmt.todo.view.login.LoginView;
+import io.github.gleidsonmt.todo.view.settings.SettingsView;
+import io.github.gleidsonmt.todo.view_model.UserViewModel;
 import javafx.geometry.Insets;
 import javafx.geometry.Side;
 import javafx.geometry.VPos;
@@ -35,26 +39,26 @@ import java.util.logging.Logger;
  */
 public class Header extends GridPane {
 
-    private final AvatarView avatarView;
-    private final GridPane email;
-    private final Label name;
+    private AvatarView avatarView;
+    private GridPane email;
+    private Label name;
 
-    private final ContextMenu options;
+    private ContextMenu options;
 
-    public Header(Usernew user) {
+    public Header(UserViewModel user) {
         setMinHeight(60);
-        this.email = createEmailComponent(user.getUsername());
-        this.name = createNameComponent(user.getName());
+        this.email = createEmailComponent(user.getName());
+        this.name = createNameComponent(user.getUsername());
         this.options = createOptions(user);
         this.avatarView = new AvatarView();
 //        Folder folder = new Folder();
-        Image img = getAvatar(user.getImageUrl());
+        Image img = user.getAvatar(80);
 //        Image img = folder.getAvatar(user.getImageUrl());
 //
         this.avatarView
                 .setImage(img == null ? Assets.getImage("default_avatar.jpg") : img);
 //                .setImage(img == null || user.getImageUrl().isBlank() ? Assets.getImage("default_avatar.jpg") : img);
-
+//
         init();
     }
 
@@ -128,31 +132,41 @@ public class Header extends GridPane {
         return text;
     }
 
-    private ContextMenu createOptions(Usernew user) {
+    private ContextMenu createOptions(UserViewModel user) {
 
         ContextMenu options = new ContextMenu();
 
-        MenuItem menuSettings = new MenuItem("Settings");
-        menuSettings.getStyleClass().add("menu-item-first");
-        menuSettings.setGraphic(new SVGIcon(Icon.SETTINGS));
+        MenuItem menuLogout = new MenuItem(I18n.get("menu.logout"));
+        menuLogout.getStyleClass().add("menu-item-first");
+        menuLogout.setGraphic(new SVGIcon(Icon.LOG_OUT));
 
-        menuSettings.setOnAction(e -> {
+        menuLogout.setOnAction(e -> {
             // Adicionar novo evento de view change
-            // Root root = (Root) this.getScene().getRoot();
-            // root.setLayout(new SettingsView(user));
+             Root root = (Root) this.getScene().getRoot();
+             user.setLogged(false);
+             user.update();
+             root.setContent(new LoginView());
+//             root.setContent(new SettingsView(user));
+//             root.setLayout(new SettingsView(user));
         });
 
         MenuItem menuManageAccount = new MenuItem("Manage Account");
         menuManageAccount.getStyleClass().add("menu-item-last");
         menuManageAccount.setGraphic(new SVGIcon(Icon.MANAGE_ACCOUNTS));
 
-        options.getItems().addAll(menuManageAccount, new SeparatorMenuItem(), menuSettings);
+        menuManageAccount.setOnAction(e -> {
+            Root root = (Root) this.getScene().getRoot();
+            root.setContent(new SettingsView(user));
+        });
+
+        options.getItems().addAll(menuManageAccount, new SeparatorMenuItem(), menuLogout);
         options.getStyleClass().add("drawer-context-menu");
 
         this.setOnMouseClicked(e -> {
             if (options.isShowing())
                 return;
-            options.show(this, Side.BOTTOM, getWidth() / 4, e.getY() - 20);
+//            options.show(this, Side.BOTTOM, getWidth() / 4, e.getY() - 20);
+            options.show(this, Side.BOTTOM, 0,0);
         });
         return options;
     }

@@ -2,18 +2,11 @@
 
 package io.github.gleidsonmt.todo.view_model;
 
-import io.github.gleidsonmt.todo.global.Global;
-import io.github.gleidsonmt.todo.global.ListPresenter;
-import io.github.gleidsonmt.todo.model.ListOld;
+import io.github.gleidsonmt.todo.bd.dao.DaoList;
 import io.github.gleidsonmt.todo.model.ListType;
-import io.github.gleidsonmt.todo.utils.I18n;
-import io.github.gleidsonmt.todo.view_model.converter.ListViewModelConverter;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import io.github.gleidsonmt.todo.view_model.map.ListMapper;
+import javafx.beans.property.*;
 
-import java.util.logging.Logger;
 
 /**
  * Description:
@@ -25,121 +18,94 @@ import java.util.logging.Logger;
  */
 public class ListViewModel extends ViewModel {
 
-    private final boolean fixed;
-    private final ListType type;
+    // Model Actions
+    private final ListMapper converter = ListMapper.INSTANCE;
+    private final DaoList dao = new DaoList();
 
-    private final ListViewModelConverter converter;
-    private final ListPresenter presenter;
+    // View State
+    private final BooleanProperty fixed = new SimpleBooleanProperty(false);
+    private final ObjectProperty<ListType> type = new SimpleObjectProperty<>(ListType.DEFAULT);
+    private final IntegerProperty size = new SimpleIntegerProperty();
+    private final StringProperty icon = new SimpleStringProperty("check-list");
 
-    private final IntegerProperty numberOfTasks = new SimpleIntegerProperty(0);
-    private final StringProperty iconName;
-
-    private String keyName;
-
-    public ListViewModel(ListOld list) {
-        this.converter = new ListViewModelConverter();
-        this.fixed = list.isFixed();
-        this.setId(list.getId());
-
-        this.type = ListType.convert(list.getName());
-        this.numberOfTasks.set(list.getSize());
-
-        if (fixed) {
-            this.keyName = list.getName();
-            this.setName(I18n.get("drawer.list." + this.keyName));
-        } else {
-            this.nameProperty().set(list.getName());
-        }
-
-        this.iconName = new SimpleStringProperty(list.getIconName());
-
-        presenter = (ListPresenter) Global.get(ListOld.class);
-        init();
+    public ListViewModel() {
     }
 
-    private void init() {
-
-        // size = sizePresenter.getListSize(getId());
-
-        // if (size != null) {
-        // setNumberOfTasks(size.getVal());
-        // }
-
-        // this.numberOfTasks.addListener((_, _, val) -> {
-        // size = sizePresenter.getListSize(getId());
-        // if (size != null) {
-        // size.setVal(val.intValue());
-        // sizePresenter.update(size);
-        // }
-        // });
+    public ListViewModel(String name) {
+        super(name);
     }
 
     public ListViewModel save() {
-        var converted = converter.toEntity(this);
-        this.setId(presenter.store(converted));
+        var converted = converter.toDTO(this);
+        this.setId(dao.store(converted));
         return this;
     }
 
     public void delete() {
-        var item = converter.toEntity(this);
-        presenter.delete(item);
+        var item = converter.toDTO(this);
+        dao.delete(item);
     }
 
     public void update() {
-        // commit in db
-        var item = converter.toEntity(this);
-        presenter.update(item);
-    }
-
-    @Override
-    public String getName() {
-        return !isFixed() ? this.nameProperty().get() : I18n.get("drawer.list." + this.keyName);
-    }
-
-    public String getKeyName() {
-        return keyName;
+        var item = converter.toDTO(this);
+        dao.update(item);
     }
 
     public ListType getType() {
-        return this.type;
+        return this.type.get();
     }
 
-    public StringProperty iconNameProperty() {
-        return this.iconName;
+    public void setType(ListType type) {
+        this.type.set(type);
     }
 
-    public String getIconName() {
-        return this.iconName.get();
+    public StringProperty iconProperty() {
+        return this.icon;
     }
 
-    public void setIconName(String iconName) {
-        this.iconName.set(iconName);
+    public String getIcon() {
+        return this.icon.get();
     }
 
-    public int getNumberOfTasks() {
-        return this.numberOfTasks.get();
+    public void setIcon(String icon) {
+        this.icon.set(icon);
     }
 
-    public ListViewModel addNumberOfTasks(int val) {
-        System.out.println("val = " + val);
-        Logger.getGlobal().info("val = " + val);
-        this.numberOfTasks.set(getNumberOfTasks() + val);
-        return this;
+    public int getSize() {
+        return this.size.get();
+    }
+
+    public void updateSize(int val) {
+        this.size.set(getSize() + val);
+        update();
     }
 
     public boolean isFixed() {
-        return this.fixed;
+        return this.fixed.get();
     }
 
-    public IntegerProperty numberOfTasksProperty() {
-        return this.numberOfTasks;
+    public void setFixed(boolean fixed) {
+        this.fixed.set(fixed);
+    }
+
+    public IntegerProperty sizeProperty() {
+        return this.size;
+    }
+
+    public void setSize(int size) {
+        this.size.set(size);
     }
 
     @Override
     public String toString() {
-        return "ListViewModel [id=" + this.getId() +
-               ", name=" + nameProperty().get() +
-               ", fixed=" + isFixed() +
-               ", iconName=" + iconName + "]";
+        return "{\"ListViewModel\":"
+               + super.toString()
+               + ", \"fixed\":" + fixed
+               + ", \"type\":" + type
+               + ", \"size\":" + size
+               + ", \"icon\":" + icon
+               + ", \"id\":" + id
+               + ", \"name\":" + name
+               + "}";
     }
 }

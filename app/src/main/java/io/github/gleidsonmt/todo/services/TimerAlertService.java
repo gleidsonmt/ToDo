@@ -5,6 +5,7 @@ package io.github.gleidsonmt.todo.services;
 import io.github.gleidsonmt.todo.global.Global;
 import io.github.gleidsonmt.todo.global.TaskPresenter;
 import io.github.gleidsonmt.todo.model.ToDoTask;
+import io.github.gleidsonmt.todo.model.ToDoTaskOld;
 import javafx.collections.ObservableList;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;

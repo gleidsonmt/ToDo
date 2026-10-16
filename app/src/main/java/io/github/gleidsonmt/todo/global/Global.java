@@ -2,7 +2,7 @@
 
 package io.github.gleidsonmt.todo.global;
 
-import io.github.gleidsonmt.todo.model.Model;
+import io.github.gleidsonmt.todo.model.DTO;
 import javafx.application.HostServices;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -80,7 +80,7 @@ public class Global {
             return repository;
     }
 
-    public static <T extends Model> Presenter<T> get(Class<T> model) {
+    public static <T extends DTO> Presenter<T> get(Class<T> model) {
         return getRepository().of(model);
     }
 }

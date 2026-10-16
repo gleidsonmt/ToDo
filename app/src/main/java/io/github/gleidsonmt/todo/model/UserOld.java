@@ -17,6 +17,7 @@ import javafx.scene.image.Image;
  * Create on 16/10/2024
  */
 @SuppressWarnings("unused")
+@Deprecated(forRemoval = true)
 public class UserOld extends Entity {
 
     private final StringProperty password = new SimpleStringProperty();

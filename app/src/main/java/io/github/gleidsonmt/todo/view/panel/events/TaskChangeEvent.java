@@ -38,13 +38,14 @@ public class TaskChangeEvent extends Event {
     private final long idActual;
     private final long idPrevious;
     private final TaskViewModel model;
+
     // public static final EventType<TaskChangeEvent> LOGIN_FAILED = new
     // EventType<>(ANY, "LOGIN_FAILED");
 
     public TaskChangeEvent(EventType<? extends Event> eventType, TaskViewModel model) {
         super(eventType);
         this.idActual = model.getId();
-        this.idPrevious = model.getListId();
+        this.idPrevious = model.getListID();
         this.model = model;
     }
 
@@ -53,7 +54,7 @@ public class TaskChangeEvent extends Event {
                            EventType<? extends Event> eventType, TaskViewModel model) {
         super(source, target, eventType);
         this.idActual = model.getId();
-        this.idPrevious = model.getListId();
+        this.idPrevious = model.getListID();
         this.model = model;
     }
 

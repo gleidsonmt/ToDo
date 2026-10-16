@@ -9,9 +9,6 @@ import io.github.gleidsonmt.todo.events.DialogEvent;
 import io.github.gleidsonmt.todo.events.LoginEvent;
 import io.github.gleidsonmt.todo.global.Global;
 import io.github.gleidsonmt.todo.model.User;
-import io.github.gleidsonmt.todo.model.Usernew;
-import io.github.gleidsonmt.todo.view.MainView;
-import io.github.gleidsonmt.todo.view.login.HomeLayout;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -74,16 +71,12 @@ public class Setup {
                 }).thenAccept(_ -> {
                     Platform.runLater(() -> {
                         DaoUser daoUser = new DaoUser();
-                        Optional<User>  optional = daoUser.findWhere("logged = 1");
+                        Optional<User> optional = daoUser.findWhere("logged = 1");
                         if (optional.isPresent()) {
                             Event.fireEvent(destiny.getScene(), new LoginEvent(LoginEvent.LOGIN_SUCCESS, optional.get()));
                         } else {
-                            Event.fireEvent(destiny.getScene(), new LoginEvent(LoginEvent.LOGIN_FAILED, null));
+                            Event.fireEvent(destiny.getScene(), new LoginEvent(LoginEvent.LOGIN_FAILED, 0));
                         }
-//                        daoUser.getLo
-
-//                        root.setContent(new HomeLayout());
-//                        root.setContent(new MainView(null));
                     });
                 })
                 .exceptionally(e -> {

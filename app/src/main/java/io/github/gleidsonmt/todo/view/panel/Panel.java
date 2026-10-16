@@ -13,6 +13,7 @@ import io.github.gleidsonmt.todo.utils.IconUtils;
 import io.github.gleidsonmt.todo.view.panel.containers.BackgroundLines;
 import io.github.gleidsonmt.todo.view.panel.input.InputField;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
+import io.github.gleidsonmt.todo.view_model.converter.ListNameConverter;
 import javafx.application.Platform;
 import javafx.beans.binding.DoubleBinding;
 import javafx.beans.property.*;
@@ -78,6 +79,8 @@ public class Panel extends Container {
         this.bar = createHeader();
         this.inputContainer = new InputField();
 
+        setPadding(new Insets(10));
+
         title.setOnMouseClicked(e -> title.requestFocus());
         title.getStyleClass().add("inside-field");
 
@@ -104,7 +107,7 @@ public class Panel extends Container {
             label.setDisable(newValue.isFixed());
             title.setEditable(!newValue.isFixed());
             textInfo(newValue.getType().equals(ListType.DAILY));
-            title.setText(newValue.getName());
+            title.setText(new ListNameConverter().toString(newValue.getName()));
 
         });
     }
@@ -128,7 +131,7 @@ public class Panel extends Container {
         IconGrid grid = new IconGrid();
         grid.selectedProperty().addListener((observable, oldValue, newValue) -> {
 //            ( (SVGImageView) icon.get() ).setSvgUrl(IconUtils.getIconName(newValue));
-            actualList.get().setIconName(IconUtils.getIconName(newValue));
+            actualList.get().setIcon(IconUtils.getIconName(newValue));
             actualList.get().update();
         });
         Root root = (Root) getScene().getRoot();
@@ -252,7 +255,7 @@ public class Panel extends Container {
         Pane regionLimit = new Pane();
         regionLimit.setMaxHeight(borderLimit);
         regionLimit.setMaxWidth(Region.USE_PREF_SIZE);
-        regionLimit.prefWidthProperty().bind(this.widthProperty().subtract(15));
+        regionLimit.prefWidthProperty().bind(this.widthProperty().subtract(35));
 
         regionLimit.setPrefHeight(borderLimit);
         // regionLimit.setMaxHeight(30);
@@ -262,6 +265,7 @@ public class Panel extends Container {
 
         regionLimit.setBackground(
                 new Background(new BackgroundFill(Color.web("white", 0.89), CornerRadii.EMPTY, Insets.EMPTY)));
+
         if (pos == VPos.BOTTOM) {
             StackPane.setAlignment(regionLimit, Pos.BOTTOM_LEFT);
         } else if (pos == VPos.TOP) {

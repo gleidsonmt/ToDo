@@ -2,9 +2,12 @@
 
 package io.github.gleidsonmt.todo.view.panel.items;
 
-import io.github.gleidsonmt.todo.view.panel.FavoriteButton;
+import io.github.gleidsonmt.glad.base.Root;
+import io.github.gleidsonmt.todo.view.MainView;
+import io.github.gleidsonmt.todo.view.aside.Aside;
 import io.github.gleidsonmt.todo.view.panel.events.TaskChangeEvent;
-import io.github.gleidsonmt.todo.view.panel.menu.TaskItemContextMenu;
+import io.github.gleidsonmt.todo.view.panel.items.options.Options;
+import io.github.gleidsonmt.todo.view.panel.input.menu.TaskItemContextMenu;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import javafx.beans.property.*;
@@ -16,10 +19,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
-import org.jetbrains.annotations.ApiStatus.Experimental;
 import org.jspecify.annotations.NonNull;
-
-import java.time.LocalDate;
 
 /**
  * Description: UI component. Represents a task in the panel.
@@ -30,19 +30,14 @@ import java.time.LocalDate;
  * Version History: Initial version
  */
 public class TaskItem extends GridToggle {
-
     // Components
     private final CheckBox circleIcon;
     private final Label text;
     private final FavoriteButton favorite;
-    //
-    private BooleanProperty myDay;
-    private ObjectProperty<LocalDate> dueDate;
-    private LongProperty listID;
 
-    private BooleanProperty needDetails = new SimpleBooleanProperty();
+    private final BooleanProperty needDetails = new SimpleBooleanProperty();
 
-    private Options options;
+    private final Options options;
 
     private final TaskViewModel viewModel;
     private final ListViewModel listViewModel;
@@ -50,18 +45,16 @@ public class TaskItem extends GridToggle {
     private static final PseudoClass DETAILS = PseudoClass.getPseudoClass("details");
 
     public TaskItem(@NonNull TaskViewModel viewModel, ListViewModel listViewModel) {
+
         this.viewModel = viewModel;
         this.listViewModel = listViewModel;
+
         this.setId(String.valueOf(viewModel.getId()));
         this.setUserData(viewModel);
 
         this.circleIcon = new CheckBox();
         this.favorite = new FavoriteButton();
         this.text = new Title();
-
-        this.myDay = new SimpleBooleanProperty(viewModel.isMyDay());
-        this.dueDate = new SimpleObjectProperty<>(viewModel.getDueDate());
-        this.listID = new SimpleLongProperty(viewModel.getListId());
 
         this.options = new Options(this);
         needDetails.bindBidirectional(options.hasProperty());
@@ -95,7 +88,6 @@ public class TaskItem extends GridToggle {
         this.text.textProperty().bind(viewModel.nameProperty());
         this.circleIcon.selectedProperty().bindBidirectional(viewModel.completedProperty());
         this.favorite.selectedProperty().bindBidirectional(viewModel.importantProperty());
-        this.myDay.bind(viewModel.myDayProperty());
     }
 
     private void setActions() {
@@ -122,14 +114,13 @@ public class TaskItem extends GridToggle {
 
         this.text.getStyleClass().add(completedProperty().get() ? "strike" : "");
 
-
         needDetails.addListener((_, _, newVal) -> {
-//            this.pseudoClassStateChanged(PseudoClass.getPseudoClass("details"), !newVal);
-//            if (!newVal) {
-//                minLayout();
-//            } else {
-//                detailsLayout();
-//            }
+            this.pseudoClassStateChanged(PseudoClass.getPseudoClass("details"), !newVal);
+            if (!newVal) {
+                minLayout();
+            } else {
+                detailsLayout();
+            }
         });
 
         this.favoriteProperty().addListener((_, _, _) -> {
@@ -137,16 +128,29 @@ public class TaskItem extends GridToggle {
             this.fireEvent(new TaskChangeEvent(TaskChangeEvent.FAVORITE_CHANGED, this.getViewModel()));
         });
 
-        this.myDay.addListener((_, _, _) -> {
+        this.getViewModel().myDayProperty().addListener((_, _, _) -> {
             this.getViewModel().update();
             this.fireEvent(new TaskChangeEvent(TaskChangeEvent.MY_DAY_CHANGED, this.getViewModel()));
         });
 
-        this.viewModel.listIdProperty().addListener((_, old, val) -> {
+        this.getViewModel().dueDateProperty().addListener((_, _, _) -> {
+            this.getViewModel().update();
+//            this.fireEvent(new TaskChangeEvent(TaskChangeEvent.DUE_DATE_CHANGED, this.getViewModel()));
+        });
+
+        this.viewModel.listIDProperty().addListener((_, old, val) -> {
             if (old.longValue() != val.longValue()) {
                 this.getViewModel().update();
                 this.fireEvent(new TaskChangeEvent(TaskChangeEvent.MOVED, viewModel, old.longValue(), val.longValue()));
             }
+        });
+
+        this.selectedProperty().addListener((_,_,val) -> {
+            if (getScene() == null) return;
+            Root root = (Root) this.getScene().getRoot();
+            MainView mainView = (MainView) root.getContent();
+            mainView.setRight(new Aside(this.getViewModel()));
+//            System.out.println("root = " + root.getContent());
         });
     }
 
@@ -191,14 +195,6 @@ public class TaskItem extends GridToggle {
 
     public BooleanProperty completedProperty() {
         return this.circleIcon.selectedProperty();
-    }
-
-    public boolean isMyDay() {
-        return this.myDay.get();
-    }
-
-    public long getListId() {
-        return this.viewModel.getListId();
     }
 
     public TaskViewModel getViewModel() {

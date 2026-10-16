@@ -2,10 +2,10 @@
 
 package io.github.gleidsonmt.todo.global;
 
+import io.github.gleidsonmt.todo.model.DTO;
+
 import java.util.List;
 
-import io.github.gleidsonmt.todo.model.Model;
-import javafx.collections.ObservableList;
 
 /**
  * Description:
@@ -15,7 +15,7 @@ import javafx.collections.ObservableList;
  * <p>
  * Version History: Initial version
  */
-@Deprecated
+@Deprecated(forRemoval = true)
 public class Repository {
 
     private final List<Presenter<?>> repos;
@@ -25,7 +25,7 @@ public class Repository {
         this.repos = List.of(new UserPresenter(), new ListPresenter(), new TaskPresenter());
     }
 
-    public <T extends Model> Presenter<T> of(Class<?> presenter) {
+    public <T extends DTO> Presenter<T> of(Class<?> presenter) {
 
         for (Presenter<?> p : repos) {
             // Get the generic superclass (e.g., AbstractPresenter<User>)

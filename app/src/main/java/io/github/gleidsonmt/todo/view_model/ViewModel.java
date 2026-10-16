@@ -17,8 +17,15 @@ import javafx.beans.property.StringProperty;
  */
 public abstract class ViewModel {
 
-    private final StringProperty name = new SimpleStringProperty();
-    private final LongProperty id = new SimpleLongProperty();
+    protected final StringProperty name = new SimpleStringProperty();
+    protected final LongProperty id = new SimpleLongProperty();
+
+    public ViewModel() {
+    }
+
+    public ViewModel(String name) {
+        this.setName(name);
+    }
 
     public String getName() {
         return name.get();

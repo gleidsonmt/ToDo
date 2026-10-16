@@ -32,10 +32,7 @@ public class SignupView extends StackPane {
 
     public SignupView(boolean needsFooter) {
         var body = new GridPane();
-        body.setPrefWidth(600);
-        body.setMaxWidth(600);
-        body.setPrefHeight(550);
-        body.setMaxHeight(550);
+        body.getStyleClass().addAll("w-600 max-w-600 max-h-550 h-550".split("\\s+"));
 
         getChildren().add(body);
         body.setPadding(new Insets(20));

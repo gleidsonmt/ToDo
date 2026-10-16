@@ -2,8 +2,7 @@
 
 package io.github.gleidsonmt.todo.bd.dao.internal;
 
-import io.github.gleidsonmt.todo.model.Model;
-import io.github.gleidsonmt.todo.model.Modle;
+import io.github.gleidsonmt.todo.model.DTO;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
@@ -39,7 +38,7 @@ import java.util.regex.Pattern;
  * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Create on 17/01/2025
  */
-public class ModelSQLCreator<T extends Modle> {
+public class ModelSQLCreator<T extends DTO> {
 
     private final String table;
     private DaoAction action;
@@ -62,24 +61,19 @@ public class ModelSQLCreator<T extends Modle> {
     public String createFetch(String condition) {
         this.action = DaoAction.FETCH;
 //        "select * from " + getTable() + " " + condition + ";"
-        return "select * from " + table + " " + condition + ";" ;
+        return "select * from " + table + " " + condition + ";";
     }
 
     public String create(DaoAction action, T model) {
         this.action = action;
         if (action.equals(DaoAction.CREATE)) {
             return prepareInsert(model);
-        } else  if (action.equals(DaoAction.UPDATE)) {
+        } else if (action.equals(DaoAction.UPDATE)) {
             return prepareUpdate(model);
         } else if (action.equals(DaoAction.DELETE)) {
             return prepareDelete(model);
         }
         return null;
-    }
-
-    private String prepareFetch(String condition) {
-//        "select * from " + getTable() + " " + condition + ";");
-        return "select * from " + table + " "  + condition + ";";
     }
 
     private String prepareGet(long id) {
@@ -106,29 +100,22 @@ public class ModelSQLCreator<T extends Modle> {
      */
     @ApiStatus.Internal
     private String prepareInsert(@NotNull T model) {
-        List<String> list = new ArrayList<>();
-        recurse(list, model.getClass());
+        List<String> list = getFields(model.getClass());
 
-        // recurse(list, ToDoTaskNew.);
+        StringBuilder first = new StringBuilder("insert into " + table + "(");
+        StringBuilder second =  new StringBuilder("values(");
 
-        StringBuilder sql = new StringBuilder("insert into " + table + "(");
-
-        for (int i = 1; i < list.size(); i++) {
-            if (i == (list.size() - 1)) {
-                sql.append(list.get(i)).append(") values(");
-            } else {
-                sql.append(list.get(i)).append(", ");
-            }
+        // int starts with i to skip id field
+        // finishes before last field
+        for (int i = 1; i < list.size() - 1; i++) {
+            first.append(list.get(i)).append(", ");
+            second.append("?, ");
         }
+        // add the las and append
+        first.append(list.getLast()).append(") ");
+        second.append("?);");
 
-        for (int i = 1; i < list.size(); i++) {
-            if (i == (list.size() - 1)) {
-                sql.append("?);");
-            } else {
-                sql.append("?, ");
-            }
-        }
-        return sql.toString();
+        return first.append(second).toString();
     }
 
     /**
@@ -140,8 +127,7 @@ public class ModelSQLCreator<T extends Modle> {
     @ApiStatus.Internal
     private String prepareUpdate(T model) {
 
-        List<String> list = new ArrayList<>();
-        recurse(list, model.getClass());
+        List<String> list =  getFields( model.getClass());
 
         StringBuilder sql = new StringBuilder("update " + table + " set ");
 
@@ -172,20 +158,21 @@ public class ModelSQLCreator<T extends Modle> {
      * Result -> <br>
      * List<String> list = new ArrayList<>("name", "email");
      *
-     * @param list  The list with the fields.
      * @param clazz The model to get the fields.
      */
     @ApiStatus.Internal
-    private void recurse(List<String> list, Class<?> clazz) {
+    private List<String> getFields(Class<?> clazz) {
+        List<String> result = new ArrayList<>();
         if (clazz != null) {
             Field[] params = clazz.getDeclaredFields();
             for (Field field : params) {
-                if (Arrays.stream(field.getDeclaredAnnotations()).noneMatch(e -> e.annotationType() == Ignore.class)) {
-                    list.addFirst(camelCaseToKebabCase(field.getName()));
-                }
+//                if (Arrays.stream(field.getDeclaredAnnotations()).noneMatch(e -> e.annotationType() == Ignore.class)) {
+                result.addFirst(camelCaseToKebabCase(field.getName()));
+//                }
             }
-            recurse(list, clazz.getSuperclass());
+//            recurse(list, clazz.getSuperclass());
         }
+        return result.reversed();
     }
 
     @ApiStatus.Internal

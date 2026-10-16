@@ -1,8 +1,7 @@
-
-
 package io.github.gleidsonmt.todo.view_model.converter;
 
 import io.github.gleidsonmt.todo.model.ToDoTask;
+import io.github.gleidsonmt.todo.model.ToDoTaskOld;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import org.jspecify.annotations.NonNull;
 
@@ -14,15 +13,16 @@ import org.jspecify.annotations.NonNull;
  * <p>
  * Version History: Initial version
  */
+@Deprecated(forRemoval = true)
 public class TaskViewModelConverter extends ViewModelConverter<ToDoTask, TaskViewModel> {
 
     @Override
     public TaskViewModel toViewModel(ToDoTask model) {
-        return new TaskViewModel(model);
+        return new TaskViewModel();
     }
 
     @Override
-    public ToDoTask toEntity(@NonNull TaskViewModel model) {
+    public ToDoTask toDTO(@NonNull TaskViewModel model) {
         return new ToDoTask(
                 model.getId(),
                 model.getName(),
@@ -32,7 +32,7 @@ public class TaskViewModelConverter extends ViewModelConverter<ToDoTask, TaskVie
                 model.getDueDate(),
                 model.getRemind(),
                 model.getCreatedAt(),
-                model.getListId()
+                model.getListID()
         );
     }
 }

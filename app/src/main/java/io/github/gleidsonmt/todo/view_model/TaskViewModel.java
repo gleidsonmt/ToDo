@@ -4,13 +4,14 @@ package io.github.gleidsonmt.todo.view_model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
+import io.github.gleidsonmt.todo.bd.dao.DaoRecurrence;
+import io.github.gleidsonmt.todo.bd.dao.DaoTask;
 import io.github.gleidsonmt.todo.global.Global;
 import io.github.gleidsonmt.todo.global.TaskPresenter;
 import io.github.gleidsonmt.todo.model.ToDoTask;
 import io.github.gleidsonmt.todo.model.recurrence.Recurrence;
-import io.github.gleidsonmt.todo.view_model.converter.TaskViewModelConverter;
+import io.github.gleidsonmt.todo.view_model.map.TaskMapper;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.ObjectProperty;
@@ -27,61 +28,40 @@ import javafx.beans.property.SimpleObjectProperty;
  * Version History: Initial version
  */
 public class TaskViewModel extends ViewModel {
+    // Model actions
+    private final TaskMapper converter = TaskMapper.INSTANCE;
+    private final DaoTask dao = new DaoTask();
+    private final DaoRecurrence daoRecurrence = new DaoRecurrence();
 
-    private final TaskPresenter presenter;
+    // View actions
+    private final BooleanProperty completed = new SimpleBooleanProperty();;
+    private final BooleanProperty important = new SimpleBooleanProperty();
+    private final ObjectProperty<LocalDateTime> remind = new SimpleObjectProperty<>();
+    private final BooleanProperty myDay= new SimpleBooleanProperty();
+    private final ObjectProperty<LocalDate> dueDate = new SimpleObjectProperty<>();
+    private final LongProperty listID = new SimpleLongProperty();
+    private final ObjectProperty<LocalDate> createdAt = new SimpleObjectProperty<>();
 
-    private final TaskViewModelConverter converter = new TaskViewModelConverter();
-
-    private final BooleanProperty completed;
-    private final BooleanProperty important;
-    private final ObjectProperty<LocalDateTime> remind;
-    private final BooleanProperty myDay;
-    private final ObjectProperty<LocalDate> dueDate;
-    private final LongProperty listId;
-    private final ObjectProperty<LocalDate> createdAt;
-
-    public TaskViewModel() {
-        this(null);
-    }
-
-    public TaskViewModel(ToDoTask task) {
-        this.setId(task != null ? task.getId() : 0);
-
-        this.presenter = (TaskPresenter) Global.get(ToDoTask.class);
-//        task != null ?  : ""
-        this.setName(task != null ? task.getName() : "");
-        this.completed = new SimpleBooleanProperty(task != null && task.isCompleted());
-        this.important = new SimpleBooleanProperty(task != null && task.isImportant());
-
-        this.myDay = new SimpleBooleanProperty(task != null && task.isMyDay());
-
-        this.dueDate = new SimpleObjectProperty<>(task != null ? task.getDueDate() : null);
-        this.remind = new SimpleObjectProperty<>(task != null ? task.getRemind() : null);
-        this.createdAt = new SimpleObjectProperty<>(task != null ? task.getCreatedAt() : null);
-
-        this.listId = new SimpleLongProperty(task != null ? task.getListId() : 0);
-
-    }
 
     public TaskViewModel save() {
-        var converted = converter.toEntity(this);
-        this.setId(presenter.store(converted));
+        var converted = converter.toDTO(this);
+        this.setId(dao.store(converted));
         return this;
     }
 
     public void storeRecurrence(Recurrence rec) {
-        presenter.storeRecurrence(rec);
+        daoRecurrence.store(rec);
     }
 
     public void update() {
         // commit in db
-        var item = converter.toEntity(this);
-        presenter.update(item);
+        var item = converter.toDTO(this);
+        dao.update(item);
     }
 
     public void delete() {
-        var item = converter.toEntity(this);
-        presenter.delete(item);
+        var item = converter.toDTO(this);
+        dao.delete(item);
     }
 
     public ObjectProperty<LocalDateTime> remindProperty() {
@@ -152,16 +132,16 @@ public class TaskViewModel extends ViewModel {
         return this.createdAt.get();
     }
 
-    public Long getListId() {
-        return this.listId.get();
+    public Long getListID() {
+        return this.listID.get();
     }
 
-    public LongProperty listIdProperty() {
-        return this.listId;
+    public LongProperty listIDProperty() {
+        return this.listID;
     }
 
-    public void setListId(long id) {
-        this.listId.set(id);
+    public void setListID(long id) {
+        this.listID.set(id);
     }
 
     @Override
@@ -173,7 +153,7 @@ public class TaskViewModel extends ViewModel {
                ", completed=" + isCompleted() +
                ", dueDate=" + dueDate.get() +
                ", createdAt=" + createdAt.get() +
-               ", listId=" + listId.get() +
+               ", listID=" + listID.get() +
                '}';
     }
 }

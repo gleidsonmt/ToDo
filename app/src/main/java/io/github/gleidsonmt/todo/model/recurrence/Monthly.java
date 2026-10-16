@@ -3,16 +3,14 @@
 package io.github.gleidsonmt.todo.model.recurrence;
 
 import java.time.DayOfWeek;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
  * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Create on  13/12/2024
  */
-public final class Monthly extends Recurrence {
+@Deprecated(forRemoval = true)
+public final class Monthly extends RecurrenceOld {
 
     public Monthly() {
         this(1);

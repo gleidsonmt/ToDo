@@ -1,22 +1,11 @@
-
-
 package io.github.gleidsonmt.todo.view.panel.input;
-
-import java.time.LocalDate;
 
 import io.github.gleidsonmt.glad.base.Root;
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
-import io.github.gleidsonmt.todo.view.panel.menu.input_menu_items.CustomContextMenu;
-import io.github.gleidsonmt.todo.view_model.ListViewModel;
-import javafx.application.Platform;
-import javafx.beans.property.BooleanProperty;
+import io.github.gleidsonmt.todo.view.panel.input.menu.input_menu_items.CustomContextMenu;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.concurrent.Task;
 import javafx.css.PseudoClass;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
@@ -36,10 +25,6 @@ public class InputFieldItem<T> extends Label {
     protected ObjectProperty<T> value;
     protected boolean center;
 
-    public InputFieldItem(Icon icon) {
-        this(icon, null);
-    }
-
     public InputFieldItem(Icon icon, String toolTipText) {
 
         this.value = new SimpleObjectProperty<>();
@@ -53,22 +38,13 @@ public class InputFieldItem<T> extends Label {
                     .flow().hide();
         });
 
-        value.addListener(new ChangeListener<T>() {
-            @Override
-            public void changed(ObservableValue<? extends T> observable, T oldValue, T newValue) {
-                    if (icon.equals(Icon.HOME)) return;
-                    pseudoClassStateChanged(PseudoClass.getPseudoClass("selected"), newValue != null);
-            }
+        value.addListener((_, _, newValue) -> {
+                if (icon.equals(Icon.HOME)) return;
+                pseudoClassStateChanged(PseudoClass.getPseudoClass("selected"), newValue != null);
         });
 
 //         setWrapText(true);
-        widthProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                System.out.println("getPrefWidth() = " + getPrefWidth());
-                System.out.println("newValue = " + newValue);
-            }
-        });
+
     }
 
     public void setValue(T value) {

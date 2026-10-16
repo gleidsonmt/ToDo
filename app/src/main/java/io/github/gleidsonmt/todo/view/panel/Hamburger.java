@@ -28,7 +28,8 @@ public class Hamburger extends Button {
 
     public Hamburger(String text) {
         super(text);
-        getStyleClass().addAll("flat", "hamb");
+        getStyleClass().addAll("display-graphic hamb cursor-hand".split(" "));
+
         setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         setGraphic(new SVGIcon(Icon.MENU));
 

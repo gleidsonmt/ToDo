@@ -4,9 +4,8 @@ package io.github.gleidsonmt.todo.view.panel.containers;
 
 import io.github.gleidsonmt.todo.model.ToDoTask;
 import io.github.gleidsonmt.todo.view.panel.items.TaskItem;
-import io.github.gleidsonmt.todo.view.panel.sections.Comparators;
-import io.github.gleidsonmt.todo.view.panel.sections.EmptySection;
-import io.github.gleidsonmt.todo.view.panel.sections.SingleSection;
+import io.github.gleidsonmt.todo.view.panel.containers.sections.Comparators;
+import io.github.gleidsonmt.todo.view.panel.containers.sections.SingleSection;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import javafx.beans.Observable;
@@ -36,7 +35,8 @@ import java.util.Comparator;
 public abstract class ListContainer extends VBox {
 
     protected ObservableList<TaskViewModel> data = FXCollections.observableArrayList(
-            viewModel -> new Observable[]{viewModel.completedProperty(), viewModel.importantProperty(), viewModel.myDayProperty(), viewModel.listIdProperty()});
+            viewModel -> new Observable[]{viewModel.completedProperty(), viewModel.importantProperty(), viewModel.myDayProperty(), viewModel.listIDProperty()});
+
 //    protected ObservableList<TaskViewModel> data = FXCollections.observableArrayList(viewModel -> new Observable[] { viewModel.completedProperty() });
 
     private final ObjectProperty<TaskItem> selected = new SimpleObjectProperty<>();
@@ -60,7 +60,7 @@ public abstract class ListContainer extends VBox {
         this.setId("list-container");
         // this.setStyle("-fx-border-width: 2px; -fx-border-color: gray;");
 
-        this.getChildren().add(new EmptySection());
+//        this.getChildren().add(new EmptySection());
 
         // create a bind to maintain the selected property update from the
         // froup.

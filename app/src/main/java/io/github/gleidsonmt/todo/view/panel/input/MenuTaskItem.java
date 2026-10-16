@@ -1,8 +1,7 @@
-
-
 package io.github.gleidsonmt.todo.view.panel.input;
 
-import io.github.gleidsonmt.todo.model.ListOld;
+import io.github.gleidsonmt.todo.model.List;
+import io.github.gleidsonmt.todo.utils.I18n;
 import io.github.gleidsonmt.todo.utils.IconUtils;
 import io.github.gleidsonmt.todo.utils.StringUtils;
 import javafx.scene.control.MenuItem;
@@ -14,15 +13,19 @@ import javafx.scene.control.MenuItem;
  */
 public class MenuTaskItem extends MenuItem {
 
-    private final ListOld list;
+    private final List list;
 
-    public MenuTaskItem(ListOld list) {
+    public MenuTaskItem(List list) {
         this.list = list;
-        setText(StringUtils.name(list.getName()));
+        setText(
+                StringUtils.isFixedList(list.name()) ?
+                I18n.get(list.name()) :
+                StringUtils.name(list.name())
+        );
         setGraphic(IconUtils.getIcon(list));
     }
 
-    public ListOld getList() {
+    public List getList() {
         return list;
     }
 

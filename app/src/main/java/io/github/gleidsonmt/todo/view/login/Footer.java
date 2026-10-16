@@ -39,7 +39,7 @@ public class Footer extends VBox {
         // loginButton.setPrefWidth(Double.MAX_VALUE);
         loginButton.setMinHeight(50);
         loginButton.setMaxWidth(Double.MAX_VALUE);
-        loginButton.getStyleClass().addAll("text-14");
+        loginButton.getStyleClass().addAll("text-14".split(" "));
 
         GridPane rememberBox = new GridPane();
 

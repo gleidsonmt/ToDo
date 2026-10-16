@@ -2,21 +2,23 @@
 
 package io.github.gleidsonmt.todo.view.panel.containers;
 
+import io.github.gleidsonmt.todo.bd.dao.DaoTask;
 import io.github.gleidsonmt.todo.global.Global;
 import io.github.gleidsonmt.todo.global.TaskPresenter;
 import io.github.gleidsonmt.todo.model.ListType;
 import io.github.gleidsonmt.todo.model.ToDoTask;
 import io.github.gleidsonmt.todo.view.panel.events.TaskChangeEvent;
-import io.github.gleidsonmt.todo.view.panel.sections.AnimatedSection;
-import io.github.gleidsonmt.todo.view.panel.sections.SingleSection;
+import io.github.gleidsonmt.todo.view.panel.containers.sections.AnimatedSection;
+import io.github.gleidsonmt.todo.view.panel.containers.sections.SingleSection;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
+import io.github.gleidsonmt.todo.view_model.map.TaskMapper;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.IntegerBinding;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 
+import java.time.LocalDate;
 import java.util.logging.Logger;
 
 /**
@@ -33,10 +35,13 @@ public class DoubleListContainer extends ListContainer {
     private final AnimatedSection sectionCompleted;
     private final String query;
 
+    private final DaoTask dao;
+
     static final Logger logger = Logger.getGlobal();
 
     public DoubleListContainer(ListViewModel list, String query) {
         super(list);
+        this.dao = new DaoTask();
         this.query = query;
         this.sectionIncomplete = new SingleSection(list);
         this.sectionCompleted = new AnimatedSection(list);
@@ -47,16 +52,12 @@ public class DoubleListContainer extends ListContainer {
 
     @Override
     public Task<ObservableList<ToDoTask>> load() {
-        TaskPresenter taskPresenter = (TaskPresenter) Global.get(ToDoTask.class);
-        Task<ObservableList<ToDoTask>> task = taskPresenter.fetch(40, 0, query);
-
+        Task<ObservableList<ToDoTask>> task = dao.fetch(70, 0, query);
         new Thread(task).start();
 
         // update list task
         task.setOnSucceeded(_ -> {
-            task.getValue().forEach(el -> {
-                data.add(new TaskViewModel(el));
-            });
+            task.getValue().forEach(el -> data.add(TaskMapper.INSTANCE.toViewModel(el, new TaskViewModel())));
 
             sectionIncomplete.setList(data.filtered(el -> !el.isCompleted()));
             sectionCompleted.setList(data.filtered(TaskViewModel::isCompleted));
@@ -96,7 +97,7 @@ public class DoubleListContainer extends ListContainer {
         });
 
         this.addEventFilter(TaskChangeEvent.FAVORITE_CHANGED, e -> {
-            logger.info(() -> "[TaskChangeEvent, Type = " + e.getEventType() + " ] -> " + e.getModel() + "");
+            logger.info(() -> "[TaskChangeEvent, Type = " + e.getEventType() + " ] -> " + e.getModel());
             if (getList().getType() == ListType.IMPORTANT) {
                 if (!e.getModel().isImportant()) {
                     data.remove(e.getModel());
@@ -110,24 +111,5 @@ public class DoubleListContainer extends ListContainer {
             e.getModel().delete();
         });
 
-//        data.addListener((ListChangeListener<TaskViewModel>) c -> {
-//            if (c.next()) {
-//                if (c.wasUpdated()) {
-//                    c.getList().subList(c.getFrom(), c.getTo()).forEach(viewModel -> {
-//                        if (viewModel == null)
-//                            return;
-////                        viewModel.update();
-////                        list.update();
-//                    });
-//                }
-////                if (c.wasAdded() ) {
-////                    list.addNumberOfTasks(c.getAddedSize());
-////                }
-////                if (c.wasRemoved() ) {
-////                    System.out.println("removed");
-////                    list.addNumberOfTasks(-c.getRemovedSize());
-////                }
-//            }
-//        });
     }
 }

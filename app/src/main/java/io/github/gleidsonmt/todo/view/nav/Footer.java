@@ -1,10 +1,7 @@
-
-
 package io.github.gleidsonmt.todo.view.nav;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
-import io.github.gleidsonmt.todo.model.ListOld;
 import io.github.gleidsonmt.todo.utils.I18n;
 import io.github.gleidsonmt.todo.utils.StringUtils;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
@@ -16,8 +13,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
 /**
- * Description:
- *
+ * Description: The footer on the bottom of the sidebar.
  * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Created On: Mar 21, 2026
  * <p>
@@ -34,31 +30,23 @@ public class Footer extends GridPane {
     }
 
     private void configLayout() {
-        label.setAlignment(Pos.CENTER);
         label.setPrefWidth(300);
-        label.getStyleClass().addAll("hover-item", "h5", "bold");
-        label.setPadding(new Insets(10, 10, 10, 0));
-        label.setCursor(Cursor.HAND);
+        label.getStyleClass().addAll("hover-item h5 bold align-center padding-10 cursor-hand".split(" "));
         label.setGraphicTextGap(10);
         label.setGraphic(new SVGIcon(Icon.ADD));
         this.getChildren().setAll(label);
 
         GridPane.setColumnIndex(label, 0);
-
         GridPane.setHgrow(label, Priority.ALWAYS);
     }
 
     /**
-     * When this component is clicked, this method is triggered to add a new
-     * list.
+     * When this component is clicked, this method is triggered to add a new list.
      * This list will be titled as Untitled 1.
-     * The name will depends on if the list are in the lists or not.
+     * The name will depend on if the list is in the lists or not.
      * If there's no list untitled, add.
-     * If there's on or more untitled lists, increment
-     * ex. if a lists has a list called Untitled 1, the next list to add has to
-     * be Untitled 2.
-     *
-     * @param lists
+     * If there are on or more untitled lists, increment
+     * Ex. If a list has a list called Untitled 1, the next list to add has to be Untitled 2.
      */
     private void createNewList() {
 
@@ -72,19 +60,6 @@ public class Footer extends GridPane {
                 // get the maximun value
                 .reduce(0, Integer::max);
 
-        ListViewModel model;
-        var name = "";
-
-        if (actualVal == 0) {
-            // if there's no patttern added to lists create
-            name = "Untitled 1";
-        } else {
-            // if there's a list update the increment
-            name = "Untitled " + (actualVal + 1);
-        }
-
-        model = new ListViewModel(new ListOld(0, name, false, 0, null));
-
-        nav.addAndSelect(model.save());
+        nav.addAndSelect( new ListViewModel(actualVal == 0 ? "Untitled 1" : "Untitled " + (actualVal + 1)).save() );
     }
 }

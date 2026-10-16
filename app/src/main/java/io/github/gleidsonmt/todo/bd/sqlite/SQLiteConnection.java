@@ -5,6 +5,7 @@ package io.github.gleidsonmt.todo.bd.sqlite;
 import io.github.gleidsonmt.todo.utils.Assets;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Contract;
+import org.sqlite.SQLiteException;
 
 import java.io.File;
 import java.io.IOException;

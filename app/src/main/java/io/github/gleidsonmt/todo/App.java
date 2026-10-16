@@ -1,5 +1,7 @@
 package io.github.gleidsonmt.todo;
 
+import io.github.gleidsonmt.glad.HotTools;
+import io.github.gleidsonmt.glad.Launch;
 import io.github.gleidsonmt.glad.base.Root;
 import io.github.gleidsonmt.glad.theme.Css;
 import io.github.gleidsonmt.glad.theme.Font;
@@ -8,16 +10,21 @@ import io.github.gleidsonmt.todo.bd.sqlite.SQLiteConnection;
 import io.github.gleidsonmt.todo.global.Global;
 import io.github.gleidsonmt.todo.logger.LogFormatter;
 import io.github.gleidsonmt.todo.utils.Assets;
+import io.github.gleidsonmt.todo.utils.I18n;
+import io.github.gleidsonmt.todo.view.login.LoginView;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.Preferences;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Description:
@@ -47,7 +54,7 @@ public class App extends Application {
 
         Global.hostServices = getHostServices();
 
-        if (Launcher.mode == Mode.LOG) {
+        if (Launcher.mode == Launch.MODE.DEBUG) {
             Logger.getGlobal().setLevel(Level.ALL);
             handler.setLevel(Level.ALL);
         }
@@ -57,31 +64,27 @@ public class App extends Application {
     public void stop() {
 
         SQLiteConnection.INSTANCE.close();
-
-        var test = ProcessHandle.allProcesses()
-                .filter(processHandle -> processHandle.info().command().filter(cmd -> cmd.contains("mysqld")).isPresent()).findAny();
-        test.ifPresent(processHandle -> processHandle.descendants().forEach(el -> System.out.println(el.info().command().orElse(""))));
-        test.ifPresent(processHandle -> processHandle.descendants().forEach(ProcessHandle::destroy));
-
         Global.removeWindowsRegister();
-
         Logger.getGlobal().info("Application is closed...");
+        System.exit(0);
     }
 
     @Override
     public void start(Stage stage) throws Exception {
-        Platform.setImplicitExit(false);
-
+        Platform.setImplicitExit(true); // mudar para falso quando nao estiver em modo desenvolviemnto
+        I18n.setLocale(Locale.of("en"));
         Preferences prefs = Preferences.userNodeForPackage(App.class);
-//        double width = prefs.getDouble(WIDTH_KEY, DEFAULT_WIDTH);
-//        double height = prefs.getDouble(HEIGHT_KEY, DEFAULT_HEIGHT);
+        double width = prefs.getDouble(WIDTH_KEY, DEFAULT_WIDTH);
+        double height = prefs.getDouble(HEIGHT_KEY, DEFAULT_HEIGHT);
 
         LoaderView loaderView = new LoaderView();
         Root root = new Root(loaderView);
 
-        Scene scene = new MainScene(root,600, 700);
-        ThemeProvider.install(scene, Css.ALL, Font.INSTAGRAM);
+        Scene scene = new MainScene(root, width, height);
+        ThemeProvider.install(scene, Css.ALL, Font.INSTAGRAM, Font.POPPINS);
+
         scene.getStylesheets().add(Assets.getCss("app.css"));
+        scene.getStylesheets().add(Assets.getCss("tailwind.css"));
 
         stage.getIcons().setAll(Assets.getImage("logo_128.png"));
 
@@ -96,6 +99,7 @@ public class App extends Application {
 
         stage.setMinWidth(400);
         stage.setMinHeight(600);
+
         stage.setScene(scene);
         stage.setTitle("JavaFx ToDo");
 
@@ -107,12 +111,13 @@ public class App extends Application {
         } else {
             stage.show(); // Abre a janela se o usuário clicou no ícone
         }
-        stage.show();
 
+        HotTools.init(scene, Launcher.mode);
 
-        if (Launcher.mode == Mode.DEBUG) {
-            HotTools.analyzeNodes(scene);
-            HotTools.listenCss(scene);
-        }
+//        String[] var = "align-top-center pd-[10 0 10 0]".split(" (?=\\w+-\\[)");
+////        "(?<=\\]) "
+//        for (String s : var)
+//            System.out.println("s = " + s);
+
     }
 }

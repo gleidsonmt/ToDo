@@ -1,5 +1,3 @@
-
-
 package io.github.gleidsonmt.todo.view.panel.items;
 
 import javafx.scene.control.Label;

@@ -12,8 +12,7 @@ import io.github.gleidsonmt.glad.controls.text_box.PasswordBox;
 import io.github.gleidsonmt.glad.controls.text_box.TextBox;
 import io.github.gleidsonmt.todo.events.LoginEvent;
 import io.github.gleidsonmt.todo.utils.Mask;
-import io.github.gleidsonmt.todo.view_model.UserConverter;
-import io.github.gleidsonmt.todo.view_model.UserModel;
+import io.github.gleidsonmt.todo.view.MainView;
 import io.github.gleidsonmt.todo.view_model.UserViewModel;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -21,11 +20,8 @@ import javafx.animation.Timeline;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.event.Event;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
@@ -80,11 +76,11 @@ public class SignUpForm extends AbstractForm<UserViewModel> {
             });
         });
         add(statusLabel, 0, 4);
-        bindToViewModel();
-        setGridLinesVisible(true);
+        bind();
+//        setGridLinesVisible(true);
     }
 
-    private void bindToViewModel() {
+    private void bind() {
         getModel().nameProperty().bind(nameField.textProperty());
         getModel().usernameProperty().bind(emailField.textProperty());
         getModel().passwordProperty().bind(passField.textProperty());
@@ -162,21 +158,30 @@ public class SignUpForm extends AbstractForm<UserViewModel> {
     @Override
     public void persist() {
 
-        UserModel model = new UserModel();
+        getModel().setLogged(true);
+        getModel().save();
 
-        if (model.save(getModel())) {
-            Event.fireEvent(getScene().getRoot(), new LoginEvent(LoginEvent.LOGIN, new UserConverter().toEntity(getModel())));
-        } else {
-            var text = new Text("A user with this email has already been registered.\n Try another one.");
-            text.getStyleClass().addAll("h5");
-            ((Root) getScene().getRoot())
-                    .behavior()
-                    .alert()
-                    .title("Ops..")
-                    .content(new TextFlow(text))
-                    .type(AlertType.WARNING)
-                    .show();
-        }
+        Event.fireEvent(getScene().getRoot(), new LoginEvent(LoginEvent.LOGIN, getModel()));
+        var root = (Root) getScene().getRoot();
+        root.setContent(new MainView(getModel()));
+
+//        if (getModel().save()) {
+////            Event.fireEvent(getScene().getRoot(), new LoginEvent(LoginEvent.LOGIN, new UserConverter().toEntity(getModel())));
+////            Event.fireEvent(getScene().getRoot(), new LoginEvent(LoginEvent.LOGIN, new UserConverter().toEntity(getModel())));
+//            System.out.println("UserMapper.INSTANCE.toDTO(getModel()) = " + UserMapper.INSTANCE.toDTO(getModel()));
+//            var root = (Root) getScene().getRoot();
+//            root.setContent(new MainView(getModel()));
+//        } else {
+//            var text = new Text("A user with this email has already been registered.\n Try another one.");
+//            text.getStyleClass().addAll("h5");
+//            ((Root) getScene().getRoot())
+//                    .behavior()
+//                    .alert()
+//                    .title("Ops..")
+//                    .content(new TextFlow(text))
+//                    .type(AlertType.WARNING)
+//                    .show();
+//        }
 
 
 //        model.save();

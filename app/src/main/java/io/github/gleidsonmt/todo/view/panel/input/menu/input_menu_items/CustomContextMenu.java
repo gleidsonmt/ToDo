@@ -1,0 +1,75 @@
+package io.github.gleidsonmt.todo.view.panel.input.menu.input_menu_items;
+
+import io.github.gleidsonmt.todo.model.List;
+import io.github.gleidsonmt.todo.model.RecurrenceViewModel;
+import io.github.gleidsonmt.todo.utils.I18n;
+import io.github.gleidsonmt.todo.utils.IconUtils;
+import io.github.gleidsonmt.todo.utils.StringUtils;
+import io.github.gleidsonmt.todo.view.panel.input.InputFieldItem;
+import javafx.application.Platform;
+import javafx.geometry.Side;
+import javafx.scene.control.ContextMenu;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+/**
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
+ * Create on  09/04/2026
+ */
+public class CustomContextMenu<T> extends ContextMenu {
+
+    protected InputFieldItem<T> target;
+
+    public CustomContextMenu(InputFieldItem<T> target) {
+        this.target = target;
+
+        target.valueProperty().addListener((_, _, val) -> {
+
+            if (val != null) {
+                if (val instanceof LocalDate date) {
+                    target.setText(DateUtils.format(date));
+                    target.getTooltip().setText("");
+                }
+                if (val instanceof LocalDateTime dateTime) {
+                    target.setText(DateUtils.format("Remind at ", dateTime.toLocalTime(), " at ", dateTime.toLocalDate()));
+                }
+                if (val instanceof RecurrenceViewModel recurrence) {
+                    target.setText(DateUtils.format(recurrence));
+                }
+                if (val instanceof List list) {
+                    target.setText(
+                            StringUtils.isFixedList(list.name()) ?
+                                    I18n.get(list.name()) :
+                                    StringUtils.name(list.name())
+                    );
+                    target.setGraphic(IconUtils.getIcon(list));
+                }
+            } else {
+                target.setText("");
+            }
+        });
+    }
+
+    public void show(InputFieldItem<T> target) {
+        show(target, Side.TOP, 0, 0);
+    }
+
+    public void show(InputFieldItem<T> target, Side side, double dx, double dy) {
+        this.target = target;
+
+        if (isShowing()) return;
+        // I just used to fixed a error
+        // always in the first show the target appears in wrong position
+        // but calling twice it placed right.
+        // is it a bug? idk
+
+//        super.hide();
+        super.show(target, side, dx, dy);
+
+        // second show places in the right position
+//        super.show(target, side, target.isCenter() ? -((this.getWidth() / 2) - (target.getWidth() / 2)) : dx, dy);
+//        super.show(target, side, dx, dy);
+//        Platform.requestNextPulse(); // makes sure the is on the right position
+    }
+}

@@ -2,20 +2,14 @@
 
 package io.github.gleidsonmt.todo.view.login;
 
-import java.util.Optional;
-
-import io.github.gleidsonmt.glad.base.Root;
 import io.github.gleidsonmt.glad.base.responsive.Container;
+import io.github.gleidsonmt.glad.tail.ClassWatcher;
 import io.github.gleidsonmt.todo.bd.dao.DaoUser;
-import io.github.gleidsonmt.todo.events.LoginEvent;
 import io.github.gleidsonmt.todo.model.User;
-import io.github.gleidsonmt.todo.model.Usernew;
-import io.github.gleidsonmt.todo.view.MainView;
 import io.github.gleidsonmt.todo.view.login.signup.SignupView;
-import io.github.gleidsonmt.todo.view.presentation.Presentation;
-import javafx.geometry.Orientation;
+import io.github.gleidsonmt.todo.view.login.presentation.Presentation;
+import io.github.gleidsonmt.todo.view_model.UserViewModel;
 import javafx.scene.Node;
-import javafx.scene.control.Separator;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
@@ -29,15 +23,16 @@ import javafx.scene.layout.StackPane;
  * Version History: Initial version
  */
 public class HomeLayout extends Container {
-    // Data Access Object -> User
+
     private DaoUser daoUser;
-    private User user;
+    private UserViewModel user;
     private HBox body;
 
-    public HomeLayout(User user) {
+    public HomeLayout(UserViewModel user) {
         setId("home-layout");
         this.daoUser = new DaoUser();
         this.body = new HBox();
+        body.setId("body");
         getChildren().setAll(body);
         this.user = user;
         updateLayout();
@@ -46,7 +41,6 @@ public class HomeLayout extends Container {
 
     public void setLeft(Node node) {
         body.getChildren().set(body.getChildren().size() > 1 ? 1 : 0, node);
-
         HBox.setHgrow(node, Priority.ALWAYS);
     }
 
@@ -54,7 +48,6 @@ public class HomeLayout extends Container {
      * Update layout based on user is logged or not.
      */
     private void updateLayout() {
-        System.out.println("user = " + user);
 
 //        body.getChildren().setAll(new Presentation(), new SignupView());
 

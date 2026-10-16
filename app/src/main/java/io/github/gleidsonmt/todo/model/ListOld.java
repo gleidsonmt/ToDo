@@ -10,6 +10,7 @@ package io.github.gleidsonmt.todo.model;
  * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Create on: 2026-02-03
  */
+@Deprecated(forRemoval = true)
 public class ListOld extends Entity {
 
     private final String iconName;

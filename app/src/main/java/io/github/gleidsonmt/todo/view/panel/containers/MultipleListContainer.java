@@ -5,8 +5,9 @@ package io.github.gleidsonmt.todo.view.panel.containers;
 import io.github.gleidsonmt.todo.model.ListOld;
 import io.github.gleidsonmt.todo.model.ListType;
 import io.github.gleidsonmt.todo.model.ToDoTask;
+import io.github.gleidsonmt.todo.model.ToDoTaskOld;
 import io.github.gleidsonmt.todo.view.panel.items.TaskItem;
-import io.github.gleidsonmt.todo.view.panel.sections.AnimatedSection;
+import io.github.gleidsonmt.todo.view.panel.containers.sections.AnimatedSection;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import javafx.beans.binding.Bindings;
@@ -24,11 +25,12 @@ import javafx.concurrent.Task;
  * <p>
  * Version History: Initial version
  */
+// Testing
 public class MultipleListContainer extends ListContainer {
 
     private final BooleanProperty hasChild = new SimpleBooleanProperty(false);
 
-    public MultipleListContainer(ListViewModel list, ObservableList<ToDoTask> data) {
+    public MultipleListContainer(ListViewModel list, ObservableList<ToDoTaskOld> data) {
         super(list);
         this.setSpacing(5);
 
@@ -145,8 +147,8 @@ public class MultipleListContainer extends ListContainer {
      * @param section
      * @return
      */
-    private ListChangeListener<ToDoTask> changeListener(AnimatedSection section) {
-        return (ListChangeListener<ToDoTask>) c -> {
+    private ListChangeListener<ToDoTaskOld> changeListener(AnimatedSection section) {
+        return (ListChangeListener<ToDoTaskOld>) c -> {
             if (c.next()) {
                 if (c.wasReplaced()) {
                     return;
@@ -161,7 +163,7 @@ public class MultipleListContainer extends ListContainer {
         };
     }
 
-    private void loadTask(AnimatedSection section, ToDoTask task, ListType type) {
+    private void loadTask(AnimatedSection section, ToDoTaskOld task, ListType type) {
 
         // try {
         // Thread.sleep((long) (section.getSpeed() / 2));

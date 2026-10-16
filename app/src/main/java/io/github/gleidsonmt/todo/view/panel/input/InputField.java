@@ -4,10 +4,11 @@ package io.github.gleidsonmt.todo.view.panel.input;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
-import io.github.gleidsonmt.todo.model.recurrence.Recurrence;
+import io.github.gleidsonmt.todo.model.RecurrenceViewModel;
 import io.github.gleidsonmt.todo.view.panel.Panel;
 import io.github.gleidsonmt.todo.view.panel.events.TaskChangeEvent;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
+import io.github.gleidsonmt.todo.view_model.map.RecurrenceMapper;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -38,10 +39,10 @@ public class InputField extends GridPane {
 
     public InputField() {
         this.textInput = createTextField();
+        getStyleClass().add("input-field");
         init();
         configLayout();
         registerListeners();
-
     }
 
     private void configLayout() {
@@ -116,7 +117,6 @@ public class InputField extends GridPane {
     }
 
     public void reset() {
-        options.reset();
         textInput.clear();
     }
 
@@ -130,7 +130,6 @@ public class InputField extends GridPane {
         widthProperty().addListener((_, _, val) -> updateLayout(val.doubleValue()));
 
         textInput.textProperty().addListener((_, _, val) -> {
-            System.out.println("getWidth() = " + getWidth());
 
             ((Panel) getParent()).getListRoot().getActualList().getId();
 
@@ -173,7 +172,8 @@ public class InputField extends GridPane {
                         return;
 
                     // Create another using the prepared here.
-                    TaskViewModel viewModel = new TaskViewModel();
+                    final TaskViewModel viewModel = new TaskViewModel();
+
                     viewModel.setName(textInput.getText());
                     viewModel.setCreatedAt(LocalDate.now());
 //
@@ -182,26 +182,25 @@ public class InputField extends GridPane {
 
                     // set the list
                     if (!panel.getListRoot().getActualList().isFixed()) {
-                        viewModel.setListId(panel.getListRoot().getActualList().getId());
+                        viewModel.setListID(panel.getListRoot().getActualList().getId());
                     } else {
-                        viewModel.setListId(options.getTask().getId());
+                        viewModel.setListID(options.getTask().id());
                     }
                     viewModel.save();
-
-                    // add on the list UI
+                    
+//                    // add on the list UI
+                    RecurrenceViewModel recurrence = options.getRecurrence();
 //
-                    Recurrence recurrence = options.getRecurrence();
-
                     if (recurrence != null) {
                         recurrence.setTaskID(viewModel.getId());
-                        viewModel.storeRecurrence(recurrence);
+                        viewModel.storeRecurrence(RecurrenceMapper.INSTANCE.toDTO(recurrence));
                     }
 
                     TaskChangeEvent e = new TaskChangeEvent(TaskChangeEvent.ADD, viewModel);
                     panel.getListRoot().fireEvent(e);
 
                     panel.getListRoot().getContainer().add(viewModel);
-
+                    textInput.clear();
                 }
             }
         };

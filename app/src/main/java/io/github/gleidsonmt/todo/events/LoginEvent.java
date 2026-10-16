@@ -2,9 +2,10 @@
 
 package io.github.gleidsonmt.todo.events;
 
+import io.github.gleidsonmt.todo.bd.dao.DaoUser;
 import io.github.gleidsonmt.todo.model.User;
-import io.github.gleidsonmt.todo.model.Usernew;
 import io.github.gleidsonmt.todo.view_model.UserViewModel;
+import io.github.gleidsonmt.todo.view_model.map.UserMapper;
 import javafx.event.Event;
 import javafx.event.EventType;
 
@@ -21,14 +22,27 @@ public class LoginEvent extends Event {
     public static final EventType<LoginEvent> LOGIN_SUCCESS = new EventType<>(LOGIN_EVENT, "LOGIN_SUCCESS");
     public static final EventType<LoginEvent> LOGOUT = new EventType<>(LOGIN_EVENT, "LOGOUT");
 
-    private User user;
+    private UserViewModel user = new UserViewModel();
+
+    public LoginEvent(EventType<? extends Event> eventType, long id) {
+        super(eventType);
+        if (id == 0) return;
+        var dto = new DaoUser().get(id);
+        if (dto.isEmpty()) return;
+        UserMapper.INSTANCE.toViewModel(dto.get(), user);
+    }
 
     public LoginEvent(EventType<? extends Event> eventType, User user) {
+        super(eventType);
+        UserMapper.INSTANCE.toViewModel(user, this.user);
+    }
+
+    public LoginEvent(EventType<? extends Event> eventType, UserViewModel user) {
         super(eventType);
         this.user = user;
     }
 
-    public User getUser() {
+    public UserViewModel getUser() {
         return user;
     }
 }

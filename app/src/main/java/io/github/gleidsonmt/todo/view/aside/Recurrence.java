@@ -5,6 +5,7 @@ package io.github.gleidsonmt.todo.view.aside;
 import java.time.DayOfWeek;
 
 import io.github.gleidsonmt.todo.model.Model;
+import io.github.gleidsonmt.todo.model.RecurrenceType;
 import javafx.collections.ObservableList;
 
 /**
@@ -15,6 +16,7 @@ import javafx.collections.ObservableList;
  * <p>
  * Version History: Initial version
  */
+@Deprecated(forRemoval = true)
 public abstract class Recurrence extends Model implements Cloneable {
 
     protected ObservableList<DayOfWeek> daysOfWeek; // only to pair with

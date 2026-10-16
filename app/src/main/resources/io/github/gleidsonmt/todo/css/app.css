@@ -94,6 +94,7 @@ Panel {
     -fx-border-width: 2px;
     -fx-border-radius: 3px;
     -fx-border-color: -light-gray-2;
+    -fx-background-color: -fx-background;
 }
 
 .btn-favorite {
@@ -226,12 +227,18 @@ Panel {
 .check-circle .box {
     -fx-background-radius: 100px;
     -fx-border-radius: 100px;
-    -fx-border-width: 1px;
+    -fx-border-width: 2px;
     -fx-cursor: hand;
     -fx-background-insets: 1px;
+    -fx-padding: 3px;
 }
 
-.check-circle .box .mark {
+
+.check-circle:selected:hover .box .mark {
+    -fx-border-color: white;
+}
+.check-circle:hover .box .mark {
+    -fx-fill: red;
 }
 
 .check-circle:determinate .box {
@@ -245,6 +252,8 @@ Panel {
 .hamb {
     -fx-background-color: -fx-background;
     -fx-border-color: -light-gray-2;
+    -fx-border-radius: 5px;
+    -fx-padding: 10px;
 }
 
 .custom-drawer-item:selected .text-field {
@@ -717,12 +726,16 @@ Panel {
     -fx-background-radius: 5px;
 }
 
+.inside-field {
+    -fx-background-color: transparent;
+}
+
 .inside-field:focused {
     -fx-border-color: -fx-accent;
 }
 
 .inside-field:readonly {
-    -fx-cursor: hand;
+    -fx-cursor: default;
     -fx-border-color: transparent;
 }
 
@@ -740,13 +753,21 @@ Panel {
 }
 
 .inside-field:hover {
-    -fx-cursor: hand;
-    -fx-background-color: -light-gray;
+    -fx-cursor: text;
 }
 
 .inside-field {
     -fx-border-color: transparent;
 }
+
+.inside-text-field,
+.inside-text-field:focused:hover,
+.inside-text-field:focused:hover,
+.inside-text-field:hover {
+    -fx-border-color: transparent;
+}
+
+
 
 .icon-grid {
     -fx-background-color: -fx-background;
@@ -807,7 +828,7 @@ InputFieldOptions:medium .input-field-item:selected,
 InputFieldOptions:small:medium .input-field-item:selected {
     -fx-fill: -fx-accent;
     -fx-background-radius: 10px;
-    -fx-spacing: 10px;
+    -fx-spacing: 5px;
 }
 InputFieldOptions:medium .input-field-item:selected,
 InputFieldOptions:small .input-field-item:selected {
@@ -823,6 +844,23 @@ InputFieldOptions:small .input-field-item:selected > .icon-container > .icon {
 }
 
 InputFieldOptions:medium {
-    -fx-spacing: 10px;
+    -fx-spacing: 5px;
+}
+
+.hamb {
+    -fx-content-display: graphic-only;
+}
+
+.aside-item {
+    -fx-background-color: transparent;
+}
+.aside-item:hover {
+    -fx-background-color: -light-gray;
+}
+.aside-item:selected {
+    -fx-background-color: transparent;
+}
+.aside-item:selected:hover {
+    -fx-background-color: transparent;
 }
 

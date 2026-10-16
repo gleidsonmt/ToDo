@@ -30,10 +30,7 @@ public class LoginView extends StackPane {
     public LoginView(boolean needsFooter) {
 
         var body = new GridPane();
-        body.setPrefWidth(600);
-        body.setMaxWidth(600);
-        body.setPrefHeight(550);
-        body.setMaxHeight(550);
+        body.getStyleClass().addAll("w-600 max-w-600 max-h-550 h-550".split("\\s+"));
 
         getChildren().add(body);
         body.setPadding(new Insets(20));
@@ -47,7 +44,7 @@ public class LoginView extends StackPane {
 
         form = createForm();
 
-        footer.setLinkAction(_ -> ((HomeLayout)getScene().lookup("#home-layout")).setLeft(new SignupView()));
+        footer.setLinkAction(_ -> ((HomeLayout) getScene().lookup("#home-layout")).setLeft(new SignupView()));
 
         body.getChildren().add(form);
         GridPane.setMargin(form, new Insets(10));
@@ -62,10 +59,8 @@ public class LoginView extends StackPane {
 
     private LoginForm createForm() {
         LoginForm form = new LoginForm();
-        footer.setButtonAction(e -> {
-            if (form.validate()) {
-               form.persist();
-            }
+        footer.setButtonAction(_ -> {
+            if (form.validate()) form.persist();
         });
         return form;
     }

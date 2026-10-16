@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import io.github.gleidsonmt.todo.bd.dao.DaoUser;
 import io.github.gleidsonmt.todo.model.User;
-import io.github.gleidsonmt.todo.model.Usernew;
 
 /**
  * Description:
@@ -23,7 +22,7 @@ public class UserPresenter extends AbstractPresenter<User> {
         super(new DaoUser());
     }
 
-    public Optional<Usernew> getLogged() {
+    public Optional<User> getLogged() {
         return dao.findWhere("logged = true");
     }
 

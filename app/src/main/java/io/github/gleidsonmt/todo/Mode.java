@@ -6,5 +6,5 @@ package io.github.gleidsonmt.todo;
  * Created on  30/04/2026
  */
 public enum Mode {
-    DEBUG, LOG, DEFAULT
+    DEBUG, LOG, DEFAULT, DEV
 }

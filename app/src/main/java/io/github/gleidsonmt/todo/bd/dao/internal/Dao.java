@@ -4,7 +4,7 @@ package io.github.gleidsonmt.todo.bd.dao.internal;
 
 import java.util.Optional;
 
-import io.github.gleidsonmt.todo.model.Modle;
+import io.github.gleidsonmt.todo.model.DTO;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.ApiStatus.Experimental;
 
@@ -17,7 +17,7 @@ import io.github.gleidsonmt.todo.model.Model;
  * Created On: Feb 22, 2026
  */
 @ApiStatus.Internal
-public interface Dao<T extends Modle> {
+public interface Dao<T extends DTO> {
 
     // Default CRUD Actions
     long store(T model);

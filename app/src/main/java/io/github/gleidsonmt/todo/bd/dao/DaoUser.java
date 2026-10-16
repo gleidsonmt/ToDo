@@ -4,7 +4,6 @@ package io.github.gleidsonmt.todo.bd.dao;
 
 import io.github.gleidsonmt.todo.bd.dao.internal.AbstractDao;
 import io.github.gleidsonmt.todo.model.User;
-import io.github.gleidsonmt.todo.model.Usernew;
 import org.jetbrains.annotations.NotNull;
 
 import java.security.MessageDigest;
@@ -24,19 +23,13 @@ public final class DaoUser extends AbstractDao<User> {
     @Override
     protected User createElement(@NotNull ResultSet result) throws SQLException {
 
-//        Usernew item = new Usernew(result.getLong("id"), result.getString("name"));
-//        item.setUsername(result.getString("username"));
-//        item.setSalt(result.getBytes("salt"));
-//        item.setPassword(result.getString("password"));
-//        item.setImageUrl(result.getString("image_url"));
         return new User(
                 result.getLong("id"),
                 result.getString("name"),
                 result.getString("username"),
                 result.getString("password"),
                 result.getBytes("salt"),
-                result.getString("image_url"),
-                false
+                result.getBoolean("logged")
         );
     }
 
@@ -54,15 +47,15 @@ public final class DaoUser extends AbstractDao<User> {
             prepare.setString(2, model.username());
             prepare.setString(3, pass);
             prepare.setBytes(4, salt);
-            prepare.setString(5, model.imageUrl());
+            prepare.setBoolean(5, model.logged());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public boolean validatePassword(@NotNull Usernew user, String compare) {
-        String one = user.getPassword();
-        String two = createSecurePassword(compare, user.getSalt());
+    public boolean validatePassword(@NotNull User user, String compare) {
+        String one = user.password();
+        String two = createSecurePassword(compare, user.salt());
         return one.equals(two);
     }
 

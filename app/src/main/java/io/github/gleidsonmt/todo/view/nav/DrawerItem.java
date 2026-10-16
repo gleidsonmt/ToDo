@@ -2,26 +2,40 @@
 
 package io.github.gleidsonmt.todo.view.nav;
 
+import io.github.gleidsonmt.glad.base.Drawer;
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
+import io.github.gleidsonmt.todo.global.Global;
 import io.github.gleidsonmt.todo.utils.Assets;
-import io.github.gleidsonmt.todo.view.panel.menu.ListContextMenu;
+import io.github.gleidsonmt.todo.utils.I18n;
+import io.github.gleidsonmt.todo.view.panel.input.menu.ListContextMenu;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
+import io.github.gleidsonmt.todo.view_model.converter.ListNameConverter;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.*;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Side;
+import javafx.scene.Cursor;
+import javafx.scene.ImageCursor;
 import javafx.scene.Node;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.image.WritableImage;
+import javafx.scene.input.*;
 import javafx.scene.layout.*;
+import javafx.util.StringConverter;
+
+import java.util.Locale;
+import java.util.Properties;
+import java.util.prefs.BackingStoreException;
+import java.util.prefs.Preferences;
 
 /**
  * Description:
@@ -40,20 +54,28 @@ public class DrawerItem extends ToggleButton {
     // Properties
     private final IntegerProperty numberOfNotifications = new SimpleIntegerProperty(0);
     private final BooleanProperty editable = new SimpleBooleanProperty(false);
-    private final ObjectProperty<Node> icon;
+    private final ObjectProperty<Node> icon = new SimpleObjectProperty<>();
     // Models
     private final ListViewModel viewModel;
 
+    private ObjectProperty<Integer> index = new SimpleObjectProperty<>();
+
+    private final Preferences prefs = Preferences.userNodeForPackage(DrawerItem.class);
+
     public DrawerItem(ListViewModel viewModel) {
         this.viewModel = viewModel;
-        this.icon = new SimpleObjectProperty<>();
-
-        if (viewModel.isFixed()) {
-            icon.set(new SVGIcon(Icon.valueOf(viewModel.getIconName().toUpperCase())));
-        } else {
-//            icon.set(new ImageView(Assets.getIcon(viewModel.getIconName().toLowerCase() + ".png")));
-            icon.set(Assets.getIcon(viewModel.getIconName().toLowerCase() , 22));
+        try {
+            prefs.sync();
+        } catch (BackingStoreException e) {
+            throw new RuntimeException(e);
         }
+        setIndex(prefs.getInt("index-" + viewModel.getId(), 0));
+
+        icon.setValue(
+                viewModel.isFixed() ?
+                new SVGIcon(Icon.valueOf(viewModel.getIcon().toUpperCase())) :
+                Assets.getIcon(viewModel.getIcon().toLowerCase() , 22)
+        );
 
         this.setGraphic(container);
 
@@ -62,10 +84,78 @@ public class DrawerItem extends ToggleButton {
         bind();
         registerListeners();
         setActions();
+
+        indexProperty().addListener(new ChangeListener<Integer>() {
+            @Override
+            public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) {
+                prefs.put("index-" + viewModel.getId(), newValue.toString());
+                try {
+                    prefs.flush();
+                    prefs.sync();
+                } catch (BackingStoreException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
+        this.snapshot(new SnapshotParameters(), new WritableImage(100, 100));
+
+        Label empty = new Label();
+        empty.setMaxWidth(Double.MAX_VALUE);
+        VBox.setMargin(empty, new Insets(10));
+//        empty.setPrefWidth(Double.MAX_VALUE);
+        empty.getStyleClass().addAll("custom-drawer-item", "rounded");
+//        DrawerItem empty = new DrawerItem(new ListViewModel());
+        empty.setStyle("-fx-background-color: derive(gray, 100%);");
+        empty.setLabelFor(this);
+
+        WritableImage imgTransparente = new WritableImage(1, 1);
+        ImageCursor cursorInvisivel = new ImageCursor(imgTransparente);
+
+        setOnDragDone(_ -> {
+            // if the drag isn't finished successfully, return this to the container.
+            if (empty.getParent() != null) {
+                VBox container = (VBox) empty.getParent();
+                int index = container.getChildren().indexOf(empty);
+                container.getChildren().remove(empty);
+                container.getChildren().add(index, this);
+            }
+        });
+
+        setOnDragDetected(event -> {
+
+            if (getViewModel().isFixed()) return;
+
+            Dragboard db = startDragAndDrop(TransferMode.COPY_OR_MOVE);
+            ClipboardContent content = new ClipboardContent();
+            content.putString(String.valueOf(getParent().getChildrenUnmodifiable().indexOf(DrawerItem.this)));
+
+            db.setDragView(snapshot(new SnapshotParameters(), new WritableImage(300, 35)), 50, 0);
+
+            db.setContent(content);
+
+            Pane region = (Pane) getParent();
+            int index = region.getChildren().indexOf(DrawerItem.this);
+            region.getChildren().removeIf(node -> node == DrawerItem.this);
+            region.getChildren().add(index, empty);
+            event.consume();
+        });
     }
 
     public ListViewModel getViewModel() {
         return this.viewModel;
+    }
+
+    public void setIndex(Integer index) {
+        this.index.set(index);
+    }
+
+    public Integer getIndex() {
+        return index.get();
+    }
+
+    public ObjectProperty<Integer> indexProperty() {
+        return index;
     }
 
     private void init() {
@@ -126,7 +216,7 @@ public class DrawerItem extends ToggleButton {
         label.graphicProperty().bind(icon);
         number.textProperty().bind(Bindings.convert(this.numberOfNotifications));
         number.visibleProperty().bind(this.numberOfNotifications.greaterThan(0));
-        this.title.textProperty().bindBidirectional(viewModel.nameProperty());
+        title.textProperty().bindBidirectional(viewModel.nameProperty(), new ListNameConverter());
         title.disableProperty().bind(this.editable.not());
     }
 
@@ -155,7 +245,7 @@ public class DrawerItem extends ToggleButton {
             }
         });
 
-        viewModel.iconNameProperty().addListener((_, _, newValue) -> {
+        viewModel.iconProperty().addListener((_, _, newValue) -> {
             if (getViewModel().isFixed()) {
                 icon.set(new SVGIcon(Icon.valueOf(newValue.toUpperCase()), 1.5));
             } else {

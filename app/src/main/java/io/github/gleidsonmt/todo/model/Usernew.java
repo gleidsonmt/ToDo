@@ -16,6 +16,7 @@ import java.util.List;
  * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Create on 20/05/2026
  */
+@Deprecated(forRemoval = true)
 public class Usernew extends Entity {
 
     private String imageUrl;

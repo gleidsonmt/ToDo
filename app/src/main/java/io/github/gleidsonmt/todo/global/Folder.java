@@ -31,7 +31,6 @@ import org.jetbrains.annotations.ApiStatus;
 @Deprecated(forRemoval = true)
 public class Folder {
 
-
     private final File avatarFolder;
     private final String separator;
     private String defaultFolder;

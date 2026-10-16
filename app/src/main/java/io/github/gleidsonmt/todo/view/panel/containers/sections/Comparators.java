@@ -1,0 +1,13 @@
+
+
+package io.github.gleidsonmt.todo.view.panel.containers.sections;
+
+/**
+ * Description:
+ *
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
+ * Created On: Mar 25, 2026
+ */
+public enum Comparators {
+    IMPORTANCE, DUE_DATE, ADDED_TO_MY_DAY, ALPHABETICALLY, CREATION_DATE, NONE
+}
