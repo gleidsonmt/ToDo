@@ -10,7 +10,11 @@ import javafx.scene.layout.VBox;
 public class Body extends VBox {
     public Body(ViewModel viewModel) {
         getStyleClass().addAll("w-300 border-light-gray border-1 spacing-10 pd-10".split("\\s+"));
-        getChildren().addAll(new TitleSection(), new MyDaySection(viewModel));
+        getChildren().setAll(
+                new TitleSection(),
+                new MyDaySection(viewModel),
+                new MultipleBlockSection()
+        );
 
     }
 }

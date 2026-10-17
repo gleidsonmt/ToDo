@@ -863,4 +863,7 @@ InputFieldOptions:medium {
 .aside-item:selected:hover {
     -fx-background-color: transparent;
 }
-
+.aside-item:selected .icon,
+.aside-item:selected .text {
+    -fx-fill: -fx-accent;
+}
