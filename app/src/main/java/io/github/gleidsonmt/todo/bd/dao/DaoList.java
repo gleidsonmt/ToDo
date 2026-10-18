@@ -17,25 +17,28 @@ public final class DaoList extends AbstractDao<List> {
 
     @Override
     public List createElement(ResultSet result) throws SQLException {
-        return new List(result.getInt("id"), result.getString("name"), result.getBoolean("fixed"),
-                result.getInt("size"), result.getString("icon"));
+        return new List(
+                result.getInt("id"),
+                result.getString("name"),
+                result.getBoolean("fixed"),
+                result.getInt("size"),
+                result.getString("icon"));
     }
 
     @Override
     protected void prepareElement(PreparedStatement prepare, List model) {
-        try
-        {
+        try {
             prepare.setString(1, model.name());
             prepare.setBoolean(2, model.fixed());
             prepare.setInt(3, model.size());
             prepare.setString(4, model.icon());
             // prepare.setBoolean(2, model.isFixed());
-        } catch(SQLException e){
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    @Deprecated
+    @Deprecated(forRemoval = true)
     public int getSize(long lis_id) {
         connect();
         String sql = "select size from sizes where list_id = " + lis_id;

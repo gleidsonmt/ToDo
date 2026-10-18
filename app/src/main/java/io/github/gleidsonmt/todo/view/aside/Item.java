@@ -25,17 +25,11 @@ public class Item extends GridPane {
         GridPane.setColumnIndex(closeButton, 1);
         GridPane.setHgrow(node, Priority.ALWAYS);
 
-        setOnMouseClicked(e -> {
-//            if (isSelected()) e.consume();
-//            else
-                setSelected(true);
-        });
+        setOnMouseClicked(_ -> setSelected(true));
 
-        var converter = new ClassConverter();
         pseudoClassStateChanged(PseudoClass.getPseudoClass("selected"), isSelected());
 
         selectedProperty().addListener((_, _, val) -> {
-            System.out.println("val = " + val);
             if (val && !getChildren().contains(closeButton)) getChildren().add(closeButton);
             else getChildren().remove(closeButton);
             pseudoClassStateChanged(PseudoClass.getPseudoClass("selected"), val);

@@ -81,6 +81,7 @@ public class App extends Application {
         Root root = new Root(loaderView);
 
         Scene scene = new MainScene(root, width, height);
+
         ThemeProvider.install(scene, Css.ALL, Font.INSTAGRAM, Font.POPPINS);
 
         scene.getStylesheets().add(Assets.getCss("app.css"));
@@ -94,11 +95,14 @@ public class App extends Application {
             prefs.putBoolean("MAXIMIZED", stage.isMaximized());
         });
 
-        stage.setMaximized(prefs.getBoolean("MAXIMIZED", false));
+//        stage.setMaximized(prefs.getBoolean("MAXIMIZED", false));
         stage.setFullScreen(false);
 
         stage.setMinWidth(400);
         stage.setMinHeight(600);
+
+//        stage.setMaxWidth(1200);
+//        stage.setMaxHeight(600);
 
         stage.setScene(scene);
         stage.setTitle("JavaFx ToDo");

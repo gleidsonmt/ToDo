@@ -18,7 +18,8 @@ public class Body extends ScrollPane {
         body.getChildren().setAll(
                 new TitleSection(),
                 new MyDaySection(viewModel),
-                new MultipleBlockSection()
+                new MultipleBlockSection(),
+                new AreaInsert()
         );
         setContent(body);
         setFitToHeight(true);

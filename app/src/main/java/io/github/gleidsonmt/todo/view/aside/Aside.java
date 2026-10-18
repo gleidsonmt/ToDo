@@ -23,7 +23,7 @@ public class Aside extends VBox {
     public Aside(TaskViewModel viewModel) {
 //        setContent(new Body(viewModel));
 //        setFitToHeight(true);
-        getChildren().setAll(new Label("Header"), new Body(viewModel), new Footer());
+        getChildren().setAll(new Label("Header"), new Body(viewModel),  new Footer());
         getStyleClass().addAll("w-300 border-medium-gray border-l-1 pd-10".split("\\s+"));
     }
 }
