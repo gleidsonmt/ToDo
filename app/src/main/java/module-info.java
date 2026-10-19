@@ -50,6 +50,7 @@ module io.github.gleidsonmt.todo {
     exports io.github.gleidsonmt.todo.model.recurrence;
     exports io.github.gleidsonmt.todo.view.panel.input;
     exports io.github.gleidsonmt.todo.view_model;
+    exports io.github.gleidsonmt.todo.view.panel.input.menu.input_menu_items;
     exports io.github.gleidsonmt.todo.view.nav;
     exports io.github.gleidsonmt.todo.view.panel;
     exports io.github.gleidsonmt.todo.view.panel.items;

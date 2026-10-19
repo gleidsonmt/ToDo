@@ -33,7 +33,7 @@ public class InputFieldItem<T> extends Label {
     protected CustomContextMenu<T> contextMenu;
     protected ObjectProperty<T> value;
     protected boolean center;
-    private String placeholder;
+    private final String placeholder;
 
     public InputFieldItem(Icon icon, String toolTipText) {
         this(null, icon, toolTipText);

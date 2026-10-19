@@ -17,28 +17,10 @@ import javafx.beans.property.SimpleObjectProperty;
  * <p>
  * Version History: Initial version
  */
-public class ViewList extends View {
+public class ViewList {
 
     private ObjectProperty<ListOld> list;
     private BooleanProperty editable = new SimpleBooleanProperty();
-
-    public ViewList(ListOld list) {
-        this(list.getName(), list);
-    }
-
-    public ViewList(String name, ListOld list) {
-        this(name, list, false);
-    }
-
-    public ViewList(ListOld list, boolean editable) {
-        this(list.getName(), list, editable);
-    }
-
-    public ViewList(String name, ListOld list, boolean editable) {
-        super(name);
-        this.list = new SimpleObjectProperty<>(list);
-        this.editable.set(editable);
-    }
 
     public ObjectProperty<ListOld> listProperty() {
         return list;
@@ -46,11 +28,6 @@ public class ViewList extends View {
 
     public ListOld getList() {
         return list.get();
-    }
-
-    @Override
-    public String toString() {
-        return "View{" + "\n\tname=" + getName() + ", list=" + getList() + "\n}";
     }
 
     public void setEditable(boolean val) {

@@ -15,9 +15,9 @@ public abstract class Item<T> extends GridPane {
 
     private final BooleanProperty selected = new SimpleBooleanProperty(false);
     private final CloseButton closeButton = new CloseButton();
-    private final InputFieldItem<?> node;
+    private final InputFieldItem<T> node;
 
-    public Item(InputFieldItem<?> node) {
+    public Item(InputFieldItem<T> node) {
         this.node = node;
         getStyleClass().addAll("bg-transparent h-50 align-center aside-item".split("\\s+"));
         getChildren().setAll(node);
