@@ -2,15 +2,13 @@
 
 package io.github.gleidsonmt.todo.view.panel.items;
 
-import io.github.gleidsonmt.glad.base.Root;
-import io.github.gleidsonmt.todo.view.MainView;
-import io.github.gleidsonmt.todo.view.aside.Aside;
 import io.github.gleidsonmt.todo.view.panel.events.TaskChangeEvent;
-import io.github.gleidsonmt.todo.view.panel.items.options.Options;
 import io.github.gleidsonmt.todo.view.panel.input.menu.TaskItemContextMenu;
+import io.github.gleidsonmt.todo.view.panel.items.options.Options;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
-import javafx.beans.property.*;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.css.PseudoClass;
 import javafx.geometry.VPos;
 import javafx.scene.control.CheckBox;
@@ -128,7 +126,7 @@ public class TaskItem extends GridToggle {
             this.fireEvent(new TaskChangeEvent(TaskChangeEvent.FAVORITE_CHANGED, this.getViewModel()));
         });
 
-        this.getViewModel().myDayProperty().addListener((_, _, val) -> {
+        this.getViewModel().myDayProperty().addListener((_, _, _) -> {
             this.getViewModel().update();
             this.fireEvent(new TaskChangeEvent(TaskChangeEvent.MY_DAY_CHANGED, this.getViewModel()));
         });
@@ -143,16 +141,6 @@ public class TaskItem extends GridToggle {
                 this.getViewModel().update();
                 this.fireEvent(new TaskChangeEvent(TaskChangeEvent.MOVED, viewModel, old.longValue(), val.longValue()));
             }
-        });
-
-        this.selectedProperty().addListener((_,_,val) -> {
-
-            if (getScene() == null) return;
-
-            Root root = (Root) this.getScene().getRoot();
-            MainView mainView = (MainView) root.getContent();
-            this.getViewModel().dispose();
-            mainView.setRight(new Aside(this.getViewModel()));
         });
     }
 
@@ -202,7 +190,6 @@ public class TaskItem extends GridToggle {
     public TaskViewModel getViewModel() {
         return this.viewModel;
     }
-
 
 
     public ListViewModel getListViewModel() {
