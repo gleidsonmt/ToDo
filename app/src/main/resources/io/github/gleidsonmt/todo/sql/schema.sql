@@ -31,6 +31,7 @@ CREATE TABLE task
     remind     TEXT,
     created_at TEXT,
     list_id    INTEGER,
+    annotation TEXT,
     FOREIGN KEY (list_id) REFERENCES list (id)
 );
 

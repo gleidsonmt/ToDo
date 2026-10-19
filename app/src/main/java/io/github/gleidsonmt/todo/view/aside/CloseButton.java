@@ -14,7 +14,7 @@ import javafx.scene.control.Button;
 public class CloseButton extends Button {
 
     public CloseButton() {
-        getStyleClass().addAll("bg-transparent hover:bg-[grey-100] h-50 pd-10 display-graphic".split("\\s+"));
+        getStyleClass().addAll("bg-transparent hover:bg-[grey-100] hover:cursor-hand h-50 pd-10 display-graphic".split("\\s+"));
         setGraphic(new SVGIcon(Icon.CLEAR));
         setOnMouseClicked(_ -> {
             if (getParent().getParent() instanceof MainView mainView) {
