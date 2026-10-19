@@ -32,21 +32,7 @@ public class Repository {
             if (p.getModelClass().equals(presenter)) {
                 return (Presenter<T>) p;
             }
-            // Type type = p.getClass().getGenericSuperclass();
-            // if (type instanceof ParameterizedType) {
-            // ParameterizedType pt = (ParameterizedType) type;
-            // Type[] typeArgs = pt.getActualTypeArguments();
-            // if (typeArgs.length > 0) {
-            // Type arg = typeArgs[0];
-            // if (arg instanceof Class) {
-            // Class<?> modelClass = (Class<?>) arg;
-            // if (modelClass.equals(presenter)) {
-            // // Safe cast since we verified the type matches
-            // return (Presenter<T>) p;
-            // }
-            // }
-            // }
-            // }
+
         }
         return null; // Or throw an exception if no match found
     }

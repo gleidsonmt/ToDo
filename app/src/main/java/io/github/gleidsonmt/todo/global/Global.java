@@ -70,7 +70,7 @@ public class Global {
     }
 
     @ApiStatus.Experimental
-    @Deprecated
+    @Deprecated(forRemoval = true)
     private static Repository getRepository() {
         if (repository == null) {
             repository = new Repository();
