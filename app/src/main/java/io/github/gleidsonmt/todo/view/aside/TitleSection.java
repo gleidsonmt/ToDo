@@ -25,6 +25,8 @@ public class TitleSection extends Section {
 
         CheckBox checkBox = new CheckBox();
         checkBox.getStyleClass().addAll("check-circle".split("\\s+"));
+        checkBox.setSelected(viewModel.isCompleted());
+        viewModel.completedProperty().bindBidirectional(checkBox.selectedProperty());
 
         TextField field = new TextField("Praticar no duolingo");
 
