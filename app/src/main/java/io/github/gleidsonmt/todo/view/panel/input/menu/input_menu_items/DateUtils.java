@@ -3,8 +3,6 @@
 package io.github.gleidsonmt.todo.view.panel.input.menu.input_menu_items;
 
 import io.github.gleidsonmt.todo.model.RecurrenceViewModel;
-import io.github.gleidsonmt.todo.model.recurrence.Recurrence;
-import io.github.gleidsonmt.todo.model.recurrence.RecurrenceOld;
 import io.github.gleidsonmt.todo.model.recurrence.RecurrenceType;
 import io.github.gleidsonmt.todo.utils.StringUtils;
 
