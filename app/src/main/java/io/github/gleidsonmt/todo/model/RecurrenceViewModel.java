@@ -1,6 +1,5 @@
 package io.github.gleidsonmt.todo.model;
 
-import io.github.gleidsonmt.todo.model.recurrence.Recurrence;
 import io.github.gleidsonmt.todo.model.recurrence.RecurrenceType;
 import io.github.gleidsonmt.todo.view_model.ViewModel;
 import javafx.beans.property.*;

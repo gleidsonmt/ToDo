@@ -19,21 +19,21 @@ import java.time.LocalDateTime;
 public class MultipleBlockSection extends Section {
 
     public MultipleBlockSection(TaskViewModel viewModel) {
-        Item<LocalDateTime> itemRemind = new Item<>(new RemindLabel(), viewModel) {
+        Item<LocalDateTime> itemRemind = new Item<>(new RemindLabel()) {
             @Override
             public void bind() {
                 getNode().valueProperty().addListener((_, _, newValue) -> viewModel.setRemind(newValue));
                 getNode().setValue(viewModel.getRemind());
             }
         };
-        Item<LocalDate> itemDueDate = new Item<>(new DueDateLabel(), viewModel) {
+        Item<LocalDate> itemDueDate = new Item<>(new DueDateLabel()) {
             @Override
             public void bind() {
                 getNode().valueProperty().addListener((_, _, newValue) -> viewModel.setDueDate(newValue));
                 getNode().setValue(viewModel.getDueDate());
             }
         };
-        Item<RecurrenceViewModel> itemRecurrence = new Item<>(new RecurrenceLabel(), viewModel) {
+        Item<RecurrenceViewModel> itemRecurrence = new Item<>(new RecurrenceLabel()) {
 
             @Override
             public void bind() {

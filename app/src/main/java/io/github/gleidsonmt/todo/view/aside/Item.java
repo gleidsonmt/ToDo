@@ -1,20 +1,11 @@
 package io.github.gleidsonmt.todo.view.aside;
 
-import io.github.gleidsonmt.todo.model.recurrence.Recurrence;
-import io.github.gleidsonmt.todo.model.recurrence.RecurrenceType;
 import io.github.gleidsonmt.todo.view.panel.input.InputFieldItem;
-import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.css.PseudoClass;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
-
-import java.time.DayOfWeek;
-import java.util.List;
-import java.util.TreeSet;
 
 /**
  * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
@@ -24,9 +15,9 @@ public abstract class Item<T> extends GridPane {
 
     private final BooleanProperty selected = new SimpleBooleanProperty(false);
     private final CloseButton closeButton = new CloseButton();
-    private InputFieldItem<T> node;
+    private final InputFieldItem<?> node;
 
-    public Item(InputFieldItem<T> node, TaskViewModel viewModel) {
+    public Item(InputFieldItem<?> node) {
         this.node = node;
         getStyleClass().addAll("bg-transparent h-50 align-center aside-item".split("\\s+"));
         getChildren().setAll(node);
