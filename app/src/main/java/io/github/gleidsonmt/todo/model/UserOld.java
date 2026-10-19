@@ -3,7 +3,6 @@
 package io.github.gleidsonmt.todo.model;
 
 import io.github.gleidsonmt.todo.bd.dao.internal.Ignore;
-import io.github.gleidsonmt.todo.global.Folder;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -30,8 +29,6 @@ public class UserOld extends Entity {
     private final ObjectProperty<Image> avatar = new SimpleObjectProperty<>();
     @Ignore
     private boolean needChangePass = false;
-    @Ignore
-    private final Folder folder;
 
     public UserOld(long id, String name) {
         this(id, name, null, null);
@@ -39,15 +36,6 @@ public class UserOld extends Entity {
 
     public UserOld(long id, String name, String lastName, String email) {
         super(id, name);
-        folder = new Folder();
-        logged.set(false);
-
-        // this.setAvatar(this.getImageUrl());
-
-        // this.imageUrl.addListener((observableValue, oldValue, newValue) -> {
-        ////            setAvatar(newValue);
-        // System.out.println("observableValue = " + observableValue);
-        // });
     }
 
     private void setAvatar(String url) {

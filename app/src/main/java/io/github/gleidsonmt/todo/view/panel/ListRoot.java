@@ -17,7 +17,6 @@ import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -42,9 +41,7 @@ public class ListRoot extends VBox {
 
     private final ObjectProperty<ListViewModel> actualList = new SimpleObjectProperty<>();
 
-    private final ChangeListener<Number> updateListener = (_, _, val) -> {
-        update(val.intValue() == 0);
-    };
+    private final ChangeListener<Number> updateListener = (_, _, val) -> update(val.intValue() == 0);
 
     private final ChangeListener<Number> updateAsideViewer = (_, _, newVal) -> {
         if (aside == null) return;
@@ -154,10 +151,6 @@ public class ListRoot extends VBox {
 
     public TaskItem getSelected() {
         return this.getContainer().getSelected();
-    }
-
-    public ObjectProperty<TaskItem> selectedProperty() {
-        return this.getContainer().selectedProperty();
     }
 
     public ObjectProperty<ListViewModel> actualListProperty() {
