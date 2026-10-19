@@ -2,6 +2,7 @@ package io.github.gleidsonmt.todo.view.aside;
 
 import io.github.gleidsonmt.glad.base.drawer.View;
 import io.github.gleidsonmt.glad.controls.button.IconButton;
+import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import io.github.gleidsonmt.todo.view.panel.items.FavoriteButton;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import io.github.gleidsonmt.todo.view_model.ViewModel;
@@ -21,10 +22,11 @@ import javafx.scene.layout.VBox;
 public class Aside extends VBox {
 
     public Aside(TaskViewModel viewModel) {
-//        setContent(new Body(viewModel));
-//        setFitToHeight(true);
-        getChildren().setAll(new Label("Header"), new Body(viewModel),  new Footer());
-        getStyleClass().addAll("w-300 border-medium-gray border-l-1 pd-10".split("\\s+"));
+        var close = new CloseButton();
+        getStyleClass().addAll("aside".split("\\s+"));
+        close.getStyleClass().addAll("hover:bg-medium-gray".split("\\s+"));
+        getChildren().setAll(new CloseButton(), new Body(viewModel),  new Footer());
+        getStyleClass().addAll("w-300 border-medium-gray border-l-1 pd-10 align-center-right".split("\\s+"));
     }
 }
 

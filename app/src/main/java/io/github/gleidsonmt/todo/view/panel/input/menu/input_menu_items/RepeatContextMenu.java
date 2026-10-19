@@ -41,12 +41,6 @@ public class RepeatContextMenu extends CustomContextMenu<RecurrenceViewModel> {
         menuItemMonthly.setOnAction(_ -> target.setValue(new RecurrenceViewModel(RecurrenceType.MONTHLY)));
         menuItemYearly.setOnAction(_ -> target.setValue(new RecurrenceViewModel(RecurrenceType.YEARLY)));
 
-//        menuItemDaily.setOnAction(_ -> target.setValue(new DailyOld()));
-//        menuItemWeekDays.setOnAction(_ -> target.setValue(new Weekly(true)));
-//        menuItemWeekly.setOnAction(_ -> target.setValue(new Weekly()));
-//        menuItemMonthly.setOnAction(_ -> target.setValue(new Monthly()));
-//        menuItemYearly.setOnAction(_ -> target.setValue(new Yearly()));
-
         menuItemDelete.setOnAction(_ -> target.setValue(null));
 
         if (target.getValue() != null) {

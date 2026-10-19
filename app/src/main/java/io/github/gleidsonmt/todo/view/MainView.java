@@ -46,6 +46,7 @@ public class MainView extends BorderPane {
     private final ListRoot listRoot;
 
     public MainView(UserViewModel user) {
+        setId("main-view");
         if (!user.isLogged()) {
             user.setLogged(true);
             user.update();
@@ -104,11 +105,11 @@ public class MainView extends BorderPane {
 
         setLeft(this.sideNav);
         setCenter(this.panel);
-        setRight(new Aside(new TaskViewModel()));
 
         panel.setContent(listRoot);
 
         bind();
+
 
         this.sideNav.load();
 

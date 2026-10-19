@@ -767,8 +767,6 @@ Panel {
     -fx-border-color: transparent;
 }
 
-
-
 .icon-grid {
     -fx-background-color: -fx-background;
     -fx-border-color: -medium-gray;
@@ -840,9 +838,6 @@ InputFieldOptions:small .input-field-item:selected > .icon-container > .icon {
     -fx-fill: white;
 }
 
-.context-menu .icon-container .icon {
-}
-
 InputFieldOptions:medium {
     -fx-spacing: 5px;
 }
@@ -863,19 +858,42 @@ InputFieldOptions:medium {
 .aside-item:selected:hover {
     -fx-background-color: transparent;
 }
-.aside-item:selected .icon,
+
+.aside-item .icon-container .icon {
+    -fx-fill: -icon-color;
+}
+
+.aside-item:selected .icon-container .icon,
 .aside-item:selected .text {
     -fx-fill: -fx-accent;
 }
+
+.aside-item .grid-icon {
+    -fx-accent: -icon-color;
+}
+.aside-item:selected CloseButton:hover {
+    -fx-background-color: -hover-color;
+}
 .area-insert .scroll-pane {
     -fx-fit-to-width: true;
-    -fx-fit-to-height: true;
+    /*-fx-fit-to-height: true;*/
     -fx-vbar-policy: never;
 }
 .area-insert,
 .area-insert:focused {
-    -fx-border-color: -light-gray-2;
+    -fx-border-color: -light-gray;
     -fx-border-width: 1px;
     -fx-border-radius: 5px;
     -fx-padding: 5px;
+    -fx-background-color: transparent;
+}
+
+.area-insert .text-area {
+    -fx-background-color: transparent;
+    -fx-border-width: 0px;
+    -fx-border-color: transparent;
+}
+
+.aside .input-field-item:hover {
+    -fx-background-color: transparent;
 }

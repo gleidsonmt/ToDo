@@ -25,7 +25,6 @@ public class CustomContextMenu<T> extends ContextMenu {
         this.target = target;
 
         target.valueProperty().addListener((_, _, val) -> {
-
             if (val != null) {
                 if (val instanceof LocalDate date) {
                     target.setText(DateUtils.format(date));
@@ -46,10 +45,12 @@ public class CustomContextMenu<T> extends ContextMenu {
                     target.setGraphic(IconUtils.getIcon(list));
                 }
             } else {
-                target.setText("");
+                target.reset();
             }
         });
     }
+
+
 
     public void show(InputFieldItem<T> target) {
         show(target, Side.TOP, 0, 0);

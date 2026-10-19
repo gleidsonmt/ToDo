@@ -2,6 +2,8 @@
 
 package io.github.gleidsonmt.todo.view.panel;
 
+import io.github.gleidsonmt.todo.view.MainView;
+import io.github.gleidsonmt.todo.view.aside.Aside;
 import io.github.gleidsonmt.todo.view.panel.containers.DoubleListContainer;
 import io.github.gleidsonmt.todo.view.panel.containers.EmptyContainer;
 import io.github.gleidsonmt.todo.view.panel.containers.ListContainer;
@@ -102,6 +104,10 @@ public class ListRoot extends VBox {
 
     public TaskItem getSelected() {
         return this.getContainer().getSelected();
+    }
+
+    public  ObjectProperty<TaskItem> selectedProperty() {
+        return this.getContainer().selectedProperty();
     }
 
     public ObjectProperty<ListViewModel> actualListProperty() {

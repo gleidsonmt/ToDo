@@ -155,17 +155,19 @@ public class Panel extends Container {
         this.container.getChildren().setAll(listRoot);
         listRoot.actualListProperty().addListener((observable, oldValue, newValue) -> this.inputContainer.reset());
 
-        createBackgroundLines();
+//        createBackgroundLines();
     }
+
+    BackgroundLines backgroundLines = new BackgroundLines(prefHeightProperty(), Insets.EMPTY);
 
     public void createLines(boolean val) {
         System.out.println("val = " + val);
-//        createBackgroundLines();
-//        if (val) {
-//            createBackgroundLines();
-//        } else {
-//            getChildren().remove(backgroundLines);
-//        }
+        createBackgroundLines();
+        if (val) {
+            createBackgroundLines();
+        } else {
+            getChildren().remove(backgroundLines);
+        }
     }
 
     public void removeBackgroundLines() {

@@ -1,44 +1,74 @@
 package io.github.gleidsonmt.todo.view.aside;
 
-import io.github.gleidsonmt.glad.tail.ClassConverter;
-import io.github.gleidsonmt.todo.view_model.ViewModel;
+import io.github.gleidsonmt.todo.model.recurrence.Recurrence;
+import io.github.gleidsonmt.todo.model.recurrence.RecurrenceType;
+import io.github.gleidsonmt.todo.view.panel.input.InputFieldItem;
+import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.collections.ListChangeListener;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.css.PseudoClass;
-import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+
+import java.time.DayOfWeek;
+import java.util.List;
+import java.util.TreeSet;
 
 /**
  * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Created on 15/10/2026
  */
-public class Item extends GridPane {
+public abstract class Item<T> extends GridPane {
 
     private final BooleanProperty selected = new SimpleBooleanProperty(false);
     private final CloseButton closeButton = new CloseButton();
+    private InputFieldItem<T> node;
 
-    public Item(Node node, ViewModel viewModel) {
+    public Item(InputFieldItem<T> node, TaskViewModel viewModel) {
+        this.node = node;
         getStyleClass().addAll("bg-transparent h-50 align-center aside-item".split("\\s+"));
         getChildren().setAll(node);
         GridPane.setColumnIndex(closeButton, 1);
         GridPane.setHgrow(node, Priority.ALWAYS);
 
-        setOnMouseClicked(_ -> setSelected(true));
-
         pseudoClassStateChanged(PseudoClass.getPseudoClass("selected"), isSelected());
 
-        selectedProperty().addListener((_, _, val) -> {
-            if (val && !getChildren().contains(closeButton)) getChildren().add(closeButton);
-            else getChildren().remove(closeButton);
-            pseudoClassStateChanged(PseudoClass.getPseudoClass("selected"), val);
+        node.valueProperty().addListener((_, _, newValue) -> {
+            var needSelection = newValue instanceof Boolean ? (Boolean) newValue : newValue != null;
+
+            setSelected(needSelection);
+
+            if (needSelection) {
+                if (!getChildren().contains(closeButton)) getChildren().add(closeButton);
+            } else {
+                getChildren().remove(closeButton);
+            }
+
+//            if (newValue instanceof Boolean val) {
+//                setSelected(val);
+//
+//                if (val  && !getChildren().contains(closeButton)) getChildren().add(closeButton);
+//                else getChildren().remove(closeButton);
+//            } else  {
+//                setSelected(newValue != null);
+//
+//                if (newValue != null && !getChildren().contains(closeButton)) getChildren().add(closeButton);
+//                else getChildren().remove(closeButton);
+//            }
+
+
         });
 
+        selectedProperty().addListener((_, _, val) -> pseudoClassStateChanged(PseudoClass.getPseudoClass("selected"), val));
+
         closeButton.setOnMouseClicked(_ -> {
-            getChildren().remove(closeButton);
+            System.out.println("node = " + getNode().getValue());
+            node.setValue(null);
             setSelected(false);
             pseudoClassStateChanged(PseudoClass.getPseudoClass("selected"), false);
+            getChildren().remove(closeButton);
         });
     }
 
@@ -53,4 +83,10 @@ public class Item extends GridPane {
     public void setSelected(boolean selected) {
         this.selected.set(selected);
     }
+
+    public InputFieldItem<T> getNode() {
+        return node;
+    }
+
+    public abstract void bind();
 }

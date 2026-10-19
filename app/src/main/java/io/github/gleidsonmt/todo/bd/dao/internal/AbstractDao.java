@@ -154,6 +154,16 @@ public abstract class AbstractDao<T extends DTO> implements Dao<T>, ListDao<T> {
         return execute;
     }
 
+    public boolean delete(String where) {
+        connect();
+        String sql = modelSQLCreator.create(DaoAction.DELETE, where);
+        boolean execute = data.executeUpdate(sql);
+        logger(sql);
+        if (autoCloseable)
+            close();
+        return execute;
+    }
+
 
     /**
      * Get the item using its id.

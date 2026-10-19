@@ -159,4 +159,8 @@ public abstract class ListContainer extends VBox {
     public IntegerProperty sizeProperty() {
         return this.size;
     }
+
+    public ObjectProperty<TaskItem> selectedProperty() {
+        return selected;
+    }
 }

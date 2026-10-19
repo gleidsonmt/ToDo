@@ -16,8 +16,7 @@ public class FavoriteButton extends ToggleButton {
     public FavoriteButton() {
 
         this.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-        this.setPrefSize(30, 30);
-        this.getStyleClass().add("btn-favorite");
+        this.getStyleClass().addAll("btn-favorite min-w-30 min-h-30".split("\\s+"));
         setGraphic(new SVGIcon(Icon.STAR));
         //
         this.selectedProperty().addListener((_, _, newValue) -> {

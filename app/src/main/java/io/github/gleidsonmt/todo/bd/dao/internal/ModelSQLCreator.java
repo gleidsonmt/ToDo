@@ -48,6 +48,14 @@ public class ModelSQLCreator<T extends DTO> {
         this.table = clazz.getSimpleName().replace("Dao", "").toLowerCase();
     }
 
+
+
+    public String createFetch(String condition) {
+        this.action = DaoAction.FETCH;
+//        "select * from " + getTable() + " " + condition + ";"
+        return "select * from " + table + " " + condition + ";";
+    }
+
     public String create(DaoAction action, long id) {
         this.action = action;
         if (action.equals(DaoAction.GET)) {
@@ -56,12 +64,6 @@ public class ModelSQLCreator<T extends DTO> {
             return prepareDelete(id);
         }
         return null;
-    }
-
-    public String createFetch(String condition) {
-        this.action = DaoAction.FETCH;
-//        "select * from " + getTable() + " " + condition + ";"
-        return "select * from " + table + " " + condition + ";";
     }
 
     public String create(DaoAction action, T model) {
@@ -76,6 +78,14 @@ public class ModelSQLCreator<T extends DTO> {
         return null;
     }
 
+    public String create(DaoAction action, String where) {
+        this.action = action;
+        if (action.equals(DaoAction.DELETE)) {
+            return prepareDelete(where);
+        }
+        return null;
+    }
+
     private String prepareGet(long id) {
         return "select * from " + table + " where id = " + id + ";";
     }
@@ -86,6 +96,10 @@ public class ModelSQLCreator<T extends DTO> {
 
     private String prepareDelete(long id) {
         return "delete from " + table + " where id = " + id + ";";
+    }
+
+    private String prepareDelete(String where) {
+        return "delete from " + table + " where " + where + ";";
     }
 
     DaoAction getAction() {

@@ -10,7 +10,7 @@ import javafx.scene.text.Text;
 public class AreaInsert extends TextArea {
     public AreaInsert() {
         setWrapText(true);
-        getStyleClass().addAll("area-insert h-80".split("\\s+"));
+        getStyleClass().addAll("area-insert h-80 border-transparent".split("\\s+"));
         setPromptText("Add a note");
         textProperty().addListener((_, _, newValue) -> {
             // Criamos um nó de texto temporário para calcular o tamanho real do conteúdo
@@ -21,12 +21,13 @@ public class AreaInsert extends TextArea {
             textHelper.setText(newValue);
 
             // Obtém a altura necessária para o texto e adiciona uma margem de respiro
-            double newHeight = textHelper.getLayoutBounds().getHeight() + 30;
+            double newHeight = textHelper.getLayoutBounds().getHeight() + 80;
 
             // Define a nova altura respeitando uma altura mínima
-            setPrefHeight(Math.max(newHeight, 80));
-            setMaxHeight(Math.max(newHeight, 80));
-            setMinHeight(Math.max(newHeight, 80));
+            setPrefHeight(Math.max(newHeight, 60));
+            setMaxHeight(Math.max(newHeight, 60));
+            setMinHeight(Math.max(newHeight, 60));
+
         });
     }
 }

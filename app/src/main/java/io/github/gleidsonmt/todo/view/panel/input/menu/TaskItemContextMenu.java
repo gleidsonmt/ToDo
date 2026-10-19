@@ -1,5 +1,3 @@
-
-
 package io.github.gleidsonmt.todo.view.panel.input.menu;
 
 import java.time.LocalDate;

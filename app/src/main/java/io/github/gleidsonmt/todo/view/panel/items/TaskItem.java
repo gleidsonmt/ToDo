@@ -128,7 +128,7 @@ public class TaskItem extends GridToggle {
             this.fireEvent(new TaskChangeEvent(TaskChangeEvent.FAVORITE_CHANGED, this.getViewModel()));
         });
 
-        this.getViewModel().myDayProperty().addListener((_, _, _) -> {
+        this.getViewModel().myDayProperty().addListener((_, _, val) -> {
             this.getViewModel().update();
             this.fireEvent(new TaskChangeEvent(TaskChangeEvent.MY_DAY_CHANGED, this.getViewModel()));
         });
@@ -146,11 +146,13 @@ public class TaskItem extends GridToggle {
         });
 
         this.selectedProperty().addListener((_,_,val) -> {
+
             if (getScene() == null) return;
+
             Root root = (Root) this.getScene().getRoot();
             MainView mainView = (MainView) root.getContent();
+            this.getViewModel().dispose();
             mainView.setRight(new Aside(this.getViewModel()));
-//            System.out.println("root = " + root.getContent());
         });
     }
 
@@ -200,6 +202,8 @@ public class TaskItem extends GridToggle {
     public TaskViewModel getViewModel() {
         return this.viewModel;
     }
+
+
 
     public ListViewModel getListViewModel() {
         return this.listViewModel;

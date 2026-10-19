@@ -144,6 +144,16 @@ public class TaskViewModel extends ViewModel {
         this.listID.set(id);
     }
 
+    public void dispose() {
+        this.nameProperty().unbind();
+        this.dueDateProperty().unbind();
+        this.remindProperty().unbind();
+        this.myDayProperty().unbind();
+        this.completedProperty().unbind();
+        this.importantProperty().unbind();
+        this.listIDProperty().unbind();
+    }
+
     @Override
     public String toString() {
         return "Task{" + "id=" + super.getId() +

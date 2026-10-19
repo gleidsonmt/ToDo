@@ -24,13 +24,19 @@ public class InputFieldItem<T> extends Label {
     protected CustomContextMenu<T> contextMenu;
     protected ObjectProperty<T> value;
     protected boolean center;
+    private String placeholder;
 
     public InputFieldItem(Icon icon, String toolTipText) {
+        this(null, icon, toolTipText);
+    }
+
+    public InputFieldItem(String placeholder, Icon icon, String toolTipText) {
 
         this.value = new SimpleObjectProperty<>();
         setTooltip(new Tooltip(toolTipText));
         setGraphic(new SVGIcon(icon));
-        setText(null);
+        this.placeholder = placeholder;
+        setText(placeholder);
         getStyleClass().add("input-field-item");
 
         this.addEventFilter(MouseEvent.MOUSE_CLICKED, _ -> {
@@ -65,5 +71,14 @@ public class InputFieldItem<T> extends Label {
 
     public boolean isCenter() {
         return this.center;
+    }
+
+
+    public String getPlaceholder() {
+        return placeholder;
+    }
+
+    public void reset() {
+        setText(placeholder);
     }
 }

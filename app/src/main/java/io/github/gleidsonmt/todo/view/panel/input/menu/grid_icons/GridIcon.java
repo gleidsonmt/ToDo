@@ -13,6 +13,7 @@ import javafx.scene.shape.Rectangle;
 public class GridIcon extends GridPane {
 
     public GridIcon() {
+        getStyleClass().add("grid-icon");
         setMinHeight(20);
         setMinWidth(20);
     }
