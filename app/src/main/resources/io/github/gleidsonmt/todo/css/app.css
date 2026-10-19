@@ -846,6 +846,10 @@ InputFieldOptions:medium {
     -fx-content-display: graphic-only;
 }
 
+.aside {
+    -fx-background-color: -fx-background;
+}
+
 .aside-item {
     -fx-background-color: transparent;
 }
