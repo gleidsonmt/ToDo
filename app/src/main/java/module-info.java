@@ -47,6 +47,7 @@ module io.github.gleidsonmt.todo {
     exports io.github.gleidsonmt.todo;
     exports io.github.gleidsonmt.todo.view;
     exports io.github.gleidsonmt.todo.model;
+    exports io.github.gleidsonmt.todo.model.recurrence;
     exports io.github.gleidsonmt.todo.view_model;
     exports io.github.gleidsonmt.todo.view.nav;
     exports io.github.gleidsonmt.todo.view.panel;

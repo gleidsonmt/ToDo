@@ -41,7 +41,7 @@ public class MultipleBlockSection extends Section {
 
                 var finded = new DaoRecurrence().findWhere("task_id = " + viewModel.getId());
                 RecurrenceMapper converter = RecurrenceMapper.INSTANCE;
-                finded.ifPresent(recurrence -> getNode().setValue(converter.toViewModel(recurrence, new RecurrenceViewModel())));
+
 
                 getNode().valueProperty().addListener((_, _, newValue) -> {
                     if (newValue != null) {
@@ -51,6 +51,8 @@ public class MultipleBlockSection extends Section {
                         dao.delete("task_id = " + viewModel.getId());
                     }
                 });
+
+                finded.ifPresent(recurrence -> getNode().setValue(converter.toViewModel(recurrence, new RecurrenceViewModel())));
             }
         };
 

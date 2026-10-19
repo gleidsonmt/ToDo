@@ -64,7 +64,6 @@ public abstract class Item<T> extends GridPane {
         selectedProperty().addListener((_, _, val) -> pseudoClassStateChanged(PseudoClass.getPseudoClass("selected"), val));
 
         closeButton.setOnMouseClicked(_ -> {
-            System.out.println("node = " + getNode().getValue());
             node.setValue(null);
             setSelected(false);
             pseudoClassStateChanged(PseudoClass.getPseudoClass("selected"), false);

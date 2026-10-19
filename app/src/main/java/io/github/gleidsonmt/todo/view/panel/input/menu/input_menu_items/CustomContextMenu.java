@@ -24,30 +24,30 @@ public class CustomContextMenu<T> extends ContextMenu {
     public CustomContextMenu(InputFieldItem<T> target) {
         this.target = target;
 
-        target.valueProperty().addListener((_, _, val) -> {
-            if (val != null) {
-                if (val instanceof LocalDate date) {
-                    target.setText(DateUtils.format(date));
-                    target.getTooltip().setText("");
-                }
-                if (val instanceof LocalDateTime dateTime) {
-                    target.setText(DateUtils.format("Remind at ", dateTime.toLocalTime(), " at ", dateTime.toLocalDate()));
-                }
-                if (val instanceof RecurrenceViewModel recurrence) {
-                    target.setText(DateUtils.format(recurrence));
-                }
-                if (val instanceof List list) {
-                    target.setText(
-                            StringUtils.isFixedList(list.name()) ?
-                                    I18n.get(list.name()) :
-                                    StringUtils.name(list.name())
-                    );
-                    target.setGraphic(IconUtils.getIcon(list));
-                }
-            } else {
-                target.reset();
-            }
-        });
+//        target.valueProperty().addListener((_, _, val) -> {
+//            if (val != null) {
+//                if (val instanceof LocalDate date) {
+//                    target.setText(DateUtils.format(date));
+//                    target.getTooltip().setText("");
+//                }
+//                if (val instanceof LocalDateTime dateTime) {
+//                    target.setText(DateUtils.format("Remind at ", dateTime.toLocalTime(), " at ", dateTime.toLocalDate()));
+//                }
+//                if (val instanceof RecurrenceViewModel recurrence) {
+//                    target.setText(DateUtils.format(recurrence));
+//                }
+//                if (val instanceof List list) {
+//                    target.setText(
+//                            StringUtils.isFixedList(list.name()) ?
+//                                    I18n.get(list.name()) :
+//                                    StringUtils.name(list.name())
+//                    );
+//                    target.setGraphic(IconUtils.getIcon(list));
+//                }
+//            } else {
+//                target.reset();
+//            }
+//        });
     }
 
 

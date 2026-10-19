@@ -16,7 +16,7 @@ import java.util.TreeSet;
  */
 public class RecurrenceViewModel extends ViewModel {
 
-    private final ObjectProperty<RecurrenceType> recurrenceType = new SimpleObjectProperty<>();
+    private final ObjectProperty<RecurrenceType> type = new SimpleObjectProperty<>();
     private final IntegerProperty gap = new SimpleIntegerProperty(1);
     private final LongProperty id = new SimpleLongProperty();
     private final LongProperty taskID = new SimpleLongProperty();
@@ -28,9 +28,19 @@ public class RecurrenceViewModel extends ViewModel {
     }
 
     public RecurrenceViewModel(RecurrenceType type) {
-        this.recurrenceType.set(type);
+        this.type.set(type);
         if (type == RecurrenceType.WEEKDAYS) {
             daysOfWeek.removeAll(List.of(DayOfWeek.SUNDAY, DayOfWeek.SATURDAY));
+        }
+    }
+
+    public void setType(RecurrenceType type) {
+        RecurrenceType old = this.type.get();
+        this.type.set(type);
+        if (type == RecurrenceType.WEEKDAYS) {
+            daysOfWeek.removeAll(List.of(DayOfWeek.SUNDAY, DayOfWeek.SATURDAY));
+        } else if (old == RecurrenceType.WEEKDAYS) {
+            daysOfWeek.addAll(List.of(DayOfWeek.SUNDAY, DayOfWeek.SATURDAY));
         }
     }
 
@@ -67,16 +77,15 @@ public class RecurrenceViewModel extends ViewModel {
     }
 
     public RecurrenceType getType() {
-        return recurrenceType.get();
+        return type.get();
     }
-
 
     @Override
     public String toString() {
         return "{\"RecurrenceViewModel\":"
                + ", \"id\":" + id.get()
                + ", \"daysOfWeek\":" + daysOfWeek
-               + ", \"type\":" + recurrenceType.get()
+               + ", \"type\":" + type.get()
                + ", \"gap\":" + gap.get()
                + ", \"taskID\":" + taskID.get()
                + "}";

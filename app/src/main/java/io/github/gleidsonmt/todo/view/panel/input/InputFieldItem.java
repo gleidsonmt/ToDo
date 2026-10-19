@@ -3,13 +3,22 @@ package io.github.gleidsonmt.todo.view.panel.input;
 import io.github.gleidsonmt.glad.base.Root;
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
+import io.github.gleidsonmt.todo.model.List;
+import io.github.gleidsonmt.todo.model.RecurrenceViewModel;
+import io.github.gleidsonmt.todo.utils.I18n;
+import io.github.gleidsonmt.todo.utils.IconUtils;
+import io.github.gleidsonmt.todo.utils.StringUtils;
 import io.github.gleidsonmt.todo.view.panel.input.menu.input_menu_items.CustomContextMenu;
+import io.github.gleidsonmt.todo.view.panel.input.menu.input_menu_items.DateUtils;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.css.PseudoClass;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * Description:
@@ -44,14 +53,39 @@ public class InputFieldItem<T> extends Label {
                     .flow().hide();
         });
 
-        value.addListener((_, _, newValue) -> {
+        value.addListener((_, _, val) -> {
                 if (icon.equals(Icon.HOME)) return;
-                pseudoClassStateChanged(PseudoClass.getPseudoClass("selected"), newValue != null);
+                pseudoClassStateChanged(PseudoClass.getPseudoClass("selected"), val != null);
+
+                if (val != null) {
+                    if (val instanceof LocalDate date) {
+                        setText(DateUtils.format(date));
+                        getTooltip().setText("");
+                    }
+                    if (val instanceof LocalDateTime dateTime) {
+                        setText(DateUtils.format("Remind at ", dateTime.toLocalTime(), " at ", dateTime.toLocalDate()));
+                    }
+                    if (val instanceof RecurrenceViewModel recurrence) {
+                        setText(DateUtils.format(recurrence));
+                    }
+                    if (val instanceof List list) {
+                        setText(
+                                StringUtils.isFixedList(list.name()) ?
+                                        I18n.get(list.name()) :
+                                        StringUtils.name(list.name())
+                        );
+                        setGraphic(IconUtils.getIcon(list));
+                    }
+                } else {
+                    reset();
+                }
         });
 
 //         setWrapText(true);
 
     }
+
+
 
     public void setValue(T value) {
         this.value.set(value);
