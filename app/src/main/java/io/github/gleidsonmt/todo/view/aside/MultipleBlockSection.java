@@ -3,11 +3,10 @@ package io.github.gleidsonmt.todo.view.aside;
 import io.github.gleidsonmt.todo.bd.dao.DaoRecurrence;
 import io.github.gleidsonmt.todo.model.RecurrenceViewModel;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
-import io.github.gleidsonmt.todo.view_model.converter.RecurrenceConverter;
 import io.github.gleidsonmt.todo.view_model.map.RecurrenceMapper;
-import io.github.gleidsonmt.todo.view_model.map.TaskMapper;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import javafx.beans.binding.BooleanBinding;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ObjectProperty;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -18,22 +17,34 @@ import java.time.LocalDateTime;
  */
 public class MultipleBlockSection extends Section {
 
+    private final Item<LocalDateTime> itemRemind;
+    private final Item<LocalDate> itemDueDate;
+    private final Item<RecurrenceViewModel> itemRecurrence;
+
     public MultipleBlockSection(TaskViewModel viewModel) {
-        Item<LocalDateTime> itemRemind = new Item<>(new RemindLabel()) {
+
+        this.itemRemind = new Item<>(new RemindLabel()) {
             @Override
             public void bind() {
-                getNode().valueProperty().addListener((_, _, newValue) -> viewModel.setRemind(newValue));
+//                getNode().valueProperty().addListener((_, _, newValue) -> viewModel.setRemind(newValue));
+                getNode().valueProperty().bindBidirectional(viewModel.remindProperty());
                 getNode().setValue(viewModel.getRemind());
             }
         };
-        Item<LocalDate> itemDueDate = new Item<>(new DueDateLabel()) {
+
+        this.itemDueDate = new Item<>(new DueDateLabel()) {
             @Override
             public void bind() {
-                getNode().valueProperty().addListener((_, _, newValue) -> viewModel.setDueDate(newValue));
-                getNode().setValue(viewModel.getDueDate());
+//                getNode().valueProperty().addListener((_, _, newValue) -> {
+//                    viewModel.setDueDate(newValue);
+//                    viewModel.setMyDay(newValue != null);
+//                });
+                getNode().valueProperty().bindBidirectional(viewModel.dueDateProperty());
+//                getNode().setValue(viewModel.getDueDate());
             }
         };
-        Item<RecurrenceViewModel> itemRecurrence = new Item<>(new RecurrenceLabel()) {
+
+        this.itemRecurrence = new Item<>(new RecurrenceLabel()) {
 
             @Override
             public void bind() {
@@ -59,5 +70,25 @@ public class MultipleBlockSection extends Section {
         itemRemind.getStyleClass().addAll("border-b-1 border-light-gray pd-2 ".split("\\s+"));
         itemDueDate.getStyleClass().addAll("border-b-1 border-light-gray pd-2 ".split("\\s+"));
         getChildren().setAll(itemRemind, itemDueDate, itemRecurrence);
+    }
+
+    public BooleanProperty selectedRemind() {
+        return this.itemRemind.selectedProperty();
+    }
+
+    public Item<LocalDate> getItemDueDate() {
+        return this.itemDueDate;
+    }
+
+    public BooleanProperty selectedDueDate() {
+        return this.itemDueDate.selectedProperty();
+    }
+
+    public BooleanProperty selectedRecurrence() {
+        return this.itemRecurrence.selectedProperty();
+    }
+
+    public ObjectProperty<LocalDate> dueDateProperty() {
+        return this.itemDueDate.getNode().valueProperty();
     }
 }

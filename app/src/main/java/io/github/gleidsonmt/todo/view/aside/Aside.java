@@ -16,6 +16,8 @@ public class Aside extends VBox {
         getChildren().setAll(new CloseButton(), new Body(viewModel),  new Footer());
         getStyleClass().addAll("w-300 border-medium-gray border-l-1 pd-10 align-center-right".split("\\s+"));
     }
+
+
 }
 
 

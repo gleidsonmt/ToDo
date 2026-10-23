@@ -6,6 +6,8 @@ import io.github.gleidsonmt.todo.events.LoginEvent;
 import io.github.gleidsonmt.todo.utils.Assets;
 import io.github.gleidsonmt.todo.view.MainView;
 import io.github.gleidsonmt.todo.view.login.HomeLayout;
+import io.github.gleidsonmt.todo.view.panel.events.TaskChangeEvent;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 
@@ -27,5 +29,7 @@ public class MainScene extends Scene {
             Root rt = (Root) this.getRoot();
             rt.setContent(new HomeLayout(null));
         });
+
+
     }
 }

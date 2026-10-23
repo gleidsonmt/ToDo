@@ -33,6 +33,7 @@ public class TaskChangeEvent extends Event {
     public static final EventType<TaskChangeEvent> FAVORITE_CHANGED = new EventType<>(ALL, "FAVORITE_CHANGED");
     public static final EventType<TaskChangeEvent> COMPLETE = new EventType<>(ALL, "COMPLETE");
     public static final EventType<TaskChangeEvent> DELETE_TASK = new EventType<>(ALL, "DELETE_TASK");
+    public static final EventType<TaskChangeEvent> DUE_DATE_CHANGED = new EventType<>(ALL, "DUE_DATE_CHANGED");
 
 
     private final long idActual;

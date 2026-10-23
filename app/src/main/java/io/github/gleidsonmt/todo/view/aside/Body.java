@@ -16,12 +16,38 @@ public class Body extends ScrollPane {
     public Body(TaskViewModel viewModel) {
         VBox body = new VBox();
         body.getStyleClass().addAll("spacing-10 pd-10".split("\\s+"));
+        var titleSection = new TitleSection(viewModel);
+        var myDaySection = new MyDaySection(viewModel);
+        var multipleBlockSection = new MultipleBlockSection(viewModel);
+        var fileSection = new FileSection(viewModel);
+        var textAreaSection = new TextAreaSection();
+
+
+
+//        multipleBlockSection.selectedDueDate().addListener(new ChangeListener<Boolean>() {
+//            @Override
+//            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+//                myDaySection.getItem().getNode().setValue(newValue);
+////                myDaySection.getItem().setSelected(newValue != null);
+//            }
+//        });
+
+//        myDaySection.getItem().getNode().valueProperty().addListener(new ChangeListener<Boolean>() {
+//            @Override
+//            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+//                multipleBlockSection.getItemDueDate().getNode().setValue(newValue != null? LocalDate.now() : null);
+////                multipleBlockSection.getItemDueDate().setSelected(newValue != null);
+//            }
+//        });
+
+//        Bindings.bind(myDaySection.selectedProperty(), multipleBlockSection.dueDateProperty().isEqualTo(LocalDate.now()));
+
         List<Section> sections = List.of(
-                new TitleSection(viewModel),
-                new MyDaySection(viewModel),
-                new MultipleBlockSection(viewModel),
-                new FileSection(viewModel),
-                new TextAreaSection()
+                titleSection,
+                myDaySection,
+                multipleBlockSection,
+                fileSection,
+                textAreaSection
         );
         for (Section section : sections) {
             section.getChildren().stream().filter(el -> el instanceof Item).map(Item.class::cast).forEach(Item::bind);

@@ -178,7 +178,6 @@ public class Panel extends Container {
     public void createBackgroundLines() {
         scroll.setFitToHeight(false);
         DoubleProperty heightProperty = new SimpleDoubleProperty();
-        System.out.println("getChildren() = " + getChildren());
 //        getListRoot()
         DoubleBinding heightBinding =
                 // Gets the panel height and subtract the top border and bottom limits.

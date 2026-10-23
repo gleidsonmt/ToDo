@@ -43,6 +43,7 @@ public class TaskViewModel extends ViewModel {
     private final ObjectProperty<LocalDate> createdAt = new SimpleObjectProperty<>();
 
 
+
     public TaskViewModel save() {
         var converted = converter.toDTO(this);
         this.setId(dao.store(converted));
@@ -53,13 +54,15 @@ public class TaskViewModel extends ViewModel {
         daoRecurrence.store(rec);
     }
 
+    // commit in db
     public void update() {
-        // commit in db
         var item = converter.toDTO(this);
         dao.update(item);
     }
 
+    // delete item in db
     public void delete() {
+
         var item = converter.toDTO(this);
         dao.delete(item);
     }

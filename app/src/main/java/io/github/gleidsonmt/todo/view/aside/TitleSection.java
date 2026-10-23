@@ -1,11 +1,16 @@
 package io.github.gleidsonmt.todo.view.aside;
 
+import io.github.gleidsonmt.todo.view.panel.ListRoot;
+import io.github.gleidsonmt.todo.view.panel.events.TaskChangeEvent;
+import io.github.gleidsonmt.todo.view.panel.input.InputFieldItem;
 import io.github.gleidsonmt.todo.view.panel.items.FavoriteButton;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import io.github.gleidsonmt.todo.view_model.UserViewModel;
 import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Task;
+import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -25,14 +30,15 @@ public class TitleSection extends Section {
 
         CheckBox checkBox = new CheckBox();
         checkBox.getStyleClass().addAll("check-circle".split("\\s+"));
-        checkBox.setSelected(viewModel.isCompleted());
-        viewModel.completedProperty().bindBidirectional(checkBox.selectedProperty());
+        checkBox.selectedProperty().bindBidirectional(viewModel.completedProperty());
+//        checkBox.selectedProperty().addListener((_, _, _) -> {
+//            fireEvent(new TaskChangeEvent(TaskChangeEvent.COMPLETE, viewModel));
+//        });
 
         TextField field = new TextField("Praticar no duolingo");
 
         field.setText(viewModel.getName());
         viewModel.nameProperty().bind(field.textProperty());
-
 
         field.focusedProperty().addListener((_, _, newValue) -> {
             if (!newValue) viewModel.update();
@@ -41,8 +47,11 @@ public class TitleSection extends Section {
         field.getStyleClass().addAll("inside-text-field text-14".split("\\s+"));
 
         FavoriteButton favoriteButton = new FavoriteButton();
-        favoriteButton.setSelected(viewModel.isImportant());
-        viewModel.importantProperty().bind(favoriteButton.selectedProperty());
+        favoriteButton.selectedProperty().bindBidirectional(viewModel.importantProperty());
+
+        favoriteButton.selectedProperty().addListener((_, _, _) -> {
+           fireEvent(new TaskChangeEvent(TaskChangeEvent.FAVORITE_CHANGED, viewModel));
+        });
 
         container.add(checkBox, 0,0);
         container.add(field, 1,0);
@@ -50,4 +59,6 @@ public class TitleSection extends Section {
         container.add(favoriteButton, 2,0);
         getChildren().add(container);
     }
+
+
 }

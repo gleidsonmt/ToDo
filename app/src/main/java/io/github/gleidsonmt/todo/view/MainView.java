@@ -3,21 +3,15 @@
 package io.github.gleidsonmt.todo.view;
 
 import io.github.gleidsonmt.glad.base.Root;
-import io.github.gleidsonmt.glad.theme.Css;
-import io.github.gleidsonmt.glad.theme.ThemeProvider;
 import io.github.gleidsonmt.todo.model.ListType;
-import io.github.gleidsonmt.todo.model.User;
-import io.github.gleidsonmt.todo.view.aside.Aside;
 import io.github.gleidsonmt.todo.view.nav.DrawerItem;
 import io.github.gleidsonmt.todo.view.nav.SideNav;
 import io.github.gleidsonmt.todo.view.panel.ListRoot;
 import io.github.gleidsonmt.todo.view.panel.Panel;
 import io.github.gleidsonmt.todo.view.panel.events.TaskChangeEvent;
-import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import io.github.gleidsonmt.todo.view_model.UserViewModel;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
-import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 

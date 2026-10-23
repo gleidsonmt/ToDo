@@ -35,7 +35,13 @@ import java.util.Comparator;
 public abstract class ListContainer extends VBox {
 
     protected ObservableList<TaskViewModel> data = FXCollections.observableArrayList(
-            viewModel -> new Observable[]{viewModel.completedProperty(), viewModel.importantProperty(), viewModel.myDayProperty(), viewModel.listIDProperty()});
+            viewModel -> new Observable[]{
+                    viewModel.completedProperty(),
+                    viewModel.dueDateProperty(),
+                    viewModel.importantProperty(),
+                    viewModel.myDayProperty(),
+                    viewModel.listIDProperty()
+            });
 
 //    protected ObservableList<TaskViewModel> data = FXCollections.observableArrayList(viewModel -> new Observable[] { viewModel.completedProperty() });
 
@@ -58,9 +64,6 @@ public abstract class ListContainer extends VBox {
         // this.data = data;
         this.group = new ToggleGroup();
         this.setId("list-container");
-        // this.setStyle("-fx-border-width: 2px; -fx-border-color: gray;");
-
-//        this.getChildren().add(new EmptySection());
 
         // create a bind to maintain the selected property update from the
         // froup.

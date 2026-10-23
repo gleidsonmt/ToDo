@@ -4,6 +4,7 @@ package io.github.gleidsonmt.todo.view.panel.input;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
+import io.github.gleidsonmt.todo.model.ListType;
 import io.github.gleidsonmt.todo.model.RecurrenceViewModel;
 import io.github.gleidsonmt.todo.view.panel.Panel;
 import io.github.gleidsonmt.todo.view.panel.events.TaskChangeEvent;
@@ -184,6 +185,10 @@ public class InputField extends GridPane {
                     if (!panel.getListRoot().getActualList().isFixed()) {
                         viewModel.setListID(panel.getListRoot().getActualList().getId());
                     } else {
+                        if (panel.getListRoot().getActualList().getType() == ListType.DAILY) {
+                            viewModel.setDueDate(LocalDate.now());
+                            viewModel.setMyDay(true);
+                        }
                         viewModel.setListID(options.getTask().id());
                     }
                     viewModel.save();

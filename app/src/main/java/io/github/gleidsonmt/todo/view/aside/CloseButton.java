@@ -23,7 +23,6 @@ public class CloseButton extends Button {
                 Root root = (Root) getParent().getParent();
                 root.behavior().drawer().hide();
             }
-
         });
     }
 }

@@ -205,7 +205,6 @@ public class SideNav extends VBox {
         task.setOnSucceeded(_ -> {
             task.getValue().forEach(this::createItem);
 
-
             this.getChildren().add(new Footer());
             selectFirst();
         });

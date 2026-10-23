@@ -76,6 +76,7 @@ public class InputFieldItem<T> extends Label {
                         );
                         setGraphic(IconUtils.getIcon(list));
                     }
+
                 } else {
                     reset();
                 }
@@ -114,5 +115,6 @@ public class InputFieldItem<T> extends Label {
 
     public void reset() {
         setText(placeholder);
+
     }
 }

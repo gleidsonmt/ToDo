@@ -37,7 +37,7 @@ public class ListRoot extends VBox {
 
     private ListContainer container;
     private EmptyContainer emptyContainer;
-    private Node aside;
+    private Aside aside;
 
     private final ObjectProperty<ListViewModel> actualList = new SimpleObjectProperty<>();
 
@@ -51,7 +51,9 @@ public class ListRoot extends VBox {
     private final ChangeListener<TaskItem> updateAsideModel = (_, _, newVal) -> {
         if (newVal == null) return;
         Root root = (Root) getScene().getRoot();
-        aside = new Aside(newVal.getViewModel());
+//        if (aside == null)
+            aside = new Aside(newVal.getViewModel());
+//        else aside.setViewModel(newVal.getViewModel());
         changeRight(root.getWidth());
     };
 
@@ -83,6 +85,7 @@ public class ListRoot extends VBox {
             if (container != null) {
                 container.sizeProperty().removeListener(updateListener);
                 container.selectedProperty().removeListener(updateAsideModel);
+
             }
             this.getChildren().clear();
             updateContainer(newValue);
@@ -113,7 +116,8 @@ public class ListRoot extends VBox {
 //        return dao.fetchWhere(FXCollections.observableArrayList(), "WHERE completed = 0 AND DATE(remind) <= CURRENT_DATE AND TIME(remind) <= CURRENT_TIME");
 
         query = switch (list.getType()) {
-            case DAILY -> "my_day = 1 and DATE(due_date) == '" + LocalDate.now() + "'";
+//            case DAILY -> "my_day = 1 and DATE(due_date) == '" + LocalDate.now() + "'";
+            case DAILY -> "my_day = 1";
             case IMPORTANT -> "important = 1";
             case TASKS -> "list_id = 1";
             default -> "list_id = " + list.getId();
@@ -125,6 +129,11 @@ public class ListRoot extends VBox {
 
         update(container.sizeProperty().get() == 0);
         container.selectedProperty().addListener(updateAsideModel);
+
+        Root root = (Root) getScene().getRoot();
+        MainView mainView = (MainView) root.getContent();
+        mainView.setRight(null);
+
 
 //        panel.createLines(true);
     }

@@ -29,6 +29,7 @@ public abstract class Item<T> extends GridPane {
         node.valueProperty().addListener((_, _, newValue) -> {
             var needSelection = newValue instanceof Boolean ? (Boolean) newValue : newValue != null;
 
+
             setSelected(needSelection);
 
             if (needSelection) {
@@ -37,22 +38,11 @@ public abstract class Item<T> extends GridPane {
                 getChildren().remove(closeButton);
             }
 
-//            if (newValue instanceof Boolean val) {
-//                setSelected(val);
-//
-//                if (val  && !getChildren().contains(closeButton)) getChildren().add(closeButton);
-//                else getChildren().remove(closeButton);
-//            } else  {
-//                setSelected(newValue != null);
-//
-//                if (newValue != null && !getChildren().contains(closeButton)) getChildren().add(closeButton);
-//                else getChildren().remove(closeButton);
-//            }
-
-
         });
 
-        selectedProperty().addListener((_, _, val) -> pseudoClassStateChanged(PseudoClass.getPseudoClass("selected"), val));
+        selectedProperty().addListener((_, _, val) -> {
+            pseudoClassStateChanged(PseudoClass.getPseudoClass("selected"), val);
+        });
 
         closeButton.setOnMouseClicked(_ -> {
             node.setValue(null);
