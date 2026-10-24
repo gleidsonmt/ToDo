@@ -141,7 +141,9 @@ public class DoubleListContainer extends ListContainer {
             cancel.setCancelButton(true);
             cancel.setOnAction(_ -> root.behavior().dialog().hide());
             confirm.setOnAction(_ -> {
-
+                getData().remove(e.getModel());
+                e.getModel().delete();
+                cancel.fire();
             });
 
             HBox buttonsBar = new HBox(confirm, cancel);
@@ -158,11 +160,9 @@ public class DoubleListContainer extends ListContainer {
                     .content(container)
                     .width(-1)
                     .height(-1)
-//                    .buttons(confirm, cancel)
                     .show();
 
-//            getData().remove(e.getModel());
-//            e.getModel().delete();
+
         });
 
     }
