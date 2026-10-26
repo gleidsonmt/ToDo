@@ -18,12 +18,12 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-
-import java.time.LocalDate;
 
 /**
  * Description:
@@ -48,13 +48,19 @@ public class ListRoot extends VBox {
         changeRight(newVal.doubleValue());
     };
 
-    private final ChangeListener<TaskItem> updateAsideModel = (_, _, newVal) -> {
-        if (newVal == null) return;
-        Root root = (Root) getScene().getRoot();
+    private final EventHandler<MouseEvent> mouseEventHandler = new EventHandler<>() {
+        @Override
+        public void handle(MouseEvent event) {
+            if (event.getButton() == MouseButton.PRIMARY) {
+//                if (newVal == null) return;
+
+                Root root = (Root) getScene().getRoot();
 //        if (aside == null)
-            aside = new Aside(newVal.getViewModel());
+                aside = new Aside(getSelected().getViewModel());
 //        else aside.setViewModel(newVal.getViewModel());
-        changeRight(root.getWidth());
+                changeRight(root.getWidth());
+            }
+        }
     };
 
     private void changeRight(double val) {
@@ -63,13 +69,17 @@ public class ListRoot extends VBox {
 
         double breakPoint = 1000;
         if (val > breakPoint) {
+            if (root.isBlocked()) return;
+
             root.behavior()
                     .drawer()
                     .hide();
+
             mainView.setRight(aside);
         } else {
-            if (root.behavior().drawer().isShowing()) return;
+//            if (root.behavior().drawer().isShowing()) return;
             mainView.setRight(null);
+            if (root.isBlocked()) return;
             root.behavior()
                     .drawer()
                     .content(aside)
@@ -84,8 +94,6 @@ public class ListRoot extends VBox {
         this.actualList.addListener((_, _, newValue) -> {
             if (container != null) {
                 container.sizeProperty().removeListener(updateListener);
-                container.selectedProperty().removeListener(updateAsideModel);
-
             }
             this.getChildren().clear();
             updateContainer(newValue);
@@ -128,7 +136,7 @@ public class ListRoot extends VBox {
         container.load();
 
         update(container.sizeProperty().get() == 0);
-        container.selectedProperty().addListener(updateAsideModel);
+        container.setOnMouseClicked(mouseEventHandler);
 
         Root root = (Root) getScene().getRoot();
         MainView mainView = (MainView) root.getContent();
