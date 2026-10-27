@@ -56,7 +56,7 @@ public class Header extends GridPane {
 //        Image img = folder.getAvatar(user.getImageUrl());
 //
         this.avatarView
-                .setImage(img == null ? Assets.getImage("default_avatar.jpg") : img);
+                .setImage(img == null ? Assets.getImage("default_avatar.jpg", 40) : img);
 //                .setImage(img == null || user.getImageUrl().isBlank() ? Assets.getImage("default_avatar.jpg") : img);
 //
         init();

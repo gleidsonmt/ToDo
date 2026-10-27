@@ -2,7 +2,6 @@
 
 package io.github.gleidsonmt.todo.view.panel.items;
 
-import io.github.gleidsonmt.todo.model.ListType;
 import io.github.gleidsonmt.todo.view.panel.events.TaskChangeEvent;
 import io.github.gleidsonmt.todo.view.panel.input.menu.TaskItemContextMenu;
 import io.github.gleidsonmt.todo.view.panel.items.options.Options;
@@ -12,7 +11,6 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.beans.value.WeakChangeListener;
 import javafx.css.PseudoClass;
 import javafx.event.EventType;
 import javafx.geometry.VPos;

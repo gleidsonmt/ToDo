@@ -1,12 +1,10 @@
-package io.github.gleidsonmt.todo.view.aside;
+package io.github.gleidsonmt.todo.view.aside.sections;
 
-import io.github.gleidsonmt.todo.view.panel.ListRoot;
-import io.github.gleidsonmt.todo.view.panel.containers.ListContainer;
+import io.github.gleidsonmt.todo.view.aside.Item;
+import io.github.gleidsonmt.todo.view.aside.labels.MyDayLabel;
 import io.github.gleidsonmt.todo.view.panel.events.TaskChangeEvent;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import javafx.beans.property.BooleanProperty;
-
-import java.time.LocalDate;
 
 /**
  * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>

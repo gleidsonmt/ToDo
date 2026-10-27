@@ -12,9 +12,13 @@ import io.github.gleidsonmt.todo.global.Global;
 import io.github.gleidsonmt.todo.logger.LogFormatter;
 import io.github.gleidsonmt.todo.utils.Assets;
 import io.github.gleidsonmt.todo.utils.I18n;
+import io.github.gleidsonmt.todo.view.MainView;
 import io.github.gleidsonmt.todo.view.login.LoginView;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -80,6 +84,15 @@ public class App extends Application {
 
         LoaderView loaderView = new LoaderView();
         Root root = new Root(loaderView);
+
+        root.contentProperty().addListener(new ChangeListener<Node>() {
+            @Override
+            public void changed(ObservableValue<? extends Node> observable, Node oldValue, Node newValue) {
+                if (newValue instanceof MainView mainView) {
+                    mainView.setRight(null);
+                }
+            }
+        });
 
         Scene scene = new MainScene(root, width, height);
 

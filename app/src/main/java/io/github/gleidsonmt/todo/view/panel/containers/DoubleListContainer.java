@@ -129,41 +129,7 @@ public class DoubleListContainer extends ListContainer {
             }
         });
 
-        this.addEventFilter(TaskChangeEvent.DELETE_TASK, e -> {
-            logger.info(() -> "[TaskChangeEvent, Type = " + e.getEventType() + " ] -> " + e.getModel());
-            Root root = (Root) getScene().getRoot();
 
-            var title = new Text("Delete Task");
-            title.getStyleClass().addAll("text-18 bold".split("\\s+"));
-
-            var confirm = new Button("Confirm");
-            var cancel = new Button("Cancel");
-            cancel.setCancelButton(true);
-            cancel.setOnAction(_ -> root.behavior().dialog().hide());
-            confirm.setOnAction(_ -> {
-                getData().remove(e.getModel());
-                e.getModel().delete();
-                cancel.fire();
-            });
-
-            HBox buttonsBar = new HBox(confirm, cancel);
-            buttonsBar.getStyleClass().addAll("align-center-left spacing-5".split("\\s+"));
-
-            var flow = new TextFlow(new Text("\"" + e.getModel().getName() + "\" will be deleted permanently"));
-            VBox container = new VBox(title, flow, buttonsBar);
-
-            container.getStyleClass().addAll("bg-background pd-20 align-center-left rounded spacing-10".split("\\s+"));
-
-            root.behavior().dialog()
-                    .block()
-                    .with(WrapperEffect.GRAY)
-                    .content(container)
-                    .width(-1)
-                    .height(-1)
-                    .show();
-
-
-        });
 
     }
 }

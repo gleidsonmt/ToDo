@@ -13,7 +13,7 @@ public class Aside extends VBox {
         var close = new CloseButton();
         getStyleClass().addAll("aside".split("\\s+"));
         close.getStyleClass().addAll("hover:bg-medium-gray".split("\\s+"));
-        getChildren().setAll(new CloseButton(), new Body(viewModel),  new Footer());
+        getChildren().setAll(new CloseButton(), new Body(viewModel),  new Footer(viewModel));
         getStyleClass().addAll("w-300 border-medium-gray border-l-1 pd-10 align-center-right".split("\\s+"));
     }
 

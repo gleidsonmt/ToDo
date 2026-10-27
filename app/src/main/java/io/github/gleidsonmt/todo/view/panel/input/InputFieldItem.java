@@ -35,16 +35,21 @@ public class InputFieldItem<T> extends Label {
     protected boolean center;
     private final String placeholder;
 
+    private Icon icon;
+    private String tooltip;
+
     public InputFieldItem(Icon icon, String toolTipText) {
         this(null, icon, toolTipText);
     }
 
     public InputFieldItem(String placeholder, Icon icon, String toolTipText) {
+        this.tooltip = toolTipText;
+        this.icon = icon;
+        this.placeholder = placeholder;
 
         this.value = new SimpleObjectProperty<>();
         setTooltip(new Tooltip(toolTipText));
         setGraphic(new SVGIcon(icon));
-        this.placeholder = placeholder;
         setText(placeholder);
         getStyleClass().add("input-field-item");
 
@@ -115,6 +120,7 @@ public class InputFieldItem<T> extends Label {
 
     public void reset() {
         setText(placeholder);
-
+        setTooltip(new Tooltip(tooltip));
+        setGraphic(new SVGIcon(icon));
     }
 }

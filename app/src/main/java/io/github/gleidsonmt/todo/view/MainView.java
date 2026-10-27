@@ -3,6 +3,8 @@
 package io.github.gleidsonmt.todo.view;
 
 import io.github.gleidsonmt.glad.base.Root;
+import io.github.gleidsonmt.glad.base.dialog.WrapperEffect;
+import io.github.gleidsonmt.glad.controls.button.Button;
 import io.github.gleidsonmt.todo.model.ListType;
 import io.github.gleidsonmt.todo.view.nav.DrawerItem;
 import io.github.gleidsonmt.todo.view.nav.SideNav;
@@ -12,8 +14,15 @@ import io.github.gleidsonmt.todo.view.panel.events.TaskChangeEvent;
 import io.github.gleidsonmt.todo.view_model.UserViewModel;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
+import org.jspecify.annotations.NonNull;
 
 import java.util.logging.Logger;
 
@@ -48,9 +57,38 @@ public class MainView extends BorderPane {
 
         this.panel = new Panel();
         this.sideNav = new SideNav(user);
-        this.listRoot = new ListRoot();
+        this.listRoot = new ListRoot(this);
         init();
+        addEventFilters();
+    }
 
+    public void init() {
+
+        setLeft(this.sideNav);
+        setCenter(this.panel);
+
+        panel.setContent(listRoot);
+
+        bind();
+
+        this.sideNav.load();
+
+        Platform.runLater(() -> {
+
+            var root = (Root) getScene().getRoot();
+
+            root.addBreakpoint((_) -> {
+                setLeft(null);
+            }, "<MD");
+
+            root.addBreakpoint((_) -> {
+                if (!root.isBlocked()) root.unblock();
+                setLeft(sideNav);
+            }, ">MD");
+        });
+    }
+
+    private void addEventFilters() {
 
         this.addEventHandler(TaskChangeEvent.ADD, e -> {
             Logger.getGlobal().info(() -> "[TaskChangeEvent [FILTER], Type = " + e.getEventType() + " ] -> " + e.getModel());
@@ -93,34 +131,55 @@ public class MainView extends BorderPane {
                 sideNav.get(ListType.IMPORTANT).updateSize(!e.getModel().isCompleted() ? 1 : -1);
             }
         });
-    }
-
-    public void init() {
-
-        setLeft(this.sideNav);
-        setCenter(this.panel);
-
-        panel.setContent(listRoot);
-
-        bind();
 
 
-        this.sideNav.load();
+        this.addEventFilter(TaskChangeEvent.DELETE_TASK, e -> {
+            Logger.getGlobal().info(() -> "[TaskChangeEvent, Type = " + e.getEventType() + " ] -> " + e.getModel());
+            Root root = (Root) getScene().getRoot();
 
-        Platform.runLater(() -> {
+            var title = new Text("Delete Task");
+            title.getStyleClass().addAll("text-18 bold".split("\\s+"));
 
-            var root = (Root) getScene().getRoot();
+            HBox buttonsBar = getButtonsBar(e, root);
+            buttonsBar.getStyleClass().addAll("align-center-left spacing-5".split("\\s+"));
 
-            root.addBreakpoint((_) -> {
-                setLeft(null);
-            }, "<MD");
+            var flow = new TextFlow(new Text("\"" + e.getModel().getName() + "\" will be deleted permanently"));
+            VBox container = new VBox(title, flow, buttonsBar);
 
-            root.addBreakpoint((_) -> {
-                root.unblock();
-                setLeft(sideNav);
-            }, ">MD");
+            container.getStyleClass().addAll("bg-background pd-20 align-center-left rounded spacing-10".split("\\s+"));
+
+            root.block();
+
+            root.behavior().dialog()
+                    .with(WrapperEffect.GRAY)
+                    .content(container)
+                    .width(-1)
+                    .height(-1)
+                    .show();
+
+
         });
     }
+
+    private @NonNull HBox getButtonsBar(TaskChangeEvent e, Root root) {
+        var confirm = new Button("Confirm");
+        var cancel = new Button("Cancel");
+
+        cancel.setCancelButton(true);
+        cancel.setOnAction(_ -> {
+            root.behavior().dialog().hide();
+            root.behavior().drawer().hide();
+            root.unblock();
+        });
+        confirm.setOnAction(_ -> {
+            listRoot.getContainer().remove(e.getModel());
+            e.getModel().delete();
+            cancel.fire();
+        });
+
+        return new HBox(confirm, cancel);
+    }
+
 
     public VBox getNav() {
         return this.sideNav;

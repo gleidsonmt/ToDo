@@ -1,4 +1,4 @@
-package io.github.gleidsonmt.todo.view.aside;
+package io.github.gleidsonmt.todo.view.aside.labels;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.todo.view.panel.input.menu.input_menu_items.DueDateContextMenu;

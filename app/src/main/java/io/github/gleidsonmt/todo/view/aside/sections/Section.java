@@ -1,8 +1,5 @@
-package io.github.gleidsonmt.todo.view.aside;
+package io.github.gleidsonmt.todo.view.aside.sections;
 
-import io.github.gleidsonmt.todo.view.panel.input.InputFieldItem;
-import io.github.gleidsonmt.todo.view_model.TaskViewModel;
-import io.github.gleidsonmt.todo.view_model.ViewModel;
 import javafx.scene.layout.VBox;
 
 /**

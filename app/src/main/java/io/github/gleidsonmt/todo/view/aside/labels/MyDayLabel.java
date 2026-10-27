@@ -1,11 +1,7 @@
-package io.github.gleidsonmt.todo.view.aside;
+package io.github.gleidsonmt.todo.view.aside.labels;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
-import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
-import io.github.gleidsonmt.todo.view.panel.events.TaskChangeEvent;
-import io.github.gleidsonmt.todo.view.panel.input.menu.input_menu_items.RemindContextMenu;
-import javafx.geometry.Side;
-import javafx.scene.control.Label;
+import io.github.gleidsonmt.todo.view.aside.Item;
 
 /**
  * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>

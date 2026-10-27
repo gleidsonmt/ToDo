@@ -2,8 +2,11 @@
 
 package io.github.gleidsonmt.todo.global;
 
+import io.github.gleidsonmt.glad.base.Root;
 import io.github.gleidsonmt.todo.model.DTO;
 import javafx.application.HostServices;
+import javafx.event.Event;
+import javafx.scene.Node;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.io.File;
@@ -67,6 +70,10 @@ public class Global {
 
     public static boolean removeWindowsRegister() {
         return installOrRemoveWindowsRegister(false);
+    }
+
+    public static void fireEvent(Node node, Event event) {
+        ( (Root) node.getScene().getRoot()).getContent().fireEvent(event);
     }
 
     @ApiStatus.Experimental

@@ -103,6 +103,7 @@ class Header extends GridPane {
                     new FileChooser.ExtensionFilter("All Files", "*.*"));
 
             File selectedFile = fileChooser.showOpenDialog(new Stage());
+
             if (selectedFile == null) return;
             AvatarCrop avatarCrop = new AvatarCrop(new Image(String.valueOf(selectedFile.toURI())));
             Root root = (Root) getScene().getRoot();

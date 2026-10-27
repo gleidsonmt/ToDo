@@ -1,10 +1,7 @@
-package io.github.gleidsonmt.todo.view.aside;
+package io.github.gleidsonmt.todo.view.aside.labels;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
-import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import io.github.gleidsonmt.todo.view.panel.input.InputFieldItem;
-import io.github.gleidsonmt.todo.view_model.TaskViewModel;
-import javafx.scene.control.Label;
 
 /**
  * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
@@ -21,4 +18,5 @@ public class CustomLabel<T> extends InputFieldItem<T> {
         getStyleClass().addAll("pd-10 bg-transparent  ".split("\\s+"));
         setGraphicTextGap(10);
     }
+
 }

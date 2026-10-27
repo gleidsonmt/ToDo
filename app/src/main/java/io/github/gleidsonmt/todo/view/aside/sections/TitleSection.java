@@ -1,20 +1,11 @@
-package io.github.gleidsonmt.todo.view.aside;
+package io.github.gleidsonmt.todo.view.aside.sections;
 
-import io.github.gleidsonmt.todo.view.panel.ListRoot;
 import io.github.gleidsonmt.todo.view.panel.events.TaskChangeEvent;
-import io.github.gleidsonmt.todo.view.panel.input.InputFieldItem;
 import io.github.gleidsonmt.todo.view.panel.items.FavoriteButton;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
-import io.github.gleidsonmt.todo.view_model.UserViewModel;
-import javafx.beans.binding.Bindings;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.concurrent.Task;
-import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 
 /**

@@ -1,10 +1,13 @@
-package io.github.gleidsonmt.todo.view.aside;
+package io.github.gleidsonmt.todo.view.aside.sections;
 
 import io.github.gleidsonmt.todo.bd.dao.DaoRecurrence;
 import io.github.gleidsonmt.todo.model.RecurrenceViewModel;
+import io.github.gleidsonmt.todo.view.aside.*;
+import io.github.gleidsonmt.todo.view.aside.labels.DueDateLabel;
+import io.github.gleidsonmt.todo.view.aside.labels.RecurrenceLabel;
+import io.github.gleidsonmt.todo.view.aside.labels.RemindLabel;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import io.github.gleidsonmt.todo.view_model.map.RecurrenceMapper;
-import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 

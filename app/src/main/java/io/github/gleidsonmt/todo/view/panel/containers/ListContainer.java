@@ -155,8 +155,8 @@ public abstract class ListContainer extends VBox {
      *
      * @param task The task to delete.
      */
-    public void remove(TaskItem task) {
-        data.remove(task.getViewModel());
+    public void remove(TaskViewModel viewModel) {
+        data.remove(viewModel);
     }
 
     public IntegerProperty sizeProperty() {

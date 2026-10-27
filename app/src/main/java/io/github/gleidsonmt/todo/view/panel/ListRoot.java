@@ -52,7 +52,7 @@ public class ListRoot extends VBox {
         @Override
         public void handle(MouseEvent event) {
             if (event.getButton() == MouseButton.PRIMARY) {
-//                if (newVal == null) return;
+                if (getSelected() == null) return;
 
                 Root root = (Root) getScene().getRoot();
 //        if (aside == null)
@@ -88,7 +88,7 @@ public class ListRoot extends VBox {
         }
     }
 
-    public ListRoot() {
+    public ListRoot(MainView mainView) {
         init();
 
         this.actualList.addListener((_, _, newValue) -> {
@@ -101,10 +101,7 @@ public class ListRoot extends VBox {
 
         });
 
-        Platform.runLater(() -> {
-            Root root = (Root) getScene().getRoot();
-            root.widthProperty().addListener(updateAsideViewer);
-        });
+        mainView.widthProperty().addListener(updateAsideViewer);
     }
 
     private void init() {
@@ -138,9 +135,9 @@ public class ListRoot extends VBox {
         update(container.sizeProperty().get() == 0);
         container.setOnMouseClicked(mouseEventHandler);
 
-        Root root = (Root) getScene().getRoot();
-        MainView mainView = (MainView) root.getContent();
-        mainView.setRight(null);
+//        Root root = (Root) getScene().getRoot();
+//        MainView mainView = (MainView) root.getContent();
+//        mainView.setRight(null);
 
 
 //        panel.createLines(true);

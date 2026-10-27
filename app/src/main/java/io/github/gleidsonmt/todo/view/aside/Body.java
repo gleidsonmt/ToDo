@@ -1,5 +1,6 @@
 package io.github.gleidsonmt.todo.view.aside;
 
+import io.github.gleidsonmt.todo.view.aside.sections.*;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Priority;

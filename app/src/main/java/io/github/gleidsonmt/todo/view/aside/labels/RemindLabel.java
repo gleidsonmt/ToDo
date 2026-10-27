@@ -1,12 +1,9 @@
-package io.github.gleidsonmt.todo.view.aside;
+package io.github.gleidsonmt.todo.view.aside.labels;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
-import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import io.github.gleidsonmt.todo.view.panel.input.menu.input_menu_items.RemindContextMenu;
-import io.github.gleidsonmt.todo.view.panel.input.menu.input_menu_items.RepeatContextMenu;
 import javafx.geometry.Side;
 import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Label;
 
 import java.time.LocalDateTime;
 

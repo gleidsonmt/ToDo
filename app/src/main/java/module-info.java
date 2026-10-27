@@ -67,6 +67,8 @@ module io.github.gleidsonmt.todo {
     opens io.github.gleidsonmt.todo.view_model.map to javafx.base;
     exports io.github.gleidsonmt.todo.view_model.map;
     exports io.github.gleidsonmt.todo.view.aside;
+    exports io.github.gleidsonmt.todo.view.aside.sections;
+    exports io.github.gleidsonmt.todo.view.aside.labels;
     //    java.lang.reflect.InaccessibleObjectException: Unable to make private void io.github.gleidsonmt.todo.LoginFlowTest.start(javafx.stage.Stage) accessible: module io.github.gleidsonmt.todo does not "opens io.github.gleidsonmt.todo" to module org.testfx.junit5
 
 
