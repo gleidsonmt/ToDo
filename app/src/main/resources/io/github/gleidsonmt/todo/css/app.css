@@ -183,6 +183,9 @@ Panel {
     -fx-min-height: 40px;
 }
 
+.input-field-item:selected:hover {
+    -fx-cursor: default;
+}
 .input-field-item:hover {
     -fx-cursor: hand;
     -fx-background-color: -light-gray;
