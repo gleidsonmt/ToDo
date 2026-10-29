@@ -55,3 +55,11 @@ CREATE TABLE user
     logged    BOOLEAN DEFAULT 0,
     salt      BLOB
 );
+
+CREATE TABLE files
+(
+  id INTEGER PRIMARY KEY,
+  path TEXT,
+  task_id INTEGER NOT NULL,
+  FOREIGN KEY (task_id) REFERENCES task (id) ON DELETE CASCADE
+);
