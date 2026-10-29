@@ -13,6 +13,7 @@ import io.github.gleidsonmt.todo.view.panel.input.menu.input_menu_items.DateUtil
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.css.PseudoClass;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
@@ -122,5 +123,6 @@ public class InputFieldItem<T> extends Label {
         setText(placeholder);
         setTooltip(new Tooltip(tooltip));
         setGraphic(new SVGIcon(icon));
+        setContentDisplay(ContentDisplay.LEFT);
     }
 }
