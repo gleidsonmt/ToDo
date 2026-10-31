@@ -36,8 +36,8 @@ public class InputFieldItem<T> extends Label {
     protected boolean center;
     private final String placeholder;
 
-    private Icon icon;
-    private String tooltip;
+    private final Icon icon;
+    private final String tooltip;
 
     public InputFieldItem(Icon icon, String toolTipText) {
         this(null, icon, toolTipText);
@@ -91,8 +91,6 @@ public class InputFieldItem<T> extends Label {
 //         setWrapText(true);
 
     }
-
-
 
     public void setValue(T value) {
         this.value.set(value);

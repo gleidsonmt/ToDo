@@ -84,11 +84,6 @@ public class SingleSection extends VBox {
         return speed;
     }
 
-    public TaskItem get(ToDoTaskOld task) {
-        return getChildren().stream().map(el -> (TaskItem) el).filter(el -> task.getId() == el.getViewModel().getId())
-                .findAny().get();
-    }
-
     public void setList(FilteredList<TaskViewModel> list) {
         if (this.filteredList != null)
             this.sortedList.removeListener(updateList);

@@ -1,10 +1,11 @@
-
-
 package io.github.gleidsonmt.todo.view_model;
 
 import io.github.gleidsonmt.todo.bd.dao.DaoList;
+import io.github.gleidsonmt.todo.model.DTO;
 import io.github.gleidsonmt.todo.model.ListType;
+import io.github.gleidsonmt.todo.view_model.map.GenericMapper;
 import io.github.gleidsonmt.todo.view_model.map.ListMapper;
+import io.github.gleidsonmt.todo.view_model.map.UserMapper;
 import javafx.beans.property.*;
 
 
@@ -108,4 +109,7 @@ public class ListViewModel extends ViewModel {
                + ", \"name\":" + name
                + "}";
     }
+
+
+
 }

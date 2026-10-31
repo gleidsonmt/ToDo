@@ -2,22 +2,14 @@
 
 package io.github.gleidsonmt.todo.view_model;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 import io.github.gleidsonmt.todo.bd.dao.DaoRecurrence;
 import io.github.gleidsonmt.todo.bd.dao.DaoTask;
-import io.github.gleidsonmt.todo.global.Global;
-import io.github.gleidsonmt.todo.global.TaskPresenter;
-import io.github.gleidsonmt.todo.model.ToDoTask;
 import io.github.gleidsonmt.todo.model.recurrence.Recurrence;
 import io.github.gleidsonmt.todo.view_model.map.TaskMapper;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.LongProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleLongProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.*;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * Description:
@@ -30,24 +22,25 @@ import javafx.beans.property.SimpleObjectProperty;
 public class TaskViewModel extends ViewModel {
     // Model actions
     private final TaskMapper converter = TaskMapper.INSTANCE;
-    private final DaoTask dao = new DaoTask();
     private final DaoRecurrence daoRecurrence = new DaoRecurrence();
+    private final DaoTask dao = new DaoTask();
 
     // View actions
     private final BooleanProperty completed = new SimpleBooleanProperty();;
     private final BooleanProperty important = new SimpleBooleanProperty();
     private final ObjectProperty<LocalDateTime> remind = new SimpleObjectProperty<>();
-    private final BooleanProperty myDay= new SimpleBooleanProperty();
+    private final BooleanProperty myDay = new SimpleBooleanProperty();
     private final ObjectProperty<LocalDate> dueDate = new SimpleObjectProperty<>();
     private final LongProperty listID = new SimpleLongProperty();
     private final ObjectProperty<LocalDate> createdAt = new SimpleObjectProperty<>();
 
 
+    public TaskViewModel() {
+    }
 
-    public TaskViewModel save() {
+    public void save() {
         var converted = converter.toDTO(this);
         this.setId(dao.store(converted));
-        return this;
     }
 
     public void storeRecurrence(Recurrence rec) {
@@ -62,7 +55,6 @@ public class TaskViewModel extends ViewModel {
 
     // delete item in db
     public void delete() {
-
         var item = converter.toDTO(this);
         dao.delete(item);
     }

@@ -11,7 +11,6 @@ package io.github.gleidsonmt.todo.view_model;
 
 import io.github.gleidsonmt.todo.bd.dao.DaoUser;
 import io.github.gleidsonmt.todo.utils.Assets;
-import io.github.gleidsonmt.todo.view_model.map.TaskMapper;
 import io.github.gleidsonmt.todo.view_model.map.UserMapper;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -35,7 +34,6 @@ public class UserViewModel extends ViewModel {
     private final StringProperty username = new SimpleStringProperty(this, "username");
     private final StringProperty password = new SimpleStringProperty(this, "password");
     private final BooleanProperty logged = new SimpleBooleanProperty(this, "logged");
-
 
 
     public void update() {
