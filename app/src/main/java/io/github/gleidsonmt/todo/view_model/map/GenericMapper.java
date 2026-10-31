@@ -10,8 +10,19 @@ import org.mapstruct.MappingTarget;
  */
 public interface GenericMapper<V, D> { // primeiro o view model depois o dto
 
+    /**
+     * Transforms a view model into a data transfer object.
+     * @param viewModel The view model to be transformed.
+     * @return The resulting data transfer object.
+     */
     D toDTO(V viewModel);
 
+    /**
+     * Transforms a data transfer object into a view model.
+     * @param dto The data transfer object to be transformed.
+     * @param viewModel The view model to be updated.
+     * @return The updated view model.
+     */
     V toViewModel(D dto, @MappingTarget V viewModel);
 
 }
