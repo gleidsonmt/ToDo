@@ -2,7 +2,6 @@
 
 package io.github.gleidsonmt.todo.bd.dao.internal;
 
-import io.github.gleidsonmt.todo.bd.DatabaseConnection;
 import io.github.gleidsonmt.todo.bd.sqlite.SQLiteConnection;
 import io.github.gleidsonmt.todo.model.DTO;
 import io.github.gleidsonmt.todo.model.Model;
@@ -407,7 +406,6 @@ public abstract class AbstractDao<T extends DTO> implements Dao<T>, ListDao<T> {
                     }
                 } catch (SQLException e) {
                     logger.severe(() -> "[SQL Action, Type = ERROR]  SQL => select * from " + getTable() + " " + condition + ";" + " -- " + e.getMessage());
-                    e.printStackTrace();
                     throw new RuntimeException(e);
                 }
                 return items;
