@@ -14,7 +14,7 @@ import javafx.scene.control.Button;
  */
 public class DeleteButton extends Button {
     public DeleteButton(TaskViewModel viewModel) {
-        getStyleClass().addAll("bg-transparent display-graphic".split("\\s+"));
+        getStyleClass().addAll("bg-transparent display-graphic hover:bg-grey-200".split("\\s+"));
         setGraphic(new SVGIcon(Icon.DELETE));
 
         setOnAction(_ -> Global.fireEvent(this, new TaskChangeEvent(TaskChangeEvent.DELETE_TASK, viewModel)));
