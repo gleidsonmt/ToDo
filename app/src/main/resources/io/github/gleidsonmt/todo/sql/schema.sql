@@ -56,7 +56,7 @@ CREATE TABLE user
     salt      BLOB
 );
 
-CREATE TABLE files
+CREATE TABLE task_file
 (
   id INTEGER PRIMARY KEY,
   path TEXT,
