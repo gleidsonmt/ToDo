@@ -45,7 +45,7 @@ public class ModelSQLCreator<T extends DTO> {
 
     @SuppressWarnings("all")
     public ModelSQLCreator(Class<? extends AbstractDao> clazz) {
-        this.table = clazz.getSimpleName().replace("Dao", "").toLowerCase();
+        this.table = camelCaseToKebabCase(clazz.getSimpleName().replace("Dao", "")).toLowerCase();
     }
 
 
