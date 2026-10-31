@@ -23,26 +23,6 @@ public class Body extends ScrollPane {
         var fileSection = new FileSection(viewModel);
         var textAreaSection = new TextAreaSection();
 
-
-
-//        multipleBlockSection.selectedDueDate().addListener(new ChangeListener<Boolean>() {
-//            @Override
-//            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-//                myDaySection.getItem().getNode().setValue(newValue);
-////                myDaySection.getItem().setSelected(newValue != null);
-//            }
-//        });
-
-//        myDaySection.getItem().getNode().valueProperty().addListener(new ChangeListener<Boolean>() {
-//            @Override
-//            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-//                multipleBlockSection.getItemDueDate().getNode().setValue(newValue != null? LocalDate.now() : null);
-////                multipleBlockSection.getItemDueDate().setSelected(newValue != null);
-//            }
-//        });
-
-//        Bindings.bind(myDaySection.selectedProperty(), multipleBlockSection.dueDateProperty().isEqualTo(LocalDate.now()));
-
         List<Section> sections = List.of(
                 titleSection,
                 myDaySection,

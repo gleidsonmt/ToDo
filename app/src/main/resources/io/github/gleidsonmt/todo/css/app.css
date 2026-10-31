@@ -183,9 +183,6 @@ Panel {
     -fx-min-height: 40px;
 }
 
-.input-field-item:selected:hover {
-    -fx-cursor: default;
-}
 .input-field-item:hover {
     -fx-cursor: hand;
     -fx-background-color: -light-gray;
@@ -903,4 +900,8 @@ InputFieldOptions:medium {
 
 .aside .input-field-item:hover {
     -fx-background-color: transparent;
+}
+
+.file-label:selected:hover  {
+    -fx-background-color: -light-gray;
 }

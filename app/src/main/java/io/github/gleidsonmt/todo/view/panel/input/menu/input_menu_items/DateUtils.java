@@ -1,5 +1,3 @@
-
-
 package io.github.gleidsonmt.todo.view.panel.input.menu.input_menu_items;
 
 import io.github.gleidsonmt.todo.model.RecurrenceViewModel;

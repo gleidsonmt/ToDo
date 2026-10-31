@@ -2,6 +2,9 @@
 
 package io.github.gleidsonmt.todo.view_model;
 
+import io.github.gleidsonmt.todo.bd.dao.internal.AbstractDao;
+import io.github.gleidsonmt.todo.model.DTO;
+import io.github.gleidsonmt.todo.view_model.map.GenericMapper;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -63,6 +66,4 @@ public abstract class ViewModel {
                + ", \"name\":" + name.get()
                + "}}";
     }
-
-
 }
