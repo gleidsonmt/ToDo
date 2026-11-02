@@ -7,10 +7,13 @@ import io.github.gleidsonmt.todo.model.DTO;
 import javafx.application.HostServices;
 import javafx.event.Event;
 import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.stage.Window;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.prefs.Preferences;
 
 /**
@@ -73,7 +76,29 @@ public class Global {
     }
 
     public static void fireEvent(Node node, Event event) {
-        ( (Root) node.getScene().getRoot()).getContent().fireEvent(event);
+        Root root = null;
+        if (node != null) {
+            Scene scene = node.getScene();
+            if (scene != null && scene.getRoot() instanceof Root sceneRoot) {
+                root = sceneRoot;
+            }
+        }
+
+        if (root == null) {
+            root = Window.getWindows().stream()
+                    .filter(Window::isShowing)
+                    .map(Window::getScene)
+                    .filter(Objects::nonNull)
+                    .map(Scene::getRoot)
+                    .filter(Root.class::isInstance)
+                    .map(Root.class::cast)
+                    .findFirst()
+                    .orElse(null);
+        }
+
+        if (root != null && root.getContent() != null) {
+            root.getContent().fireEvent(event);
+        }
     }
 
     @ApiStatus.Experimental
