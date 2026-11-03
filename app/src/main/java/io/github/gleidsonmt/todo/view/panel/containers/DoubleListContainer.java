@@ -2,16 +2,9 @@
 
 package io.github.gleidsonmt.todo.view.panel.containers;
 
-import io.github.gleidsonmt.glad.base.Root;
-import io.github.gleidsonmt.glad.base.dialog.WrapperEffect;
-import io.github.gleidsonmt.glad.base.dialog.alert.AlertType;
-import io.github.gleidsonmt.glad.controls.button.Button;
 import io.github.gleidsonmt.todo.bd.dao.DaoTask;
-import io.github.gleidsonmt.todo.global.Global;
-import io.github.gleidsonmt.todo.global.TaskPresenter;
 import io.github.gleidsonmt.todo.model.ListType;
 import io.github.gleidsonmt.todo.model.ToDoTask;
-import io.github.gleidsonmt.todo.view.panel.events.TaskChangeEvent;
 import io.github.gleidsonmt.todo.view.panel.containers.sections.AnimatedSection;
 import io.github.gleidsonmt.todo.view.panel.containers.sections.SingleSection;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
@@ -19,19 +12,8 @@ import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import io.github.gleidsonmt.todo.view_model.map.TaskMapper;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.IntegerBinding;
-import javafx.beans.value.WeakChangeListener;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
-
-import java.time.LocalDate;
-import java.util.logging.Logger;
 
 /**
  * Description:
@@ -110,9 +92,6 @@ public class DoubleListContainer extends ListContainer {
         this.sizeProperty().addListener((_, _, _) -> this.setSpacing(sizeOfTheFirstSection.get() == 0 ? 0 : 10));
 
         this.setSpacing(this.sizeProperty().get() == 0 ? 0 : 5);
-
-
-
 
     }
 }

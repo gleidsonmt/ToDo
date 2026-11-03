@@ -2,10 +2,9 @@
 
 package io.github.gleidsonmt.todo.view.panel.containers;
 
-import io.github.gleidsonmt.todo.model.ToDoTask;
-import io.github.gleidsonmt.todo.view.panel.items.TaskItem;
 import io.github.gleidsonmt.todo.view.panel.containers.sections.Comparators;
 import io.github.gleidsonmt.todo.view.panel.containers.sections.SingleSection;
+import io.github.gleidsonmt.todo.view.panel.items.TaskItem;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import javafx.beans.Observable;
@@ -16,9 +15,6 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -73,12 +69,8 @@ public abstract class ListContainer extends VBox {
         setSpacing(5);
 
         // update the comparator for the all sections
-        comparator.addListener((_, _, val) -> {
-            this.getChildren().stream().filter(el -> el instanceof SingleSection).map(el -> (SingleSection) el)
-                    .forEach(section -> {
-                        section.getSortedList().setComparator(switchComparator(val));
-                    });
-        });
+        comparator.addListener((_, _, val) -> this.getChildren().stream().filter(el -> el instanceof SingleSection).map(el -> (SingleSection) el)
+                .forEach(section -> section.getSortedList().setComparator(switchComparator(val))));
 
         // list container has an observable list that observe changes in the data
         // if i change a task item property if its listed in the observable the change will be catch here
@@ -155,7 +147,7 @@ public abstract class ListContainer extends VBox {
      * Store this object in db using the view model.
      * Add the task with id settled to the data list.
      *
-     * @param viewModel The object model to create an UI Component.
+     * @param viewModel The object model to create a UI Component.
      */
     public void add(TaskViewModel viewModel) {
         data.add(viewModel);
@@ -165,7 +157,7 @@ public abstract class ListContainer extends VBox {
      * Delete the object from database.
      * And remove this object from this UI container.
      *
-     * @param task The task to delete.
+     * @param viewModel The task to delete.
      */
     public void remove(TaskViewModel viewModel) {
         data.remove(viewModel);
