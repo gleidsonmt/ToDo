@@ -32,29 +32,8 @@ public final class DaoList extends AbstractDao<List> {
             prepare.setBoolean(2, model.fixed());
             prepare.setInt(3, model.size());
             prepare.setString(4, model.icon());
-            // prepare.setBoolean(2, model.isFixed());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
-
-    @Deprecated(forRemoval = true)
-    public int getSize(long lis_id) {
-        connect();
-        String sql = "select size from sizes where list_id = " + lis_id;
-        ResultSet result = executeQuery(sql);
-        var size = 0;
-        try {
-            if (result.first()) {
-                size = result.getInt("size");
-            }
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } finally {
-            close();
-        }
-        return size;
-    }
-
 }
