@@ -1,210 +1,77 @@
-
-
 package io.github.gleidsonmt.todo.view.panel.containers;
 
-import io.github.gleidsonmt.todo.model.ListOld;
+import io.github.gleidsonmt.todo.bd.dao.DaoList;
+import io.github.gleidsonmt.todo.bd.dao.DaoTask;
+import io.github.gleidsonmt.todo.model.List;
 import io.github.gleidsonmt.todo.model.ListType;
 import io.github.gleidsonmt.todo.model.ToDoTask;
-import io.github.gleidsonmt.todo.model.ToDoTaskOld;
-import io.github.gleidsonmt.todo.view.panel.items.TaskItem;
+import io.github.gleidsonmt.todo.utils.I18n;
 import io.github.gleidsonmt.todo.view.panel.containers.sections.AnimatedSection;
+import io.github.gleidsonmt.todo.view.panel.containers.sections.SingleSection;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
+import io.github.gleidsonmt.todo.view_model.map.ListMapper;
+import io.github.gleidsonmt.todo.view_model.map.TaskMapper;
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.collections.ListChangeListener;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.scene.control.Label;
 
 /**
- * Description:
- *
- * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br> <br>
- * Created On: Feb 27, 2026
- * <p>
- * Version History: Initial version
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
+ * Created on 01/11/2026
  */
-// Testing
 public class MultipleListContainer extends ListContainer {
 
-    private final BooleanProperty hasChild = new SimpleBooleanProperty(false);
-
-    public MultipleListContainer(ListViewModel list, ObservableList<ToDoTaskOld> data) {
+    public MultipleListContainer(ListViewModel list) {
         super(list);
-        this.setSpacing(5);
-
-        hasChild.bind(Bindings.size(this.getChildren()).greaterThan(1));
-
-        // list.getLists().forEach(_list -> {
-        // if (!_list.getItems().isEmpty()) {
-        // AnimatedSection section = new AnimatedSection(_list, true);
-
-        // _list.getItems().addListener((ListChangeListener<ToDoTask>) c -> {
-        // if (c.next()) {
-        // if (c.wasReplaced()) {
-        // return;
-        // }
-
-        // if (c.wasAdded()) {
-        // c.getAddedSubList().forEach(task -> {
-        // TaskItem taskItem = createTaskItem(task);
-        // section.getChildren().add(taskItem);
-        // });
-        // }
-        // }
-        // });
-
-        // Task<Object> ts = new Task<>() {
-        // @Override
-        // protected Object call() {
-        // _list.getItems().forEach(item -> {
-        // try {
-        // Thread.sleep((long) (section.getSpeed() / 2));
-        // } catch (InterruptedException e) {
-        // throw new RuntimeException(e);
-        // }
-
-        // Platform.runLater(() -> {
-        // TaskItem taskItem = createTaskItem(item);
-        // if (Objects.requireNonNull(list.getType()) == ListType.COMPLETED) {
-        // if (item.isCompleted()) {
-        // section.getItems().add(taskItem);
-        // if (!section.getChildren().isEmpty() &&
-        // !getChildren().contains(section)) {
-        // getChildren().add(0, section);
-        // }
-        // }
-        // } else {
-        // if (!item.isCompleted()) {
-        // section.getItems().add(taskItem);
-        // if (!section.getChildren().isEmpty() &&
-        // !getChildren().contains(section))
-        // getChildren().add(0, section);
-        // }
-        // }
-        // });
-        // });
-
-        // return null;
-        // }
-        // };
-
-        // Thread thread = new Thread(ts);
-        // thread.setDaemon(true);
-        // thread.setName("Loading tasks.");
-        // thread.start();
-        // }
-
-        // });
-    }
-
-    protected TaskItem createTaskItem(TaskViewModel task) {
-        // TaskItem item = new TaskItem(task);
-        // item.setOnCompletedChange(viewModel -> {
-        //     AnimatedSection section = (AnimatedSection) item.getParent();
-        //     // section.getItems().remove(section.get(task));
-        //     viewModel.update();
-        // });
-        // item.setOnImportantChange(viewModel -> {
-        //     viewModel.update();
-        // });
-        return null;
-    }
-
-    public BooleanProperty hasChildProperty() {
-        return hasChild;
     }
 
     @Override
-    public Task<ObservableList<ToDoTask>> load() {
-        // loadTasks(_ -> list.getLists().forEach(this::loadLists));
-        // list.getLists().forEach(this::loadLists);
-        return null;
-    }
+    public void load() {
 
-    private void loadLists(ListOld list) {
+        DaoList daoList = new DaoList();
+        DaoTask daoTask = new DaoTask();
 
-        // AnimatedSection section = new AnimatedSection();
+        Task<ObservableList<List>> task = daoList.fetch(FXCollections.observableArrayList());
 
-        // list.getItems().forEach(el -> {
-        //     loadTask(section, el, list.getType());
-        //     list.getItems().addListener(changeListener(section));
-        //     // hasChild.bind(Bindings.size(list.getItems()).greaterThan(0));
-        // });
+        task.setOnSucceeded(_ -> {
 
-        // Platform.runLater(() -> {
-        //     if (!list.getItems().isEmpty()) {
-        //         if (!getChildren().contains(section))
-        //             getChildren().add(0, section);
-        //     }
-        // });
-    }
-
-    /**
-     * If the list as update behind the scenes.
-     *
-     * @param section
-     * @return
-     */
-    private ListChangeListener<ToDoTaskOld> changeListener(AnimatedSection section) {
-        return (ListChangeListener<ToDoTaskOld>) c -> {
-            if (c.next()) {
-                if (c.wasReplaced()) {
-                    return;
-                }
-                if (c.wasAdded()) {
-                }
-                if (c.wasRemoved()) {
-                    // c.getRemoved().forEach(task ->
-                    // section.getItems().remove(section.get(task)));
+            for (List list : task.getValue()) {
+                System.out.println("list = " + list);
+                if (!list.fixed() || list.name().equals("drawer.list.tasks")) {
+                    Task<ObservableList<ToDoTask>> tsk = daoTask.fetch(FXCollections.observableArrayList());
+                    new Thread(tsk).start();
+                    ListViewModel viewModel = ListMapper.INSTANCE.toViewModel(list, new ListViewModel());
+                    this.getChildren().add(createItem(viewModel));
                 }
             }
-        };
+
+//            new Thread(task).start();
+
+
+//            setTasks(tasks);
+        });
+
+
+        Task<ObservableList<ToDoTask>> ts = daoTask.fetch(FXCollections.observableArrayList());
+
+        ts.setOnSucceeded(e -> {
+            ts.getValue().forEach(el -> data.add(TaskMapper.INSTANCE.toViewModel(el, new TaskViewModel())));
+            sizeProperty().bind(Bindings.size(this.getChildren()));
+        });
+
+
+        new Thread(ts).start();
+        new Thread(task).start();
+
     }
 
-    private void loadTask(AnimatedSection section, ToDoTaskOld task, ListType type) {
-
-        // try {
-        // Thread.sleep((long) (section.getSpeed() / 2));
-        // } catch (InterruptedException e1) {
-
-        // }
-
-        // if (list.getType() == ListType.COMPLETED) {
-
-        // }
-        // new Thread(new Task<Object>() {
-        // @Override
-        // protected Object call() {
-        // TaskItem taskItem = createTaskItem(task);
-        // Platform.runLater(() -> {
-
-        // // section.getItems().add(taskItem);
-
-        // // if (task.isCompleted()) {
-        // // sectionCompleted.getItems().add(taskItem);
-        // // } else {
-        // // sectionIncomplete.getChildren().add(0, taskItem);
-        // // }
-        // if (!getChildren().contains(section))
-        // getChildren().add(0, section);
-        // });
-
-        // return taskItem;
-        // }
-
-        // }).start();
-        // Platform.runLater(() -> {
-        // section.getItems().add(taskItem);
-
-        // // if (task.isCompleted()) {
-        // // sectionCompleted.getItems().add(taskItem);
-        // // } else {
-        // // sectionIncomplete.getChildren().add(0, taskItem);
-        // // }
-        // if (!getChildren().contains(section))
-        // getChildren().add(0, section);
-        // });
+    private SingleSection createItem(ListViewModel viewModel) {
+        var section = new AnimatedSection(viewModel);
+        section.setList(data.filtered(el -> !el.isCompleted() && el.getListID() == viewModel.getId()));
+        return section;
     }
+
 }

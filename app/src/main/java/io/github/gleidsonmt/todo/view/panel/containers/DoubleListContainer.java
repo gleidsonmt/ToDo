@@ -49,8 +49,6 @@ public class DoubleListContainer extends ListContainer {
 
     private final DaoTask dao;
 
-    static final Logger logger = Logger.getGlobal();
-
     public DoubleListContainer(ListViewModel list, String query) {
         super(list);
         this.dao = new DaoTask();
@@ -63,7 +61,7 @@ public class DoubleListContainer extends ListContainer {
     }
 
     @Override
-    public Task<ObservableList<ToDoTask>> load() {
+    public void load() {
         Task<ObservableList<ToDoTask>> task = dao.fetch(70, 0, query);
 //        System.out.println("query = " + query);
         new Thread(task).start();
@@ -88,14 +86,14 @@ public class DoubleListContainer extends ListContainer {
 
             } else {
                 // filtra os nao completos
-                sectionIncomplete.setList(data.filtered(el -> !el.isCompleted()));
+                sectionIncomplete.setList(data.filtered(el -> !el.isCompleted() && list.getId() == el.getListID()));
                 // filtra os completos
-                sectionCompleted.setList(data.filtered(TaskViewModel::isCompleted));
+                sectionCompleted.setList(data.filtered(el -> el.isCompleted() && list.getId() == el.getListID()));
+//                sectionCompleted.setList(data.filtered(TaskViewModel::isCompleted));
             }
 
             bind();
         });
-        return task;
     }
 
     private void bind() {
@@ -113,21 +111,6 @@ public class DoubleListContainer extends ListContainer {
 
         this.setSpacing(this.sizeProperty().get() == 0 ? 0 : 10);
 
-        // list container has an observable list that observe changes in the data
-        // if i change a task item property if its listed in the observable the change will be catch here
-        data.addListener((ListChangeListener<TaskViewModel>) c -> {
-            if (c.next()) {
-
-                if (c.wasUpdated()) { // if one of the task items are updated
-                    for (TaskViewModel model : c.getList()) {
-                        // cal his update method
-                        model.update();
-
-                    }
-                }
-
-            }
-        });
 
 
 

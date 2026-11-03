@@ -14,6 +14,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -77,6 +78,24 @@ public abstract class ListContainer extends VBox {
                     });
         });
 
+        // list container has an observable list that observe changes in the data
+        // if i change a task item property if its listed in the observable the change will be catch here
+        data.addListener((ListChangeListener<TaskViewModel>) c -> {
+            if (c.next()) {
+
+                if (c.wasUpdated()) { // if one of the task items are updated
+                    for (TaskViewModel model : c.getList()) {
+                        // cal his update method
+
+                        model.update();
+
+                    }
+                }
+
+            }
+        });
+
+
         VBox.setVgrow(this, Priority.ALWAYS);
 
     }
@@ -118,17 +137,8 @@ public abstract class ListContainer extends VBox {
         return this.list;
     }
 
-    public abstract  Task<ObservableList<ToDoTask>>  load();
-
-    protected void loadTasks(EventHandler<ActionEvent> event) {
-        new Thread(new Task<Object>() {
-            @Override
-            protected Object call() throws Exception {
-                event.handle(new ActionEvent());
-                return null;
-            }
-        }).start();
-    }
+//    public abstract Task<ObservableList<?>>  load();
+    public abstract void  load();
 
     public ObservableList<TaskViewModel> getData() {
         return this.data;
