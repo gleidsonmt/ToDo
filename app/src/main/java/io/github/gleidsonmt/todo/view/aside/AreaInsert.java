@@ -8,7 +8,7 @@ import javafx.scene.text.Text;
  * Created on 17/10/2026
  */
 public class AreaInsert extends TextArea {
-    public AreaInsert() {
+    public AreaInsert(String text) {
         setWrapText(true);
         getStyleClass().addAll("area-insert h-80 border-transparent".split("\\s+"));
         setPromptText("Add a note");
@@ -29,5 +29,6 @@ public class AreaInsert extends TextArea {
             setMinHeight(Math.max(newHeight, 60));
 
         });
+        setText(text);
     }
 }
