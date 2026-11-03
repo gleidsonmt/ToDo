@@ -4,6 +4,8 @@ package io.github.gleidsonmt.todo.view_model;
 
 import io.github.gleidsonmt.todo.bd.dao.DaoRecurrence;
 import io.github.gleidsonmt.todo.bd.dao.DaoTask;
+import io.github.gleidsonmt.todo.model.DTO;
+import io.github.gleidsonmt.todo.model.ToDoTask;
 import io.github.gleidsonmt.todo.model.recurrence.Recurrence;
 import io.github.gleidsonmt.todo.view_model.map.TaskMapper;
 import javafx.beans.property.*;
@@ -33,13 +35,14 @@ public class TaskViewModel extends ViewModel {
     private final ObjectProperty<LocalDate> dueDate = new SimpleObjectProperty<>();
     private final LongProperty listID = new SimpleLongProperty();
     private final ObjectProperty<LocalDate> createdAt = new SimpleObjectProperty<>();
+    private String note;
 
 
     public TaskViewModel() {
     }
 
     public void save() {
-        var converted = converter.toDTO(this);
+        var converted = convert();
         this.setId(dao.store(converted));
     }
 
@@ -49,14 +52,25 @@ public class TaskViewModel extends ViewModel {
 
     // commit in db
     public void update() {
-        var item = converter.toDTO(this);
-        dao.update(item);
+        dao.update(convert());
     }
 
     // delete item in db
     public void delete() {
         var item = converter.toDTO(this);
         dao.delete(item);
+    }
+
+    public TaskMapper getConverter() {
+        return converter;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 
     public ObjectProperty<LocalDateTime> remindProperty() {
@@ -139,6 +153,10 @@ public class TaskViewModel extends ViewModel {
         this.listID.set(id);
     }
 
+    public ToDoTask convert() {
+        return converter.toDTO(this);
+    }
+
     public void dispose() {
         this.nameProperty().unbind();
         this.dueDateProperty().unbind();
@@ -158,7 +176,9 @@ public class TaskViewModel extends ViewModel {
                ", completed=" + isCompleted() +
                ", dueDate=" + dueDate.get() +
                ", createdAt=" + createdAt.get() +
+               ", note=" + note +
                ", listID=" + listID.get() +
                '}';
     }
+
 }

@@ -11,11 +11,12 @@ import org.mapstruct.factory.Mappers;
  * Created on 27/09/2026
  */
 @Mapper(unmappedTargetPolicy = ReportingPolicy.ERROR)
-public interface ListMapper {
+public interface ListMapper extends GenericMapper<ListViewModel, List> {
 
     ListMapper INSTANCE = Mappers.getMapper(ListMapper.class);
 
-    List toDTO(ListViewModel model);
+//    @Mapping(target = "type", ignore = true)
+//    List toDTO(ListViewModel model);
 
     @Mapping(target = "icon", source = "icon", qualifiedByName = "toIcon")
     @Mapping(target = "type", source = "name", qualifiedByName = "toEnum")

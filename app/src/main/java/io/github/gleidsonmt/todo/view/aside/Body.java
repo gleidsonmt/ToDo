@@ -21,7 +21,7 @@ public class Body extends ScrollPane {
         var myDaySection = new MyDaySection(viewModel);
         var multipleBlockSection = new MultipleBlockSection(viewModel);
         var fileSection = new FileSection(viewModel);
-        var textAreaSection = new TextAreaSection();
+        var textAreaSection = new NoteSection(viewModel);
 
         List<Section> sections = List.of(
                 titleSection,

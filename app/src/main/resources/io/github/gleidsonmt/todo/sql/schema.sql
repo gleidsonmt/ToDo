@@ -30,7 +30,7 @@ CREATE TABLE task
     due_date   TEXT,
     remind     TEXT,
     created_at TEXT,
-    annotation TEXT,
+    note TEXT,
     list_id    INTEGER,
 
     FOREIGN KEY (list_id) REFERENCES list (id)

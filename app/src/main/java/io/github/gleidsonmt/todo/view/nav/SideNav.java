@@ -1,5 +1,6 @@
 package io.github.gleidsonmt.todo.view.nav;
 
+import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.todo.bd.dao.DaoList;
 import io.github.gleidsonmt.todo.model.List;
 import io.github.gleidsonmt.todo.model.ListType;
@@ -56,8 +57,6 @@ public class SideNav extends VBox {
         init();
         configLayout();
         bind();
-
-
 //
         container.setOnDragDropped(new EventHandler<DragEvent>() {
             @Override
@@ -197,12 +196,14 @@ public class SideNav extends VBox {
     }
 
     public void load() {
+//        Icon.EXPAND_ALL
         DaoList dao = new DaoList();
         Task<ObservableList<List>> task = dao.fetch(FXCollections.observableArrayList());
 
         new Thread(task).start();
 
         task.setOnSucceeded(_ -> {
+
             task.getValue().forEach(this::createItem);
 
             this.getChildren().add(new Footer());

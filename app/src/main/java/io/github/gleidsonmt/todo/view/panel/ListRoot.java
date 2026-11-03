@@ -5,11 +5,10 @@ package io.github.gleidsonmt.todo.view.panel;
 import io.github.gleidsonmt.glad.base.Anchor;
 import io.github.gleidsonmt.glad.base.Root;
 import io.github.gleidsonmt.glad.base.dialog.WrapperEffect;
+import io.github.gleidsonmt.todo.model.ListType;
 import io.github.gleidsonmt.todo.view.MainView;
 import io.github.gleidsonmt.todo.view.aside.Aside;
-import io.github.gleidsonmt.todo.view.panel.containers.DoubleListContainer;
-import io.github.gleidsonmt.todo.view.panel.containers.EmptyContainer;
-import io.github.gleidsonmt.todo.view.panel.containers.ListContainer;
+import io.github.gleidsonmt.todo.view.panel.containers.*;
 import io.github.gleidsonmt.todo.view.panel.items.TaskItem;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
@@ -128,11 +127,14 @@ public class ListRoot extends VBox {
             default -> "list_id = " + list.getId();
         };
 
-        container = new DoubleListContainer(list, query);
+        if (list.getType().equals(ListType.ALL)) {
+            container = new MultipleListContainer(list);
+        } else container = new DoubleListContainer(list, query);
 
         container.load();
 
         update(container.sizeProperty().get() == 0);
+//        container.sizeProperty().addListener((_, _, newValue) -> update(newValue.intValue() == 0));
         container.setOnMouseClicked(mouseEventHandler);
 
 //        Root root = (Root) getScene().getRoot();
@@ -155,6 +157,7 @@ public class ListRoot extends VBox {
         this.getChildren().setAll(empty ? emptyContainer : container);
         var panel = (Panel) getScene().lookup("#panel");
 
+        System.out.println("empty = " + empty);
         if (!empty) panel.createBackgroundLines();
         else panel.removeBackgroundLines();
     }

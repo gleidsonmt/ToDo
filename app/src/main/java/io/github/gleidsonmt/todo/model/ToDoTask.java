@@ -8,5 +8,5 @@ import java.time.LocalDateTime;
  * Created on 24/09/2026
  */
 public record ToDoTask(long id, String name, boolean completed, boolean important, boolean myDay, LocalDate dueDate,
-                       LocalDateTime remind, LocalDate createdAt, long listID) implements DTO {
+                       LocalDateTime remind, LocalDate createdAt, String note, long listID) implements DTO {
 }

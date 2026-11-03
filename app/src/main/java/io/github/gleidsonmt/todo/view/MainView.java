@@ -11,6 +11,7 @@ import io.github.gleidsonmt.todo.view.nav.SideNav;
 import io.github.gleidsonmt.todo.view.panel.ListRoot;
 import io.github.gleidsonmt.todo.view.panel.Panel;
 import io.github.gleidsonmt.todo.view.panel.events.TaskChangeEvent;
+import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import io.github.gleidsonmt.todo.view_model.UserViewModel;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -95,16 +96,24 @@ public class MainView extends BorderPane {
             sideNav.get(e.getModel().getListID()).updateSize(1);
         });
 
-        this.addEventHandler(TaskChangeEvent.DELETE_TASK, e -> {
-            Logger.getGlobal().info(() -> "[TaskChangeEvent [FILTER], Type = " + e.getEventType() + " ] -> " + e.getModel());
-            sideNav.get(e.getModel().getListID()).updateSize(-1);
-        });
+//        this.addEventHandler(TaskChangeEvent.DELETE_TASK, e -> {
+//            Logger.getGlobal().info(() -> "[TaskChangeEvent [FILTER], Type = " + e.getEventType() + " ] -> " + e.getModel());
+//            sideNav.get(e.getModel().getListID()).updateSize(-1);
+//            sideNav.get(ListType.DAILY).updateSize(-1);
+//        });
 
         this.addEventHandler(TaskChangeEvent.MOVED, e -> {
             Logger.getGlobal().info(() -> "[TaskChangeEvent [FILTER], Type = " + e.getEventType() + " ] -> " + e.getModel());
+////            System.out.println("e.getActual() = " + e.getActual());
+//            System.out.println("atual = " + sideNav.get(e.getActual()).getName());
+//            System.out.println("size atual = " + sideNav.get(e.getActual()).getSize());
+////            System.out.println("e.getPrevious() = " + e.getPrevious());
+//            System.out.println("anterior = " + sideNav.get(e.getPrevious()).getName());
+//            System.out.println("size anterior = " + sideNav.get(e.getPrevious()).getSize());
             if (e.getActual() != e.getPrevious()) {
                 sideNav.get(e.getActual()).updateSize(1);
                 sideNav.get(e.getPrevious()).updateSize(-1);
+
             }
         });
 
@@ -123,13 +132,8 @@ public class MainView extends BorderPane {
         this.addEventHandler(TaskChangeEvent.COMPLETE, e -> {
             Logger.getGlobal().info(() -> "[TaskChangeEvent [FILTER], Type = " + e.getEventType() + " ] -> " + e.getModel());
             sideNav.get(e.getModel().getListID()).updateSize(!e.getModel().isCompleted() ? 1 : -1);
+            updateAllListSize(e.getModel());
 
-            if (e.getModel().isMyDay()) {
-                sideNav.get(ListType.DAILY).updateSize(!e.getModel().isCompleted() ? 1 : -1);
-            }
-            if (e.getModel().isImportant()) {
-                sideNav.get(ListType.IMPORTANT).updateSize(!e.getModel().isCompleted() ? 1 : -1);
-            }
         });
 
 
@@ -175,9 +179,26 @@ public class MainView extends BorderPane {
             listRoot.getContainer().remove(e.getModel());
             e.getModel().delete();
             cancel.fire();
+            sideNav.get(e.getModel().getListID()).updateSize(-1);
+            if (e.getModel().isMyDay() && !e.getModel().isCompleted()) {
+                sideNav.get(ListType.DAILY).updateSize(-1);
+            }
+            if (e.getModel().isImportant() && !e.getModel().isCompleted()) {
+                sideNav.get(ListType.IMPORTANT).updateSize(-1);
+            }
         });
 
         return new HBox(confirm, cancel);
+    }
+
+    private void updateAllListSize(TaskViewModel model) {
+
+        if (model.isMyDay()) {
+            sideNav.get(ListType.DAILY).updateSize(!model.isCompleted() ? 1 : -1);
+        }
+        if (model.isImportant()) {
+            sideNav.get(ListType.IMPORTANT).updateSize(!model.isCompleted() ? 1 : -1);
+        }
     }
 
 

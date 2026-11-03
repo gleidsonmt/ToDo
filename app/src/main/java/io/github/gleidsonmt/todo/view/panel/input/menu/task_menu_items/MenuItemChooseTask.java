@@ -1,18 +1,19 @@
-
-
 package io.github.gleidsonmt.todo.view.panel.input.menu.task_menu_items;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
+import io.github.gleidsonmt.todo.bd.dao.DaoList;
 import io.github.gleidsonmt.todo.global.Global;
 import io.github.gleidsonmt.todo.global.Presenter;
 import io.github.gleidsonmt.todo.model.List;
 import io.github.gleidsonmt.todo.utils.I18n;
+import io.github.gleidsonmt.todo.view.panel.events.TaskChangeEvent;
 import io.github.gleidsonmt.todo.view.panel.input.MenuTaskItem;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.scene.Node;
 import javafx.scene.control.Menu;
 
 /**
@@ -29,8 +30,8 @@ public class MenuItemChooseTask extends Menu {
         setText(I18n.get("menu.moveTo"));
         setGraphic(new SVGIcon(Icon.FLEX_DIRECTION));
 
-        Presenter<List> presenter = Global.get(List.class);
-        Task<ObservableList<List>> task = presenter.fetch(FXCollections.observableArrayList());
+        DaoList daoList = new DaoList();
+        Task<ObservableList<List>> task = daoList.fetch(FXCollections.observableArrayList());
         new Thread(task).start();
 
         task.setOnSucceeded(_ -> {
@@ -38,18 +39,17 @@ public class MenuItemChooseTask extends Menu {
             task.getValue().forEach((list) -> {
 //                // don't add the option the task is already in
                 if (list.id() != item.getListID() && (!list.fixed() || list.id() == 1)) {
-                    // Platform.runLater(() -> {
-                        getItems().add(new MenuList(list, item));
-                    // });
+                    var menuList = new MenuTaskItem(list);
+                    menuList.setOnAction(e -> {
+                        var popup = getParentPopup();
+                        Node target = popup == null ? null : popup.getOwnerNode();
+                        var temp = item.getListID();
+                        item.setListID(list.id());
+                        Global.fireEvent(target, new TaskChangeEvent(TaskChangeEvent.MOVED, item, temp, list.id()));
+                    });
+                    getItems().add(menuList);
                 }
             });
         });
-    }
-}
-
-class MenuList extends MenuTaskItem {
-    public MenuList(List list, TaskViewModel item) {
-        super(list);
-        setOnAction(_ -> item.setListID(list.id()));
     }
 }
