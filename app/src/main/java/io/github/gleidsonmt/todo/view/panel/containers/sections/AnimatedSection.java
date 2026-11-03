@@ -1,6 +1,7 @@
 package io.github.gleidsonmt.todo.view.panel.containers.sections;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
+import io.github.gleidsonmt.todo.model.ListType;
 import io.github.gleidsonmt.todo.utils.I18n;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
@@ -18,23 +19,29 @@ public class AnimatedSection extends SingleSection {
     private final SectionTitle title;
 
     public AnimatedSection(ListViewModel listViewModel) {
-        this(listViewModel, I18n.get("panel.tile.title"), Icon.NONE);
+        this(listViewModel, Icon.NONE);
     }
 
     // public AnimatedSection(List list) {
     // this(list.getName(), list.getIcon());
     // }
 
-    public AnimatedSection(ListViewModel listViewModel, String name, Icon icon) {
+    public AnimatedSection(ListViewModel listViewModel, Icon icon) {
         super(listViewModel);
 
         this.hasHeader = true;
 
-        title = new SectionTitle(name, icon);
+        title = new SectionTitle(
+//          listViewModel.getType().equals(ListType.TASKS) ? I18n.get("panel.tile.title") : listViewModel.getName(), icon
+
+          listViewModel.getType().equals(ListType.TASKS) ? I18n.get("drawer.list.tasks") :
+                  listViewModel.isFixed() ? I18n.get("panel.tile.title") : listViewModel.getName(), icon
+        );
+
 
         title.setOnShow(_ -> getChildren().remove(1, getChildren().size()));
 
-        title.setOnHide(_ -> sortedList.stream().forEach(el -> {
+        title.setOnHide(_ -> sortedList.forEach(el -> {
             var a = loadTask(el);
             add(a);
         }));
