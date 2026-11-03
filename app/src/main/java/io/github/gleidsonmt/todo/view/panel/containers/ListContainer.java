@@ -70,6 +70,8 @@ public abstract class ListContainer extends VBox {
         // froup.
         selected.bind(group.selectedToggleProperty().map(e -> (TaskItem) e));
 
+        setSpacing(5);
+
         // update the comparator for the all sections
         comparator.addListener((_, _, val) -> {
             this.getChildren().stream().filter(el -> el instanceof SingleSection).map(el -> (SingleSection) el)

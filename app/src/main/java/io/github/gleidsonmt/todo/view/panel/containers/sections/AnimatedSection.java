@@ -8,6 +8,8 @@ import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ListChangeListener;
 import javafx.collections.transformation.FilteredList;
+import javafx.geometry.Insets;
+import javafx.scene.layout.VBox;
 
 /// Description:
 ///
@@ -45,6 +47,8 @@ public class AnimatedSection extends SingleSection {
             var a = loadTask(el);
             add(a);
         }));
+
+
     }
 
     @Override

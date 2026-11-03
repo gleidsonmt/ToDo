@@ -109,7 +109,7 @@ public class DoubleListContainer extends ListContainer {
 
         this.sizeProperty().addListener((_, _, _) -> this.setSpacing(sizeOfTheFirstSection.get() == 0 ? 0 : 10));
 
-        this.setSpacing(this.sizeProperty().get() == 0 ? 0 : 10);
+        this.setSpacing(this.sizeProperty().get() == 0 ? 0 : 5);
 
 
 
