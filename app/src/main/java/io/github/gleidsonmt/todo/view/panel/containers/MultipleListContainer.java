@@ -40,7 +40,6 @@ public class MultipleListContainer extends ListContainer {
         task.setOnSucceeded(_ -> {
 
             for (List list : task.getValue()) {
-                System.out.println("list = " + list);
                 if (!list.fixed() || list.name().equals("drawer.list.tasks")) {
                     Task<ObservableList<ToDoTask>> tsk = daoTask.fetch(FXCollections.observableArrayList());
                     new Thread(tsk).start();

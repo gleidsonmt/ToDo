@@ -133,7 +133,7 @@ public class ListRoot extends VBox {
 
         container.load();
 
-        update(container.sizeProperty().get() == 0);
+//        update(container.sizeProperty().get() == 0);
 //        container.sizeProperty().addListener((_, _, newValue) -> update(newValue.intValue() == 0));
         container.setOnMouseClicked(mouseEventHandler);
 
