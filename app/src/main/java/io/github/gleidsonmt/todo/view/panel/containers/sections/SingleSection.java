@@ -1,12 +1,9 @@
-
-
 package io.github.gleidsonmt.todo.view.panel.containers.sections;
 
 import java.util.Optional;
 
 import org.jetbrains.annotations.ApiStatus.Experimental;
 
-import io.github.gleidsonmt.todo.model.ToDoTaskOld;
 import io.github.gleidsonmt.todo.view.panel.containers.ListContainer;
 import io.github.gleidsonmt.todo.view.panel.items.TaskItem;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
@@ -31,14 +28,14 @@ import javafx.util.Duration;
  */
 public class SingleSection extends VBox {
 
-    private double speed = 200;
+    private final double speed = 200;
 
     protected FilteredList<TaskViewModel> filteredList;
     protected SortedList<TaskViewModel> sortedList;
 
     protected boolean hasHeader = false;
 
-    private ListViewModel listViewModel;
+    private final ListViewModel listViewModel;
 
     public SingleSection(ListViewModel listViewModel) {
         this.listViewModel = listViewModel;
@@ -78,10 +75,6 @@ public class SingleSection extends VBox {
         // KeyValue(el.translateXProperty(), 0)));
 
         return timeline;
-    }
-
-    public double getSpeed() {
-        return speed;
     }
 
     public void setList(FilteredList<TaskViewModel> list) {
@@ -139,9 +132,7 @@ public class SingleSection extends VBox {
     private void delete(TaskViewModel task) {
 
         Optional<TaskItem> optional = getChildren().stream().filter(el -> el instanceof TaskItem)
-                .map(map -> (TaskItem) map).filter(el -> {
-                    return el.getViewModel().getId() == task.getId();
-                }).findAny();
+                .map(map -> (TaskItem) map).filter(el -> el.getViewModel().getId() == task.getId()).findAny();
 
         optional.ifPresent(this::remove);
     }
@@ -157,12 +148,11 @@ public class SingleSection extends VBox {
     }
 
     @Experimental
-    private Timeline remove(TaskItem taskItem) {
+    private void remove(TaskItem taskItem) {
         var animation = removeAnimation(taskItem);
         taskItem.setOpacity(1);
-        animation.setOnFinished(e -> this.getChildren().remove(taskItem));
+        animation.setOnFinished(_ -> this.getChildren().remove(taskItem));
         animation.play();
-        return animation;
     }
 
     private ListContainer getContainer() {
