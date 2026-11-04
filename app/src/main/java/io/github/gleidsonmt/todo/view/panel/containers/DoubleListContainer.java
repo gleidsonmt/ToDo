@@ -62,7 +62,6 @@ public class DoubleListContainer extends ListContainer {
                 getChildren().remove(sectionCompleted);
 //                sectionCompleted.setList(data.filtered(el -> el.isCompleted() && !el.isImportant()));
             } else if (getList().getType() == ListType.DAILY) {
-
                 sectionIncomplete.setList(data.filtered(el -> !el.isCompleted() && el.isMyDay()));
                 sectionCompleted.setList(data.filtered(TaskViewModel::isCompleted));
 

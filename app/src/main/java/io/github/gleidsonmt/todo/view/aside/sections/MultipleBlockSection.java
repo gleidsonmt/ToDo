@@ -53,7 +53,7 @@ public class MultipleBlockSection extends Section {
             public void bind() {
                 final DaoRecurrence dao = new DaoRecurrence();
 
-                var finded = new DaoRecurrence().findWhere("task_id = " + viewModel.getId());
+                var found = new DaoRecurrence().findWhere("task_id = " + viewModel.getId());
                 RecurrenceMapper converter = RecurrenceMapper.INSTANCE;
 
 
@@ -66,12 +66,13 @@ public class MultipleBlockSection extends Section {
                     }
                 });
 
-                finded.ifPresent(recurrence -> getNode().setValue(converter.toViewModel(recurrence, new RecurrenceViewModel())));
+                found.ifPresent(recurrence -> getNode().setValue(converter.toViewModel(recurrence, new RecurrenceViewModel())));
             }
         };
 
-        itemRemind.getStyleClass().addAll("border-b-1 border-light-gray pd-2 ".split("\\s+"));
-        itemDueDate.getStyleClass().addAll("border-b-1 border-light-gray pd-2 ".split("\\s+"));
+        var defaultStyle = "border-b-1 border-light-gray pd-2";
+        itemRemind.getStyleClass().addAll(defaultStyle.split("\\s+"));
+        itemDueDate.getStyleClass().addAll(defaultStyle.split("\\s+"));
         getChildren().setAll(itemRemind, itemDueDate, itemRecurrence);
     }
 

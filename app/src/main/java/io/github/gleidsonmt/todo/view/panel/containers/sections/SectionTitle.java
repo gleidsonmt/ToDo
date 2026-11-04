@@ -12,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
@@ -36,15 +37,23 @@ public class SectionTitle extends GridPane {
     private EventHandler<ActionEvent> onHide;
 
     public SectionTitle(String name, Icon icon) {
+        this(name, new SVGIcon(icon));
+    }
+
+    public SectionTitle(String name, Node icon) {
 
         this.titleLabel.setText(name);
-        titleLabel.setGraphic(new SVGIcon(icon));
+        titleLabel.setGraphic(icon);
+
+
 
         init();
         configLayout();
 
         this.setOnMouseClicked(_ -> collapsed.set(!collapsed.get()));
         registerListeners();
+
+        getChildren().forEach(el -> el.setMouseTransparent(true));
     }
 
     private void registerListeners() {

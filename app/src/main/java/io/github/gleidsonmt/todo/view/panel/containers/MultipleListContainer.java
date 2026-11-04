@@ -7,6 +7,7 @@ import io.github.gleidsonmt.todo.model.ListType;
 import io.github.gleidsonmt.todo.model.ToDoTask;
 import io.github.gleidsonmt.todo.utils.I18n;
 import io.github.gleidsonmt.todo.view.panel.containers.sections.AnimatedSection;
+import io.github.gleidsonmt.todo.view.panel.containers.sections.CompositeSection;
 import io.github.gleidsonmt.todo.view.panel.containers.sections.SingleSection;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
@@ -69,7 +70,7 @@ public class MultipleListContainer extends ListContainer {
     }
 
     private SingleSection createItem(ListViewModel viewModel) {
-        var section = new AnimatedSection(viewModel);
+        var section = new CompositeSection(viewModel);
         section.setList(data.filtered(el -> !el.isCompleted() && el.getListID() == viewModel.getId()));
         return section;
     }
