@@ -1,6 +1,7 @@
 package io.github.gleidsonmt.todo.view.panel.containers.sections;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
+import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import io.github.gleidsonmt.todo.model.ListType;
 import io.github.gleidsonmt.todo.utils.I18n;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
@@ -9,10 +10,11 @@ import javafx.beans.binding.Bindings;
 import javafx.collections.ListChangeListener;
 import javafx.collections.transformation.FilteredList;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.layout.VBox;
 
 /// Description:
-///
+/// Shows a list of tasks with a label as a title that represents a section of a list.
 /// @author Gleidson Neves da Silveira | [gleidisonmt@gmail.com](mailto:gleidisonmt@gmail.com)
 ///
 /// Created On: Feb 26, 2026
@@ -21,25 +23,15 @@ public class AnimatedSection extends SingleSection {
     private final SectionTitle title;
 
     public AnimatedSection(ListViewModel listViewModel) {
-        this(listViewModel, Icon.NONE);
+        this(listViewModel, I18n.get("panel.tile.title"), new SVGIcon(Icon.NONE));
     }
 
-    // public AnimatedSection(List list) {
-    // this(list.getName(), list.getIcon());
-    // }
-
-    public AnimatedSection(ListViewModel listViewModel, Icon icon) {
+    public AnimatedSection(ListViewModel listViewModel, String name, Node icon) {
         super(listViewModel);
 
         this.hasHeader = true;
 
-        title = new SectionTitle(
-//          listViewModel.getType().equals(ListType.TASKS) ? I18n.get("panel.tile.title") : listViewModel.getName(), icon
-
-          listViewModel.getType().equals(ListType.TASKS) ? I18n.get("drawer.list.tasks") :
-                  listViewModel.isFixed() ? I18n.get("panel.tile.title") : listViewModel.getName(), icon
-        );
-
+        title = new SectionTitle(name, icon);
 
         title.setOnShow(_ -> getChildren().remove(1, getChildren().size()));
 
