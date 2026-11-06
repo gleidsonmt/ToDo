@@ -94,6 +94,7 @@ public class MainView extends BorderPane {
         this.addEventHandler(TaskChangeEvent.ADD, e -> {
             Logger.getGlobal().info(() -> "[TaskChangeEvent [FILTER], Type = " + e.getEventType() + " ] -> " + e.getModel());
             sideNav.get(e.getModel().getListID()).updateSize(1);
+            sideNav.get(ListType.ALL).updateSize(1);
         });
 
 //        this.addEventHandler(TaskChangeEvent.DELETE_TASK, e -> {
@@ -133,7 +134,7 @@ public class MainView extends BorderPane {
             Logger.getGlobal().info(() -> "[TaskChangeEvent [FILTER], Type = " + e.getEventType() + " ] -> " + e.getModel());
             sideNav.get(e.getModel().getListID()).updateSize(!e.getModel().isCompleted() ? 1 : -1);
             updateAllListSize(e.getModel());
-
+            sideNav.get(ListType.ALL).updateSize(-1);
         });
 
 
@@ -185,6 +186,9 @@ public class MainView extends BorderPane {
             }
             if (e.getModel().isImportant() && !e.getModel().isCompleted()) {
                 sideNav.get(ListType.IMPORTANT).updateSize(-1);
+            }
+            if (!e.getModel().isCompleted()) {
+                sideNav.get(ListType.ALL).updateSize(-1);
             }
         });
 

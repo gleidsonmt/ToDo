@@ -8,17 +8,13 @@ CREATE TABLE list
 );
 
 INSERT INTO `list` (id, name, icon, fixed, size)
-VALUES (1, 'drawer.list.tasks', 'home', 1, 0);
-INSERT INTO `list` (id, name, icon, fixed, size)
-VALUES (2, 'drawer.list.my_day', 'sun', 1, 0);
-INSERT INTO `list` (id, name, icon, fixed, size)
-VALUES (3, 'drawer.list.important', 'star', 1, 0);
-INSERT INTO `list` (id, name, icon, fixed, size)
-VALUES (4, 'Projects', 'notebook', 0, 0);
-INSERT INTO `list` (id, name, icon, fixed, size)
-VALUES (5, 'To Buy', 'shopping', 0, 0);
-INSERT INTO `list` (id, name, icon, fixed, size)
-VALUES (6, 'Exercise', 'strong-arm', 0, 0);
+VALUES (1, 'drawer.list.tasks', 'home', 1, 0),
+       (2, 'drawer.list.my_day', 'sun', 1, 0),
+       (3, 'drawer.list.important', 'star', 1, 0),
+       (4, 'drawer.list.all', 'infinity', 1, 0),
+       (5, 'Projects', 'notebook', 0, 0),
+       (6, 'To Buy', 'shopping', 0, 0),
+       (7, 'Exercise', 'strong-arm', 0, 0);
 
 CREATE TABLE task
 (
@@ -30,7 +26,7 @@ CREATE TABLE task
     due_date   TEXT,
     remind     TEXT,
     created_at TEXT,
-    note TEXT,
+    note       TEXT,
     list_id    INTEGER,
 
     FOREIGN KEY (list_id) REFERENCES list (id)
@@ -48,18 +44,18 @@ CREATE TABLE recurrence
 
 CREATE TABLE user
 (
-    id        INTEGER PRIMARY KEY,
-    name      VARCHAR,
-    username  VARCHAR UNIQUE,
-    password  TEXT,
-    logged    BOOLEAN DEFAULT 0,
-    salt      BLOB
+    id       INTEGER PRIMARY KEY,
+    name     VARCHAR,
+    username VARCHAR UNIQUE,
+    password TEXT,
+    logged   BOOLEAN DEFAULT 0,
+    salt     BLOB
 );
 
 CREATE TABLE task_file
 (
-  id INTEGER PRIMARY KEY,
-  path TEXT,
-  task_id INTEGER NOT NULL,
-  FOREIGN KEY (task_id) REFERENCES task (id) ON DELETE CASCADE
+    id      INTEGER PRIMARY KEY,
+    path    TEXT,
+    task_id INTEGER NOT NULL,
+    FOREIGN KEY (task_id) REFERENCES task (id) ON DELETE CASCADE
 );

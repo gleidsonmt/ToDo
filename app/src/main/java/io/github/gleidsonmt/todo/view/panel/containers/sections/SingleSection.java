@@ -2,6 +2,10 @@ package io.github.gleidsonmt.todo.view.panel.containers.sections;
 
 import java.util.Optional;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.IntegerBinding;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import org.jetbrains.annotations.ApiStatus.Experimental;
 
 import io.github.gleidsonmt.todo.view.panel.containers.ListContainer;
@@ -33,6 +37,8 @@ public class SingleSection extends VBox {
     protected FilteredList<TaskViewModel> filteredList;
     protected SortedList<TaskViewModel> sortedList;
 
+    private final IntegerProperty size = new SimpleIntegerProperty();
+
     protected boolean hasHeader = false;
 
     private final ListViewModel listViewModel;
@@ -41,6 +47,14 @@ public class SingleSection extends VBox {
         this.listViewModel = listViewModel;
         this.getStyleClass().add("single-selection");
         this.setSpacing(5);
+        this.parentProperty().addListener((_, _, parent) -> {
+            if (parent instanceof ListContainer container) {
+                getChildren().stream()
+                        .filter(TaskItem.class::isInstance)
+                        .map(TaskItem.class::cast)
+                        .forEach(taskItem -> taskItem.setToggleGroup(container.getGroup()));
+            }
+        });
     }
 
     @Experimental
@@ -87,9 +101,19 @@ public class SingleSection extends VBox {
             TaskItem item = loadTask(e);
             add(item);
         });
+        size.unbind();
+        size.bind(Bindings.size(this.sortedList));
         // this.filteredList.addListener(updateList);
         this.sortedList.addListener(updateList);
         // getContainer().getData().addListener(updateList);
+    }
+
+    public IntegerBinding sizeProperty() {
+        return Bindings.size(this.sortedList);
+    }
+
+    public int size() {
+        return size.get();
     }
 
     @Experimental
@@ -116,6 +140,7 @@ public class SingleSection extends VBox {
             }
             if (c.wasRemoved()) {
                 c.getRemoved().forEach(this::delete);
+
             }
         }
 
@@ -124,8 +149,14 @@ public class SingleSection extends VBox {
     @Experimental
     protected TaskItem loadTask(TaskViewModel viewModel) {
         TaskItem taskItem = new TaskItem(viewModel, listViewModel);
-        taskItem.setToggleGroup(getContainer().getGroup());
+        if (getParent() instanceof ListContainer container) {
+            taskItem.setToggleGroup(container.getGroup());
+        }
         return taskItem;
+    }
+
+    private ListContainer getContainer() {
+        return (ListContainer) this.getParent();
     }
 
     @Experimental
@@ -153,10 +184,6 @@ public class SingleSection extends VBox {
         taskItem.setOpacity(1);
         animation.setOnFinished(_ -> this.getChildren().remove(taskItem));
         animation.play();
-    }
-
-    private ListContainer getContainer() {
-        return (ListContainer) this.getParent();
     }
 
     public SortedList<TaskViewModel> getSortedList() {

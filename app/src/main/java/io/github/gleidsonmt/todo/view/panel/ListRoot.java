@@ -1,22 +1,21 @@
-
-
 package io.github.gleidsonmt.todo.view.panel;
 
 import io.github.gleidsonmt.glad.base.Anchor;
 import io.github.gleidsonmt.glad.base.Root;
 import io.github.gleidsonmt.glad.base.dialog.WrapperEffect;
 import io.github.gleidsonmt.todo.model.ListType;
+import io.github.gleidsonmt.todo.model.ToDoTask;
 import io.github.gleidsonmt.todo.view.MainView;
 import io.github.gleidsonmt.todo.view.aside.Aside;
 import io.github.gleidsonmt.todo.view.panel.containers.*;
 import io.github.gleidsonmt.todo.view.panel.items.TaskItem;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
-import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.input.MouseButton;
@@ -40,7 +39,9 @@ public class ListRoot extends VBox {
 
     private final ObjectProperty<ListViewModel> actualList = new SimpleObjectProperty<>();
 
-    private final ChangeListener<Number> updateListener = (_, _, val) -> update(val.intValue() == 0);
+    private final ChangeListener<Number> updateListener = (_, _, val) -> {
+        update(val.intValue() == 0);
+    };
 
     private final ChangeListener<Number> updateAsideViewer = (_, _, newVal) -> {
         if (aside == null) return;
@@ -91,12 +92,13 @@ public class ListRoot extends VBox {
         init();
 
         this.actualList.addListener((_, _, newValue) -> {
-            if (container != null) {
-                container.sizeProperty().removeListener(updateListener);
-            }
+//            if (container != null) {
+//                container.sizeProperty().unbind();
+//                container.sizeProperty().removeListener(updateListener);
+//            }
             this.getChildren().clear();
             updateContainer(newValue);
-            container.sizeProperty().addListener(updateListener);
+//            container.sizeProperty().addListener(updateListener);
 
         });
 
@@ -124,27 +126,20 @@ public class ListRoot extends VBox {
             case DAILY -> "my_day = 1";
             case IMPORTANT -> "important = 1";
             case TASKS -> "list_id = 1";
+            case ALL -> "completed = 0";
             default -> "list_id = " + list.getId();
         };
 
+
         if (list.getType().equals(ListType.ALL)) {
-            container = new MultipleListContainer(list);
+            container = new MultipleListContainer(list, query);
         } else container = new DoubleListContainer(list, query);
 
-        container.load();
+        Task<ObservableList<ToDoTask>> ts = container.load();
+        ts.setOnSucceeded(_ -> update(container.sizeProperty().get() == 0));
 
-//        update(container.sizeProperty().get() == 0);
-//        container.sizeProperty().addListener((_, _, newValue) -> update(newValue.intValue() == 0));
         container.setOnMouseClicked(mouseEventHandler);
-
-//        Root root = (Root) getScene().getRoot();
-//        MainView mainView = (MainView) root.getContent();
-//        mainView.setRight(null);
-
-
-//        panel.createLines(true);
     }
-
 
     /**
      * If there's no task on the list root, so the image with a message will
@@ -157,8 +152,10 @@ public class ListRoot extends VBox {
         this.getChildren().setAll(empty ? emptyContainer : container);
         var panel = (Panel) getScene().lookup("#panel");
 
-        System.out.println("empty = " + empty);
-        if (!empty) panel.createBackgroundLines();
+        if (!empty) {
+            panel.getChildren().removeIf(el -> el instanceof BackgroundLines);
+            panel.createBackgroundLines();
+        }
         else panel.removeBackgroundLines();
     }
 

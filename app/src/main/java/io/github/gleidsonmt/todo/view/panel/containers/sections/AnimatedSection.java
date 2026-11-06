@@ -7,6 +7,7 @@ import io.github.gleidsonmt.todo.utils.I18n;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.IntegerBinding;
 import javafx.collections.ListChangeListener;
 import javafx.collections.transformation.FilteredList;
 import javafx.geometry.Insets;
@@ -52,7 +53,7 @@ public class AnimatedSection extends SingleSection {
             if (c.next()) {
                 if (!c.getList().isEmpty() && !getChildren().contains(title)) {
                     getChildren().addFirst(title);
-                } else if (c.getList().isEmpty() && getChildren().contains(title)) {
+                } else if (c.getList().isEmpty()) {
                     getChildren().remove(title);
                 }
             }

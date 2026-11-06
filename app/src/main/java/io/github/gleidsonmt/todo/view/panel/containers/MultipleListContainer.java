@@ -13,10 +13,17 @@ import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import io.github.gleidsonmt.todo.view_model.map.ListMapper;
 import io.github.gleidsonmt.todo.view_model.map.TaskMapper;
+import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.IntegerBinding;
+import javafx.beans.binding.NumberBinding;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 
 /**
@@ -25,53 +32,74 @@ import javafx.scene.control.Label;
  */
 public class MultipleListContainer extends ListContainer {
 
-    public MultipleListContainer(ListViewModel list) {
+    private String query;
+    public MultipleListContainer(ListViewModel list, String query) {
         super(list);
+        this.query = query;
     }
 
     @Override
-    public void load() {
+    public Task<ObservableList<ToDoTask>> load() {
 
         DaoList daoList = new DaoList();
         DaoTask daoTask = new DaoTask();
 
         Task<ObservableList<List>> task = daoList.fetch(FXCollections.observableArrayList());
 
+        System.out.println("query = " + query);
+
         task.setOnSucceeded(_ -> {
 
             for (List list : task.getValue()) {
                 if (!list.fixed() || list.name().equals("drawer.list.tasks")) {
-                    Task<ObservableList<ToDoTask>> tsk = daoTask.fetch(FXCollections.observableArrayList());
-                    new Thread(tsk).start();
                     ListViewModel viewModel = ListMapper.INSTANCE.toViewModel(list, new ListViewModel());
-                    this.getChildren().add(createItem(viewModel));
+                    var item = createItem(viewModel);
+                    item.setList(data.filtered(el -> el.getListID() == viewModel.getId()));
+                    if (!item.getSortedList().isEmpty()) {
+                        this.getChildren().addFirst(item);
+                    }
                 }
             }
-
-//            new Thread(task).start();
-
-
+//
 //            setTasks(tasks);
         });
 
 
-        Task<ObservableList<ToDoTask>> ts = daoTask.fetch(FXCollections.observableArrayList());
+//        Task<ObservableList<ToDoTask>> ts = daoTask.fetch(FXCollections.observableArrayList());
+        Task<ObservableList<ToDoTask>> ts = daoTask.fetch(70, 0, query);
 
-        ts.setOnSucceeded(e -> {
+        ts.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, _ -> {
+            System.out.println("two");
+
             ts.getValue().forEach(el -> data.add(TaskMapper.INSTANCE.toViewModel(el, new TaskViewModel())));
-            sizeProperty().bind(Bindings.size(this.getChildren()));
+            sizeProperty().bind(Bindings.size(this.data));
+
+
+            new Thread(task).start();
+
         });
 
-
         new Thread(ts).start();
-        new Thread(task).start();
 
+        return ts;
+    }
+
+
+    private void bind() {
+//        IntegerBinding sizeOfTheFirstSection = Bindings.size(sectionIncomplete.getSortedList());
+//
+//        if (getChildren().contains(sectionCompleted)) {
+//            IntegerBinding sizeOfTheSecondSection = Bindings.size(sectionCompleted.getSortedList());
+//            this.sizeProperty().bind(sizeOfTheFirstSection.add(sizeOfTheSecondSection));
+//        } else {
+//            this.sizeProperty().bind(sizeOfTheFirstSection);
+//        }
+//
+//        this.sizeProperty().addListener((_, _, _) -> this.setSpacing(sizeOfTheFirstSection.get() == 0 ? 0 : 10));
     }
 
     private SingleSection createItem(ListViewModel viewModel) {
-        var section = new CompositeSection(viewModel);
-        section.setList(data.filtered(el -> !el.isCompleted() && el.getListID() == viewModel.getId()));
-        return section;
+        return new CompositeSection(viewModel);
     }
 
 }

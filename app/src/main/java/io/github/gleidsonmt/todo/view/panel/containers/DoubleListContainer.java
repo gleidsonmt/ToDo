@@ -14,6 +14,7 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.binding.IntegerBinding;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 
 /**
  * Description:
@@ -43,14 +44,14 @@ public class DoubleListContainer extends ListContainer {
     }
 
     @Override
-    public void load() {
+    public Task<ObservableList<ToDoTask>> load() {
         Task<ObservableList<ToDoTask>> task = dao.fetch(70, 0, query);
 //        System.out.println("query = " + query);
         new Thread(task).start();
+//        unbind();
+        task.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, _ -> {
 
         // update list task
-        task.setOnSucceeded(_ -> {
-
             task.getValue().forEach(el -> data.add(TaskMapper.INSTANCE.toViewModel(el, new TaskViewModel())));
 
             if (!getChildren().contains(sectionCompleted)) {
@@ -58,39 +59,41 @@ public class DoubleListContainer extends ListContainer {
             }
 
             if (getList().getType() == ListType.IMPORTANT) {
+
                 sectionIncomplete.setList(data.filtered(el -> !el.isCompleted() && el.isImportant()));
                 getChildren().remove(sectionCompleted);
-//                sectionCompleted.setList(data.filtered(el -> el.isCompleted() && !el.isImportant()));
+
             } else if (getList().getType() == ListType.DAILY) {
+
                 sectionIncomplete.setList(data.filtered(el -> !el.isCompleted() && el.isMyDay()));
                 sectionCompleted.setList(data.filtered(TaskViewModel::isCompleted));
 
             } else {
+
                 // filtra os nao completos
                 sectionIncomplete.setList(data.filtered(el -> !el.isCompleted() && list.getId() == el.getListID()));
                 // filtra os completos
                 sectionCompleted.setList(data.filtered(el -> el.isCompleted() && list.getId() == el.getListID()));
-//                sectionCompleted.setList(data.filtered(TaskViewModel::isCompleted));
+//                sectionCompleted.setList(data.filtered(TaskViewModel::isCompleted));.
+
             }
 
             bind();
         });
+
+        return task;
     }
 
     private void bind() {
-
         IntegerBinding sizeOfTheFirstSection = Bindings.size(sectionIncomplete.getSortedList());
+
         if (getChildren().contains(sectionCompleted)) {
             IntegerBinding sizeOfTheSecondSection = Bindings.size(sectionCompleted.getSortedList());
-
             this.sizeProperty().bind(sizeOfTheFirstSection.add(sizeOfTheSecondSection));
         } else {
             this.sizeProperty().bind(sizeOfTheFirstSection);
         }
 
         this.sizeProperty().addListener((_, _, _) -> this.setSpacing(sizeOfTheFirstSection.get() == 0 ? 0 : 10));
-
-        this.setSpacing(this.sizeProperty().get() == 0 ? 0 : 5);
-
     }
 }

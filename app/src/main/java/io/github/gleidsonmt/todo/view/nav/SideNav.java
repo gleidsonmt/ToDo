@@ -58,12 +58,10 @@ public class SideNav extends VBox {
         configLayout();
         bind();
 //
-        container.setOnDragDropped(new EventHandler<DragEvent>() {
-            @Override
-            public void handle(DragEvent event) {
-                Dragboard db = event.getDragboard();
-                boolean success = false;
-                if (db.hasString()) {
+        container.setOnDragDropped(event -> {
+            Dragboard db = event.getDragboard();
+            boolean success = false;
+            if (db.hasString()) {
 //                    // Aqui você recupera o item original ou cria um novo
 //                    Label novoItem = criarItem(db.getString());
 //
@@ -75,48 +73,45 @@ public class SideNav extends VBox {
 //                    } else {
 //                        container.getChildren().add(novoItem);
 //                    }
-                    success = true;
-                }
-                event.setDropCompleted(success);
-                event.consume();
+                success = true;
             }
+            event.setDropCompleted(success);
+            event.consume();
         });
 
         WritableImage imgTransparente = new WritableImage(1, 1);
         ImageCursor cursorInvisivel = new ImageCursor(imgTransparente);
 //
-        container.setOnDragOver(new EventHandler<DragEvent>() {
-            @Override
-            public void handle(DragEvent event) {
-                Dragboard db = event.getDragboard();
+        container.setOnDragOver(event -> {
+            Dragboard db = event.getDragboard();
 
-                if (db.hasString()) {
-                    event.acceptTransferModes(TransferMode.MOVE);
-                }
+            if (db.hasString()) {
+                event.acceptTransferModes(TransferMode.MOVE);
+            }
 
-                if (event.getDragboard().hasString()) {
+            if (event.getDragboard().hasString()) {
 //                    event.acceptTransferModes(TransferMode.MOVE);
 //
 //                    // Descobre o índice correto com base na posição Y do mouse
-                    int targetIndex = calcularIndicePorY(container, event.getY());
+                int targetIndex = calcularIndicePorY(container, event.getY());
 
-                    Optional<Node> optional = container.getChildren().stream().filter(node -> node instanceof Label).findAny();
-                    if (optional.isEmpty()) return;
+                Optional<Node> optional = container.getChildren().stream().filter(node -> node instanceof Label).findAny();
+                if (optional.isEmpty()) return;
 
-                    if (index != targetIndex) {
+                if (index != targetIndex) {
 
-                        container.getChildren().remove(optional.get());
-                        if (targetIndex > container.getChildren().size()) {
-                            container.getChildren().add(container.getChildren().size(), optional.get());
-                            index = container.getChildren().size()-1 ;
+                    container.getChildren().remove(optional.get());
+                    if (targetIndex > container.getChildren().size()) {
+                        container.getChildren().add(container.getChildren().size(), optional.get());
+                        index = container.getChildren().size()-1 ;
 
-                        } else {
-                            container.getChildren().add(targetIndex, optional.get());
-                            index = targetIndex;
+                    } else {
+                        container.getChildren().add(targetIndex, optional.get());
+                        index = targetIndex;
 
-                        }
-//                        container.getChildren().set(index, optional.get());
                     }
+//                        container.getChildren().set(index, optional.get());
+                }
 //
 //                    // Evita recalcular e mover se já estiver na posição correta
 //                    if (!container.getChildren().contains(placeholder) || container.getChildren().indexOf(placeholder) != targetIndex) {
@@ -127,10 +122,9 @@ public class SideNav extends VBox {
 //
 //                        container.getChildren().add(safeIndex, placeholder);
 //                    }
-                }
-                event.consume();
-
             }
+            event.consume();
+
         });
 
         setOnDragExited(event -> {

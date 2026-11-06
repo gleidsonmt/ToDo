@@ -2,6 +2,7 @@
 
 package io.github.gleidsonmt.todo.view.panel.containers;
 
+import io.github.gleidsonmt.todo.model.ToDoTask;
 import io.github.gleidsonmt.todo.view.panel.containers.sections.Comparators;
 import io.github.gleidsonmt.todo.view.panel.containers.sections.SingleSection;
 import io.github.gleidsonmt.todo.view.panel.items.TaskItem;
@@ -15,6 +16,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -131,8 +133,8 @@ public abstract class ListContainer extends VBox {
         return this.list;
     }
 
-//    public abstract Task<ObservableList<?>>  load();
-    public abstract void  load();
+    public abstract Task<ObservableList<ToDoTask>> load();
+//    public abstract void  load();
 
     public ObservableList<TaskViewModel> getData() {
         return this.data;
