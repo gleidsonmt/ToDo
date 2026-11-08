@@ -60,7 +60,7 @@ public class DoubleListContainer extends ListContainer {
 
             if (getList().getType() == ListType.IMPORTANT) {
 
-                sectionIncomplete.setList(data.filtered(el -> !el.isCompleted() && el.isImportant()));
+                sectionIncomplete.setList(data.filtered(el -> !el.isCompleted() && el.isImportant() ));
                 getChildren().remove(sectionCompleted);
 
             } else if (getList().getType() == ListType.DAILY) {
@@ -85,15 +85,15 @@ public class DoubleListContainer extends ListContainer {
     }
 
     private void bind() {
-        IntegerBinding sizeOfTheFirstSection = Bindings.size(sectionIncomplete.getSortedList());
-
-        if (getChildren().contains(sectionCompleted)) {
-            IntegerBinding sizeOfTheSecondSection = Bindings.size(sectionCompleted.getSortedList());
-            this.sizeProperty().bind(sizeOfTheFirstSection.add(sizeOfTheSecondSection));
-        } else {
-            this.sizeProperty().bind(sizeOfTheFirstSection);
-        }
-
-        this.sizeProperty().addListener((_, _, _) -> this.setSpacing(sizeOfTheFirstSection.get() == 0 ? 0 : 10));
+//        IntegerBinding sizeOfTheFirstSection = Bindings.size(sectionIncomplete.getSortedList());
+//
+//        if (getChildren().contains(sectionCompleted)) {
+//            IntegerBinding sizeOfTheSecondSection = Bindings.size(sectionCompleted.getSortedList());
+//            this.sizeProperty().bind(sizeOfTheFirstSection.add(sizeOfTheSecondSection));
+//        } else {
+//            this.sizeProperty().bind(sizeOfTheFirstSection);
+//        }
+//
+//        this.sizeProperty().addListener((_, _, _) -> this.setSpacing(sizeOfTheFirstSection.get() == 0 ? 0 : 10));
     }
 }

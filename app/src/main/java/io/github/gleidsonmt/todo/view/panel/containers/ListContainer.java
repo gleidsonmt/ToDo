@@ -82,7 +82,6 @@ public abstract class ListContainer extends VBox {
                 if (c.wasUpdated()) { // if one of the task items are updated
                     for (TaskViewModel model : c.getList()) {
                         // cal his update method
-
                         model.update();
 
                     }
@@ -90,10 +89,7 @@ public abstract class ListContainer extends VBox {
 
             }
         });
-
-
         VBox.setVgrow(this, Priority.ALWAYS);
-
     }
 
     private Comparator<TaskViewModel> switchComparator(Comparators comparator) {

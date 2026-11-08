@@ -4,14 +4,17 @@ import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import io.github.gleidsonmt.todo.model.ListType;
 import io.github.gleidsonmt.todo.utils.I18n;
+import io.github.gleidsonmt.todo.view.panel.containers.ListContainer;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.IntegerBinding;
 import javafx.collections.ListChangeListener;
 import javafx.collections.transformation.FilteredList;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 /// Description:
@@ -55,7 +58,10 @@ public class AnimatedSection extends SingleSection {
                     getChildren().addFirst(title);
                 } else if (c.getList().isEmpty()) {
                     getChildren().remove(title);
+//                    getChildren().remove(this);
                 }
+
+
             }
         });
         super.setList(list);

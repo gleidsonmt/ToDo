@@ -12,9 +12,10 @@ VALUES (1, 'drawer.list.tasks', 'home', 1, 0),
        (2, 'drawer.list.my_day', 'sun', 1, 0),
        (3, 'drawer.list.important', 'star', 1, 0),
        (4, 'drawer.list.all', 'infinity', 1, 0),
-       (5, 'Projects', 'notebook', 0, 0),
-       (6, 'To Buy', 'shopping', 0, 0),
-       (7, 'Exercise', 'strong-arm', 0, 0);
+       (5, 'drawer.list.completed', 'done_all', 1, 0),
+       (6, 'Projects', 'notebook', 0, 0),
+       (7, 'To Buy', 'shopping', 0, 0),
+       (8, 'Exercise', 'strong-arm', 0, 0);
 
 CREATE TABLE task
 (

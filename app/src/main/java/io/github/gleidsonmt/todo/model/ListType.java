@@ -15,6 +15,7 @@ public enum ListType {
             case "drawer.list.important" -> ListType.IMPORTANT;
             case "drawer.list.tasks" -> ListType.TASKS;
             case "drawer.list.all" -> ListType.ALL;
+            case "drawer.list.completed" -> ListType.COMPLETED;
             default -> DEFAULT;
         };
 

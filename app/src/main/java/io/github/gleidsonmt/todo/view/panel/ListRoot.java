@@ -8,9 +8,11 @@ import io.github.gleidsonmt.todo.model.ToDoTask;
 import io.github.gleidsonmt.todo.view.MainView;
 import io.github.gleidsonmt.todo.view.aside.Aside;
 import io.github.gleidsonmt.todo.view.panel.containers.*;
+import io.github.gleidsonmt.todo.view.panel.containers.sections.ListSection;
 import io.github.gleidsonmt.todo.view.panel.items.TaskItem;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
@@ -92,13 +94,13 @@ public class ListRoot extends VBox {
         init();
 
         this.actualList.addListener((_, _, newValue) -> {
-//            if (container != null) {
-//                container.sizeProperty().unbind();
-//                container.sizeProperty().removeListener(updateListener);
-//            }
+            if (container != null) {
+                container.sizeProperty().unbind();
+                container.sizeProperty().removeListener(updateListener);
+            }
             this.getChildren().clear();
             updateContainer(newValue);
-//            container.sizeProperty().addListener(updateListener);
+            container.sizeProperty().addListener(updateListener);
 
         });
 
@@ -127,16 +129,19 @@ public class ListRoot extends VBox {
             case IMPORTANT -> "important = 1";
             case TASKS -> "list_id = 1";
             case ALL -> "completed = 0";
+            case COMPLETED -> "completed = 1";
             default -> "list_id = " + list.getId();
         };
 
-
-        if (list.getType().equals(ListType.ALL)) {
+        if (list.getType().equals(ListType.ALL) || list.getType().equals(ListType.COMPLETED)) {
             container = new MultipleListContainer(list, query);
-        } else container = new DoubleListContainer(list, query);
+        } else
+            container = new DoubleListContainer(list, query);
 
         Task<ObservableList<ToDoTask>> ts = container.load();
         ts.setOnSucceeded(_ -> update(container.sizeProperty().get() == 0));
+
+        container.sizeProperty().bind(list.sizeProperty());
 
         container.setOnMouseClicked(mouseEventHandler);
     }
@@ -151,12 +156,12 @@ public class ListRoot extends VBox {
         if (getScene() == null) return;
         this.getChildren().setAll(empty ? emptyContainer : container);
         var panel = (Panel) getScene().lookup("#panel");
-
+        System.out.println("panel = " + panel);
+        System.out.println("empty = " + empty);
         if (!empty) {
             panel.getChildren().removeIf(el -> el instanceof BackgroundLines);
             panel.createBackgroundLines();
-        }
-        else panel.removeBackgroundLines();
+        } else panel.removeBackgroundLines();
     }
 
     public ListContainer getContainer() {

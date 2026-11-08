@@ -2,10 +2,13 @@ package io.github.gleidsonmt.todo.view.panel.containers.sections;
 
 import java.util.Optional;
 
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.IntegerBinding;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.collections.ObservableList;
+import javafx.scene.layout.Pane;
 import org.jetbrains.annotations.ApiStatus.Experimental;
 
 import io.github.gleidsonmt.todo.view.panel.containers.ListContainer;
@@ -112,7 +115,7 @@ public class SingleSection extends VBox {
         return Bindings.size(this.sortedList);
     }
 
-    public int size() {
+    public  int size() {
         return size.get();
     }
 
@@ -130,6 +133,7 @@ public class SingleSection extends VBox {
                 }
             }
 
+
             if (c.wasAdded()) {
                 c.getAddedSubList().forEach(el -> {
                     TaskItem taskItem = loadTask(el);
@@ -140,7 +144,10 @@ public class SingleSection extends VBox {
             }
             if (c.wasRemoved()) {
                 c.getRemoved().forEach(this::delete);
-
+//                Platform.runLater(() -> {
+//                    ((ListContainer)getParent()).getChildren().remove(this);
+//
+//                });
             }
         }
 
@@ -188,5 +195,15 @@ public class SingleSection extends VBox {
 
     public SortedList<TaskViewModel> getSortedList() {
         return this.sortedList;
+    }
+
+    public static int size(ObservableList<?> objects) {
+        var size = 0;
+        for (Object object : objects) {
+            if (object instanceof TaskViewModel) {
+                size++;
+            }
+        }
+        return size;
     }
 }

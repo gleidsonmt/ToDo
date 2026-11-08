@@ -2,6 +2,7 @@
 
 package io.github.gleidsonmt.todo.view.panel.items;
 
+import io.github.gleidsonmt.todo.global.Global;
 import io.github.gleidsonmt.todo.view.panel.events.TaskChangeEvent;
 import io.github.gleidsonmt.todo.view.panel.input.menu.TaskItemContextMenu;
 import io.github.gleidsonmt.todo.view.panel.items.options.Options;
@@ -149,7 +150,7 @@ public class TaskItem extends GridToggle {
     }
 
     private void fireEvent(EventType<TaskChangeEvent> type) {
-        this.fireEvent(new TaskChangeEvent(type, this.getViewModel()));
+        Global.fireEvent(this, new TaskChangeEvent(type, this.getViewModel() ) );
     }
 
     private boolean inScene() {

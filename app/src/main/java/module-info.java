@@ -56,6 +56,7 @@ module io.github.gleidsonmt.todo {
     exports io.github.gleidsonmt.todo.view.panel.items;
     exports io.github.gleidsonmt.todo.view.panel.containers;
     exports io.github.gleidsonmt.todo.bd.dao.internal;
+    exports io.github.gleidsonmt.todo.view.panel.containers.sections;
     opens io.github.gleidsonmt.todo.model.recurrence to javafx.base;
     exports io.github.gleidsonmt.todo.view_model.converter;
     exports io.github.gleidsonmt.todo.bd.mysql;

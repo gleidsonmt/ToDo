@@ -133,8 +133,12 @@ public class MainView extends BorderPane {
         this.addEventHandler(TaskChangeEvent.COMPLETE, e -> {
             Logger.getGlobal().info(() -> "[TaskChangeEvent [FILTER], Type = " + e.getEventType() + " ] -> " + e.getModel());
             sideNav.get(e.getModel().getListID()).updateSize(!e.getModel().isCompleted() ? 1 : -1);
-            updateAllListSize(e.getModel());
-            sideNav.get(ListType.ALL).updateSize(-1);
+//            updateAllListSize(e.getModel());
+            sideNav.get(ListType.ALL).updateSize(!e.getModel().isCompleted() ? 1 : -1);
+
+            sideNav.get(ListType.COMPLETED).updateSize(!e.getModel().isCompleted() ? -1 : 1);
+            sideNav.get(ListType.DAILY).updateSize(!e.getModel().isCompleted() ? 1 : -1);
+            sideNav.get(ListType.IMPORTANT).updateSize(!e.getModel().isCompleted() ? 1 : -1);
         });
 
 
