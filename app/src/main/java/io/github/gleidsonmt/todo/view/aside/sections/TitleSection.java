@@ -37,7 +37,7 @@ public class TitleSection extends Section {
 
         field.getStyleClass().addAll("inside-text-field text-14".split("\\s+"));
 
-        FavoriteButton favoriteButton = new FavoriteButton();
+        FavoriteButton favoriteButton = new FavoriteButton(viewModel);
         favoriteButton.selectedProperty().bindBidirectional(viewModel.importantProperty());
 
         favoriteButton.selectedProperty().addListener((_, _, _) -> {

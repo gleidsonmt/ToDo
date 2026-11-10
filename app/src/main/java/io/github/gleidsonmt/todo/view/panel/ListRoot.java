@@ -9,6 +9,7 @@ import io.github.gleidsonmt.todo.view.MainView;
 import io.github.gleidsonmt.todo.view.aside.Aside;
 import io.github.gleidsonmt.todo.view.panel.containers.*;
 import io.github.gleidsonmt.todo.view.panel.containers.sections.ListSection;
+import io.github.gleidsonmt.todo.view.panel.containers.sections.SingleSection;
 import io.github.gleidsonmt.todo.view.panel.items.TaskItem;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
@@ -141,7 +142,15 @@ public class ListRoot extends VBox {
         Task<ObservableList<ToDoTask>> ts = container.load();
         ts.setOnSucceeded(_ -> update(container.sizeProperty().get() == 0));
 
-        container.sizeProperty().bind(list.sizeProperty());
+        container.sizeProperty().unbind();
+        if (list.getType().equals(ListType.COMPLETED) || list.getType().equals(ListType.ALL)) { // count from the db
+            container.sizeProperty().bind(list.sizeProperty());
+        } else if (list.getType().equals(ListType.IMPORTANT)) { // only count the first section
+            var singleSection = (SingleSection) container.getChildren().getFirst();
+            container.sizeProperty().bind(Bindings.size(singleSection.getChildren()));
+        } else { // count the size of all data
+            container.sizeProperty().bind(Bindings.size(container.getData()));
+        }
 
         container.setOnMouseClicked(mouseEventHandler);
     }
@@ -156,8 +165,6 @@ public class ListRoot extends VBox {
         if (getScene() == null) return;
         this.getChildren().setAll(empty ? emptyContainer : container);
         var panel = (Panel) getScene().lookup("#panel");
-        System.out.println("panel = " + panel);
-        System.out.println("empty = " + empty);
         if (!empty) {
             panel.getChildren().removeIf(el -> el instanceof BackgroundLines);
             panel.createBackgroundLines();

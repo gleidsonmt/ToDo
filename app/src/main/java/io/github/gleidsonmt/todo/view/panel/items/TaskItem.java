@@ -57,7 +57,7 @@ public class TaskItem extends GridToggle {
         this.setUserData(viewModel);
 
         this.circleIcon = new CheckBox();
-        this.favorite = new FavoriteButton();
+        this.favorite = new FavoriteButton(viewModel);
         this.text = new Title();
 
         this.options = new Options(this);

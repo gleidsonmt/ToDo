@@ -4,6 +4,9 @@ package io.github.gleidsonmt.todo.view.panel.items;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
+import io.github.gleidsonmt.todo.global.Global;
+import io.github.gleidsonmt.todo.view.panel.events.TaskChangeEvent;
+import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.ToggleButton;
 
@@ -13,7 +16,7 @@ import javafx.scene.control.ToggleButton;
  */
 public class FavoriteButton extends ToggleButton {
 
-    public FavoriteButton() {
+    public FavoriteButton(TaskViewModel taskViewModel) {
 
         this.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         this.getStyleClass().addAll("btn-favorite min-w-30 min-h-30".split("\\s+"));
@@ -25,6 +28,10 @@ public class FavoriteButton extends ToggleButton {
             } else {
                 setGraphic(new SVGIcon(Icon.STAR));
             }
+        });
+
+        this.setOnAction(e -> {
+            Global.fireEvent(this, new TaskChangeEvent(TaskChangeEvent.FAVORITE_CHANGED, taskViewModel));
         });
     }
 }

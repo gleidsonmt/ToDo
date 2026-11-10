@@ -181,6 +181,10 @@ public class InputField extends GridPane {
                     viewModel.setRemind(options.getRemind());
                     viewModel.setDueDate(options.getDueDate());
 
+                    if (options.getDueDate() != null && options.getDueDate().equals(LocalDate.now())) {
+                        viewModel.setMyDay(true);
+                    }
+
                     // set the list
                     if (!panel.getListRoot().getActualList().isFixed()) {
                         viewModel.setListID(panel.getListRoot().getActualList().getId());

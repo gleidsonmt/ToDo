@@ -97,17 +97,13 @@ public class MultipleListContainer extends ListContainer {
                 }
             }
 
-            System.out.println("getChildren() = " + getChildren());
 //            sizeProperty().bind(Bindings.size(this.data));
 
         });
 
-        System.out.println("query = " + query);
         Task<ObservableList<ToDoTask>> ts = daoTask.fetch(70, 0, query);
 
         ts.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, _ -> {
-            System.out.println("two");
-            System.out.println("ts.getValue() = " + ts.getValue());
 
             ts.getValue().forEach(el -> data.add(TaskMapper.INSTANCE.toViewModel(el, new TaskViewModel())));
 
