@@ -107,8 +107,6 @@ public class MultipleListContainer extends ListContainer {
 
             ts.getValue().forEach(el -> data.add(TaskMapper.INSTANCE.toViewModel(el, new TaskViewModel())));
 
-            System.out.println("data = " + data);
-
             new Thread(task).start();
         });
 

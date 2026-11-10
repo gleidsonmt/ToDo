@@ -1,5 +1,6 @@
 package io.github.gleidsonmt.todo.view.panel;
 
+import com.sun.tools.javac.Main;
 import io.github.gleidsonmt.glad.base.Anchor;
 import io.github.gleidsonmt.glad.base.Root;
 import io.github.gleidsonmt.glad.base.dialog.WrapperEffect;
@@ -58,9 +59,9 @@ public class ListRoot extends VBox {
                 if (getSelected() == null) return;
 
                 Root root = (Root) getScene().getRoot();
-//        if (aside == null)
+
                 aside = new Aside(getSelected().getViewModel());
-//        else aside.setViewModel(newVal.getViewModel());
+                aside.setOpened(true);
                 changeRight(root.getWidth());
             }
         }
@@ -70,9 +71,16 @@ public class ListRoot extends VBox {
         Root root = (Root) getScene().getRoot();
         MainView mainView = (MainView) root.getContent();
 
+
+        if (!aside.isOpened()) return;
+
         double breakPoint = 1000;
         if (val > breakPoint) {
+            System.out.println("val = " + val);
+
             if (root.isBlocked()) return;
+            System.out.println("root = " + root.behavior().drawer().isShowing());
+//            if (!root.behavior().drawer().isShowing()) return;
 
             root.behavior()
                     .drawer()

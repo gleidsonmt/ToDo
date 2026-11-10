@@ -1,5 +1,3 @@
-
-
 package io.github.gleidsonmt.todo.view;
 
 import io.github.gleidsonmt.glad.base.Root;

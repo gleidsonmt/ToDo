@@ -50,7 +50,6 @@ public class DoubleListContainer extends ListContainer {
         new Thread(task).start();
 //        unbind();
         task.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, _ -> {
-            System.out.println("task.getValue() = " + task.getValue());
 
         // update list task
             task.getValue().forEach(el -> data.add(TaskMapper.INSTANCE.toViewModel(el, new TaskViewModel())));
