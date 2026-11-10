@@ -1,26 +1,25 @@
-
-
 package io.github.gleidsonmt.todo.view.panel.input;
-
-import java.time.LocalDate;
 
 import io.github.gleidsonmt.glad.base.Root;
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
-import io.github.gleidsonmt.todo.view.panel.menu.input_menu_items.CustomContextMenu;
-import io.github.gleidsonmt.todo.view_model.ListViewModel;
-import javafx.application.Platform;
-import javafx.beans.property.BooleanProperty;
+import io.github.gleidsonmt.todo.model.List;
+import io.github.gleidsonmt.todo.model.RecurrenceViewModel;
+import io.github.gleidsonmt.todo.utils.I18n;
+import io.github.gleidsonmt.todo.utils.IconUtils;
+import io.github.gleidsonmt.todo.utils.StringUtils;
+import io.github.gleidsonmt.todo.view.panel.input.menu.input_menu_items.CustomContextMenu;
+import io.github.gleidsonmt.todo.view.panel.input.menu.input_menu_items.DateUtils;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.concurrent.Task;
 import javafx.css.PseudoClass;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * Description:
@@ -35,17 +34,24 @@ public class InputFieldItem<T> extends Label {
     protected CustomContextMenu<T> contextMenu;
     protected ObjectProperty<T> value;
     protected boolean center;
+    private final String placeholder;
 
-    public InputFieldItem(Icon icon) {
-        this(icon, null);
-    }
+    private final Icon icon;
+    private final String tooltip;
 
     public InputFieldItem(Icon icon, String toolTipText) {
+        this(null, icon, toolTipText);
+    }
+
+    public InputFieldItem(String placeholder, Icon icon, String toolTipText) {
+        this.tooltip = toolTipText;
+        this.icon = icon;
+        this.placeholder = placeholder;
 
         this.value = new SimpleObjectProperty<>();
         setTooltip(new Tooltip(toolTipText));
         setGraphic(new SVGIcon(icon));
-        setText(null);
+        setText(placeholder);
         getStyleClass().add("input-field-item");
 
         this.addEventFilter(MouseEvent.MOUSE_CLICKED, _ -> {
@@ -53,22 +59,37 @@ public class InputFieldItem<T> extends Label {
                     .flow().hide();
         });
 
-        value.addListener(new ChangeListener<T>() {
-            @Override
-            public void changed(ObservableValue<? extends T> observable, T oldValue, T newValue) {
-                    if (icon.equals(Icon.HOME)) return;
-                    pseudoClassStateChanged(PseudoClass.getPseudoClass("selected"), newValue != null);
-            }
+        value.addListener((_, _, val) -> {
+                if (icon.equals(Icon.HOME)) return;
+                pseudoClassStateChanged(PseudoClass.getPseudoClass("selected"), val != null);
+
+                if (val != null) {
+                    if (val instanceof LocalDate date) {
+                        setText(DateUtils.format(date));
+                        getTooltip().setText("");
+                    }
+                    if (val instanceof LocalDateTime dateTime) {
+                        setText(DateUtils.format("Remind at ", dateTime.toLocalTime(), " at ", dateTime.toLocalDate()));
+                    }
+                    if (val instanceof RecurrenceViewModel recurrence) {
+                        setText(DateUtils.format(recurrence));
+                    }
+                    if (val instanceof List list) {
+                        setText(
+                                StringUtils.isFixedList(list.name()) ?
+                                        I18n.get(list.name()) :
+                                        StringUtils.name(list.name())
+                        );
+                        setGraphic(IconUtils.getIcon(list));
+                    }
+
+                } else {
+                    reset();
+                }
         });
 
 //         setWrapText(true);
-        widthProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                System.out.println("getPrefWidth() = " + getPrefWidth());
-                System.out.println("newValue = " + newValue);
-            }
-        });
+
     }
 
     public void setValue(T value) {
@@ -89,5 +110,17 @@ public class InputFieldItem<T> extends Label {
 
     public boolean isCenter() {
         return this.center;
+    }
+
+
+    public String getPlaceholder() {
+        return placeholder;
+    }
+
+    public void reset() {
+        setText(placeholder);
+        setTooltip(new Tooltip(tooltip));
+        setGraphic(new SVGIcon(icon));
+        setContentDisplay(ContentDisplay.LEFT);
     }
 }

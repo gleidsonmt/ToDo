@@ -2,8 +2,8 @@
 
 package io.github.gleidsonmt.todo.bd.dao.internal;
 
-import io.github.gleidsonmt.todo.bd.DatabaseConnection;
 import io.github.gleidsonmt.todo.bd.sqlite.SQLiteConnection;
+import io.github.gleidsonmt.todo.model.DTO;
 import io.github.gleidsonmt.todo.model.Model;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -25,7 +25,7 @@ import java.util.logging.Logger;
  * Create on 04/03/2024
  */
 @SuppressWarnings("unused")
-public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T> {
+public abstract class AbstractDao<T extends DTO> implements Dao<T>, ListDao<T> {
 
     // Mono state to grant only one connection per time
     protected static SQLiteConnection data = SQLiteConnection.INSTANCE;
@@ -153,6 +153,16 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
         return execute;
     }
 
+    public boolean delete(String where) {
+        connect();
+        String sql = modelSQLCreator.create(DaoAction.DELETE, where);
+        boolean execute = data.executeUpdate(sql);
+        logger(sql);
+        if (autoCloseable)
+            close();
+        return execute;
+    }
+
 
     /**
      * Get the item using its id.
@@ -184,7 +194,7 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
         connect();
         ResultSet result = executeQuery("select * from " + getTable() + ";");
         try {
-            if (result.first())
+            if (result.next())
                 return Optional.of(createElement(result));
             else
                 return Optional.empty();
@@ -396,7 +406,6 @@ public abstract class AbstractDao<T extends Model> implements Dao<T>, ListDao<T>
                     }
                 } catch (SQLException e) {
                     logger.severe(() -> "[SQL Action, Type = ERROR]  SQL => select * from " + getTable() + " " + condition + ";" + " -- " + e.getMessage());
-                    e.printStackTrace();
                     throw new RuntimeException(e);
                 }
                 return items;

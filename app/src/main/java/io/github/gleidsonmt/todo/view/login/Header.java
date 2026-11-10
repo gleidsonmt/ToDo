@@ -1,5 +1,3 @@
-
-
 package io.github.gleidsonmt.todo.view.login;
 
 import io.github.gleidsonmt.glad.controls.button.IconButton;
@@ -7,10 +5,12 @@ import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
+import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
@@ -40,9 +40,9 @@ public class Header extends GridPane {
 
         Text text = new Text(_title);
 
-        IconButton keyButton = new IconButton();
-        keyButton.setIcon(new SVGIcon(_icon));
-        keyButton.getStyleClass().add("key-button");
+        Label keyButton = new Label();
+        keyButton.setGraphic(new SVGIcon(_icon, Color.WHITE, 1.2));
+        keyButton.getStyleClass().addAll("bg-[derive(-mint,30%)] h-40 w-40 align-center text-white round".split("\\s+"));
 
         text.getStyleClass().addAll("h3", "title");
 

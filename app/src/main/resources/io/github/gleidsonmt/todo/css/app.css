@@ -8,16 +8,11 @@
     -fx-fill: #00ccdd;
 }
 
-.text-box:error {
-    -fx-border-color: -red-500;
-}
-
-.text-box:error .icon {
-    -fx-fill: -red-500;
-}
-
 .text-box:error .helper-label .text {
     -fx-fill: -red-500;
+}
+
+.text-box:error .text-box-base {
 }
 
 Panel {
@@ -96,9 +91,10 @@ Panel {
 
 .animated-section-title {
     -fx-padding: 0px 10px 0px 10px;
-    -fx-border-width: 2px;
+    -fx-border-width: 1px;
     -fx-border-radius: 3px;
     -fx-border-color: -light-gray-2;
+    -fx-background-color: -fx-background;
 }
 
 .btn-favorite {
@@ -231,12 +227,18 @@ Panel {
 .check-circle .box {
     -fx-background-radius: 100px;
     -fx-border-radius: 100px;
-    -fx-border-width: 1px;
+    -fx-border-width: 2px;
     -fx-cursor: hand;
     -fx-background-insets: 1px;
+    -fx-padding: 3px;
 }
 
-.check-circle .box .mark {
+
+.check-circle:selected:hover .box .mark {
+    -fx-border-color: white;
+}
+.check-circle:hover .box .mark {
+    -fx-fill: red;
 }
 
 .check-circle:determinate .box {
@@ -250,6 +252,8 @@ Panel {
 .hamb {
     -fx-background-color: -fx-background;
     -fx-border-color: -light-gray-2;
+    -fx-border-radius: 5px;
+    -fx-padding: 10px;
 }
 
 .custom-drawer-item:selected .text-field {
@@ -319,12 +323,28 @@ Panel {
 }
 
 .calendar-view .header {
+
 }
+
+.calendar-view .body-grid-pane {
+    -fx-background-color: white;
+}
+
 
 .calendar-view .previous-month-button,
 .calendar-view .next-month-button {
     -fx-padding: 15px;
     -fx-background-radius: 10px;
+    -fx-border-color: -medium-gray;
+    -fx-border-radius: 5px;
+}
+
+.calendar-view .previous-month-button {
+    -fx-rotate: 90;
+}
+
+.calendar-view .next-month-button {
+    -fx-rotate: -90;
 }
 
 .calendar-view .dropdown {
@@ -348,14 +368,37 @@ Panel {
 }
 
 .calendar-view .date-cell {
-    -fx-background-radius: 10px;
+    -fx-background-color: white;
 }
 
 .calendar-view .date-cell:hover {
     -fx-cursor: hand;
     -fx-background-color: -light-gray-2;
     -fx-border-color: -medium-gray;
-    -fx-border-radius: 10px;
+}
+
+.calendar-view .date-cell {
+    -fx-background-radius: 5px;
+    -fx-border-color: -light-gray-2;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+.calendar-view .today {
+    -fx-cursor: hand;
+    -fx-background-color: white;
+    -fx-border-color: -fx-accent;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+.calendar-view .selected {
+    -fx-cursor: hand;
+    -fx-background-color: -fx-accent;
+    -fx-border-color: transparent;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-font-weight: bold;
 }
 
 .calendar-view .date-cell:hover .text {
@@ -374,26 +417,65 @@ Panel {
     -fx-effect: none;
 }
 
+.year-view {
+    -fx-effect: none;
+}
+
 .year-view .left-button .arrow,
 .year-view .right-button .arrow {
     -fx-padding: 7px 4px 7px 4px;
 }
 
-.year-view .right-button,
 .year-view .left-button {
-    -fx-padding: 10px;
+    -fx-rotate: 180;
 }
 
+.year-view .right-button,
+.year-view .left-button {
+    -fx-padding: 15px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+.year-view .selected .text {
+    -fx-fill: -fx-accent;
+}
 .year-view .selected {
     -fx-background-radius: 10px;
 }
 
 .year-view .selected .selection-indicator {
+    -fx-background-color: -fx-accent;
+}
+
+.year-view .header {
+    -fx-effect: none;
+}
+
+.year-view {
+    -fx-border-color: white;
+}
+.year-view .grid-pane {
+    -fx-effect: none;
     -fx-background-color: white;
+    -fx-border-color: white;
+}
+
+.year-view .year-box {
+    -fx-effect: none;
+    -fx-background-color: white;
+    -fx-border-color: -light-gray-2;
+    -fx-border-radius: 5px;
+    -fx-min-width: 50px;
+}
+
+.year-view .year-box:hover {
+    -fx-background-color: -light-gray-2;
+    -fx-background-radius: 5px;
 }
 
 .calendar-view .year-month-view {
-    -fx-background-color: red;
+    -fx-background-color: white;
     -fx-padding: -1px;
 }
 
@@ -404,6 +486,10 @@ Panel {
 
 .calendar-view .month-box .selection-indicator {
     -fx-background-color: -fx-accent;
+}
+
+.calendar-view .month-box:hover .month-label .text  {
+    -fx-fill: -fx-accent;
 }
 
 .calendar-view {
@@ -640,12 +726,16 @@ Panel {
     -fx-background-radius: 5px;
 }
 
+.inside-field {
+    -fx-background-color: transparent;
+}
+
 .inside-field:focused {
     -fx-border-color: -fx-accent;
 }
 
 .inside-field:readonly {
-    -fx-cursor: hand;
+    -fx-cursor: default;
     -fx-border-color: transparent;
 }
 
@@ -663,11 +753,17 @@ Panel {
 }
 
 .inside-field:hover {
-    -fx-cursor: hand;
-    -fx-background-color: -light-gray;
+    -fx-cursor: text;
 }
 
 .inside-field {
+    -fx-border-color: transparent;
+}
+
+.inside-text-field,
+.inside-text-field:focused:hover,
+.inside-text-field:focused:hover,
+.inside-text-field:hover {
     -fx-border-color: transparent;
 }
 
@@ -730,7 +826,7 @@ InputFieldOptions:medium .input-field-item:selected,
 InputFieldOptions:small:medium .input-field-item:selected {
     -fx-fill: -fx-accent;
     -fx-background-radius: 10px;
-    -fx-spacing: 10px;
+    -fx-spacing: 5px;
 }
 InputFieldOptions:medium .input-field-item:selected,
 InputFieldOptions:small .input-field-item:selected {
@@ -742,10 +838,70 @@ InputFieldOptions:small .input-field-item:selected > .icon-container > .icon {
     -fx-fill: white;
 }
 
-.context-menu .icon-container .icon {
+InputFieldOptions:medium {
+    -fx-spacing: 5px;
+}
+
+.hamb {
+    -fx-content-display: graphic-only;
+}
+
+.aside {
+    -fx-background-color: -fx-background;
+}
+
+.aside-item {
+    -fx-background-color: transparent;
+}
+.aside-item:hover {
+    -fx-background-color: -light-gray;
+}
+.aside-item:selected {
+    -fx-background-color: transparent;
+}
+.aside-item:selected:hover {
+    -fx-background-color: transparent;
+}
+
+.aside-item .icon-container .icon {
+    -fx-fill: -icon-color;
+}
+
+.aside-item:selected .icon-container .icon,
+.aside-item:selected .text {
     -fx-fill: -fx-accent;
 }
 
-InputFieldOptions:medium {
-    -fx-spacing: 10px;
+.aside-item .grid-icon {
+    -fx-accent: -icon-color;
+}
+.aside-item:selected CloseButton:hover {
+    -fx-background-color: -hover-color;
+}
+.area-insert .scroll-pane {
+    -fx-fit-to-width: true;
+    /*-fx-fit-to-height: true;*/
+    -fx-vbar-policy: never;
+}
+.area-insert,
+.area-insert:focused {
+    -fx-border-color: -light-gray;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
+    -fx-background-color: transparent;
+}
+
+.area-insert .text-area {
+    -fx-background-color: transparent;
+    -fx-border-width: 0px;
+    -fx-border-color: transparent;
+}
+
+.aside .input-field-item:hover {
+    -fx-background-color: transparent;
+}
+
+.file-label:selected:hover  {
+    -fx-background-color: -light-gray;
 }

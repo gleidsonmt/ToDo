@@ -2,8 +2,8 @@
 
 package io.github.gleidsonmt.todo.view;
 
-import io.github.gleidsonmt.glad.base.View;
-import io.github.gleidsonmt.todo.model.List;
+import io.github.gleidsonmt.glad.base.drawer.View;
+import io.github.gleidsonmt.todo.model.ListOld;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -17,40 +17,17 @@ import javafx.beans.property.SimpleObjectProperty;
  * <p>
  * Version History: Initial version
  */
-public class ViewList extends View {
+public class ViewList {
 
-    private ObjectProperty<List> list;
+    private ObjectProperty<ListOld> list;
     private BooleanProperty editable = new SimpleBooleanProperty();
 
-    public ViewList(List list) {
-        this(list.getName(), list);
-    }
-
-    public ViewList(String name, List list) {
-        this(name, list, false);
-    }
-
-    public ViewList(List list, boolean editable) {
-        this(list.getName(), list, editable);
-    }
-
-    public ViewList(String name, List list, boolean editable) {
-        super(name);
-        this.list = new SimpleObjectProperty<>(list);
-        this.editable.set(editable);
-    }
-
-    public ObjectProperty<List> listProperty() {
+    public ObjectProperty<ListOld> listProperty() {
         return list;
     }
 
-    public List getList() {
+    public ListOld getList() {
         return list.get();
-    }
-
-    @Override
-    public String toString() {
-        return "View{" + "\n\tname=" + getName() + ", list=" + getList() + "\n}";
     }
 
     public void setEditable(boolean val) {

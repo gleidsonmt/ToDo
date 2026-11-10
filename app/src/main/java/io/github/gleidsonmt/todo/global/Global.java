@@ -2,10 +2,18 @@
 
 package io.github.gleidsonmt.todo.global;
 
-import io.github.gleidsonmt.todo.model.Model;
+import io.github.gleidsonmt.glad.base.Root;
+import io.github.gleidsonmt.todo.model.DTO;
 import javafx.application.HostServices;
+import javafx.event.Event;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.stage.Window;
 import org.jetbrains.annotations.ApiStatus;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Objects;
 import java.util.prefs.Preferences;
 
 /**
@@ -24,7 +32,6 @@ public class Global {
     public static HostServices hostServices;
 
     public static void openLink(String link) {
-        System.out.println("hostServices = " + link);
         hostServices.showDocument(link);
     }
 
@@ -40,7 +47,62 @@ public class Global {
         return processName.endsWith(".exe") && !processName.contains("java.exe");
     }
 
+    private static String getPath() {
+        return new File(new File(System.getProperty("user.dir")), "JavaFx ToDo.exe").toString();
+    }
+
+    private static boolean installOrRemoveWindowsRegister(boolean add) {
+        String regCommand = "reg " + (add ? "add" : "delete") + "\"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\" /v \"JavaFx ToDo\" /t REG_SZ /d \"\\\""
+                            + getPath() + "\\\" --background\" /f";
+
+        try {
+            ProcessBuilder pb = new ProcessBuilder("cmd", "/c", regCommand);
+            Process pro = pb.start();
+            pro.waitFor();
+            return true;
+        } catch (IOException e) {
+            return false;
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static boolean installWindowsRegister() {
+        return installOrRemoveWindowsRegister(true);
+    }
+
+    public static boolean removeWindowsRegister() {
+        return installOrRemoveWindowsRegister(false);
+    }
+
+    public static void fireEvent(Node node, Event event) {
+        Root root = null;
+        if (node != null) {
+            Scene scene = node.getScene();
+            if (scene != null && scene.getRoot() instanceof Root sceneRoot) {
+                root = sceneRoot;
+            }
+        }
+
+        if (root == null) {
+            root = Window.getWindows().stream()
+                    .filter(Window::isShowing)
+                    .map(Window::getScene)
+                    .filter(Objects::nonNull)
+                    .map(Scene::getRoot)
+                    .filter(Root.class::isInstance)
+                    .map(Root.class::cast)
+                    .findFirst()
+                    .orElse(null);
+        }
+
+        if (root != null && root.getContent() != null) {
+            root.getContent().fireEvent(event);
+        }
+    }
+
     @ApiStatus.Experimental
+    @Deprecated(forRemoval = true)
     private static Repository getRepository() {
         if (repository == null) {
             repository = new Repository();
@@ -50,7 +112,7 @@ public class Global {
             return repository;
     }
 
-    public static <T extends Model> Presenter<T> get(Class<T> model) {
+    public static <T extends DTO> Presenter<T> get(Class<T> model) {
         return getRepository().of(model);
     }
 }

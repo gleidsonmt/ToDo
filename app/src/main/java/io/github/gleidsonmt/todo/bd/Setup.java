@@ -2,6 +2,8 @@
 
 package io.github.gleidsonmt.todo.bd;
 
+import io.github.gleidsonmt.glad.base.Root;
+import io.github.gleidsonmt.todo.bd.dao.DaoUser;
 import io.github.gleidsonmt.todo.bd.sqlite.SQLiteConnection;
 import io.github.gleidsonmt.todo.events.DialogEvent;
 import io.github.gleidsonmt.todo.events.LoginEvent;
@@ -15,6 +17,7 @@ import javafx.scene.Node;
 
 import java.io.*;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
 
@@ -34,9 +37,7 @@ public class Setup {
 
     public User start() {
         CompletableFuture.supplyAsync(() -> {
-
                     try {
-
                         Logger.getGlobal().info("Starting Loader..");
                         SQLiteConnection database = SQLiteConnection.INSTANCE;
                         database.connect();
@@ -60,26 +61,24 @@ public class Setup {
                         System.setErr(out);
 
                         updateMessage("Criando registro no windows..");
-                        String path = getExecutable().toString();
-
-                        String regCommand = "reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\" /v \"JavaFx ToDo\" /t REG_SZ /d \"\\\""
-                                            + path + "\\\" --background\" /f";
-                        updateMessage("Executando comando: " + regCommand);
-
-                        try {
-                            ProcessBuilder pb = new ProcessBuilder("cmd", "/c", regCommand);
-                            Process pro = pb.start();
-                            pro.waitFor();
-                            updateMessage("Registro no windows.. " + (pro.exitValue() == 0 ? " [ OK ] " : " [ FAILED ]"));
-                        } catch (IOException e) {
-                            fireError("Erro!", "Erro ao registrar serviço. \n", e);
-                            return false;
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
+                        var install = Global.installWindowsRegister();
+                        updateMessage("Registro no windows.. " + (install ? " [ OK ] " : " [ FAILED ]"));
+                        if (!install) {
+                            fireError("Erro!", "Erro ao registrar serviço no windows.", new RuntimeException("Error on registry service."));
                         }
                     }
                     return null;
-                }).thenAccept(_ -> Event.fireEvent(destiny, new LoginEvent(LoginEvent.LOGIN)))
+                }).thenAccept(_ -> {
+                    Platform.runLater(() -> {
+                        DaoUser daoUser = new DaoUser();
+                        Optional<User> optional = daoUser.findWhere("logged = 1");
+                        if (optional.isPresent()) {
+                            Event.fireEvent(destiny.getScene(), new LoginEvent(LoginEvent.LOGIN_SUCCESS, optional.get()));
+                        } else {
+                            Event.fireEvent(destiny.getScene(), new LoginEvent(LoginEvent.LOGIN_FAILED, 0));
+                        }
+                    });
+                })
                 .exceptionally(e -> {
                             fireError("Error!", "Error on setting app.", (Exception) e);
                             throw new RuntimeException(e);

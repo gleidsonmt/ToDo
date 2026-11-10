@@ -1,5 +1,3 @@
-
-
 package io.github.gleidsonmt.todo.view_model;
 
 import javafx.beans.property.LongProperty;
@@ -15,10 +13,17 @@ import javafx.beans.property.StringProperty;
  * <p>
  * Version History: Initial version
  */
-public class ViewModel {
+public abstract class ViewModel {
 
-    private final StringProperty name = new SimpleStringProperty();
-    private final LongProperty id = new SimpleLongProperty();
+    protected final StringProperty name = new SimpleStringProperty();
+    protected final LongProperty id = new SimpleLongProperty();
+
+    public ViewModel() {
+    }
+
+    public ViewModel(String name) {
+        this.setName(name);
+    }
 
     public String getName() {
         return name.get();
@@ -48,4 +53,12 @@ public class ViewModel {
         return this.id;
     }
 
+
+    @Override
+    public String toString() {
+        return "{\"ViewModel\":{"
+               + "\"id\":" + id.get()
+               + ", \"name\":" + name.get()
+               + "}}";
+    }
 }

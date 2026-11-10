@@ -100,48 +100,6 @@ public class MySQLFolder {
         return null;
     };
 
-    public String getProjectFolder() {
-        return PROJECT_DIR;
-    }
-
-//    private Path resolveDbSource() {
-//        List<Path> candidates = List.of(
-//                Paths.get(APP_DIR, "app", "db"),
-//                Paths.get(APP_DIR, "db"),
-//                Paths.get("app", "db"),
-//                Paths.get("db")
-//        );
-//
-//        for (Path candidate : candidates) {
-//            if (Files.exists(candidate) && Files.isDirectory(candidate)) {
-//                return candidate;
-//            }
-//        }
-//        return null;
-//    }
-
-
-    public void delete() {
-        Path dbDir = Paths.get(APP_DIR, "db");
-
-        if (!Files.exists(dbDir)) return;
-
-        try (var paths = Files.walk(dbDir)) {
-
-            paths
-                    .sorted(Comparator.reverseOrder())
-                    .forEach(path -> {
-                        try {
-                            Files.delete(path);
-                        } catch (IOException e) {
-                            throw new RuntimeException("Error deleting " + path, e);
-                        }
-                    });
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public boolean create() {
         Path destiny = Paths.get(MYSQL_DIR);
         Logger.getGlobal().info("Starting to create database folder...");

@@ -17,42 +17,23 @@ public final class DaoList extends AbstractDao<List> {
 
     @Override
     public List createElement(ResultSet result) throws SQLException {
-        return new List(result.getInt("id"), result.getString("name"), result.getBoolean("fixed"),
-
-                result.getInt("size"), result.getString("icon_name"));
+        return new List(
+                result.getInt("id"),
+                result.getString("name"),
+                result.getBoolean("fixed"),
+                result.getInt("size"),
+                result.getString("icon"));
     }
 
     @Override
     protected void prepareElement(PreparedStatement prepare, List model) {
-        try
-        {
-            prepare.setString(1, model.getName());
-            prepare.setBoolean(2, model.isFixed());
-            prepare.setInt(3, model.getSize());
-            prepare.setString(4, model.getIconName());
-            // prepare.setBoolean(2, model.isFixed());
-        } catch(SQLException e){
+        try {
+            prepare.setString(1, model.name());
+            prepare.setBoolean(2, model.fixed());
+            prepare.setInt(3, model.size());
+            prepare.setString(4, model.icon());
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
-
-    @Deprecated
-    public int getSize(long lis_id) {
-        connect();
-        String sql = "select size from sizes where list_id = " + lis_id;
-        ResultSet result = executeQuery(sql);
-        var size = 0;
-        try {
-            if (result.first()) {
-                size = result.getInt("size");
-            }
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } finally {
-            close();
-        }
-        return size;
-    }
-
 }

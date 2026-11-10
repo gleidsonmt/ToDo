@@ -2,7 +2,7 @@
 
 package io.github.gleidsonmt.todo.bd.dao.internal;
 
-import io.github.gleidsonmt.todo.model.Model;
+import io.github.gleidsonmt.todo.model.DTO;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
@@ -38,14 +38,22 @@ import java.util.regex.Pattern;
  * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Create on 17/01/2025
  */
-public class ModelSQLCreator<T extends Model> {
+public class ModelSQLCreator<T extends DTO> {
 
     private final String table;
     private DaoAction action;
 
     @SuppressWarnings("all")
     public ModelSQLCreator(Class<? extends AbstractDao> clazz) {
-        this.table = clazz.getSimpleName().replace("Dao", "").toLowerCase();
+        this.table = camelCaseToKebabCase(clazz.getSimpleName().replace("Dao", "")).toLowerCase();
+    }
+
+
+
+    public String createFetch(String condition) {
+        this.action = DaoAction.FETCH;
+//        "select * from " + getTable() + " " + condition + ";"
+        return "select * from " + table + " " + condition + ";";
     }
 
     public String create(DaoAction action, long id) {
@@ -58,17 +66,11 @@ public class ModelSQLCreator<T extends Model> {
         return null;
     }
 
-    public String createFetch(String condition) {
-        this.action = DaoAction.FETCH;
-//        "select * from " + getTable() + " " + condition + ";"
-        return "select * from " + table + " " + condition + ";" ;
-    }
-
     public String create(DaoAction action, T model) {
         this.action = action;
         if (action.equals(DaoAction.CREATE)) {
             return prepareInsert(model);
-        } else  if (action.equals(DaoAction.UPDATE)) {
+        } else if (action.equals(DaoAction.UPDATE)) {
             return prepareUpdate(model);
         } else if (action.equals(DaoAction.DELETE)) {
             return prepareDelete(model);
@@ -76,9 +78,12 @@ public class ModelSQLCreator<T extends Model> {
         return null;
     }
 
-    private String prepareFetch(String condition) {
-//        "select * from " + getTable() + " " + condition + ";");
-        return "select * from " + table + " "  + condition + ";";
+    public String create(DaoAction action, String where) {
+        this.action = action;
+        if (action.equals(DaoAction.DELETE)) {
+            return prepareDelete(where);
+        }
+        return null;
     }
 
     private String prepareGet(long id) {
@@ -86,11 +91,15 @@ public class ModelSQLCreator<T extends Model> {
     }
 
     private String prepareDelete(T model) {
-        return "delete from " + table + " where id = " + model.getId() + ";";
+        return "delete from " + table + " where id = " + model.id() + ";";
     }
 
     private String prepareDelete(long id) {
         return "delete from " + table + " where id = " + id + ";";
+    }
+
+    private String prepareDelete(String where) {
+        return "delete from " + table + " where " + where + ";";
     }
 
     DaoAction getAction() {
@@ -105,29 +114,22 @@ public class ModelSQLCreator<T extends Model> {
      */
     @ApiStatus.Internal
     private String prepareInsert(@NotNull T model) {
-        List<String> list = new ArrayList<>();
-        recurse(list, model.getClass());
+        List<String> list = getFields(model.getClass());
 
-        // recurse(list, ToDoTaskNew.);
+        StringBuilder first = new StringBuilder("insert into " + table + "(");
+        StringBuilder second =  new StringBuilder("values(");
 
-        StringBuilder sql = new StringBuilder("insert into " + table + "(");
-
-        for (int i = 1; i < list.size(); i++) {
-            if (i == (list.size() - 1)) {
-                sql.append(list.get(i)).append(") values(");
-            } else {
-                sql.append(list.get(i)).append(", ");
-            }
+        // int starts with i to skip id field
+        // finishes before last field
+        for (int i = 1; i < list.size() - 1; i++) {
+            first.append(list.get(i)).append(", ");
+            second.append("?, ");
         }
+        // add the las and append
+        first.append(list.getLast()).append(") ");
+        second.append("?);");
 
-        for (int i = 1; i < list.size(); i++) {
-            if (i == (list.size() - 1)) {
-                sql.append("?);");
-            } else {
-                sql.append("?, ");
-            }
-        }
-        return sql.toString();
+        return first.append(second).toString();
     }
 
     /**
@@ -139,8 +141,7 @@ public class ModelSQLCreator<T extends Model> {
     @ApiStatus.Internal
     private String prepareUpdate(T model) {
 
-        List<String> list = new ArrayList<>();
-        recurse(list, model.getClass());
+        List<String> list =  getFields( model.getClass());
 
         StringBuilder sql = new StringBuilder("update " + table + " set ");
 
@@ -152,7 +153,7 @@ public class ModelSQLCreator<T extends Model> {
             }
         }
 
-        sql.append(" where id = ").append(model.getId()).append(";");
+        sql.append(" where id = ").append(model.id()).append(";");
 
         return sql.toString();
     }
@@ -171,20 +172,21 @@ public class ModelSQLCreator<T extends Model> {
      * Result -> <br>
      * List<String> list = new ArrayList<>("name", "email");
      *
-     * @param list  The list with the fields.
      * @param clazz The model to get the fields.
      */
     @ApiStatus.Internal
-    private void recurse(List<String> list, Class<?> clazz) {
+    private List<String> getFields(Class<?> clazz) {
+        List<String> result = new ArrayList<>();
         if (clazz != null) {
             Field[] params = clazz.getDeclaredFields();
             for (Field field : params) {
-                if (Arrays.stream(field.getDeclaredAnnotations()).noneMatch(e -> e.annotationType() == Ignore.class)) {
-                    list.addFirst(camelCaseToKebabCase(field.getName()));
-                }
+//                if (Arrays.stream(field.getDeclaredAnnotations()).noneMatch(e -> e.annotationType() == Ignore.class)) {
+                result.addFirst(camelCaseToKebabCase(field.getName()));
+//                }
             }
-            recurse(list, clazz.getSuperclass());
+//            recurse(list, clazz.getSuperclass());
         }
+        return result.reversed();
     }
 
     @ApiStatus.Internal

@@ -5,8 +5,6 @@ package io.github.gleidsonmt.todo.global;
 import io.github.gleidsonmt.todo.bd.dao.DaoList;
 import io.github.gleidsonmt.todo.model.List;
 
-import java.util.Objects;
-
 /**
  * Description:
  *
@@ -15,10 +13,12 @@ import java.util.Objects;
  * <p>
  * Version History: Initial version
  */
+@Deprecated(forRemoval = true)
 public class ListPresenter extends AbstractPresenter<List> {
 
     public ListPresenter() {
         super(new DaoList());
+
     }
 
     @Override

@@ -1,15 +1,12 @@
-
-
 package io.github.gleidsonmt.todo.global;
 
-import java.util.Optional;
-
 import io.github.gleidsonmt.todo.bd.dao.internal.AbstractDao;
-import io.github.gleidsonmt.todo.model.Model;
+import io.github.gleidsonmt.todo.model.DTO;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+
+import java.util.Optional;
 
 /**
  * Description:
@@ -19,7 +16,8 @@ import javafx.concurrent.Task;
  * <p>
  * Version History: Initial version
  */
-public class AbstractPresenter<T extends Model> implements Presenter<T> {
+@Deprecated(forRemoval = true)
+public class AbstractPresenter<T extends DTO> implements Presenter<T> {
 
     protected AbstractDao<T> dao;
 

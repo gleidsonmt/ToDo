@@ -2,6 +2,7 @@
 
 package io.github.gleidsonmt.todo;
 
+import io.github.gleidsonmt.glad.Launch;
 import io.github.gleidsonmt.todo.global.Global;
 import io.github.gleidsonmt.todo.logger.LogFormatter;
 import javafx.application.Application;
@@ -19,16 +20,11 @@ import java.util.prefs.Preferences;
  */
 public class Launcher extends App {
 
-    public static Mode mode = Mode.DEFAULT;
+    public static Launch.MODE mode = Launch.MODE.RUN;
 
     public static void main(String[] args) {
         for (String arg : args) {
-            if ("debug".equalsIgnoreCase(arg)) {
-                mode = Mode.DEBUG;
-            } else if ("log".equalsIgnoreCase(arg)) {
-                mode = Mode.LOG;
-            }
-            else mode = Mode.DEFAULT;
+            mode = Launch.MODE.valueOf(arg.toUpperCase());
         }
         launch(args);
     }

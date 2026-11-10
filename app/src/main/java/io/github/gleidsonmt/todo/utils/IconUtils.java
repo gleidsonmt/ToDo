@@ -22,10 +22,10 @@ public class IconUtils {
 
     public static @NonNull Node getIcon(@NonNull List list, int size) {
         Node node;
-        if (list.isFixed()) {
-            node = new SVGIcon(Icon.valueOf(list.getIconName().toUpperCase()));
-        } else if (list.getIconName() != null && !list.getIconName().isEmpty()) {
-            node = Assets.getIcon(list.getIconName(), size);
+        if (list.fixed()) {
+            node = new SVGIcon(Icon.valueOf(list.icon().toUpperCase()));
+        } else if (list.icon() != null && !list.icon().isEmpty()) {
+            node = Assets.getIcon(list.icon(), size);
         } else node = new SVGIcon(Icon.CHECK_LIST);
         return node;
     }

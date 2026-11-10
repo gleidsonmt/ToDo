@@ -10,7 +10,6 @@ import io.github.gleidsonmt.glad.controls.button.Button;
 import io.github.gleidsonmt.glad.controls.loaders.CircleLoader;
 import io.github.gleidsonmt.glad.controls.loaders.Suspense3DCircle;
 import io.github.gleidsonmt.todo.bd.Setup;
-import io.github.gleidsonmt.todo.bd.sqlite.SQLiteConnection;
 import io.github.gleidsonmt.todo.events.DialogEvent;
 import io.github.gleidsonmt.todo.events.LoginEvent;
 import io.github.gleidsonmt.todo.global.Global;
@@ -18,8 +17,7 @@ import io.github.gleidsonmt.todo.model.ToDoTask;
 import io.github.gleidsonmt.todo.services.TimerAlertService;
 import io.github.gleidsonmt.todo.utils.Assets;
 import io.github.gleidsonmt.todo.utils.I18n;
-import io.github.gleidsonmt.todo.view.MainView;
-import io.github.gleidsonmt.todo.view.panel.menu.input_menu_items.DateUtils;
+import io.github.gleidsonmt.todo.view.panel.input.menu.input_menu_items.DateUtils;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Hyperlink;
@@ -33,11 +31,12 @@ import javafx.stage.Stage;
  * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Created on  28/04/2026
  */
-public class LoaderView extends StackPane implements Layout {
+public class LoaderView extends StackPane {
 
     public LoaderView() {
         CircleLoader circleLoader = new Suspense3DCircle();
         getChildren().add(circleLoader);
+
         Setup setup = new Setup(this);
         setup.start();
 
@@ -45,8 +44,9 @@ public class LoaderView extends StackPane implements Layout {
 
         addEventHandler(LoginEvent.LOGIN, _ -> {
             Platform.runLater(() -> {
-                Root root = (Root) getScene().getRoot();
-                root.setLayout(new MainView());
+//                UserPresenter presenter = (UserPresenter) Global.get(Usernew.class);
+//                Root root = (Root) getScene().getRoot();
+//                root.setLayout(new MainView(presenter.get(1).get()));
             });
 
             var stage = (Stage) getParent().getScene().getWindow();
@@ -64,7 +64,7 @@ public class LoaderView extends StackPane implements Layout {
             timerAlertService.setOnSucceeded(e -> {
                 ObservableList<ToDoTask> tasks = timerAlertService.getValue();
                 tasks.forEach(task -> {
-                    trayIcon.showInfoMessage(task.getName(), DateUtils.format(task.getRemind()));
+                    trayIcon.showInfoMessage(task.name(), DateUtils.format(task.remind()));
                 });
 
                 trayIcon.setTrayIconTooltip("JavaFx ToDo");

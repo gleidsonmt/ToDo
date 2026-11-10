@@ -1,5 +1,3 @@
-
-
 import java.util.Properties
 
 plugins {
@@ -8,6 +6,7 @@ plugins {
     id("org.openjfx.javafxplugin") version "0.1.0"
     id("org.javamodularity.moduleplugin") version "2.0.0"
     id("org.beryx.jlink") version "3.1.1"
+    id("com.palantir.git-version") version "3.1.0"
 }
 
 val project = Properties().apply {
@@ -15,7 +14,15 @@ val project = Properties().apply {
 }
 
 group = "io.github.gleidsonmt"
-version = project["VERSION"] as String
+
+// Get the version from git tags
+val versionDetails: groovy.lang.Closure<com.palantir.gradle.gitversion.VersionDetails> by extra
+val details = versionDetails()
+version = onlyNumberAndDots(details.lastTag)
+
+fun onlyNumberAndDots(value: String): String {
+    return value.replace(Regex("[^0-9.]"), "")
+}
 
 repositories {
     mavenCentral()
@@ -30,10 +37,28 @@ dependencies {
 
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     compileOnly("org.jetbrains:annotations:26.1.0")
+    testCompileOnly("org.jetbrains:annotations:26.1.0")
+    testRuntimeOnly("org.jetbrains:annotations:26.1.0")
+
+    // CSSFX disponível apenas para o ambiente de testes/desenvolvimento
+    testCompileOnly("org.testfx:testfx-core:4.0.18")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.5.1")
+    testImplementation("org.testfx:testfx-junit5:4.0.18")
+    testImplementation("org.assertj:assertj-core:3.13.2")
+    testCompileOnly("org.hamcrest:hamcrest:2.1")
+
+    testImplementation("fr.brouillard.oss:cssfx:11.5.1")
+
+    // Dependência principal do MapStruct
+    implementation("org.mapstruct:mapstruct:1.6.3")
+
+    // Processador de anotações (gera o código das interfaces)
+    annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
 
     // ----------------------- Projects ------------------------------
 
-    implementation(project(":glad"))
+//    implementation(project(":glad"))
+    implementation("io.github.gleidsonmt:glad")
 
     // -------------------- UI component libraries -----------------------
 
@@ -54,7 +79,6 @@ dependencies {
 
     // Use JUnit Jupiter for testing.
     testImplementation(libs.junit.jupiter)
-    // This dependency is used by the application.
     implementation(libs.guava)
 }
 
@@ -72,6 +96,7 @@ tasks.withType<JavaCompile> {
 }
 
 application {
+//    mainClass = "io.github.gleidsonmt.todo.AppLoginTest"
     mainClass = "io.github.gleidsonmt.todo.Launcher"
     mainModule = "io.github.gleidsonmt.todo"
 }
@@ -106,25 +131,23 @@ jlink {
 val requestedTasks = gradle.startParameter.taskNames
 
 val runMode = when {
-    requestedTasks.any { it == "debug" || it.endsWith(":debug") } -> "debug"
+    requestedTasks.any { it == "dev" || it.endsWith(":dev") } -> "dev"
     requestedTasks.any { it == "log" || it.endsWith(":log") } -> "log"
-    else -> "level-off"
+    else -> "run"
 }
-
 
 tasks.named<JavaExec>("run") {
     args(runMode)
 }
 
-tasks.register("debug") {
+tasks.register("log") {
     group = "application"
-    description = "Runs the application in debug mode."
     dependsOn("run")
 }
 
-tasks.register("log") {
+tasks.register("dev") {
     group = "application"
-
+    description = "Runs the application in development mode."
     dependsOn("run")
 }
 

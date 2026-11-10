@@ -33,6 +33,10 @@ public class StringUtils {
         return string.substring(0, 1).toUpperCase() + string.substring(1).toLowerCase();
     }
 
+    public static boolean isFixedList(String string) {
+        return string.contains("drawer.list");
+    }
+
     public static @NotNull String camelToKebab(String input) {
         Pattern pattern = Pattern.compile("([a-z])([A-Z]+)");
         Matcher matcher = pattern.matcher(input);

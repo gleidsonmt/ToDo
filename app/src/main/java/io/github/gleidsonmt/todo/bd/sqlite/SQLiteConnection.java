@@ -5,6 +5,7 @@ package io.github.gleidsonmt.todo.bd.sqlite;
 import io.github.gleidsonmt.todo.utils.Assets;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Contract;
+import org.sqlite.SQLiteException;
 
 import java.io.File;
 import java.io.IOException;
@@ -131,8 +132,8 @@ public enum SQLiteConnection {
     }
 
     @ApiStatus.Experimental
-    public boolean close() {
-        if (!hasConnection()) return true;
+    public void close() {
+        if (!hasConnection()) return;
         try {
             if (this.result != null && this.statement != null) {
                 this.result.close();
@@ -140,10 +141,8 @@ public enum SQLiteConnection {
             }
             connection.close();
             Logger.getGlobal().config("Database connection has closed. ");
-            return true;
         } catch (SQLException ex) {
             Logger.getGlobal().severe("Error on closing database connection. ");
-            return false;
         }
     }
 

@@ -6,6 +6,7 @@ import io.github.gleidsonmt.todo.view.panel.items.FakeTaskItem;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import org.jetbrains.annotations.Contract;
@@ -23,6 +24,7 @@ public class BackgroundLines extends VBox {
     private final static double cellMediumHeight = 50;
 
     private void update(double old, double actual) {
+        setAlignment(Pos.BOTTOM_LEFT);
         // Divide the actual size to the cell size
         int size = (int) Math.floor((actual) / cellMediumHeight);
         // if the size is zero remove all child and return

@@ -2,15 +2,17 @@
 
 package io.github.gleidsonmt.todo.view.login;
 
-import java.util.Optional;
-
-import io.github.gleidsonmt.glad.base.Layout;
 import io.github.gleidsonmt.glad.base.responsive.Container;
+import io.github.gleidsonmt.glad.tail.ClassWatcher;
 import io.github.gleidsonmt.todo.bd.dao.DaoUser;
 import io.github.gleidsonmt.todo.model.User;
-import io.github.gleidsonmt.todo.view.presentation.Presentation;
+import io.github.gleidsonmt.todo.view.login.signup.SignupView;
+import io.github.gleidsonmt.todo.view.login.presentation.Presentation;
+import io.github.gleidsonmt.todo.view_model.UserViewModel;
+import javafx.scene.Node;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
 
 /**
  * Description:
@@ -20,34 +22,34 @@ import javafx.scene.layout.Priority;
  * <p>
  * Version History: Initial version
  */
-public class HomeLayout extends Container implements Layout {
-    // Data Access Object -> User
+public class HomeLayout extends Container {
+
     private DaoUser daoUser;
-    private Optional<User> user;
+    private UserViewModel user;
     private HBox body;
 
-    public HomeLayout() {
+    public HomeLayout(UserViewModel user) {
+        setId("home-layout");
         this.daoUser = new DaoUser();
         this.body = new HBox();
-        updateLayout();
+        body.setId("body");
         getChildren().setAll(body);
+        this.user = user;
+        updateLayout();
 
+    }
+
+    public void setLeft(Node node) {
+        body.getChildren().set(body.getChildren().size() > 1 ? 1 : 0, node);
+        HBox.setHgrow(node, Priority.ALWAYS);
     }
 
     /**
      * Update layout based on user is logged or not.
      */
     private void updateLayout() {
-        // if (!hasUser()) {
 
-        // } else if (!isLogged()) {
-        // // Welcome view
-        // body.getChildren().setAll(new Presentation(), new LoginView());
-        // } else {
-        // // Si
-        // body.getChildren().setAll(new Presentation(), new SignupView());
-        // }
-        // body.getChildren().setAll(new Presentation(), new SignupView());
+//        body.getChildren().setAll(new Presentation(), new SignupView());
 
         // if (isLogged()) {
         // System.out.println("user = " + user);
@@ -58,25 +60,29 @@ public class HomeLayout extends Container implements Layout {
         // } else {
         // System.out.println("user = " + user);
         // // // Si
-        // body.getChildren().setAll(new Presentation(), new
-        // Separator(Orientation.VERTICAL), new SignupView());
+//         body.getChildren().setAll(new Presentation(), new
+//                 Separator(Orientation.VERTICAL), new SignupView());
         // HBox.setHgrow(body.getChildren().get(0), Priority.ALWAYS);
         // HBox.setHgrow(body.getChildren().get(1), Priority.NEVER);
         // HBox.setHgrow(body.getChildren().get(2), Priority.ALWAYS);
         // }
         // }
-        var content = new LoginView();
+        StackPane content = user == null ? new LoginView() : new SignupView();
         var presentation = new Presentation();
+
+//        body.getChildren().setAll(presentation, content);
+
         addBreakpoint(e -> {
             body.getChildren().setAll(content);
-        }, "md");
+        }, "sm md");
 
         addBreakpoint(e -> {
             body.getChildren().setAll(presentation, content);
         }, ">md");
-
+//
         HBox.setHgrow(content, Priority.ALWAYS);
         HBox.setHgrow(presentation, Priority.ALWAYS);
+
     }
 
     /**
@@ -85,12 +91,14 @@ public class HomeLayout extends Container implements Layout {
      * @return if the user is logged.
      */
     private boolean isLogged() {
-        user = this.daoUser.getBy("logged = 1");
-        return user.isPresent();
+//        user = this.daoUser.getBy("logged = 1");
+//        return user.isPresent();\
+        return false;
     }
 
     public boolean hasUser() {
-        user = this.daoUser.getFirst();
-        return user.isPresent();
+        return false;
+//        user = this.daoUser.getFirst();
+//        return user.isPresent();
     }
 }

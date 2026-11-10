@@ -7,6 +7,9 @@ module io.github.gleidsonmt.todo {
     requires org.yaml.snakeyaml;
     requires java.sql;
 
+
+    requires org.mapstruct;
+
     // Requer o módulo das anotações apenas durante a compilação
     requires static transitive org.jetbrains.annotations;
 
@@ -34,27 +37,41 @@ module io.github.gleidsonmt.todo {
     requires jdk.compiler;
     requires com.dustinredmond.fxtrayicon;
     requires org.xerial.sqlitejdbc;
+    requires org.apache.commons.lang3;
 
-    opens io.github.gleidsonmt.todo to javafx.graphics, javafx.fxml, java.sql;
     opens io.github.gleidsonmt.todo.view to javafx.graphics, javafx.fxml, java.sql;
-    opens io.github.gleidsonmt.todo.view.presentation to org.yaml.snakeyaml, javafx.graphics, javafx.fxml, java.sql;
+    opens io.github.gleidsonmt.todo.view.login.presentation to org.yaml.snakeyaml, javafx.graphics, javafx.fxml, java.sql;
 
     opens io.github.gleidsonmt.todo.model to javafx.base;
 
     exports io.github.gleidsonmt.todo;
     exports io.github.gleidsonmt.todo.view;
     exports io.github.gleidsonmt.todo.model;
+    exports io.github.gleidsonmt.todo.model.recurrence;
+    exports io.github.gleidsonmt.todo.view.panel.input;
     exports io.github.gleidsonmt.todo.view_model;
+    exports io.github.gleidsonmt.todo.view.panel.input.menu.input_menu_items;
     exports io.github.gleidsonmt.todo.view.nav;
     exports io.github.gleidsonmt.todo.view.panel;
     exports io.github.gleidsonmt.todo.view.panel.items;
     exports io.github.gleidsonmt.todo.view.panel.containers;
-    exports io.github.gleidsonmt.todo.model.recurrence;
+    exports io.github.gleidsonmt.todo.bd.dao.internal;
+    exports io.github.gleidsonmt.todo.view.panel.containers.sections;
     opens io.github.gleidsonmt.todo.model.recurrence to javafx.base;
     exports io.github.gleidsonmt.todo.view_model.converter;
     exports io.github.gleidsonmt.todo.bd.mysql;
     opens io.github.gleidsonmt.todo.bd.mysql to java.sql, javafx.fxml, javafx.graphics;
     exports io.github.gleidsonmt.todo.bd;
     opens io.github.gleidsonmt.todo.bd to java.sql, javafx.fxml, javafx.graphics;
+    opens io.github.gleidsonmt.todo.view_model to javafx.base;
+    opens io.github.gleidsonmt.todo.view_model.converter to javafx.base;
+    exports io.github.gleidsonmt.todo.view.panel.items.options;
+    opens io.github.gleidsonmt.todo.view_model.map to javafx.base;
+    exports io.github.gleidsonmt.todo.view_model.map;
+    exports io.github.gleidsonmt.todo.view.aside;
+    exports io.github.gleidsonmt.todo.view.aside.sections;
+    exports io.github.gleidsonmt.todo.view.aside.labels;
+    //    java.lang.reflect.InaccessibleObjectException: Unable to make private void io.github.gleidsonmt.todo.LoginFlowTest.start(javafx.stage.Stage) accessible: module io.github.gleidsonmt.todo does not "opens io.github.gleidsonmt.todo" to module org.testfx.junit5
+
 
 }

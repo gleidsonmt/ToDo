@@ -4,6 +4,7 @@ package io.github.gleidsonmt.todo.view.panel.items;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.todo.utils.I18n;
+import io.github.gleidsonmt.todo.view.panel.items.options.Option;
 
 /**
  * Description:

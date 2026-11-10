@@ -1,22 +1,27 @@
-
-
 package io.github.gleidsonmt.todo.view;
 
-import io.github.gleidsonmt.glad.base.Layout;
-import io.github.gleidsonmt.glad.base.responsive.Container;
+import io.github.gleidsonmt.glad.base.Root;
+import io.github.gleidsonmt.glad.base.dialog.WrapperEffect;
+import io.github.gleidsonmt.glad.controls.button.Button;
 import io.github.gleidsonmt.todo.model.ListType;
-import io.github.gleidsonmt.todo.model.User;
-import io.github.gleidsonmt.todo.utils.StringUtils;
 import io.github.gleidsonmt.todo.view.nav.DrawerItem;
 import io.github.gleidsonmt.todo.view.nav.SideNav;
 import io.github.gleidsonmt.todo.view.panel.ListRoot;
 import io.github.gleidsonmt.todo.view.panel.Panel;
 import io.github.gleidsonmt.todo.view.panel.events.TaskChangeEvent;
+import io.github.gleidsonmt.todo.view_model.TaskViewModel;
+import io.github.gleidsonmt.todo.view_model.UserViewModel;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
-import javafx.beans.binding.BooleanBinding;
-import javafx.beans.binding.StringBinding;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
+import org.jspecify.annotations.NonNull;
 
 import java.util.logging.Logger;
 
@@ -29,121 +34,189 @@ import java.util.logging.Logger;
  * <p>
  * Version History: Initial version
  */
-public class MainView extends Container implements Layout {
+public class MainView extends BorderPane {
 
     // the logged user
 //    private User user;
     // the content layout
-    private final BorderPane body;
+//    private final BorderPane body;
     // the navigation (drawwer or sidenav)
+
     private final SideNav sideNav;
 
     private final Panel panel;
     private final ListRoot listRoot;
 
-    public MainView() {
-//        this.user = user;
+    public MainView(UserViewModel user) {
+        setId("main-view");
+        if (!user.isLogged()) {
+            user.setLogged(true);
+            user.update();
+        }
+
         this.panel = new Panel();
-        this.sideNav = new SideNav();
-        this.body = new BorderPane();
-        this.listRoot = new ListRoot();
-        getChildren().add(body);
+        this.sideNav = new SideNav(user);
+        this.listRoot = new ListRoot(this);
         init();
-
-        this.addEventHandler(TaskChangeEvent.ADD, e -> {
-            System.out.println("event handler");
-            Logger.getGlobal().info(() -> "[TaskChangeEvent [FILTER], Type = " + e.getEventType() + " ] -> " + e.getModel());
-            sideNav.get(e.getModel().getListId()).addNumberOfTasks(1).update();
-        });
-
-        this.addEventHandler(TaskChangeEvent.DELETE_TASK, e -> {
-            Logger.getGlobal().info(() -> "[TaskChangeEvent [FILTER], Type = " + e.getEventType() + " ] -> " + e.getModel());
-            sideNav.get(e.getModel().getListId()).addNumberOfTasks(-1).update();
-        });
-
-        this.addEventHandler(TaskChangeEvent.MOVED, e -> {
-            Logger.getGlobal().info(() -> "[TaskChangeEvent [FILTER], Type = " + e.getEventType() + " ] -> " + e.getModel());
-            System.out.println("e.getActual() = " + e.getActual());
-            System.out.println("e.getPrevious() = " + e.getPrevious());
-            if (e.getActual() != e.getPrevious()) {
-                sideNav.get(e.getActual()).addNumberOfTasks(1).update();
-                sideNav.get(e.getPrevious()).addNumberOfTasks(-1).update();
-            }
-        });
-
-        this.addEventHandler(TaskChangeEvent.MY_DAY_CHANGED, e -> {
-            Logger.getGlobal().info(() -> "[TaskChangeEvent [FILTER], Type = " + e.getEventType() + " ] -> " + e.getModel());
-            if (e.getModel().isCompleted()) return;
-            sideNav.get(ListType.DAILY).addNumberOfTasks(e.getModel().isMyDay() ? 1 : -1).update();
-        });
-
-        this.addEventHandler(TaskChangeEvent.FAVORITE_CHANGED, e -> {
-            Logger.getGlobal().info(() -> "[TaskChangeEvent [FILTER], Type = " + e.getEventType() + " ] -> " + e.getModel());
-            if (e.getModel().isCompleted()) return;
-            sideNav.get(ListType.IMPORTANT).addNumberOfTasks(e.getModel().isImportant() ? 1 : -1).update();
-        });
-
-        this.addEventHandler(TaskChangeEvent.COMPLETE, e -> {
-            Logger.getGlobal().info(() -> "[TaskChangeEvent [FILTER], Type = " + e.getEventType() + " ] -> " + e.getModel());
-            sideNav.get(e.getModel().getListId()).addNumberOfTasks(!e.getModel().isCompleted() ? 1 : -1).update();
-
-            if (e.getModel().isMyDay()) {
-                sideNav.get(ListType.DAILY).addNumberOfTasks(!e.getModel().isCompleted() ? 1 : -1).update();
-            }
-            if (e.getModel().isImportant()) {
-                sideNav.get(ListType.IMPORTANT).addNumberOfTasks(!e.getModel().isCompleted() ? 1 : -1).update();
-            }
-        });
+        addEventFilters();
     }
 
     public void init() {
 
-        body.setLeft(this.sideNav);
-        body.setCenter(this.panel);
+        setLeft(this.sideNav);
+        setCenter(this.panel);
+
         panel.setContent(listRoot);
 
         bind();
 
         this.sideNav.load();
 
-        // Presenter<ToDoTask> pres = Global.get(ToDoTask.class);
-        // Task<ObservableList<ToDoTask>> task = pres.fetch();
+        Platform.runLater(() -> {
 
-        // sideNav = new SideNav(pres.getData(), user);
-        // body.setLeft(sideNav);
+            var root = (Root) getScene().getRoot();
 
-        // listRoot = new ListRoot(pres.getData());
-        // body.setCenter(panel);
-        // panel.setContent(listRoot);
+            root.addBreakpoint((_) -> {
+                setLeft(null);
+            }, "<MD");
 
-        // bind();
+            root.addBreakpoint((_) -> {
+                if (!root.isBlocked()) root.unblock();
+                setLeft(sideNav);
+            }, ">MD");
+        });
+    }
 
-        this.addBreakpoint((event) -> {
-            body.setLeft(null);
-        }, "<MD");
+    private void addEventFilters() {
 
-        this.addBreakpoint((event) -> {
-            body.setLeft(sideNav);
-        }, ">MD");
-        // new Thread(task).start();
+        this.addEventHandler(TaskChangeEvent.ADD, e -> {
+            Logger.getGlobal().info(() -> "[TaskChangeEvent [FILTER], Type = " + e.getEventType() + " ] -> " + e.getModel());
+            sideNav.get(e.getModel().getListID()).updateSize(1);
+
+            sideNav.get(ListType.ALL).updateSize(!e.getModel().isCompleted() ? 1 : -1);
+
+            if (e.getModel().isMyDay()) {
+                sideNav.get(ListType.DAILY).updateSize(!e.getModel().isCompleted() ? 1 : -1);
+            }
+
+            if (e.getModel().isImportant()) {
+                sideNav.get(ListType.IMPORTANT).updateSize(!e.getModel().isCompleted() ? 1 : -1);
+            }
+
+        });
+
+        this.addEventHandler(TaskChangeEvent.MOVED, e -> {
+            Logger.getGlobal().info(() -> "[TaskChangeEvent [FILTER], Type = " + e.getEventType() + " ] -> " + e.getModel());
+            if (e.getActual() != e.getPrevious()) {
+                sideNav.get(e.getActual()).updateSize(1);
+                sideNav.get(e.getPrevious()).updateSize(-1);
+            }
+        });
+
+        this.addEventHandler(TaskChangeEvent.MY_DAY_CHANGED, e -> {
+            Logger.getGlobal().info(() -> "[TaskChangeEvent [FILTER], Type = " + e.getEventType() + " ] -> " + e.getModel());
+            if (e.getModel().isCompleted()) return;
+            sideNav.get(ListType.DAILY).updateSize( e.getModel().isMyDay() ? 1 : -1);
+        });
+
+        this.addEventHandler(TaskChangeEvent.FAVORITE_CHANGED, e -> {
+            Logger.getGlobal().info(() -> "[TaskChangeEvent [FILTER], Type = " + e.getEventType() + " ] -> " + e.getModel());
+            if (e.getModel().isCompleted()) return;
+            sideNav.get(ListType.IMPORTANT).updateSize(e.getModel().isImportant() ? 1 : -1);
+        });
+
+        this.addEventHandler(TaskChangeEvent.COMPLETE, e -> {
+            Logger.getGlobal().info(() -> "[TaskChangeEvent [FILTER], Type = " + e.getEventType() + " ] -> " + e.getModel());
+
+            sideNav.get(e.getModel().getListID()).updateSize(!e.getModel().isCompleted() ? 1 : -1);
+
+            updateFilteredLists(e.getModel());
+        });
+
+
+
+        this.addEventFilter(TaskChangeEvent.DELETE_TASK, e -> {
+            Logger.getGlobal().info(() -> "[TaskChangeEvent, Type = " + e.getEventType() + " ] -> " + e.getModel());
+            Root root = (Root) getScene().getRoot();
+
+            var title = new Text("Delete Task");
+            title.getStyleClass().addAll("text-18 bold".split("\\s+"));
+
+            HBox buttonsBar = getButtonsBar(e, root);
+            buttonsBar.getStyleClass().addAll("align-center-left spacing-5".split("\\s+"));
+
+            var flow = new TextFlow(new Text("\"" + e.getModel().getName() + "\" will be deleted permanently"));
+            VBox container = new VBox(title, flow, buttonsBar);
+
+            container.getStyleClass().addAll("bg-background pd-20 align-center-left rounded spacing-10".split("\\s+"));
+
+            root.block();
+
+            root.behavior().dialog()
+                    .with(WrapperEffect.GRAY)
+                    .content(container)
+                    .width(-1)
+                    .height(-1)
+                    .show();
+
+
+        });
+    }
+
+    private void updateFilteredLists(TaskViewModel model) {
+        sideNav.get(ListType.ALL).updateSize(!model.isCompleted() ? 1 : -1);
+        sideNav.get(ListType.COMPLETED).updateSize(!model.isCompleted() ? -1 : 1);
+
+        if (model.isMyDay()) {
+            sideNav.get(ListType.DAILY).updateSize(!model.isCompleted() ? 1 : -1);
+        }
+
+        if (model.isImportant()) {
+            sideNav.get(ListType.IMPORTANT).updateSize(!model.isCompleted() ? 1 : -1);
+        }
+
+    }
+
+    private @NonNull HBox getButtonsBar(TaskChangeEvent e, Root root) {
+        var confirm = new Button("Confirm");
+        var cancel = new Button("Cancel");
+
+        cancel.setCancelButton(true);
+        cancel.setOnAction(_ -> {
+            root.behavior().dialog().hide();
+            root.behavior().drawer().hide();
+            root.unblock();
+        });
+        confirm.setOnAction(_ -> {
+            listRoot.getContainer().remove(e.getModel());
+            e.getModel().delete();
+            cancel.fire();
+            sideNav.get(e.getModel().getListID()).updateSize(-1);
+            if (e.getModel().isMyDay() && !e.getModel().isCompleted()) {
+                sideNav.get(ListType.DAILY).updateSize(-1);
+            }
+            if (e.getModel().isImportant() && !e.getModel().isCompleted()) {
+                sideNav.get(ListType.IMPORTANT).updateSize(-1);
+            }
+            if (!e.getModel().isCompleted()) {
+                sideNav.get(ListType.ALL).updateSize(-1);
+            } else {
+                sideNav.get(ListType.COMPLETED).updateSize(-1);
+            }
+        });
+
+        return new HBox(confirm, cancel);
+    }
+
+    public VBox getNav() {
+        return this.sideNav;
     }
 
     private void bind() {
         // the tile of the panel with the side nav actual item selected.
 
         panel.actualListProperty().bind(sideNav.itemSelectedProperty().map(DrawerItem::getViewModel));
-
-        panel.titleIconNameProperty().bind(Bindings.selectString(sideNav.itemSelectedProperty(), "viewModel", "iconName"));
-
-//        panel.titleProperty().bind(Bindings.selectString(sideNav.itemSelectedProperty(), "viewModel", "name"));
-
+        panel.titleIconNameProperty().bind(Bindings.selectString(sideNav.itemSelectedProperty(), "viewModel", "icon"));
         listRoot.actualListProperty().bind(Bindings.select(sideNav.itemSelectedProperty(), "viewModel"));
-
     }
-
-    @Override
-    public Node getLeft() {
-        return this.sideNav;
-    }
-
 }

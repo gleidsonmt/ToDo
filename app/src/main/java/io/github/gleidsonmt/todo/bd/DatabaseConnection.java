@@ -1,5 +1,3 @@
-
-
 package io.github.gleidsonmt.todo.bd;
 
 import io.github.gleidsonmt.todo.bd.mysql.MySQLProperties;
@@ -17,7 +15,7 @@ import java.util.logging.Logger;
  * Created on  20/04/2026
  */
 @SuppressWarnings({"unused"})
-@Deprecated
+@Deprecated(forRemoval = true)
 public enum DatabaseConnection {
 
     INSTANCE;

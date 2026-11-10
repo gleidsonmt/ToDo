@@ -3,7 +3,7 @@
 package io.github.gleidsonmt.todo.view.panel.input;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
-import io.github.gleidsonmt.todo.view.panel.menu.input_menu_items.DueDateContextMenu;
+import io.github.gleidsonmt.todo.view.panel.input.menu.input_menu_items.DueDateContextMenu;
 import javafx.scene.input.MouseEvent;
 
 import java.time.LocalDate;

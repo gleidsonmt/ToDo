@@ -10,16 +10,15 @@ public enum ListType {
     DEFAULT, ALL, COMPLETED, TASKS, IMPORTANT, DAILY, PLANED;
 
     public static ListType convert(String convert) {
+        return switch (convert) {
+            case "drawer.list.myDay", "drawer.list.my_day" -> ListType.DAILY;
+            case "drawer.list.important" -> ListType.IMPORTANT;
+            case "drawer.list.tasks" -> ListType.TASKS;
+            case "drawer.list.all" -> ListType.ALL;
+            case "drawer.list.completed" -> ListType.COMPLETED;
+            default -> DEFAULT;
+        };
 
-        if (convert.equals("myDay") || convert.equals("my_day")) {
-            return ListType.DAILY;
-        }
-
-        if (convert.equals("important")) {
-            return ListType.IMPORTANT;
-        }
-
-        return DEFAULT;
     }
 
 }

@@ -2,22 +2,19 @@
 
 package io.github.gleidsonmt.todo.view.panel.containers;
 
-import io.github.gleidsonmt.todo.global.Global;
-import io.github.gleidsonmt.todo.global.TaskPresenter;
+import io.github.gleidsonmt.todo.bd.dao.DaoTask;
 import io.github.gleidsonmt.todo.model.ListType;
 import io.github.gleidsonmt.todo.model.ToDoTask;
-import io.github.gleidsonmt.todo.view.panel.events.TaskChangeEvent;
-import io.github.gleidsonmt.todo.view.panel.sections.AnimatedSection;
-import io.github.gleidsonmt.todo.view.panel.sections.SingleSection;
+import io.github.gleidsonmt.todo.view.panel.containers.sections.AnimatedSection;
+import io.github.gleidsonmt.todo.view.panel.containers.sections.SingleSection;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
+import io.github.gleidsonmt.todo.view_model.map.TaskMapper;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.IntegerBinding;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-
-import java.util.logging.Logger;
+import javafx.concurrent.WorkerStateEvent;
 
 /**
  * Description:
@@ -33,10 +30,11 @@ public class DoubleListContainer extends ListContainer {
     private final AnimatedSection sectionCompleted;
     private final String query;
 
-    static final Logger logger = Logger.getGlobal();
+    private final DaoTask dao;
 
     public DoubleListContainer(ListViewModel list, String query) {
         super(list);
+        this.dao = new DaoTask();
         this.query = query;
         this.sectionIncomplete = new SingleSection(list);
         this.sectionCompleted = new AnimatedSection(list);
@@ -47,87 +45,55 @@ public class DoubleListContainer extends ListContainer {
 
     @Override
     public Task<ObservableList<ToDoTask>> load() {
-        TaskPresenter taskPresenter = (TaskPresenter) Global.get(ToDoTask.class);
-        Task<ObservableList<ToDoTask>> task = taskPresenter.fetch(40, 0, query);
-
+        Task<ObservableList<ToDoTask>> task = dao.fetch(70, 0, query);
+//        System.out.println("query = " + query);
         new Thread(task).start();
+//        unbind();
+        task.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, _ -> {
 
         // update list task
-        task.setOnSucceeded(_ -> {
-            task.getValue().forEach(el -> {
-                data.add(new TaskViewModel(el));
-            });
+            task.getValue().forEach(el -> data.add(TaskMapper.INSTANCE.toViewModel(el, new TaskViewModel())));
 
-            sectionIncomplete.setList(data.filtered(el -> !el.isCompleted()));
-            sectionCompleted.setList(data.filtered(TaskViewModel::isCompleted));
+            if (!getChildren().contains(sectionCompleted)) {
+                getChildren().add(1, sectionCompleted);
+            }
+
+            if (getList().getType() == ListType.IMPORTANT) {
+
+                sectionIncomplete.setList(data.filtered(el -> !el.isCompleted() && el.isImportant() ));
+                getChildren().remove(sectionCompleted);
+
+            } else if (getList().getType() == ListType.DAILY) {
+
+                sectionIncomplete.setList(data.filtered(el -> !el.isCompleted() && el.isMyDay()));
+                sectionCompleted.setList(data.filtered(TaskViewModel::isCompleted));
+
+            } else {
+
+                // filtra os nao completos
+                sectionIncomplete.setList(data.filtered(el -> !el.isCompleted() && list.getId() == el.getListID()));
+                // filtra os completos
+                sectionCompleted.setList(data.filtered(el -> el.isCompleted() && list.getId() == el.getListID()));
+//                sectionCompleted.setList(data.filtered(TaskViewModel::isCompleted));.
+
+            }
 
             bind();
         });
+
         return task;
     }
 
     private void bind() {
-
-        IntegerBinding sizeOfTheFirstSection = Bindings.size(sectionIncomplete.getSortedList());
-        IntegerBinding sizeOfTheSecondSection = Bindings.size(sectionCompleted.getSortedList());
-
-        this.sizeProperty().bind(sizeOfTheFirstSection.add(sizeOfTheSecondSection));
-
-        this.sizeProperty().addListener((_, _, _) -> this.setSpacing(sizeOfTheFirstSection.get() == 0 ? 0 : 10));
-
-        this.setSpacing(this.sizeProperty().get() == 0 ? 0 : 10);
-
-        this.addEventFilter(TaskChangeEvent.MOVED, (e) -> {
-            logger.info(() -> "[TaskChangeEvent, Type = " + e.getEventType() + " ] -> " + e.getModel());
-            if (e.getActual() != e.getPrevious()) {
-                if (!list.isFixed() || list.getId() == 1) {
-                    data.remove(e.getModel());
-                }
-            }
-        });
-
-        this.addEventHandler(TaskChangeEvent.MY_DAY_CHANGED, e -> {
-            logger.info(() -> "[TaskChangeEvent, Type = " + e.getEventType() + " ] -> " + e.getModel());
-            if (getList().getType() == ListType.DAILY) {
-                if (!e.getModel().isMyDay()) {
-                    data.remove(e.getModel());
-                }
-            }
-        });
-
-        this.addEventFilter(TaskChangeEvent.FAVORITE_CHANGED, e -> {
-            logger.info(() -> "[TaskChangeEvent, Type = " + e.getEventType() + " ] -> " + e.getModel() + "");
-            if (getList().getType() == ListType.IMPORTANT) {
-                if (!e.getModel().isImportant()) {
-                    data.remove(e.getModel());
-                }
-            }
-        });
-
-        this.addEventFilter(TaskChangeEvent.DELETE_TASK, e -> {
-            logger.info(() -> "[TaskChangeEvent, Type = " + e.getEventType() + " ] -> " + e.getModel());
-            getData().remove(e.getModel());
-            e.getModel().delete();
-        });
-
-//        data.addListener((ListChangeListener<TaskViewModel>) c -> {
-//            if (c.next()) {
-//                if (c.wasUpdated()) {
-//                    c.getList().subList(c.getFrom(), c.getTo()).forEach(viewModel -> {
-//                        if (viewModel == null)
-//                            return;
-////                        viewModel.update();
-////                        list.update();
-//                    });
-//                }
-////                if (c.wasAdded() ) {
-////                    list.addNumberOfTasks(c.getAddedSize());
-////                }
-////                if (c.wasRemoved() ) {
-////                    System.out.println("removed");
-////                    list.addNumberOfTasks(-c.getRemovedSize());
-////                }
-//            }
-//        });
+//        IntegerBinding sizeOfTheFirstSection = Bindings.size(sectionIncomplete.getSortedList());
+//
+//        if (getChildren().contains(sectionCompleted)) {
+//            IntegerBinding sizeOfTheSecondSection = Bindings.size(sectionCompleted.getSortedList());
+//            this.sizeProperty().bind(sizeOfTheFirstSection.add(sizeOfTheSecondSection));
+//        } else {
+//            this.sizeProperty().bind(sizeOfTheFirstSection);
+//        }
+//
+//        this.sizeProperty().addListener((_, _, _) -> this.setSpacing(sizeOfTheFirstSection.get() == 0 ? 0 : 10));
     }
 }

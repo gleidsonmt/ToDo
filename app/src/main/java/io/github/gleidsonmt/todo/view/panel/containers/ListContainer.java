@@ -3,10 +3,9 @@
 package io.github.gleidsonmt.todo.view.panel.containers;
 
 import io.github.gleidsonmt.todo.model.ToDoTask;
+import io.github.gleidsonmt.todo.view.panel.containers.sections.Comparators;
+import io.github.gleidsonmt.todo.view.panel.containers.sections.SingleSection;
 import io.github.gleidsonmt.todo.view.panel.items.TaskItem;
-import io.github.gleidsonmt.todo.view.panel.sections.Comparators;
-import io.github.gleidsonmt.todo.view.panel.sections.EmptySection;
-import io.github.gleidsonmt.todo.view.panel.sections.SingleSection;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import javafx.beans.Observable;
@@ -15,10 +14,9 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -36,7 +34,14 @@ import java.util.Comparator;
 public abstract class ListContainer extends VBox {
 
     protected ObservableList<TaskViewModel> data = FXCollections.observableArrayList(
-            viewModel -> new Observable[]{viewModel.completedProperty(), viewModel.importantProperty(), viewModel.myDayProperty(), viewModel.listIdProperty()});
+            viewModel -> new Observable[]{
+                    viewModel.completedProperty(),
+                    viewModel.dueDateProperty(),
+                    viewModel.importantProperty(),
+                    viewModel.myDayProperty(),
+                    viewModel.listIDProperty()
+            });
+
 //    protected ObservableList<TaskViewModel> data = FXCollections.observableArrayList(viewModel -> new Observable[] { viewModel.completedProperty() });
 
     private final ObjectProperty<TaskItem> selected = new SimpleObjectProperty<>();
@@ -58,24 +63,33 @@ public abstract class ListContainer extends VBox {
         // this.data = data;
         this.group = new ToggleGroup();
         this.setId("list-container");
-        // this.setStyle("-fx-border-width: 2px; -fx-border-color: gray;");
-
-        this.getChildren().add(new EmptySection());
 
         // create a bind to maintain the selected property update from the
         // froup.
         selected.bind(group.selectedToggleProperty().map(e -> (TaskItem) e));
 
+        setSpacing(5);
+
         // update the comparator for the all sections
-        comparator.addListener((_, _, val) -> {
-            this.getChildren().stream().filter(el -> el instanceof SingleSection).map(el -> (SingleSection) el)
-                    .forEach(section -> {
-                        section.getSortedList().setComparator(switchComparator(val));
-                    });
+        comparator.addListener((_, _, val) -> this.getChildren().stream().filter(el -> el instanceof SingleSection).map(el -> (SingleSection) el)
+                .forEach(section -> section.getSortedList().setComparator(switchComparator(val))));
+
+        // list container has an observable list that observe changes in the data
+        // if i change a task item property if its listed in the observable the change will be catch here
+        data.addListener((ListChangeListener<TaskViewModel>) c -> {
+            if (c.next()) {
+
+                if (c.wasUpdated()) { // if one of the task items are updated
+                    for (TaskViewModel model : c.getList()) {
+                        // cal his update method
+                        model.update();
+
+                    }
+                }
+
+            }
         });
-
         VBox.setVgrow(this, Priority.ALWAYS);
-
     }
 
     private Comparator<TaskViewModel> switchComparator(Comparators comparator) {
@@ -115,17 +129,8 @@ public abstract class ListContainer extends VBox {
         return this.list;
     }
 
-    public abstract  Task<ObservableList<ToDoTask>>  load();
-
-    protected void loadTasks(EventHandler<ActionEvent> event) {
-        new Thread(new Task<Object>() {
-            @Override
-            protected Object call() throws Exception {
-                event.handle(new ActionEvent());
-                return null;
-            }
-        }).start();
-    }
+    public abstract Task<ObservableList<ToDoTask>> load();
+//    public abstract void  load();
 
     public ObservableList<TaskViewModel> getData() {
         return this.data;
@@ -140,7 +145,7 @@ public abstract class ListContainer extends VBox {
      * Store this object in db using the view model.
      * Add the task with id settled to the data list.
      *
-     * @param viewModel The object model to create an UI Component.
+     * @param viewModel The object model to create a UI Component.
      */
     public void add(TaskViewModel viewModel) {
         data.add(viewModel);
@@ -150,13 +155,17 @@ public abstract class ListContainer extends VBox {
      * Delete the object from database.
      * And remove this object from this UI container.
      *
-     * @param task The task to delete.
+     * @param viewModel The task to delete.
      */
-    public void remove(TaskItem task) {
-        data.remove(task.getViewModel());
+    public void remove(TaskViewModel viewModel) {
+        data.remove(viewModel);
     }
 
     public IntegerProperty sizeProperty() {
         return this.size;
+    }
+
+    public ObjectProperty<TaskItem> selectedProperty() {
+        return selected;
     }
 }
