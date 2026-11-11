@@ -38,9 +38,6 @@ public class DueDateContextMenu extends CustomContextMenu<LocalDate> {
             CalendarPane container = new CalendarPane();
             Root root = (Root) getOwnerWindow().getScene().getRoot();
 
-            System.out.println("target = " + target);
-            System.out.println("target = " + target.isCenter());
-
             root.flow()
                     .content(container)
                     .width(300)

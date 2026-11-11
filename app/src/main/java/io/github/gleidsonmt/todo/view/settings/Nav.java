@@ -18,8 +18,7 @@ class Nav extends HBox {
         getStyleClass().addAll("align-center-left pd-10 spacing-10".split("\\s+"));
         Text tittle = new Text("Settings");
         tittle.getStyleClass().addAll("text-20 font-instagram bolder ".split("\\s+"));
-        IconButton btn = new IconButton();
-        btn.setGraphic(new SVGIcon(Icon.ARROW_BACK));
+        IconButton btn = new IconButton(new SVGIcon(Icon.ARROW_BACK));
         btn.getGraphic().getStyleClass().addAll("icon-grey-700");
         btn.getStyleClass().addAll("bg-transparent border-1 rect border-medium-gray".split("\\s+"));
         getChildren().addAll(btn, tittle);

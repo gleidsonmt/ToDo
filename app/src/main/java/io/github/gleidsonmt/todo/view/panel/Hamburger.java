@@ -29,7 +29,7 @@ public class Hamburger extends Button {
     public Hamburger(String text) {
         super(text);
         getStyleClass().addAll("display-graphic hamb cursor-hand".split(" "));
-
+        setCancelButton(true);
         setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         setGraphic(new SVGIcon(Icon.MENU));
 

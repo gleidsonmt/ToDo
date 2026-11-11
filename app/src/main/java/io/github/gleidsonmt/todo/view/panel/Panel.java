@@ -1,5 +1,3 @@
-
-
 package io.github.gleidsonmt.todo.view.panel;
 
 import io.github.gleidsonmt.glad.base.Root;
@@ -7,16 +5,20 @@ import io.github.gleidsonmt.glad.base.responsive.Container;
 import io.github.gleidsonmt.glad.controls.button.Button;
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
+import io.github.gleidsonmt.todo.App;
 import io.github.gleidsonmt.todo.model.ListType;
 import io.github.gleidsonmt.todo.utils.Assets;
 import io.github.gleidsonmt.todo.utils.IconUtils;
 import io.github.gleidsonmt.todo.view.panel.containers.BackgroundLines;
+import io.github.gleidsonmt.todo.view.panel.containers.Theme;
+import io.github.gleidsonmt.todo.view.panel.containers.ThemeType;
 import io.github.gleidsonmt.todo.view.panel.input.InputField;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import io.github.gleidsonmt.todo.view_model.converter.ListNameConverter;
 import javafx.application.Platform;
 import javafx.beans.binding.DoubleBinding;
 import javafx.beans.property.*;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
@@ -33,6 +35,7 @@ import javafx.scene.text.Text;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.prefs.Preferences;
 
 /**
  * Description: The main panel for the main view.
@@ -72,6 +75,8 @@ public class Panel extends Container {
     private Pane regionLimitTop;
     private Pane regionLimitBottom;
 
+    private final Preferences prefs = Preferences.userNodeForPackage(Panel.class);
+
     public Panel() {
         this.label = createLabelIcon();
         this.scroll = createScroll();
@@ -85,6 +90,7 @@ public class Panel extends Container {
         title.getStyleClass().add("inside-field");
 
         label.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+
 
         title.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (actualList.get() == null) return;
@@ -110,6 +116,8 @@ public class Panel extends Container {
             title.setText(new ListNameConverter().toString(newValue.getName()));
 
         });
+
+
     }
 
     private void updateIcon(boolean svg, String iconName) {
@@ -118,6 +126,15 @@ public class Panel extends Container {
         } else {
             icon.set(Assets.getIcon(iconName, 32));
         }
+
+        var theme = new Theme(
+                ThemeType.valueOf(prefs.get("theme-type", "COLOR")),
+                prefs.get("theme-color", "white"),
+                prefs.get("theme-color", "#F5F7FA"),
+                prefs.get("theme-text", "#434A54")
+        );
+//        prefs.get("theme-color", "white");
+        updateTheme(theme);
     }
 
     private Label createLabelIcon() {
@@ -161,7 +178,6 @@ public class Panel extends Container {
     BackgroundLines backgroundLines = new BackgroundLines(prefHeightProperty(), Insets.EMPTY);
 
     public void createLines(boolean val) {
-        System.out.println("val = " + val);
         createBackgroundLines();
         if (val) {
             createBackgroundLines();
@@ -183,14 +199,14 @@ public class Panel extends Container {
                 // Gets the panel height and subtract the top border and bottom limits.
                 this.heightProperty()
                         .subtract(getListRoot().heightProperty())
-                .subtract(borderTop)
-                .subtract(borderBottom);
+                        .subtract(borderTop)
+                        .subtract(borderBottom);
 
         heightProperty.bind(heightBinding);
         var insets = new Insets(borderTop.get(), borderPadding.get(), borderBottom.get(), borderPadding.get());
         BackgroundLines backgroundLines = new BackgroundLines(heightProperty, insets);
 
-        getChildren().addFirst( backgroundLines);
+        getChildren().addFirst(backgroundLines);
         Platform.requestNextPulse();
     }
 
@@ -243,6 +259,8 @@ public class Panel extends Container {
             if (!bar.getChildren().contains(hamb))
                 bar.addRow(0, hamb);
             // GridPane.setColumnIndex(hamb, 0);
+            GridPane.setConstraints(info, 2, 2);
+
         }, "<MD");
 
         this.addBreakpoint((event) -> {
@@ -251,6 +269,7 @@ public class Panel extends Container {
             bar.getChildren().forEach(el -> {
                 GridPane.setRowIndex(el, 0);
             });
+            GridPane.setConstraints(info, 1, 2);
         }, ">MD");
 
     }
@@ -286,7 +305,7 @@ public class Panel extends Container {
             GridPane.setColumnIndex(info, 1);
             GridPane.setColumnSpan(info, 2);
             GridPane.setRowIndex(info, 1);
-            info.setTranslateX(15);
+//            info.setTranslateX(15);
             bar.getChildren().add(info);
         } else {
             bar.getChildren().remove(info);
@@ -305,22 +324,62 @@ public class Panel extends Container {
         grid.add(label, 0, 0);
         grid.add(title, 1, 0);
 
+        var button = new SettingsButton(this);
+
+        grid.add(button, 2, 0);
+        GridPane.setHalignment(button, HPos.RIGHT);
+
         label.graphicProperty().bind(icon);
 
         grid.setMaxHeight(15);
         StackPane.setMargin(grid, new Insets(0, 20, 20, 20));
         StackPane.setAlignment(grid, Pos.TOP_LEFT);
 
-        // actualList.addListener((observable, oldValue, newValue) -> {
-        // if (newValue.getType().equals(ListType.DAILY)) {
-        // grid.add(info, 0, 1);
-        // borderTop.set(80);
-        // } else {
-        // grid.getChildren().remove(info);
-        // borderTop.set(60);
-        // }
-        // });
+
         return grid;
+    }
+
+    public void updateTheme(Theme theme) {
+        System.out.println("theme = " + theme);
+        System.out.println("label.getGraphic() = " + label.getGraphic());
+        if (label.getGraphic() instanceof SVGIcon icon) {
+            icon.getPath().setStyle("-fx-fill: " + theme.textColor() + "; ");
+        }
+
+        title.setStyle("-fx-text-fill: " + theme.textColor() + "; ");
+
+//        this.setStyle("-fx-background-color: -" + theme.getColor());
+        if (theme.type().equals(ThemeType.COLOR)) {
+            this.setBackground(new Background(new BackgroundFill(
+                    Color.web(theme.color()), new CornerRadii(0), Insets.EMPTY
+            )));
+//        regionLimitTop.setStyle("-fx-background-color: -" + theme.getColor());
+            regionLimitTop.setEffect(null);
+
+            regionLimitTop.setBackground(new Background(new BackgroundFill(
+                    Color.web(theme.color()), new CornerRadii(10), Insets.EMPTY
+            )));
+            regionLimitBottom.setEffect(null);
+
+//        regionLimitBottom.setStyle("-fx-background-color: -" + theme.color());
+            regionLimitBottom.setBackground(new Background(new BackgroundFill(
+                    Color.web(theme.color()), new CornerRadii(10), Insets.EMPTY
+            )));
+        } else {
+            setBackground(new Background(new BackgroundImage(Assets.getImage(theme.color()),
+                    BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
+                    new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, true, true, false, true))));
+
+            regionLimitTop.setEffect(null);
+            regionLimitBottom.setEffect(null);
+            regionLimitTop.setBackground(null);
+            regionLimitBottom.setBackground(null);
+
+        }
+        prefs.put("theme-color", theme.color());
+        prefs.put("theme-border", theme.border());
+        prefs.put("theme-type", theme.type().toString());
+        prefs.put("theme-text", theme.textColor());
     }
 
     public StringProperty titleProperty() {

@@ -70,7 +70,7 @@ public class MultipleBlockSection extends Section {
             }
         };
 
-        var defaultStyle = "border-b-1 border-light-gray pd-2";
+        var defaultStyle = "border-b-2 border-light-gray pd-2";
         itemRemind.getStyleClass().addAll(defaultStyle.split("\\s+"));
         itemDueDate.getStyleClass().addAll(defaultStyle.split("\\s+"));
         getChildren().setAll(itemRemind, itemDueDate, itemRecurrence);

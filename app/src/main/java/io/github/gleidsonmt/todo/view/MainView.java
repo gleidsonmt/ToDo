@@ -108,8 +108,10 @@ public class MainView extends BorderPane {
         this.addEventHandler(TaskChangeEvent.MOVED, e -> {
             Logger.getGlobal().info(() -> "[TaskChangeEvent [FILTER], Type = " + e.getEventType() + " ] -> " + e.getModel());
             if (e.getActual() != e.getPrevious()) {
-                sideNav.get(e.getActual()).updateSize(1);
-                sideNav.get(e.getPrevious()).updateSize(-1);
+                if (!e.getModel().isCompleted()) {
+                    sideNav.get(e.getActual()).updateSize(-1);
+                    sideNav.get(e.getPrevious()).updateSize(1);
+                }
             }
         });
 

@@ -9,7 +9,7 @@ import javafx.scene.layout.VBox;
 public class Section extends VBox {
 
     public Section() {
-        getStyleClass().addAll("rounded border-1 border-light-gray-2 align-center".split("\\s+"));
+        getStyleClass().addAll("rounded border-2 border-light-gray-2 align-center".split("\\s+"));
     }
 
 }

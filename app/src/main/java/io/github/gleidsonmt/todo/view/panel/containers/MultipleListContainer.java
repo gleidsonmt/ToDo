@@ -73,10 +73,8 @@ public class MultipleListContainer extends ListContainer {
 
         Task<ObservableList<List>> task = daoList.fetch(FXCollections.observableArrayList());
 
-        System.out.println("query = " + query);
 
         task.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, _ -> {
-            System.out.println("one");
 
             for (List list : task.getValue()) {
                 if (!list.fixed() || list.name().equals("drawer.list.tasks")) {
@@ -88,7 +86,6 @@ public class MultipleListContainer extends ListContainer {
                                     data.filtered(el -> !el.isCompleted() && el.getListID() == viewModel.getId()) :
                                     data.filtered(el -> el.isCompleted() && el.getListID() == viewModel.getId())
                     );
-
                     System.out.println("item.getSortedList() = " + item.getSortedList());
 
                     if (!item.getSortedList().isEmpty()) {

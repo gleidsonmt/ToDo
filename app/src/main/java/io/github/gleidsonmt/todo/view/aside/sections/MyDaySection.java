@@ -15,6 +15,7 @@ public class MyDaySection extends Section {
     private final Item<Boolean> item;
 
     public MyDaySection(TaskViewModel viewModel) {
+        getStyleClass().add("pd-2");
         this.item = new Item<>(new MyDayLabel()) {
             @Override
             public void bind() {

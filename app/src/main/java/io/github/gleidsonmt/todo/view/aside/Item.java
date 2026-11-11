@@ -29,7 +29,6 @@ public abstract class Item<T> extends GridPane {
         node.valueProperty().addListener((_, _, newValue) -> {
             var needSelection = newValue instanceof Boolean ? (Boolean) newValue : newValue != null;
 
-
             setSelected(needSelection);
 
             if (needSelection) {

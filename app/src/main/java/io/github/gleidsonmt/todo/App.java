@@ -67,7 +67,6 @@ public class App extends Application {
 
     @Override
     public void stop() {
-
         SQLiteConnection.INSTANCE.close();
         Global.removeWindowsRegister();
         Logger.getGlobal().info("Application is closed...");
@@ -77,7 +76,8 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         Platform.setImplicitExit(true); // mudar para falso quando nao estiver em modo desenvolviemnto
-        I18n.setLocale(Locale.of("en"));
+        I18n.setLocale(Locale.of("pt", "BR"));
+//        I18n.setLocale(Locale.of("en", "US));
         Preferences prefs = Preferences.userNodeForPackage(App.class);
         double width = prefs.getDouble(WIDTH_KEY, DEFAULT_WIDTH);
         double height = prefs.getDouble(HEIGHT_KEY, DEFAULT_HEIGHT);
@@ -131,12 +131,5 @@ public class App extends Application {
         }
 
         HotTools.init(scene, Launcher.mode);
-
-//        String[] var = "align-top-center pd-[10 0 10 0]".split(" (?=\\w+-\\[)");
-////        "(?<=\\]) "
-//        for (String s : var)
-//            System.out.println("s = " + s);
-        
-
     }
 }

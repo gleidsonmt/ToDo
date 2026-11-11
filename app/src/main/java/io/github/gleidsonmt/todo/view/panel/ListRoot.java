@@ -76,10 +76,8 @@ public class ListRoot extends VBox {
 
         double breakPoint = 1000;
         if (val > breakPoint) {
-            System.out.println("val = " + val);
 
             if (root.isBlocked()) return;
-            System.out.println("root = " + root.behavior().drawer().isShowing());
 //            if (!root.behavior().drawer().isShowing()) return;
 
             root.behavior()

@@ -35,7 +35,7 @@ Panel {
 }
 
 .fake-task-item {
-    -fx-border-color: -light-gray-2;
+    -fx-border-color: -medium-gray;
     -fx-border-width: 0px 0px 2px 0px;
 }
 
@@ -47,12 +47,18 @@ Panel {
     -fx-fill: -fx-accent;
 }
 
+#list-root #list-container .single-selection .animated-section-title,
 #list-root #list-container .single-selection .task-item {
     -fx-background-color: -fx-background;
     -fx-border-color: -light-gray-2;
     -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
     -fx-border-weight: 2px;
+    -fx-border-insets: -1px;
+    -fx-border-width: 2px;
+
 }
+
 
 #list-root #list-container .single-selection .task-item:details {
     /*-fx-pref-height: 70px;*/
@@ -60,13 +66,14 @@ Panel {
 }
 
 #list-root #list-container .single-selection .task-item:selected {
-    -fx-border-width: 2px;
-    -fx-background-color: -fx-background;
-    -fx-border-color: linear-gradient(
-            to left,
-            -fx-accent,
-            derive(-fx-accent, 50%)
-    );
+    -fx-border-width: 3px;
+    -fx-background-color: -light-gray;
+    -fx-border-color: -light-gray-2;
+    /*-fx-border-color: linear-gradient(*/
+    /*        to left,*/
+    /*        -fx-accent,*/
+    /*        derive(-info, 50%)*/
+    /*);*/
 }
 
 .custom-drawer-item {
@@ -92,7 +99,8 @@ Panel {
 .animated-section-title {
     -fx-padding: 0px 10px 0px 10px;
     -fx-border-width: 1px;
-    -fx-border-radius: 3px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
     -fx-border-color: -light-gray-2;
     -fx-background-color: -fx-background;
 }
@@ -158,9 +166,11 @@ Panel {
     /* Configura a transição para ambas as propriedades de escala */
     -fx-transition: -fx-scale-x 0.2s ease-out,
     -fx-scale-y 0.2s ease-in-out;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
 }
 #input-container:hover {
-    -fx-border-color: linear-gradient(to right, -mint, derive(-fx-accent, 50%));
+    /*-fx-border-color: linear-gradient(to right, -fx-accent, derive(-fx-accent, 50%));*/
     -fx-scale-x: 1.01;
     -fx-scale-y: 1.01;
 }
@@ -168,7 +178,7 @@ Panel {
 #input-container {
     -fx-min-height: 60px;
     -fx-padding: 10px;
-    -fx-border-width: 2px;
+    -fx-border-width: 3px;
     -fx-border-radius: 5px;
 }
 
