@@ -5,6 +5,7 @@ import io.github.gleidsonmt.glad.controls.avatar.AvatarView;
 import io.github.gleidsonmt.glad.controls.avatar_crop.AvatarCrop;
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.todo.events.LoginEvent;
+import io.github.gleidsonmt.todo.utils.I18n;
 import io.github.gleidsonmt.todo.view.login.LoginView;
 import io.github.gleidsonmt.todo.view_model.UserViewModel;
 import javafx.embed.swing.SwingFXUtils;
@@ -44,7 +45,7 @@ class Header extends GridPane {
         GridPane.setValignment(name, VPos.BOTTOM);
         GridPane.setValignment(username, VPos.TOP);
 
-        var logout = new Button("Logout");
+        var logout = new Button(I18n.get("settings.logout"));
         logout.getStyleClass().addAll("bg-danger w-100".split("\\s+"));
         logout.setOnAction(_ -> fireEvent(new LoginEvent(LoginEvent.LOGOUT, viewModel)));
         add(logout, 2, 0, 1, 2);

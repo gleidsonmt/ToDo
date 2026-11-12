@@ -150,7 +150,7 @@ public class Header extends GridPane {
 //             root.setLayout(new SettingsView(user));
         });
 
-        MenuItem menuManageAccount = new MenuItem("Manage Account");
+        MenuItem menuManageAccount = new MenuItem(I18n.get("menu.manage"));
         menuManageAccount.getStyleClass().add("menu-item-last");
         menuManageAccount.setGraphic(new SVGIcon(Icon.MANAGE_ACCOUNTS));
 
