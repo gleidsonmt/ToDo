@@ -24,10 +24,11 @@ public class ThemeBox extends GridPane {
 
     public ThemeBox(Panel panel) {
         int i = 0;
+        getStyleClass().addAll("border-2 border-light-gray-2 rounded".split("\\s+"));
         var title = new Text("Theme");
         add(title, 0, 0);
         List<Theme> themes = List.of(
-                new Theme(ThemeType.COLOR, "white", "#F5F7FA", "#434A54"),
+                new Theme(ThemeType.COLOR, "white", "#F5F7FA", "#0085ff"),
                 new Theme(ThemeType.COLOR, "#33B5E5", "#F5F7FA", "white"),
                 new Theme(ThemeType.COLOR, "#02C852", "#F5F7FA", "white"),
                 new Theme(ThemeType.IMAGE, "background.jpg", "#F5F7FA", "white")
