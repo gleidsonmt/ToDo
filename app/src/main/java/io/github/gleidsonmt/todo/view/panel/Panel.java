@@ -340,8 +340,6 @@ public class Panel extends Container {
     }
 
     public void updateTheme(Theme theme) {
-        System.out.println("theme = " + theme);
-        System.out.println("label.getGraphic() = " + label.getGraphic());
         if (label.getGraphic() instanceof SVGIcon icon) {
             icon.getPath().setStyle("-fx-fill: " + theme.textColor() + "; ");
         }

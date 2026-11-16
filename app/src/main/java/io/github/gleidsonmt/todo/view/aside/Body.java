@@ -30,9 +30,11 @@ public class Body extends ScrollPane {
                 fileSection,
                 textAreaSection
         );
+
         for (Section section : sections) {
             section.getChildren().stream().filter(el -> el instanceof Item).map(Item.class::cast).forEach(Item::bind);
         }
+
         body.getChildren().setAll(sections);
         setContent(body);
         setFitToHeight(true);

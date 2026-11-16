@@ -9,8 +9,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
 import java.time.DayOfWeek;
+import java.time.format.TextStyle;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 /**
  *
@@ -28,7 +30,7 @@ public class WeekBox extends GridPane {
         List<DayOfWeek> arr = Arrays.stream(DayOfWeek.values()).sorted().toList();
         recurrence.getDaysOfWeek().clear();
         for (int i = 0; i < arr.size(); i++) {
-            ToggleWeek toggleWeek = new ToggleWeek(arr.get(i).name().substring(0, 2));
+            ToggleWeek toggleWeek = new ToggleWeek(arr.get(i).getDisplayName(TextStyle.SHORT, Locale.getDefault()));
             int finalI = i;
             toggleWeek.selectedProperty().addListener((_, _, newValue) -> {
                if (newValue) {

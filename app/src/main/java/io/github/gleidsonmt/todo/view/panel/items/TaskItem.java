@@ -1,5 +1,3 @@
-
-
 package io.github.gleidsonmt.todo.view.panel.items;
 
 import io.github.gleidsonmt.todo.global.Global;
@@ -10,8 +8,6 @@ import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.css.PseudoClass;
 import javafx.event.EventType;
 import javafx.geometry.VPos;
@@ -34,6 +30,7 @@ import java.time.LocalDate;
  * Version History: Initial version
  */
 public class TaskItem extends GridToggle {
+
     // Components
     private final CheckBox circleIcon;
     private final Label text;
@@ -41,7 +38,7 @@ public class TaskItem extends GridToggle {
 
     private final BooleanProperty needDetails = new SimpleBooleanProperty();
 
-    private final Options options;
+    private Options options;
 
     private final TaskViewModel viewModel;
     private final ListViewModel listViewModel;
@@ -67,7 +64,7 @@ public class TaskItem extends GridToggle {
         bind();
         setActions();
         registerListeners();
-
+//
         this.addEventFilter(MouseEvent.MOUSE_RELEASED, _ -> setSelected(true));
     }
 
@@ -96,7 +93,6 @@ public class TaskItem extends GridToggle {
 
         this.circleIcon.selectedProperty().bindBidirectional(viewModel.completedProperty());
         this.favorite.selectedProperty().bindBidirectional(viewModel.importantProperty());
-
     }
 
     private void setActions() {
@@ -118,6 +114,8 @@ public class TaskItem extends GridToggle {
                 this.text.getStyleClass().remove("strike");
             }
             fireEvent(TaskChangeEvent.COMPLETE);
+
+            this.viewModel.duplicate();
         });
 
         this.text.getStyleClass().add(completedProperty().get() ? "strike" : "");
@@ -131,22 +129,12 @@ public class TaskItem extends GridToggle {
             }
         });
 
-        this.getViewModel().dueDateProperty().addListener(new ChangeListener<LocalDate>() {
-            @Override
-            public void changed(ObservableValue<? extends LocalDate> observable, LocalDate oldValue, LocalDate newValue) {
-                if (newValue == null) return;
-                if (newValue.equals(LocalDate.now())) {
-                    getViewModel().myDayProperty().set(true);
-                }
+        this.getViewModel().dueDateProperty().addListener((_, _, newValue) -> {
+            if (newValue == null) return;
+            if (newValue.equals(LocalDate.now())) {
+                getViewModel().myDayProperty().set(true);
             }
         });
-
-//        this.favoriteProperty().addListener((_, _, _) -> fireEvent(TaskChangeEvent.FAVORITE_CHANGED));
-//        this.getViewModel().myDayProperty().addListener((_, _, _) -> fireEvent(TaskChangeEvent.MY_DAY_CHANGED));
-//        this.getViewModel().dueDateProperty().addListener((_, _, _) -> fireEvent(TaskChangeEvent.DUE_DATE_CHANGED));
-//        this.getViewModel().listIDProperty().addListener((_, _, _) -> fireEvent(TaskChangeEvent.MOVED));
-
-//        this.viewModel.listIDProperty().addListener((_, old, val) -> fireEvent(TaskChangeEvent.MOVED));
     }
 
     private void fireEvent(EventType<TaskChangeEvent> type) {
@@ -199,7 +187,6 @@ public class TaskItem extends GridToggle {
     public TaskViewModel getViewModel() {
         return this.viewModel;
     }
-
 
     public ListViewModel getListViewModel() {
         return this.listViewModel;

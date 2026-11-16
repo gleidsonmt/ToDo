@@ -2,6 +2,7 @@ package io.github.gleidsonmt.todo.view.aside.sections;
 
 import io.github.gleidsonmt.todo.bd.dao.DaoRecurrence;
 import io.github.gleidsonmt.todo.model.RecurrenceViewModel;
+import io.github.gleidsonmt.todo.model.recurrence.RecurrenceType;
 import io.github.gleidsonmt.todo.view.aside.*;
 import io.github.gleidsonmt.todo.view.aside.labels.DueDateLabel;
 import io.github.gleidsonmt.todo.view.aside.labels.RecurrenceLabel;
@@ -56,23 +57,33 @@ public class MultipleBlockSection extends Section {
                 var found = new DaoRecurrence().findWhere("task_id = " + viewModel.getId());
                 RecurrenceMapper converter = RecurrenceMapper.INSTANCE;
 
+                found.ifPresent(recurrence -> getNode().setValue(converter.toViewModel(recurrence)));
 
                 getNode().valueProperty().addListener((_, _, newValue) -> {
                     if (newValue != null) {
                         newValue.setTaskID(viewModel.getId());
-                        viewModel.storeRecurrence(converter.toDTO(newValue));
+                        var temp = converter.toDTO(newValue);
+
+                        viewModel.setMyDay(true);
+                        viewModel.setDueDate(LocalDate.now());
+
+                        if (viewModel.getRecurrence() == null) {
+                            viewModel.storeRecurrence(temp);
+                        }
+                        viewModel.setRecurrence(temp);
                     } else {
                         dao.delete("task_id = " + viewModel.getId());
+                        viewModel.setRecurrence(null);
                     }
                 });
 
-                found.ifPresent(recurrence -> getNode().setValue(converter.toViewModel(recurrence, new RecurrenceViewModel())));
             }
         };
 
         var defaultStyle = "border-b-2 border-light-gray pd-2";
         itemRemind.getStyleClass().addAll(defaultStyle.split("\\s+"));
         itemDueDate.getStyleClass().addAll(defaultStyle.split("\\s+"));
+        itemRecurrence.getStyleClass().addAll("pd-2".split("\\s+"));
         getChildren().setAll(itemRemind, itemDueDate, itemRecurrence);
     }
 

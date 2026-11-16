@@ -1,5 +1,3 @@
-
-
 package io.github.gleidsonmt.todo.view.panel.containers;
 
 import io.github.gleidsonmt.todo.bd.dao.DaoTask;
@@ -10,8 +8,6 @@ import io.github.gleidsonmt.todo.view.panel.containers.sections.SingleSection;
 import io.github.gleidsonmt.todo.view_model.ListViewModel;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
 import io.github.gleidsonmt.todo.view_model.map.TaskMapper;
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.IntegerBinding;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
@@ -48,39 +44,30 @@ public class DoubleListContainer extends ListContainer {
         Task<ObservableList<ToDoTask>> task = dao.fetch(70, 0, query);
 //        System.out.println("query = " + query);
         new Thread(task).start();
-//        unbind();
-        task.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, _ -> {
 
-        // update list task
-            task.getValue().forEach(el -> data.add(TaskMapper.INSTANCE.toViewModel(el, new TaskViewModel())));
+        task.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, _-> {
+            // update list task
+            task.getValue().forEach(el -> data.add(TaskMapper.INSTANCE.toViewModel(el)));
 
             if (!getChildren().contains(sectionCompleted)) {
                 getChildren().add(1, sectionCompleted);
             }
 
             if (getList().getType() == ListType.IMPORTANT) {
-
-                sectionIncomplete.setList(data.filtered(el -> !el.isCompleted() && el.isImportant() ));
+                sectionIncomplete.setList(data.filtered(el -> !el.isCompleted() && el.isImportant()));
                 getChildren().remove(sectionCompleted);
-
             } else if (getList().getType() == ListType.DAILY) {
-
                 sectionIncomplete.setList(data.filtered(el -> !el.isCompleted() && el.isMyDay()));
                 sectionCompleted.setList(data.filtered(TaskViewModel::isCompleted));
-
             } else {
-
-                // filtra os nao completos
+                // filtra os não completos
                 sectionIncomplete.setList(data.filtered(el -> !el.isCompleted() && list.getId() == el.getListID()));
                 // filtra os completos
                 sectionCompleted.setList(data.filtered(el -> el.isCompleted() && list.getId() == el.getListID()));
 //                sectionCompleted.setList(data.filtered(TaskViewModel::isCompleted));.
-
             }
-
             bind();
         });
-
         return task;
     }
 

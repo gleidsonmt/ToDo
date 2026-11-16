@@ -19,12 +19,9 @@ public class MyDaySection extends Section {
         this.item = new Item<>(new MyDayLabel()) {
             @Override
             public void bind() {
-//                getNode().setValue(viewModel.isMyDay());
+                getNode().setValue(viewModel.isMyDay());
                 getNode().valueProperty().bindBidirectional(viewModel.myDayProperty());
                 getNode().valueProperty().addListener((_, _, newValue) -> {
-//                    System.out.println("newValue = " + newValue);
-//                    viewModel.setMyDay(newValue != null);
-//////                    viewModel.setDueDate(LocalDate.now());
                     this.fireEvent(new TaskChangeEvent(TaskChangeEvent.MY_DAY_CHANGED, viewModel));
                 });
             }

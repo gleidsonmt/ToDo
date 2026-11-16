@@ -20,7 +20,6 @@ import javafx.scene.control.MenuItem;
  */
 public class TaskOptions {
 
-
     private final ObservableList<MenuItem> items = FXCollections.observableArrayList();
     private final CustomContextMenu<ListViewModel> contextMenu;
 

@@ -1,6 +1,7 @@
 package io.github.gleidsonmt.todo.view.aside.labels;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
+import io.github.gleidsonmt.todo.utils.I18n;
 import io.github.gleidsonmt.todo.view.panel.input.menu.input_menu_items.RemindContextMenu;
 import javafx.geometry.Side;
 import javafx.scene.control.ContextMenu;
@@ -13,14 +14,12 @@ import java.time.LocalDateTime;
  */
 public class RemindLabel extends CustomLabel<LocalDateTime> {
 
-    private ContextMenu contextMenu;
-
     public RemindLabel() {
-        super("Remind me", Icon.CLOCK, "");
-
+        super(I18n.get("aside.remind"), Icon.CLOCK, "");
+        setWrapText(true);
         setOnMouseClicked(e -> {
-            this.contextMenu = new RemindContextMenu(this);
-            this.contextMenu.show(this, Side.BOTTOM, 0,0);
+            ContextMenu contextMenu = new RemindContextMenu(this);
+            contextMenu.show(this, Side.BOTTOM, 0,0);
         });
     }
 }

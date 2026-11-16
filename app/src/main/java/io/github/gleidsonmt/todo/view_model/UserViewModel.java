@@ -35,7 +35,6 @@ public class UserViewModel extends ViewModel {
     private final StringProperty password = new SimpleStringProperty(this, "password");
     private final BooleanProperty logged = new SimpleBooleanProperty(this, "logged");
 
-
     public void update() {
         dao.update(converter.toDTO(this));
     }

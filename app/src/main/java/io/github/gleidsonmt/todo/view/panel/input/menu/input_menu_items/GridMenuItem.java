@@ -19,7 +19,6 @@ import javafx.scene.text.Text;
  */
 public class GridMenuItem extends MenuItem {
 
-
     public GridMenuItem(String _text, Icon _icon) {
         this(_text, _icon, null);
     }

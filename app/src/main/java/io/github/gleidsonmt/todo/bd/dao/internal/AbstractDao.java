@@ -353,6 +353,7 @@ public abstract class AbstractDao<T extends DTO> implements Dao<T>, ListDao<T> {
         connect();
         ResultSet result = executeQuery("select * from " + getTable() + " where " + condition + ";");
         try {
+            if (result == null) return Optional.empty();
             if (result.next())
                 return Optional.of(createElement(result));
             else

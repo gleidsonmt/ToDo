@@ -1,6 +1,7 @@
 package io.github.gleidsonmt.todo.view.aside.labels;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
+import io.github.gleidsonmt.todo.utils.I18n;
 import io.github.gleidsonmt.todo.view.panel.input.menu.input_menu_items.DueDateContextMenu;
 import javafx.geometry.Side;
 
@@ -13,7 +14,7 @@ import java.time.LocalDate;
 public class DueDateLabel extends CustomLabel<LocalDate> {
 
     public DueDateLabel() {
-        super("Add due date", Icon.CALENDAR_MONTH, "");
+        super(I18n.get("aside.dueDate"), Icon.CALENDAR_MONTH, "");
         setOnMouseClicked(_ -> {
             DueDateContextMenu contextMenu = new DueDateContextMenu(this);
             contextMenu.show(this, Side.BOTTOM, 0,0);

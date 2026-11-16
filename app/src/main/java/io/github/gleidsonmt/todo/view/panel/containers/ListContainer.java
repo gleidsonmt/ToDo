@@ -34,7 +34,7 @@ import java.util.Comparator;
 public abstract class ListContainer extends VBox {
 
     protected ObservableList<TaskViewModel> data = FXCollections.observableArrayList(
-            viewModel -> new Observable[]{
+            viewModel -> new Observable[] {
                     viewModel.completedProperty(),
                     viewModel.dueDateProperty(),
                     viewModel.importantProperty(),
@@ -86,7 +86,6 @@ public abstract class ListContainer extends VBox {
 
                     }
                 }
-
             }
         });
         VBox.setVgrow(this, Priority.ALWAYS);
@@ -130,7 +129,6 @@ public abstract class ListContainer extends VBox {
     }
 
     public abstract Task<ObservableList<ToDoTask>> load();
-//    public abstract void  load();
 
     public ObservableList<TaskViewModel> getData() {
         return this.data;

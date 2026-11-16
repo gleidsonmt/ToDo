@@ -2,6 +2,7 @@ package io.github.gleidsonmt.todo.view.panel.input.menu.input_menu_items;
 
 import io.github.gleidsonmt.todo.model.RecurrenceViewModel;
 import io.github.gleidsonmt.todo.model.recurrence.RecurrenceType;
+import io.github.gleidsonmt.todo.utils.I18n;
 import io.github.gleidsonmt.todo.utils.StringUtils;
 
 import java.time.DayOfWeek;
@@ -29,11 +30,11 @@ public class DateUtils {
 
     public static String format(LocalDate localDate) {
         if (localDate.equals(LocalDate.now())) {
-            return "Today";
+            return I18n.get("recurrence.today");
         } else if (localDate.equals(LocalDate.now().plusDays(1))) {
-            return "Tomorrow";
+            return I18n.get("recurrence.tomorrow");
         } else if (localDate.equals(LocalDate.now().minusDays(1))) {
-            return "Yesterday";
+            return I18n.get("recurrence.yesterday");
         } else {
             return DateTimeFormatter
                     .ofPattern("E d 'of' MMM")
@@ -57,12 +58,12 @@ public class DateUtils {
 
     public static String shortName(RecurrenceType type) {
         return switch (type) {
-            case DAILY -> "days";
-            case WEEKDAYS -> "weekdays";
-            case WEEKLY -> "weeks";
-            case MONTHLY -> "months";
-            case YEARLY -> "years";
-            default -> "custom";
+            case DAILY -> I18n.get("date.daily.short");
+            case WEEKDAYS -> I18n.get("date.weekdays.short");
+            case WEEKLY -> I18n.get("date.weekly.short");
+            case MONTHLY -> I18n.get("date.monthly.short");
+            case YEARLY -> I18n.get("date.yearly.short");
+            default ->  I18n.get("date.custom.short");
         };
     }
 
@@ -70,16 +71,16 @@ public class DateUtils {
         return format(recurrence.getType());
     }
     public static String format(RecurrenceType type) {
-        return StringUtils.name(type.toString());
+        return StringUtils.name(I18n.get("recurrence." + type.toString().toLowerCase()));
     }
 
     public static String format(String init, LocalTime time, String with, LocalDate localDate) {
         if (localDate.equals(LocalDate.now())) {
-            return init + DateTimeFormatter.ofPattern("H:mm").format(time) + ", Today";
+            return init + DateTimeFormatter.ofPattern("H:mm").format(time) + ", " + I18n.get("recurrence.today");
         } else if (localDate.equals(LocalDate.now().plusDays(1))) {
-            return init + DateTimeFormatter.ofPattern("H:mm").format(time) + ", Tomorrow";
+            return init + DateTimeFormatter.ofPattern("H:mm").format(time) + ", " + I18n.get("recurrence.tomorrow");
         } else if (localDate.equals(LocalDate.now().minusDays(1))) {
-            return init + DateTimeFormatter.ofPattern("H:mm").format(time) + ", Yesterday";
+            return init + DateTimeFormatter.ofPattern("H:mm").format(time) + ", " + I18n.get("recurrence.yesterday");
         } else {
             return init + DateTimeFormatter.ofPattern("H:mm").format(time) + ", " +
                    DateTimeFormatter

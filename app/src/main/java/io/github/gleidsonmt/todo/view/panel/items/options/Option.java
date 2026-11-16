@@ -6,6 +6,8 @@ import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Circle;
@@ -29,6 +31,8 @@ public class Option extends GridPane {
     private SVGIcon repeatIcon;
     private final Circle circle = new Circle(3);
     private final BooleanProperty needsBullet = new SimpleBooleanProperty();
+    private final BooleanProperty needsIcon = new SimpleBooleanProperty();
+
 
     public Option(int index, String text) {
         this(index, text, Icon.NONE);
@@ -45,7 +49,6 @@ public class Option extends GridPane {
     public Option(int index, String text, Node icon) {
         this.index = index;
         this.text = new Text(text);
-
 
         if (icon instanceof SVGIcon ik) {
             ik.setScale(0.8);
@@ -75,6 +78,8 @@ public class Option extends GridPane {
         } else {
             minLayout();
         }
+
+        this.needsIconProperty().addListener((observable, oldValue, newValue) -> setNeedRepeatIcon(newValue));
     }
 
     private void minLayout() {
@@ -138,13 +143,17 @@ public class Option extends GridPane {
         }
     }
 
+    public BooleanProperty needsIconProperty() {
+        return needsIcon;
+    }
+
     public void setNeedRepeatIcon(boolean repeatIcon) {
         if (repeatIcon) {
             this.repeatIcon = new SVGIcon(Icon.SYNC);
             this.repeatIcon.setScale(0.7);
             getChildren().add(this.repeatIcon);
         } else {
-            getChildren().add(this.repeatIcon);
+            getChildren().removeAll(this.repeatIcon);
         }
 
         if (needsBullet.get()) {

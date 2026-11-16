@@ -1,6 +1,7 @@
 package io.github.gleidsonmt.todo.view.aside.labels;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
+import io.github.gleidsonmt.todo.utils.I18n;
 import io.github.gleidsonmt.todo.view.aside.Item;
 
 /**
@@ -10,7 +11,7 @@ import io.github.gleidsonmt.todo.view.aside.Item;
 public class MyDayLabel extends CustomLabel<Boolean> {
 
     public MyDayLabel() {
-        super("My Day", Icon.SUN, "Add task to My day");
+        super(I18n.get("drawer.list.my_day"), Icon.SUN, "Add task to My day");
 
         setOnMouseClicked(_ -> {
             Item<?> item = (Item<?>) getParent();
@@ -18,6 +19,7 @@ public class MyDayLabel extends CustomLabel<Boolean> {
 //            setValue(getValue() != null);
             if (getValue() != null) setValue(!getValue());
             else setValue(true);
+            System.out.println("value = " + value);
         });
 
 

@@ -1,5 +1,6 @@
 package io.github.gleidsonmt.todo.view.aside;
 
+import io.github.gleidsonmt.todo.utils.I18n;
 import javafx.scene.control.TextArea;
 import javafx.scene.text.Text;
 
@@ -11,7 +12,7 @@ public class AreaInsert extends TextArea {
     public AreaInsert(String text) {
         setWrapText(true);
         getStyleClass().addAll("area-insert h-80 border-transparent".split("\\s+"));
-        setPromptText("Add a note");
+        setPromptText(I18n.get("aside.textarea.addNote"));
         textProperty().addListener((_, _, newValue) -> {
             // Criamos um nó de texto temporário para calcular o tamanho real do conteúdo
 

@@ -17,12 +17,18 @@ public interface GenericMapper<V, D> { // primeiro o view model depois o dto
      */
     D toDTO(V viewModel);
 
+
     /**
      * Transforms a data transfer object into a view model.
      * @param dto The data transfer object to be transformed.
      * @param viewModel The view model to be updated.
      * @return The updated view model.
      */
+    @Deprecated(forRemoval = true)
     V toViewModel(D dto, @MappingTarget V viewModel);
 
+    // when all deprecateds are remove this method will be required
+    default V toViewModel(D dto) {
+        return null;
+    }
 }

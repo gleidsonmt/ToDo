@@ -1,9 +1,9 @@
-
-
 package io.github.gleidsonmt.todo.view.panel.items.options;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.todo.bd.dao.DaoList;
+import io.github.gleidsonmt.todo.bd.dao.DaoRecurrence;
+import io.github.gleidsonmt.todo.bd.dao.DaoTask;
 import io.github.gleidsonmt.todo.global.Global;
 import io.github.gleidsonmt.todo.global.TaskPresenter;
 import io.github.gleidsonmt.todo.model.ToDoTask;
@@ -14,6 +14,7 @@ import io.github.gleidsonmt.todo.view.panel.items.TaskItem;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.layout.FlowPane;
 
 import java.time.LocalDate;
@@ -35,43 +36,42 @@ public class Options extends FlowPane {
     private final TaskOption taskOption = new TaskOption();
     private final DueDateOption dueDateOption = new DueDateOption();
     private final RemindOption remindOption;
+//    private final RepeatOption repeatOption;
 
     public Options(TaskItem item) {
 
         this.setMinHeight(20);
         this.setHgap(5);
 
-        TaskPresenter taskPresenter = (TaskPresenter) Global.get(ToDoTask.class);
-        Optional<Recurrence> recurrence = taskPresenter.getRecurrence(item.getViewModel().getId());
+        DaoRecurrence daoRecurrence = new DaoRecurrence();
+        Optional<Recurrence> recurrence = daoRecurrence.getWhere("task_id = " + item.getViewModel().getId());
+
+        recurrence.ifPresent(e -> item.getViewModel().setRecurrence(e));
 
         MyDayOption myDayOption = new MyDayOption();
         BooleanProperty hasMyDayOption = new SimpleBooleanProperty();
         hasMyDayOption.addListener(createUpdateListener(myDayOption));
         hasMyDayOption.bind(item.getViewModel().myDayProperty());
 
+
         BooleanProperty hasDueDateOption = new SimpleBooleanProperty();
         hasDueDateOption.addListener(createUpdateListener(dueDateOption));
         hasDueDateOption.bind(item.getViewModel().dueDateProperty().isNotNull());
-
-        BooleanProperty hasRepeatOption = new SimpleBooleanProperty();
-//        hasRepeatOption.bind(item.getViewModel());
 
         remindOption = new RemindOption();
         BooleanProperty hasRemindOption = new SimpleBooleanProperty();
         hasRemindOption.addListener(createUpdateListener(remindOption));
         hasRemindOption.bind(item.getViewModel().remindProperty().isNotNull());
 
-//        RepeatOption repeatOption = new RepeatOption();
-//        BooleanProperty hasRepeatOption = new SimpleBooleanProperty();
-//        hasRepeatOption.addListener(createUpdateListener(repeatOption));
+        BooleanProperty hasRepeatOption = new SimpleBooleanProperty();
+        hasRepeatOption.bind(item.getViewModel().recurrenceProperty().isNotNull());
 
         BooleanProperty hasTaskOption = new SimpleBooleanProperty();
         hasTaskOption.addListener(createUpdateListener(taskOption));
 
         hasTaskOption.bind(item.getListViewModel().idProperty().isNotEqualTo(item.getViewModel().listIDProperty()));
-//        hasRepeatOption.bind(item.getListViewModel().idProperty().greaterThan(0));
 
-        has.bind(hasTaskOption.or(hasMyDayOption).or(hasDueDateOption).or(hasRemindOption));
+        has.bind(hasTaskOption.or(hasMyDayOption).or(hasDueDateOption).or(hasRemindOption).or(hasRepeatOption));
 
         if (item.getViewModel().getDueDate() != null) {
             updateDueDate(item.getViewModel().getDueDate());
@@ -81,9 +81,11 @@ public class Options extends FlowPane {
             remindOption.setName(DateUtils.format(item.getViewModel().getRemind().toLocalDate()));
         }
 
-        if (recurrence.isPresent()) {
-            dueDateOption.setNeedRepeatIcon(true);
-        }
+//        if (recurrence.isPresent()) {
+//            dueDateOption.setNeedRepeatIcon(true);
+//        }
+
+        dueDateOption.needsIconProperty().bind(hasRepeatOption);
 
         item.getViewModel().listIDProperty().addListener((_, _, val) -> {
             DaoList dao = new DaoList();
@@ -98,9 +100,9 @@ public class Options extends FlowPane {
         });
 
         item.getViewModel().remindProperty().addListener((_, _, val) -> {
+            if (val == null) return;
             remindOption.setName(DateUtils.format(val.toLocalDate()));
         });
-
 
     }
 

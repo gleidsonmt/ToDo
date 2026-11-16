@@ -4,6 +4,7 @@ package io.github.gleidsonmt.todo.view.panel.input.menu.input_menu_items;
 
 import io.github.gleidsonmt.glad.base.Root;
 import io.github.gleidsonmt.glad.controls.icon.Icon;
+import io.github.gleidsonmt.todo.utils.I18n;
 import io.github.gleidsonmt.todo.view.panel.input.InputFieldItem;
 import io.github.gleidsonmt.todo.view.panel.input.menu.input_menu_items.custom_panels.CalendarPane;
 import javafx.geometry.Pos;
@@ -21,11 +22,11 @@ public class DueDateContextMenu extends CustomContextMenu<LocalDate> {
     public DueDateContextMenu(InputFieldItem<LocalDate> target) {
         super(target);
         
-        GridMenuItem menuItemToday = new GridMenuItem("Today", Icon.TODAY, DateUtils.formatDay(LocalDate.now()));
-        GridMenuItem menuItemTomorrow = new GridMenuItem("Tomorrow", Icon.DATE_RANGE, DateUtils.formatDay(LocalDate.now().plusDays(1)));
-        GridMenuItem menuItemNextWeek = new GridMenuItem("Next Week", Icon.EVENT_UPCOMING, DateUtils.formatDay(LocalDate.now().with(DayOfWeek.MONDAY)));
-        GridMenuItem menuItemPickADate = new GridMenuItem("Pick a date", Icon.CALENDAR_MONTH);
-        GridMenuItem menuItemDelete = new GridMenuItem("Remove due date", Icon.DELETE);
+        GridMenuItem menuItemToday = new GridMenuItem(I18n.get("recurrence.today"), Icon.TODAY, DateUtils.formatDay(LocalDate.now()));
+        GridMenuItem menuItemTomorrow = new GridMenuItem(I18n.get("recurrence.tomorrow"), Icon.DATE_RANGE, DateUtils.formatDay(LocalDate.now().plusDays(1)));
+        GridMenuItem menuItemNextWeek = new GridMenuItem(I18n.get("date.next") + " " + I18n.get("recurrence.week"), Icon.EVENT_UPCOMING, DateUtils.formatDay(LocalDate.now().with(DayOfWeek.MONDAY)));
+        GridMenuItem menuItemPickADate = new GridMenuItem(I18n.get("recurrence.chooseDate"), Icon.CALENDAR_MONTH);
+        GridMenuItem menuItemDelete = new GridMenuItem(I18n.get("menu.remove.duedate"), Icon.DELETE);
 
         getItems().addAll(menuItemToday, menuItemTomorrow, menuItemNextWeek, menuItemPickADate);
 

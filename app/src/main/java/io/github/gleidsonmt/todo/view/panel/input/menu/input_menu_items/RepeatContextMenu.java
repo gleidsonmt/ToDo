@@ -7,6 +7,7 @@ import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import io.github.gleidsonmt.todo.model.RecurrenceViewModel;
 import io.github.gleidsonmt.todo.model.recurrence.*;
+import io.github.gleidsonmt.todo.utils.I18n;
 import io.github.gleidsonmt.todo.view.panel.input.InputFieldItem;
 import io.github.gleidsonmt.todo.view.panel.input.menu.grid_icons.*;
 import io.github.gleidsonmt.todo.view.panel.input.menu.input_menu_items.custom_panels.RecurrenceBox;
@@ -23,14 +24,15 @@ public class RepeatContextMenu extends CustomContextMenu<RecurrenceViewModel> {
 
     public RepeatContextMenu(InputFieldItem<RecurrenceViewModel> target) {
         super(target);
-        MenuItem menuItemDaily = new MenuItem("Daily", new GridIconDaily());
-        MenuItem menuItemWeekDays = new MenuItem("WeekDays", new GridIconWeekDays());
-        MenuItem menuItemWeekly = new MenuItem("Weekly", new GridIconWeekly());
-        MenuItem menuItemMonthly = new MenuItem("Monthly", new GridIconMonthly());
-        MenuItem menuItemYearly = new MenuItem("Yearly", new GridIconYearly());
-        MenuItem menuItemCustom = new MenuItem("Custom", new SVGIcon(Icon.EVENT_REPEAT));
+        MenuItem menuItemDaily = new MenuItem(I18n.get("recurrence.daily"), new GridIconDaily());
+        MenuItem menuItemWeekDays = new MenuItem(I18n.get("recurrence.weekdays"), new GridIconWeekDays());
+        MenuItem menuItemWeekly = new MenuItem(I18n.get("recurrence.weekly"), new GridIconWeekly());
+        MenuItem menuItemMonthly = new MenuItem(I18n.get("recurrence.monthly"), new GridIconMonthly());
+        MenuItem menuItemYearly = new MenuItem(I18n.get("recurrence.yearly"), new GridIconYearly());
+        MenuItem menuItemCustom = new MenuItem(I18n.get("recurrence.custom"), new SVGIcon(Icon.EVENT_REPEAT));
 
-        MenuItem menuItemDelete = new MenuItem("Never repeat", new SVGIcon(Icon.DELETE));
+//        MenuItem menuItemDelete = new MenuItem("Never repeat", new SVGIcon(Icon.DELETE));
+        MenuItem menuItemDelete = new MenuItem(I18n.get("menu.remove.repeat"), new SVGIcon(Icon.DELETE));
         menuItemDelete.getStyleClass().addAll("menu-item-delete");
 
         this.getItems().addAll(menuItemDaily, menuItemWeekDays, menuItemWeekly, menuItemMonthly, menuItemYearly, menuItemCustom);
@@ -64,8 +66,10 @@ public class RepeatContextMenu extends CustomContextMenu<RecurrenceViewModel> {
                     .width(300)
                     .content(container)
                     .pos(target.isCenter() ? Pos.TOP_CENTER : Pos.TOP_LEFT)
-
                     .show(target);
         });
+    }
+
+    private void update() {
     }
 }

@@ -4,6 +4,7 @@ package io.github.gleidsonmt.todo.view.panel.input.menu.input_menu_items.custom_
 
 import com.dlsc.gemsfx.CalendarView;
 import io.github.gleidsonmt.glad.base.Root;
+import io.github.gleidsonmt.todo.utils.I18n;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -19,9 +20,9 @@ import java.time.LocalDate;
  */
 public class CalendarPane extends VBox {
 
-    protected Button save = new Button("Save");
+    protected Button save = new Button(I18n.get("button.ok"));
     protected CalendarView calendarView = new CalendarView();
-    protected Button cancel = new Button("Cancel");
+    protected Button cancel = new Button(I18n.get("button.cancel"));
 
     public CalendarPane() {
         this.getStyleClass().add("calendar-container");

@@ -15,7 +15,7 @@ import java.util.TreeSet;
  * Created on 29/09/2026
  */
 @Mapper(unmappedTargetPolicy = ReportingPolicy.ERROR)
-public interface RecurrenceMapper {
+public interface RecurrenceMapper extends GenericMapper<RecurrenceViewModel, Recurrence> {
 
     RecurrenceMapper INSTANCE =  Mappers.getMapper(RecurrenceMapper.class);
 
@@ -23,6 +23,7 @@ public interface RecurrenceMapper {
 
     @Mapping(target = "name", ignore = true)
     @Mapping(target = "daysOfWeek", source = "daysOfWeek", qualifiedByName = "toAll")
+    @Override
     RecurrenceViewModel toViewModel(Recurrence dto, @MappingTarget RecurrenceViewModel model);
 
     @Named("toAll")

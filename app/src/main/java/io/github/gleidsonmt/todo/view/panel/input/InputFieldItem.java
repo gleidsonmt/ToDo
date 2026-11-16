@@ -69,11 +69,12 @@ public class InputFieldItem<T> extends Label {
                         getTooltip().setText("");
                     }
                     if (val instanceof LocalDateTime dateTime) {
-                        setText(DateUtils.format("Remind at ", dateTime.toLocalTime(), " at ", dateTime.toLocalDate()));
+                        setText(DateUtils.format(I18n.get("date.remember"), dateTime.toLocalTime(), " at ", dateTime.toLocalDate()));
                     }
                     if (val instanceof RecurrenceViewModel recurrence) {
                         setText(DateUtils.format(recurrence));
                     }
+
                     if (val instanceof List list) {
                         setText(
                                 StringUtils.isFixedList(list.name()) ?

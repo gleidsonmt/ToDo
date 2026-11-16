@@ -4,6 +4,7 @@ package io.github.gleidsonmt.todo.view.panel.input.menu.input_menu_items.custom_
 
 import io.github.gleidsonmt.todo.model.RecurrenceViewModel;
 import io.github.gleidsonmt.todo.model.recurrence.*;
+import io.github.gleidsonmt.todo.utils.I18n;
 import io.github.gleidsonmt.todo.view.panel.input.menu.input_menu_items.DateUtils;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
@@ -45,10 +46,10 @@ public class RecurrenceBox extends GridPane {
     }
 
     private void init() {
-        title = new Label("Repeat every...");
+        title = new Label(I18n.get("repeatbox.title"));
         input = new TextField("1");
-        save = new Button("Save");
-        cancel = new Button("Cancel");
+        save = new Button(I18n.get("button.ok"));
+        cancel = new Button(I18n.get("button.cancel"));
         save.setDefaultButton(true);
         comBox = createComboBox();
         buttonBar = createButtonBar();

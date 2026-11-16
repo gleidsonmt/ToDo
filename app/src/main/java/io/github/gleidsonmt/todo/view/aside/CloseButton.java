@@ -16,6 +16,7 @@ public class CloseButton extends Button {
         setCancelButton(true);
         setOnMouseClicked(_ -> {
             var aside = (Aside) getParent();
+            if (aside == null) return;
             aside.setOpened(false);
         });
     }

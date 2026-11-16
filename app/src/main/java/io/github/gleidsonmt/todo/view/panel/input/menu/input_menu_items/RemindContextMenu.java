@@ -1,9 +1,8 @@
-
-
 package io.github.gleidsonmt.todo.view.panel.input.menu.input_menu_items;
 
 import io.github.gleidsonmt.glad.base.Root;
 import io.github.gleidsonmt.glad.controls.icon.Icon;
+import io.github.gleidsonmt.todo.utils.I18n;
 import io.github.gleidsonmt.todo.view.panel.input.InputFieldItem;
 import io.github.gleidsonmt.todo.view.panel.input.menu.input_menu_items.custom_panels.CalendarTimePane;
 import javafx.geometry.Pos;
@@ -22,11 +21,11 @@ public class RemindContextMenu extends CustomContextMenu<LocalDateTime> {
 
     public RemindContextMenu(InputFieldItem<LocalDateTime> target) {
         super(target);
-        GridMenuItem menuItemToday = new GridMenuItem("Later Today", Icon.SHARE_ETA, DateUtils.format(LocalTime.of(19, 0)));
-        GridMenuItem menuItemTomorrow = new GridMenuItem("Tomorrow", Icon.SHARE_ETA, DateUtils.format(LocalDate.now().plusDays(1), LocalTime.of(9, 0)));
-        GridMenuItem menuItemNextWeek = new GridMenuItem("Next Week", Icon.SHARE_ETA, DateUtils.format(LocalDate.now().with(DayOfWeek.SUNDAY), LocalTime.of(9, 0)));
-        GridMenuItem menuItemPickDateAndTime = new GridMenuItem("Pick a Date and Time", Icon.CALENDAR_CLOCK);
-        GridMenuItem menuItemDelete = new GridMenuItem("Remove reminder", Icon.DELETE);
+        GridMenuItem menuItemToday = new GridMenuItem(I18n.get("date.later") + " " + I18n.get("recurrence.today"), Icon.SHARE_ETA, DateUtils.format(LocalTime.of(19, 0)));
+        GridMenuItem menuItemTomorrow = new GridMenuItem(I18n.get("recurrence.tomorrow"), Icon.SHARE_ETA, DateUtils.format(LocalDate.now().plusDays(1), LocalTime.of(9, 0)));
+        GridMenuItem menuItemNextWeek = new GridMenuItem(I18n.get("date.next") + " " + I18n.get("recurrence.week"), Icon.SHARE_ETA, DateUtils.format(LocalDate.now().with(DayOfWeek.SUNDAY), LocalTime.of(9, 0)));
+        GridMenuItem menuItemPickDateAndTime = new GridMenuItem(I18n.get("recurrence.chooseDate"), Icon.CALENDAR_CLOCK);
+        GridMenuItem menuItemDelete = new GridMenuItem(I18n.get("menu.remove.reminder"), Icon.DELETE);
         menuItemDelete.getStyleClass().addAll("menu-item-delete");
 
         this.getItems().addAll(menuItemToday, menuItemTomorrow, menuItemNextWeek, menuItemPickDateAndTime);

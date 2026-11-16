@@ -4,6 +4,7 @@ import io.github.gleidsonmt.todo.view.panel.input.InputFieldItem;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.css.PseudoClass;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
@@ -43,7 +44,7 @@ public abstract class Item<T> extends GridPane {
             pseudoClassStateChanged(PseudoClass.getPseudoClass("selected"), val);
         });
 
-        closeButton.setOnMouseClicked(_ -> {
+        closeButton.addEventFilter(MouseEvent.MOUSE_CLICKED, _ -> {
             node.setValue(null);
             setSelected(false);
             pseudoClassStateChanged(PseudoClass.getPseudoClass("selected"), false);

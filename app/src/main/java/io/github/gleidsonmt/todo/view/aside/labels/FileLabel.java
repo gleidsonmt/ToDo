@@ -2,6 +2,7 @@ package io.github.gleidsonmt.todo.view.aside.labels;
 
 import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.todo.model.TaskFile;
+import io.github.gleidsonmt.todo.utils.I18n;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.VPos;
 import javafx.scene.control.ContentDisplay;
@@ -28,7 +29,7 @@ public class FileLabel extends CustomLabel<TaskFile> {
     private File file;
 
     public FileLabel(long id) {
-        super("Add file ", Icon.ATTACH_FILE, "");
+        super(I18n.get("aside.btn.addFile"), Icon.ATTACH_FILE, "");
 
         value.addListener((_, _, newValue) -> {
 

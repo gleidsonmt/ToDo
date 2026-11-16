@@ -66,9 +66,9 @@ Panel {
 }
 
 #list-root #list-container .single-selection .task-item:selected {
-    -fx-border-width: 3px;
+    -fx-border-width: 4px;
     -fx-background-color: -light-gray;
-    -fx-border-color: -light-gray-2;
+    -fx-border-color: -light-gray-2 -light-gray-2 -fx-accent -light-gray-2;
     /*-fx-border-color: linear-gradient(*/
     /*        to left,*/
     /*        -fx-accent,*/
@@ -91,6 +91,12 @@ Panel {
 #drawer,
 #drawer-container {
     -fx-padding: 0px;
+    -fx-border-width: 0px 2px 0px 0px;
+}
+
+.aside {
+    -fx-border-width: 0px 0px 0px 2px;
+    -fx-pref-height: 20px;
 }
 
 .custom-drawer-item .list-container .text {
@@ -213,7 +219,9 @@ Panel {
 }
 
 .custom-drawer-item:selected {
-    -fx-background-color: derive(-fx-accent, 122%);
+    -fx-background-color: derive(-fx-accent, 120%);
+    -fx-border-color: derive(-fx-accent, 100%);
+    -fx-border-radius: 10px;
 }
 
 .check-circle:pressed .box,

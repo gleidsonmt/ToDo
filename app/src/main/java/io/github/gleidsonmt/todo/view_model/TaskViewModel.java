@@ -1,10 +1,7 @@
-
-
 package io.github.gleidsonmt.todo.view_model;
 
 import io.github.gleidsonmt.todo.bd.dao.DaoRecurrence;
 import io.github.gleidsonmt.todo.bd.dao.DaoTask;
-import io.github.gleidsonmt.todo.model.DTO;
 import io.github.gleidsonmt.todo.model.ToDoTask;
 import io.github.gleidsonmt.todo.model.recurrence.Recurrence;
 import io.github.gleidsonmt.todo.view_model.map.TaskMapper;
@@ -22,6 +19,7 @@ import java.time.LocalDateTime;
  * Version History: Initial version
  */
 public class TaskViewModel extends ViewModel {
+
     // Model actions
     private final TaskMapper converter = TaskMapper.INSTANCE;
     private final DaoRecurrence daoRecurrence = new DaoRecurrence();
@@ -37,6 +35,7 @@ public class TaskViewModel extends ViewModel {
     private final ObjectProperty<LocalDate> createdAt = new SimpleObjectProperty<>();
     private String note;
 
+    private final ObjectProperty<Recurrence> recurrence = new SimpleObjectProperty<>();
 
     public TaskViewModel() {
     }
@@ -48,6 +47,10 @@ public class TaskViewModel extends ViewModel {
 
     public void storeRecurrence(Recurrence rec) {
         daoRecurrence.store(rec);
+    }
+
+    public void updateRecurrence(Recurrence rec) {
+        daoRecurrence.update(rec);
     }
 
     // commit in db
@@ -157,6 +160,25 @@ public class TaskViewModel extends ViewModel {
         return converter.toDTO(this);
     }
 
+    public void duplicate() {
+//        ToDoTask viewModel = converter.toDTO(this);
+//        System.out.println("this = " + this);
+//        System.out.println("viewModel = " + viewModel);
+//        return viewModel;
+    }
+
+    public Recurrence getRecurrence() {
+        return recurrence.get();
+    }
+
+    public ObjectProperty<Recurrence> recurrenceProperty() {
+        return recurrence;
+    }
+
+    public void setRecurrence(Recurrence recurrence) {
+        this.recurrence.set(recurrence);
+    }
+
     public void dispose() {
         this.nameProperty().unbind();
         this.dueDateProperty().unbind();
@@ -180,5 +202,4 @@ public class TaskViewModel extends ViewModel {
                ", listID=" + listID.get() +
                '}';
     }
-
 }
