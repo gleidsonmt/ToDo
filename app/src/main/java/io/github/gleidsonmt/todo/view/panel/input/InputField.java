@@ -6,6 +6,7 @@ import io.github.gleidsonmt.glad.controls.icon.Icon;
 import io.github.gleidsonmt.glad.controls.icon.SVGIcon;
 import io.github.gleidsonmt.todo.model.ListType;
 import io.github.gleidsonmt.todo.model.RecurrenceViewModel;
+import io.github.gleidsonmt.todo.utils.I18n;
 import io.github.gleidsonmt.todo.view.panel.Panel;
 import io.github.gleidsonmt.todo.view.panel.events.TaskChangeEvent;
 import io.github.gleidsonmt.todo.view_model.TaskViewModel;
@@ -217,7 +218,7 @@ public class InputField extends GridPane {
 
     private TextField createTextField() {
         var field = new TextField();
-        field.setPromptText("Add a task");
+        field.setPromptText(I18n.get("panel.inputField"));
         field.setId("input-task");
         field.setPrefHeight(50);
         field.getStyleClass().addAll("h5", "inside-text-field");
